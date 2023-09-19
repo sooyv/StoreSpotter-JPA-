@@ -1,4 +1,55 @@
+html, body {
+    height: 100%;
+}
+
 .container {
     display: flex;
     flex-direction: row;
+    justify-items: start;
+    height: 100%;
+}
+
+#map {
+    width:100%;
+    /*height:100%;*/
+    /*height: 550px;*/
+}
+
+.side-elem-title {
+    font-size: large;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.side-elem {
+    border-bottom: solid 1px lightgrey;
+    padding: 10px;
+}
+
+#select-industry {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(70px, auto));
+    gap: 15px;
+    justify-items: center;
+    margin: 10px;
+}
+
+#find-location-btn {
+    background-color: #41637d;
+    border-radius: 10px;
+    border:none;
+    padding: 15px;
+    width: 100%;
+    color: #FFF;
+    font-weight: bold;
+}
+
+#find-location-btn:hover {
+    background-color: lightgrey;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+body {
+    margin: 0;
 }

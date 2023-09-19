@@ -9,22 +9,40 @@
     <link href="/static/css/header.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId="></script>
+    <script>
+        // 공통 header 불러오기
+        $(document).ready(function () {
+            $('#header').load('/templates/header.html');
+        });
+    </script>
 </head>
 <body>
 <div id="header"></div>
 <div class="container">
     <div id="side-bar">
-        <div>
-            업종 선택
+        <div class="side-elem">
+            <div class="side-elem-title">
+                업종 선택
+            </div>
+            <div id="select-industry">
+                <div class="select-industry-detail">편의점</div>
+                <div class="select-industry-detail">피자</div>
+                <div class="select-industry-detail">치킨</div>
+                <div class="select-industry-detail">아이스크림</div>
+                <div class="select-industry-detail">햄버거</div>
+                <div class="select-industry-detail">중식</div>
+            </div>
         </div>
-        <div>
-            주소 선택
+        <div class="side-elem">
+            <div class="side-elem-title">
+                주소 선택
+            </div>
         </div>
-        <div>
-            검색하기
+        <div class="side-elem">
+            <button type="button" id="find-location-btn">검색하기</button>
         </div>
     </div>
-    <div id="map" style="width:70%;height:500px;"></div>
+    <div id="map"></div>
 </div>
 <script>
     var mapOptions = {
@@ -38,11 +56,6 @@
         // 인증 실패 시 처리 코드 작성
         // ...
     }
-
-    // 공통 header 불러오기
-    $(document).ready(function () {
-        $('#header').load('/templates/header.html');
-    });
 </script>
 </body>
 </html>
