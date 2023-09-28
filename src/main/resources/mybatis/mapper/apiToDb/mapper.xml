@@ -5,9 +5,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.sojoo.StoreSpotter.dao.apiToDb.StoreInfoMapper.java">
 <!-- Store Info Insert Query -->
-<insert id="insertStoreInfo" parameterType="/Applications/StoreSpotter/src/main/java/com/sojoo/StoreSpotter/dto/apiToDb/StoreInfoDTO.java">
-    INSERT INTO store_info (bizesId, bizesNm, rdnmAdr)
-    VALUES (#{bizesId}, #{bizesNm}, #{rdnmAdr})
-</insert>
+    <insert id="storeinfoAdd">
+        INSERT INTO store_info (bizesId, bizesNm, rdnmAdr)
+        VALUES (#{bizesId}, #{bizesNm}, #{rdnmAdr})
+
+    </insert>
+
+    <select id="selectAll"
+            resultType = "StoreinfoDTO">
+        select * from storeInfo;
+    </select>
+
 </mapper>
 
