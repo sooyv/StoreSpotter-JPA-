@@ -36,4 +36,7 @@ out/
 ### VS Code ###
 .vscode/
 /src/main/resources/application.yml
+<<<<<<< HEAD
+=======
 /src/main/resources/static/header/mainHeader.html
+>>>>>>> 7407c2a911b8134dcf0c68ba9a5aef49f697c41f

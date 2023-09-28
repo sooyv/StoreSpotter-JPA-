@@ -1,0 +1,45 @@
+nav {
+    justify-content: space-between;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: solid 1px lightgrey;
+}
+
+img {
+    height: 40px;
+    width: 40px;
+    margin: 15px;
+}
+
+h1 {
+    color: #41637d;
+}
+
+.title-icon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+ul {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+
+a {
+    text-decoration-line: none;
+    padding: 15px;
+    color: gray;
+}
+
+a:hover {
+    background-color: lightgrey;
+    transition: 0.1s;
+    border-radius: 25px;
+}
