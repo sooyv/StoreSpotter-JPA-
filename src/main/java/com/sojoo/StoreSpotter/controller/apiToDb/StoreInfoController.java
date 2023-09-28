@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class StoreInfoController {
+
+    @Autowired
     private final StoreInfoService storeInfoService;
 
     @Autowired
