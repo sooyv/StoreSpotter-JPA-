@@ -1,10 +1,10 @@
 <!-- resources/mybatis/mybatis-config.xml -->
 
 <!DOCTYPE configuration
-        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        PUBLIC "-//mybatis.org//DTD Config 3.0.1//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <mappers>
-        <mapper resource="/Applications/StoreSpotter/src/main/resources/mybatis/mybatis-config.xml"/>
+<!--        <mapper resource="mybatis/mybatis-config.xml"/>-->
     </mappers>
 </configuration>

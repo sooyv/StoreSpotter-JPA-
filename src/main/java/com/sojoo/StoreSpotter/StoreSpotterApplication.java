@@ -27,7 +27,7 @@ public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Excepti
 	sessionFactory.setDataSource(dataSource); //의존성 주입 -servlet-context에서 해주는 작업
 
 	Resource[] res = new PathMatchingResourcePatternResolver()
-			.getResources("classpath:/mybatis/mapper/apiToDb/**/*.xml");//*를써서 여러개xml을 받아서 배열씀
+			.getResources("classpath:mybatis/mapper/apiToDb/*.xml");//*를써서 여러개xml을 받아서 배열씀
 
 	sessionFactory.setMapperLocations(res);
 
