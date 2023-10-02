@@ -28,10 +28,13 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.7.0'
+//	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.7.0'
 
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.1'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation group: 'org.jdom', name: 'jdom2', version: '2.0.6.1'
+
 }
 
 tasks.named('test') {

@@ -1,10 +1,16 @@
 package com.sojoo.StoreSpotter.service.apiToDb;
 
 import com.sojoo.StoreSpotter.dao.apiToDb.StoreInfoMapper;
-import com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo;
+import org.jdom2.Document;
+import org.jdom2.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
 
 @Service
 public class StoreInfoService {
@@ -15,22 +21,44 @@ public class StoreInfoService {
         this.storeInfoMapper = storeInfoMapper;
     }
 
-    public void saveStoreInfoFromApiResponse() {
+    public void saveStore() {
         try {
-            // API 서버의 URL을 직접 지정합니다.
-            String apiUrl = ""; // 실제 API URL로 변경해야 합니다.
+            // url 설정
+            StringBuilder sb = new StringBuilder();
+            sb.append("https://apis.data.go.kr/B553077/api/open/sdsc2/storeListInDong?divId=ctprvnCd&type=xml");
+            sb.append("&ServiceKey=%2BJTG2GnVWVXZAxaul97F7f9DHnabKZ5Oiaw5eMiZJ1jGKGxyPSNm89FrSrS9pq5%2FLD5DMiDRMT2JJFp6AnK9eQ%3D%3D");
+            sb.append("&pageNo=" + 1);
+            sb.append("&numOfRows=" + 3);
+            sb.append("&indsSclsCd=" + "G20405");
+            sb.append("&key=" + 41);
 
-            // REST 요청을 보내고 응답을 StoreInfoDTO 배열로 받습니다.
-            RestTemplate restTemplate = new RestTemplate();
-            StoreInfo[] response = restTemplate.getForObject(apiUrl, StoreInfo[].class);
-            System.out.println(response);
+            // URL 연결
+            URL url = new URL(sb.toString());
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-            // 받은 응답 데이터를 데이터베이스에 저장합니다.
-            for (StoreInfo storeInfo : response) {
-                storeInfoMapper.storeinfoAdd(storeInfo);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            conn.setRequestProperty("Content-Type", "application/xml");
+            conn.setRequestMethod("get");
+            conn.connect();
+
+            SAXBuilder builder = new SAXBuilder();
+            Document document = builder.build(conn.getInputStream());
+
+
+            Element root = (Element) document.getRootElement();
+            Element body = (Element) root.getElementsByTagName("body");
+            Element items = (Element) body.getElementsByTagName("items");
+            NodeList item = items.getChildNodes();
+
+
+            System.out.println("NOW LAW_CD = " + item);
+
+//            for (Element element : item) {
+//                ApartXmlParser apartXmlParser = transferXmlToParser(element);
+//                System.out.println("apartXmlParser = " + apartXmlParser);
+//            }
+        }
+        catch (Exception e){
+
         }
     }
 }
