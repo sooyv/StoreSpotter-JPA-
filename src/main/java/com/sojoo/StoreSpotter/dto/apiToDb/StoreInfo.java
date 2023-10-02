@@ -5,7 +5,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StoreInfoDTO {
+public class StoreInfo {
     private Long bizesId;
     private String bizesNm;
     private String rdnmAdr;

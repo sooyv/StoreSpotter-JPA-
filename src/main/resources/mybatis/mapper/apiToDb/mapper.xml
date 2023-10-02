@@ -11,10 +11,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     </insert>
 
-    <select id="selectAll"
-            resultType = "StoreinfoDTO">
-        select * from storeInfo;
-    </select>
+<!--    <select id="selectAll"-->
+<!--            resultType = "Storeinfo">-->
+<!--        select * from storeInfo;-->
+<!--    </select>-->
 
 </mapper>
 

@@ -1,24 +1,23 @@
 <!--공통되는 header.html-->
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
 </head>
 <body>
-    <nav class="header">
+    <div id="header" th:fragment="header">
         <div class="title-icon">
-            <img src="/static/style/free-icon-pin.png" alt="store spotter 로고" ./>
-            <h1>Store Spotter</h1>
+            <img src="/style/free-icon-pin.png" alt="store spotter 로고" ./>
+            <div><a id="title" href="/">Store Spotter</a></div>
         </div>
         <div>
             <ul>
-                <li><a href="#">로그인</a></li>
-                <li><a href="#">회원가입</a></li>
+                <li><a class="header-ele" href="#">로그인</a></li>
+                <li><a class="header-ele" href="#">회원가입</a></li>
             </ul>
         </div>
-    </nav>
+    </div>
 </body>
 </html>

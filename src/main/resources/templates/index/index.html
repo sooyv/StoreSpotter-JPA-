@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <link rel="StoreSpotter Icon" type="png" href="/style/free-icon-pin.png">
+    <title>Store Spotter</title>
+    <link href="/css/index.css" rel="stylesheet">
+    <link href="/css/header.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=2n6hjq6jro"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;500&family=Ubuntu:wght@500&display=swap" rel="stylesheet"></head>
+<body>
+<div th:replace="/header :: header"></div>
+<div class="container">
+        <div id="side-bar">
+            <div class="relative">
+            <div class="side-elem">
+                <div class="side-elem-title">
+                    업종 선택
+                </div>
+                <div id="select-industry">
+                    <div class="select-industry-detail">편의점</div>
+                    <div class="select-industry-detail">피자</div>
+                    <div class="select-industry-detail">치킨</div>
+                    <div class="select-industry-detail">아이스크림</div>
+                    <div class="select-industry-detail">햄버거</div>
+                    <div class="select-industry-detail">중식</div>
+                </div>
+            </div>
+            <div class="side-elem">
+                <div class="side-elem-title">
+                    주소 선택
+                </div>
+            </div>
+            <div class="side-elem">
+                <button type="button" id="find-location-btn">검색하기</button>
+            </div>
+            </div>
+        </div>
+    <button id="side-bar-hide-btn"> < </button>
+    <div class="relative">
+        <div id="map"></div>
+    </div>
+</div>
+<script>
+    var mapOptions = {
+        center: new naver.maps.LatLng(37.3595704, 127.105399),
+        zoom: 10
+    };
+
+    var map = new naver.maps.Map('map', mapOptions);
+
+    window.navermap_authFailure = function () {
+        // 인증 실패 시 처리 코드 작성
+        // ...
+    }
+</script>
+</body>
+</html>
