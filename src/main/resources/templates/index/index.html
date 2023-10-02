@@ -16,8 +16,8 @@
 <body>
 <div th:replace="/header :: header"></div>
 <div class="container">
-        <div id="side-bar">
-            <div class="relative">
+    <div id="side-bar">
+        <div class="relative">
             <div class="side-elem">
                 <div class="side-elem-title">
                     업종 선택
@@ -39,12 +39,11 @@
             <div class="side-elem">
                 <button type="button" id="find-location-btn">검색하기</button>
             </div>
-            </div>
+            <button id="side-bar-hide-btn"> < </button>
         </div>
-    <button id="side-bar-hide-btn"> < </button>
-    <div class="relative">
-        <div id="map"></div>
     </div>
+    <div id="map"></div>
+
 </div>
 <script>
     var mapOptions = {
