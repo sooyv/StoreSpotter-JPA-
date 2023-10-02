@@ -22,6 +22,6 @@ public class StoreInfoController {
 
     @PostMapping("/saveStoreInfo")
     public void saveStoreInfo() {
-        storeInfoService.saveStoreInfoFromApiResponse();
+        storeInfoService.saveStore();
     }
 }
