@@ -32,6 +32,7 @@ public class StoreInfoService {
             sb.append("&indsSclsCd=" + "G20405");
             sb.append("&key=" + 41);
 
+
             // URL 연결
             URL url = new URL(sb.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
