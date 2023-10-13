@@ -5,13 +5,20 @@
     align-items: center;
     border-bottom: solid 1px lightgrey;
     background-color: white;
+    max-height: 76px;
 }
 
-#StoreSpotter-icon {
+img {
     height: 40px;
     width: 40px;
     margin: 15px;
 }
+
+/*#StoreSpotter-icon {*/
+/*    height: 40px;*/
+/*    width: 40px;*/
+/*    margin: 15px;*/
+/*}*/
 
 #title {
     font-family: 'Ubuntu', sans-serif;
@@ -26,8 +33,7 @@
     align-items: center;
 }
 
-ul {
-    list-style-type: none;
+#header-content {
     display: flex;
     flex-direction: row;
     padding: 10px;
@@ -47,10 +53,61 @@ ul {
     border-radius: 25px;
 }
 
-/*태블릿*/
+#menu-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#menu-bar-btn {
+    display: none;
+}
+
+/*태블릿 - 900px 이하의 화면*/
 @media screen and (max-width: 900px) {
     #title {
         font-size: x-large;
+    }
+
+    /*로그인 회원가입 -> 메뉴 바*/
+    #header-content {
+        display: none;
+    }
+    /*.header-ele {*/
+    /*    display: none;*/
+    /*}*/
+
+    #menu-bar-btn {
+        display: flex;
+        width: 30px;
+        height: 30px;
+        align-items: center;
+        justify-content: center;
+        /*margin: 0px;*/
+        padding-right: 15px;
+    }
+
+    #header-content.active {
+        /*display: block;*/
+        position: absolute;
+        margin-top: 185px;
+        margin-right: 100px;
+        background-color: #FFFFFF;
+        /*width: 150px;*/
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 2;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        border-radius: 10px;
+
+    }
+
+    .header-ele {
+        width: 100px;
+        padding: 10px;
+        display: flex;
+        align-content: center;
     }
 }
 
@@ -60,8 +117,8 @@ ul {
         font-size: large;
     }
 
-    .header-ele {
-        font-size: small;
-        padding: 10px;
-    }
+    /*.header-ele {*/
+    /*    font-size: small;*/
+    /*    padding: 10px;*/
+    /*}*/
 }
