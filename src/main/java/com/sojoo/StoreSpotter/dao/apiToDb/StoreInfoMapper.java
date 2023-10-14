@@ -7,6 +7,14 @@ import java.util.List;
 
 @Mapper
 public interface StoreInfoMapper {
-//    public List<StoreInfo> insertAll();
-    void storeinfoAdd(StoreInfo storeInfo);
+    void insertStoreInfo(StoreInfo storeInfo);
 }
+
+
+//@Mapper
+//public interface StoreInfoMapper {
+////    public List<StoreInfo> insertAll();
+//    void storeinfoAdd(StoreInfo storeInfo);
+//}
+
+

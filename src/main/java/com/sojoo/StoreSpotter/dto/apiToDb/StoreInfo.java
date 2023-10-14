@@ -6,7 +6,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StoreInfo {
-    private Long bizesId;
+    private String bizesId;
     private String bizesNm;
     private String rdnmAdr;
 }

@@ -1,19 +1,22 @@
 package com.sojoo.StoreSpotter.service.apiToDb;
 
 import com.sojoo.StoreSpotter.dao.apiToDb.StoreInfoMapper;
+import com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo;
 import org.jdom2.Document;
+import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+
 @Service
 public class StoreInfoService {
+
     private final StoreInfoMapper storeInfoMapper;
 
     @Autowired
@@ -21,45 +24,120 @@ public class StoreInfoService {
         this.storeInfoMapper = storeInfoMapper;
     }
 
-    public void saveStore() {
+    public void fetchDataFromPublicAPI() throws Exception {
+        System.out.println("fetchDataFromPublicAPI method active");
         try {
             // url 설정
             StringBuilder sb = new StringBuilder();
-            sb.append("https://apis.data.go.kr/B553077/api/open/sdsc2/storeListInDong?divId=ctprvnCd&type=xml");
-            sb.append("&ServiceKey=%2BJTG2GnVWVXZAxaul97F7f9DHnabKZ5Oiaw5eMiZJ1jGKGxyPSNm89FrSrS9pq5%2FLD5DMiDRMT2JJFp6AnK9eQ%3D%3D");
+
+            sb.append("https://apis.data.go.kr/B553077/api/open/sdsc2/storeListInDong?");
+            sb.append("ServiceKey=kXVB%2FzGPSXqZrn%2F1NuCYPZGJONAmxZfu%2BjQDCfDP%2F5uo8QZ%2B6iWdY%2FXrV%2B0gg2z%2BMKVEA%2BrVFLs9l0TVQE2Cug%3D%3D");
             sb.append("&pageNo=" + 1);
             sb.append("&numOfRows=" + 3);
+            sb.append("&divId=" + "ctprvnCd");
+            sb.append("&key=" + 11);
+            sb.append("&indsLclsCd=" + "G2");
+            sb.append("&indsMclsCd=" + "G204");
             sb.append("&indsSclsCd=" + "G20405");
-            sb.append("&key=" + 41);
 
-
-            // URL 연결
             URL url = new URL(sb.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.setRequestProperty("Content-Type", "application/xml");
-            conn.setRequestMethod("get");
+            conn.setRequestMethod("GET");
             conn.connect();
+            System.out.println(conn.getContentLength());
 
             SAXBuilder builder = new SAXBuilder();
             Document document = builder.build(conn.getInputStream());
 
+            org.jdom2.Element root = document.getRootElement();
+            org.jdom2.Element body = root.getChild("body");
+            org.jdom2.Element items = body.getChild("items");
+            List<org.jdom2.Element> itemList = items.getChildren("item");
 
-            Element root = (Element) document.getRootElement();
-            Element body = (Element) root.getElementsByTagName("body");
-            Element items = (Element) body.getElementsByTagName("items");
-            NodeList item = items.getChildNodes();
+            if (itemList.isEmpty()) {
+                System.out.println("item is null");
 
+            } else {
+                for (Element item : itemList) {
+                    String bizesId = item.getChildText("bizesId");
+                    String bizesNm = item.getChildText("bizesNm");
+                    String rdnmAdr = item.getChildText("rdnmAdr");
 
-            System.out.println("NOW LAW_CD = " + item);
+                    System.out.println("bizesId: " + bizesId);
+                    System.out.println("bizesNm: " + bizesNm);
+                    System.out.println("rdnmAdr: " + rdnmAdr);
 
-//            for (Element element : item) {
-//                ApartXmlParser apartXmlParser = transferXmlToParser(element);
-//                System.out.println("apartXmlParser = " + apartXmlParser);
-//            }
+                    StoreInfo storeInfo = new StoreInfo();
+                    storeInfo.setBizesId(bizesId);
+                    storeInfo.setBizesNm(bizesNm);
+                    storeInfo.setRdnmAdr(rdnmAdr);
+
+                    // database에 저장하기
+                    storeInfoMapper.insertStoreInfo(storeInfo);
+
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace(); // 예외 정보를 출력
         }
-        catch (Exception e){
 
-        }
+        System.out.println("try-catch 구문 종료");
     }
 }
+
+
+//@Service
+//public class StoreInfoService {
+//    private final StoreInfoMapper storeInfoMapper;
+//
+//    @Autowired
+//    public StoreInfoService(StoreInfoMapper storeInfoMapper) {
+//        this.storeInfoMapper = storeInfoMapper;
+//    }
+//
+//    public void saveStore() {
+//        try {
+//            // url 설정
+//            StringBuilder sb = new StringBuilder();
+//            sb.append("https://apis.data.go.kr/B553077/api/open/sdsc2/storeListInDong?divId=ctprvnCd&type=xml");
+//            sb.append("&ServiceKey=%2BJTG2GnVWVXZAxaul97F7f9DHnabKZ5Oiaw5eMiZJ1jGKGxyPSNm89FrSrS9pq5%2FLD5DMiDRMT2JJFp6AnK9eQ%3D%3D");
+//            sb.append("&pageNo=" + 1);
+//            sb.append("&numOfRows=" + 3);
+//            sb.append("&indsSclsCd=" + "G20405");
+//            sb.append("&key=" + 41);
+//
+//
+//            // URL 연결
+//            URL url = new URL(sb.toString());
+//            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//
+//            conn.setRequestProperty("Content-Type", "application/xml");
+//            conn.setRequestMethod("get");
+//            conn.connect();
+//
+//            SAXBuilder builder = new SAXBuilder();
+//            Document document = builder.build(conn.getInputStream());
+//
+//
+//            Element root = (Element) document.getRootElement();
+//            Element body = (Element) root.getElementsByTagName("body");
+//            Element items = (Element) body.getElementsByTagName("items");
+//            NodeList item = items.getChildNodes();
+//
+//
+//            System.out.println("NOW LAW_CD = " + item);
+//
+////            for (Element element : item) {
+////                ApartXmlParser apartXmlParser = transferXmlToParser(element);
+////                System.out.println("apartXmlParser = " + apartXmlParser);
+////            }
+//        }
+//        catch (Exception e){
+//
+//        }
+//    }
+//}
+
