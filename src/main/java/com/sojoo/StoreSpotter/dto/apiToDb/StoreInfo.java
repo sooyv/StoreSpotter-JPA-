@@ -9,4 +9,6 @@ public class StoreInfo {
     private String bizesId;
     private String bizesNm;
     private String rdnmAdr;
+
+//    private String coordinate;
 }

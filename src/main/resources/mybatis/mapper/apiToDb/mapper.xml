@@ -5,11 +5,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.sojoo.StoreSpotter.dao.apiToDb.StoreInfoMapper">
 <!-- Store Info Insert Query -->
-    <insert id="insertStoreInfo">
+    <insert id="insertIndustryData" keyProperty="bizesId">
         INSERT INTO store_info(bizesId, bizesNm, rdnmAdr)
         VALUES (#{bizesId}, #{bizesNm}, #{rdnmAdr})
     </insert>
-
 <!--    <select id="selectAll"-->
 <!--            resultType = "Storeinfo">-->
 <!--        select * from storeInfo;-->
