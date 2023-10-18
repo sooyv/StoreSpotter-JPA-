@@ -60,7 +60,7 @@ public class StoreInfoService {
 
         try {
             // 업종 하나씩 받기 - 매개변수로 받은 industry
-            System.out.println("업종명 확인: " + industry);
+//            System.out.println("업종명 확인: " + industry);
             String indust_id = industry.getIndust_id();
 
             // 지역 가져오기
@@ -69,23 +69,26 @@ public class StoreInfoService {
             for (int i = 0; i < regions.size(); i++) {
                 Region region = regions.get(i);
                 Integer region_id = region.getRegion_id();
+                System.out.println("지역코드 확인: " + region_id);
+                System.out.println("업종코드 확인" + indust_id);
 
                 // 아래에서 totalPageCount 재할당
                 int totalPageCount = 1;
 
                 for (int j = 1; j <= totalPageCount; j++) {
+
                     // 해당 업종, 지역의 api 호출
                     StringBuilder sb = new StringBuilder();
 
                     sb.append("https://apis.data.go.kr/B553077/api/open/sdsc2/storeListInDong?");
-                    sb.append("인증키");
+                    sb.append("ServiceKey=kXVB%2FzGPSXqZrn%2F1NuCYPZGJONAmxZfu%2BjQDCfDP%2F5uo8QZ%2B6iWdY%2FXrV%2B0gg2z%2BMKVEA%2BrVFLs9l0TVQE2Cug%3D%3D");
                     sb.append("&pageNo=" + j);
                     sb.append("&numOfRows=" + 1000);
                     sb.append("&divId=" + "ctprvnCd");
                     sb.append("&key=" + region_id);             // 시도 코드(region_id)
                     // ***현재 "&indsSclsCd=" + indust_id 로 하면 카페까지 store_info 테이블에 모두 저장.***
                     // ***업종 코드에 따라 테이블 구분 할 수 있도록 구현***
-                    sb.append("&indsSclsCd=" + "G20405");      // 업종 코드(industry_id)
+                    sb.append("&indsSclsCd=" + indust_id);      // 업종 코드(industry_id) G20405
 
                     URL url = new URL(sb.toString());
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
