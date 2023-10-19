@@ -69,8 +69,8 @@ public class StoreInfoService {
             for (int i = 0; i < regions.size(); i++) {
                 Region region = regions.get(i);
                 Integer region_id = region.getRegion_id();
-                System.out.println("지역코드 확인: " + region_id);
-                System.out.println("업종코드 확인" + indust_id);
+//                System.out.println("지역코드 확인: " + region_id);
+//                System.out.println("업종코드 확인" + indust_id);
 
                 // 아래에서 totalPageCount 재할당
                 int totalPageCount = 1;
@@ -102,7 +102,6 @@ public class StoreInfoService {
                     Document document = builder.build(conn.getInputStream());
                     document.getRootElement();
 
-
                     // 페이지 개수 가져오기
                     Element root = document.getRootElement();
                     Element body = root.getChild("body");
@@ -120,24 +119,28 @@ public class StoreInfoService {
 
 
                     // for문으로 각페이지 데이터 저장하기
-                     publicApiDataSave(document);
+                     publicApiDataSave(document, indust_id, region_id);
                 }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("try-catch 구문 종료");
+        System.out.println("industryCity 메서드 try-catch문 종료");
     }
 
 
     // api 데이터 저장 로직
-    public void publicApiDataSave(Document document) throws Exception {
+    public void publicApiDataSave(Document document, String indust_id, Integer region_id) throws Exception {
         try {
             Element root = document.getRootElement();
             Element body = root.getChild("body");
             Element items = body.getChild("items");
             List<Element> itemList = items.getChildren("item");
+
+            // 확인한 indust_id와 region_id로 xml 파일에서 구분하여 데이터베이스 저장
+            System.out.println("publicApiDataSave에서 indust_id 확인: " + indust_id);
+            System.out.println("publicApiDataSave에서 region_id 확인: " + region_id);
 
             for (Element item : itemList) {
                 String bizesId = item.getChildText("bizesId");
@@ -156,7 +159,7 @@ public class StoreInfoService {
                 storeInfo.setRdnmAdr(rdnmAdr);
 
                 // database에 저장하기
-                storeInfoMapper.insertIndustryData(storeInfo);
+                storeInfoMapper.insertIndustryData(storeInfo, indust_id, region_id);
             }
 
         } catch (Exception e) {
