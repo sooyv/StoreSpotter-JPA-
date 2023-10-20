@@ -9,5 +9,6 @@ import org.apache.ibatis.annotations.Param;
 public interface StoreInfoMapper {
     void insertIndustryData(StoreInfo storeInfo, @Param("indust_id") String indust_id, @Param("region_id") Integer region_id);
 
+    void deleteIndustRegionTable(@Param("indust_id") String indust_id, @Param("region_id") Integer region_id);
 }
 

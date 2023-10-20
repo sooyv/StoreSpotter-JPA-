@@ -18,7 +18,7 @@ public class IndustryController {
         this.storeInfoService = storeInfoService;
     }
 
-    @GetMapping("/industryId")
+    @GetMapping("/apiDataSave")
     public List<Industry> Industrys() throws Exception {
         System.out.println("industry 컨트롤러 실행");
         return storeInfoService.industrySave();

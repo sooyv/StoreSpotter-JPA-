@@ -35,14 +35,29 @@ public class StoreInfoService {
         this.regionMapper = regionMapper;
     }
 
+    // 업종 삭제 코드 - api 다시 받아오기 전 삭제
+    // 이후 industrySave() 메서드 제일 상단에 +
+    public void getIndustAndRegion() throws Exception {
+        List<Industry> industryList = industryMapper.selectIndustry();
+        List<Region> regionList = regionMapper.selectRegionList();
+
+        for (int i = 0; i < industryList.size(); i++) {
+            for (int j = 0; j < regionList.size(); j++) {
+                String indust_id = industryList.get(i).getIndust_id();
+                int region_id = regionList.get(j).getRegion_id();
+
+//                System.out.println(indust_id +"    " + region_id);
+                storeInfoMapper.deleteIndustRegionTable(indust_id, region_id);
+            }
+        }
+    }
 
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장 가능
     public List<Industry> industrySave() throws Exception {
         System.out.println("service단 industrySave 진입");
 
         try {
-            // 업종 id, name 담긴 industry list 받아오기
-            List<Industry> industry = industryMapper.selectIndustry();
+            List<Industry> industry = industryMapper.selectIndustry();      // 업종 id, name 담긴 industry list 받아오기
             for (int i = 0; i < industry.size(); i++) {
                 industryCity(industry.get(i));
             }
@@ -54,13 +69,13 @@ public class StoreInfoService {
         return null;
     }
 
-    // 받은 industry의 api를 호출하여 각 지역에
+
     public void industryCity(Industry industry) throws Exception {
         System.out.println("industryCity 메서드 진입");
 
         try {
             // 업종 하나씩 받기 - 매개변수로 받은 industry
-//            System.out.println("업종명 확인: " + industry);
+            // System.out.println("업종명 확인: " + industry);
             String indust_id = industry.getIndust_id();
 
             // 지역 가져오기
@@ -158,7 +173,7 @@ public class StoreInfoService {
                 storeInfo.setBizesNm(bizesNm);
                 storeInfo.setRdnmAdr(rdnmAdr);
 
-                // database에 저장하기
+                // DB에 저장하기
                 storeInfoMapper.insertIndustryData(storeInfo, indust_id, region_id);
             }
 

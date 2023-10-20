@@ -34,12 +34,17 @@ public class StoreInfoController {
         this.storeInfoService = storeInfoService;
     }
 
-    @GetMapping("/saveStoreInfo")
-    public ResponseEntity<String> fetchData() throws Exception {
-        System.out.println("saveStoreInfo 동작");
-//        storeInfoService.fetchDataFromPublicAPI();
+//    @GetMapping("/saveStoreInfo")
+//    public ResponseEntity<String> fetchData() throws Exception {
+//        System.out.println("saveStoreInfo 동작");
+////        storeInfoService.fetchDataFromPublicAPI();
+//
+//        return ResponseEntity.ok("Data fetched successfully!");
+//    }
 
-        return ResponseEntity.ok("Data fetched successfully!");
+    @GetMapping("/deleteTest")
+    public void delete() throws Exception {
+        storeInfoService.getIndustAndRegion();
     }
 
 }

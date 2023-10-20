@@ -167,7 +167,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 VALUES (#{storeInfo.bizesId}, #{storeInfo.bizesNm}, #{storeInfo.rdnmAdr})
             </when>
             <when test="indust_id == 'I21201' and region_id == '51'">
-                INSERT INTO cafe_ganwon (bizesId, bizesNm, rdnmAdr)
+                INSERT INTO cafe_gangwon (bizesId, bizesNm, rdnmAdr)
                 VALUES (#{storeInfo.bizesId}, #{storeInfo.bizesNm}, #{storeInfo.rdnmAdr})
             </when>
         </choose>
