@@ -38,9 +38,8 @@ public class StoreInfoService {
     }
 
     // 업종 삭제 코드 - api 다시 받아오기 전 삭제
-    // 이후 industrySave() 메서드 제일 상단에 +
-    public void getIndustAndRegion() throws Exception {
-        List<Industry> industryList = industryMapper.selectIndustry();
+    public void deleteApiData() throws Exception {
+        List<Industry> industryList = industryMapper.selectIndustryList();
         List<Region> regionList = regionMapper.selectRegionList();
 
         for (int i = 0; i < industryList.size(); i++) {
@@ -59,9 +58,12 @@ public class StoreInfoService {
         System.out.println("service단 industrySave 진입");
 
         try {
-            List<Industry> industry = industryMapper.selectIndustry();      // 업종 id, name 담긴 industry list 받아오기
+            // 데이터 삭제 로직 동작
+            deleteApiData();
+
+            List<Industry> industry = industryMapper.selectIndustryList();      // 업종 id, name 담긴 industry list 받아오기
             for (int i = 0; i < industry.size(); i++) {
-                industryCity(industry.get(i));
+                connectToApi(industry.get(i));
             }
 
         } catch (Exception e) {
@@ -72,7 +74,7 @@ public class StoreInfoService {
     }
 
 
-    public void industryCity(Industry industry) throws Exception {
+    public void connectToApi(Industry industry) throws Exception {
         System.out.println("industryCity 메서드 진입");
 
         try {
@@ -181,7 +183,7 @@ public class StoreInfoService {
                 storeInfo.setLat(lat);
 
                 // DB에 저장하기
-                storeInfoMapper.insertIndustryData(storeInfo, indust_id, region_id);
+                storeInfoMapper.insertApiData(storeInfo, indust_id, region_id);
             }
 
         } catch (Exception e) {

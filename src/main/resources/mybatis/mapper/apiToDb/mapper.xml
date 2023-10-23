@@ -10,7 +10,7 @@
     <!--            store_info(bizesId, bizesNm, rdnmAdr, lon, lat)-->
     <!--        VALUES (#{bizesId}, #{bizesNm}, #{rdnmAdr})-->
     <!--    </insert>-->
-    <insert id="insertIndustryData" keyProperty="bizesId" parameterType="map">
+    <insert id="insertApiData" keyProperty="bizesId" parameterType="map">
         <choose>
             <!-- 편의점 -->
             <!-- 서울 -->

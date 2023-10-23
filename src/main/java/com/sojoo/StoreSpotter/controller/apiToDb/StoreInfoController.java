@@ -42,9 +42,9 @@ public class StoreInfoController {
 //        return ResponseEntity.ok("Data fetched successfully!");
 //    }
 
-    @GetMapping("/deleteTest")
-    public void delete() throws Exception {
-        storeInfoService.getIndustAndRegion();
-    }
+//    @GetMapping("/deleteTableData")
+//    public void delete() throws Exception {
+//        storeInfoService.deleteApiData();
+//    }
 
 }

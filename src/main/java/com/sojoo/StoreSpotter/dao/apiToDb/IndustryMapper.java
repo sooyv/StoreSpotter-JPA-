@@ -7,5 +7,5 @@ import java.util.List;
 
 @Mapper
 public interface IndustryMapper {
-    List<Industry> selectIndustry() throws Exception;
+    List<Industry> selectIndustryList() throws Exception;
 }
