@@ -11,11 +11,13 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -162,16 +164,21 @@ public class StoreInfoService {
                 String bizesNm = item.getChildText("bizesNm");
                 String rdnmAdr = item.getChildText("rdnmAdr");
                 // 위도, 경도 추가
+                Float lon = Float.valueOf(item.getChildText("lon"));
+                Float lat = Float.valueOf(item.getChildText("lat"));
 
                 System.out.println("bizesId: " + bizesId);
                 System.out.println("bizesNm: " + bizesNm);
                 System.out.println("rdnmAdr: " + rdnmAdr);
+                System.out.println("lon: " + lon);
+                System.out.println("lat: " + lat);
 
-                // 업종명_도시명 table에 자동저장하게 만들기 - 수정
                 StoreInfo storeInfo = new StoreInfo();
                 storeInfo.setBizesId(bizesId);
                 storeInfo.setBizesNm(bizesNm);
                 storeInfo.setRdnmAdr(rdnmAdr);
+                storeInfo.setLon(lon);
+                storeInfo.setLat(lat);
 
                 // DB에 저장하기
                 storeInfoMapper.insertIndustryData(storeInfo, indust_id, region_id);
