@@ -1,6 +1,5 @@
 package com.sojoo.StoreSpotter.service.apiToDb;
 
-import com.sojoo.StoreSpotter.controller.apiToDb.IndustryController;
 import com.sojoo.StoreSpotter.dao.apiToDb.IndustryMapper;
 import com.sojoo.StoreSpotter.dao.apiToDb.RegionMapper;
 import com.sojoo.StoreSpotter.dao.apiToDb.StoreInfoMapper;
@@ -11,16 +10,10 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.SQLSyntaxErrorException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -179,8 +172,7 @@ public class StoreInfoService {
                 storeInfo.setBizesId(bizesId);
                 storeInfo.setBizesNm(bizesNm);
                 storeInfo.setRdnmAdr(rdnmAdr);
-                storeInfo.setLon(lon);
-                storeInfo.setLat(lat);
+                storeInfo.setCoordinates(lon, lat);
 
                 // DB에 저장하기
                 storeInfoMapper.insertApiData(storeInfo, indust_id, region_id);
