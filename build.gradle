@@ -35,6 +35,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation group: 'org.jdom', name: 'jdom2', version: '2.0.6.1'
 
+	// Hibernate ORM 의존성 추가
+	implementation 'org.hibernate:hibernate-core:5.6.15.Final'
+	// Hibernate Spatial 의존성 추가
+	implementation 'org.hibernate:hibernate-spatial:5.6.15.Final'
 }
 
 tasks.named('test') {

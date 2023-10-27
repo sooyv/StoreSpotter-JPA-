@@ -159,8 +159,8 @@ public class StoreInfoService {
                 String bizesNm = item.getChildText("bizesNm");
                 String rdnmAdr = item.getChildText("rdnmAdr");
                 // 위도, 경도 추가
-                Float lon = Float.valueOf(item.getChildText("lon"));
-                Float lat = Float.valueOf(item.getChildText("lat"));
+                Double lon = Double.valueOf(item.getChildText("lon"));
+                Double lat = Double.valueOf(item.getChildText("lat"));
 
                 System.out.println("bizesId: " + bizesId);
                 System.out.println("bizesNm: " + bizesNm);
