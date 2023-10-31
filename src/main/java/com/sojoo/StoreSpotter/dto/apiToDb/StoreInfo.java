@@ -22,7 +22,7 @@ public class StoreInfo {
 
     public void setCoordinates(Double lon, Double lat) {
         GeometryFactory geometryFactory = new GeometryFactory();
-        this.coordinates = geometryFactory.createPoint(new Coordinate(lon, lat));
+        this.coordinates = geometryFactory.createPoint(new Coordinate(lon, lat));   // lon: x, lat: y
     }
 
 }

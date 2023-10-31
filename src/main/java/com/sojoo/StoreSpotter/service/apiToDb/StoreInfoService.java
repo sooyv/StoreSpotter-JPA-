@@ -30,7 +30,7 @@ public class StoreInfoService {
         this.regionMapper = regionMapper;
     }
 
-    // 업종 삭제 코드 - api 다시 받아오기 전 삭제
+    // 업종 삭제 코드 - api 다시 받아오기 전 테이블 데이터 삭제
     public void deleteApiData() throws Exception {
         List<Industry> industryList = industryMapper.selectIndustryList();
         List<Region> regionList = regionMapper.selectRegionList();
@@ -46,7 +46,7 @@ public class StoreInfoService {
         }
     }
 
-    // 업종 저장 코드 - 업종별로 전지역 데이터 저장 가능
+    // 업종 저장 코드 - 업종별로 전지역 데이터 저장
     public List<Industry> industrySave() throws Exception {
         System.out.println("service단 industrySave 진입");
 
@@ -67,17 +67,16 @@ public class StoreInfoService {
     }
 
 
+    // 공공데이터 api 연결 및 Document 전달
     public void connectToApi(Industry industry) throws Exception {
         System.out.println("industryCity 메서드 진입");
 
         try {
-            // 업종 하나씩 받기 - 매개변수로 받은 industry
-            // System.out.println("업종명 확인: " + industry);
             String indust_id = industry.getIndust_id();
 
             // 지역 가져오기
             List<Region> regions = regionMapper.selectRegionList();
-            System.out.println("지역명 확인: " + regions);                        // region 가져오기 성공
+            System.out.println("지역명 확인: " + regions);                        // region 가져오기
             for (int i = 0; i < regions.size(); i++) {
                 Region region = regions.get(i);
                 Integer region_id = region.getRegion_id();

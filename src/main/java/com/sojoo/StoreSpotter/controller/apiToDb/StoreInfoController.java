@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 //@RestController
 //@RequestMapping("/api")
 //public class StoreInfoController {
@@ -34,14 +36,15 @@ public class StoreInfoController {
         this.storeInfoService = storeInfoService;
     }
 
-//    @GetMapping("/saveStoreInfo")
-//    public ResponseEntity<String> fetchData() throws Exception {
-//        System.out.println("saveStoreInfo 동작");
-////        storeInfoService.fetchDataFromPublicAPI();
-//
-//        return ResponseEntity.ok("Data fetched successfully!");
-//    }
 
+    @GetMapping("/apiDataSave")
+    public List<Industry> Industrys() throws Exception {
+        System.out.println("StoreInfoController industry 실행");
+        return storeInfoService.industrySave();
+    }
+
+
+//    // deleteApiData() test
 //    @GetMapping("/deleteTableData")
 //    public void delete() throws Exception {
 //        storeInfoService.deleteApiData();
