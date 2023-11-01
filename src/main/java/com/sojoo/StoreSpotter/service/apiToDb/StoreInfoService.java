@@ -30,6 +30,7 @@ public class StoreInfoService {
         this.regionMapper = regionMapper;
     }
 
+
     // 업종 삭제 코드 - api 다시 받아오기 전 테이블 데이터 삭제
     public void deleteApiData() throws Exception {
         List<Industry> industryList = industryMapper.selectIndustryList();
