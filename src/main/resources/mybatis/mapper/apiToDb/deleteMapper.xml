@@ -6,144 +6,154 @@
 <mapper namespace="com.sojoo.StoreSpotter.dao.apiToDb.StoreInfoMapper">
     <delete id="deleteIndustRegionTable" parameterType="map">
         <choose>
-            <!-- 편의점 -->
-            <!-- 서울 -->
-            <when test="indust_id == 'G20405' and region_id == '11'">
-                DELETE FROM convenience_seoul
+            <!-- 편의점 delete -->
+            <when test="indust_id == 'G20405'">
+                DELETE FROM convenience_store
             </when>
-            <!-- 부산 -->
-            <when test="indust_id == 'G20405' and region_id == '26'">
-                DELETE FROM convenience_busan
-            </when>
-            <!-- 대구 -->
-            <when test="indust_id == 'G20405' and region_id == '27'">
-                DELETE FROM convenience_daegu
-            </when>
-            <!-- 인천 -->
-            <when test="indust_id == 'G20405' and region_id == '28'">
-                DELETE FROM convenience_incheon
-            </when>
-            <!-- 광주 -->
-            <when test="indust_id == 'G20405' and region_id == '29'">
-                DELETE FROM convenience_gwangju
-            </when>
-            <!-- 대전 -->
-            <when test="indust_id == 'G20405' and region_id == '30'">
-                DELETE FROM convenience_daejeon
-            </when>
-            <!-- 울산 -->
-            <when test="indust_id == 'G20405' and region_id == '31'">
-                DELETE FROM convenience_ulsan
-            </when>
-            <!-- 세종 -->
-            <when test="indust_id == 'G20405' and region_id == '36'">
-                DELETE FROM convenience_sejong
-            </when>
-            <!-- 경기 -->
-            <when test="indust_id == 'G20405' and region_id == '41'">
-                DELETE FROM convenience_gyeonggi
-            </when>
-            <!-- 충청북도 -->
-            <when test="indust_id == 'G20405' and region_id == '43'">
-                DELETE FROM convenience_chungcheongbukdo
-            </when>
-            <!-- 충청남도 -->
-            <when test="indust_id == 'G20405' and region_id == '44'">
-                DELETE FROM convenience_chungcheongnamdo
-            </when>
-            <!-- 전라북도 -->
-            <when test="indust_id == 'G20405' and region_id == '45'">
-                DELETE FROM convenience_jeollabukdo
-            </when>
-            <!-- 전라남도 -->
-            <when test="indust_id == 'G20405' and region_id == '46'">
-                DELETE FROM convenience_jeollanamdo
-            </when>
-            <!-- 경상북도 -->
-            <when test="indust_id == 'G20405' and region_id == '47'">
-                DELETE FROM convenience_gyeongsangbukdo
-            </when>
-            <!-- 경상남도 -->
-            <when test="indust_id == 'G20405' and region_id == '48'">
-                DELETE FROM convenience_gyeongsangnamdo
-            </when>
-            <!-- 제주 -->
-            <when test="indust_id == 'G20405' and region_id == '50'">
-                DELETE FROM convenience_jeju
-            </when>
-            <!-- 강원 -->
-            <when test="indust_id == 'G20405' and region_id == '51'">
-                DELETE FROM convenience_gangwon
-            </when>
-            <!-- 카페 -->
-            <!-- 서울 -->
-            <when test="indust_id == 'I21201' and region_id == '11'">
-                DELETE FROM cafe_seoul
-            </when>
-            <!-- 부산 -->
-            <when test="indust_id == 'I21201' and region_id == '26'">
-                DELETE FROM cafe_busan
-            </when>
-            <!-- 대구 -->
-            <when test="indust_id == 'I21201' and region_id == '27'">
-                DELETE FROM cafe_daegu
-            </when>
-            <!-- 인천 -->
-            <when test="indust_id == 'I21201' and region_id == '28'">
-                DELETE FROM cafe_incheon
-            </when>
-            <!-- 광주 -->
-            <when test="indust_id == 'I21201' and region_id == '29'">
-                DELETE FROM cafe_gwangju
-            </when>
-            <!-- 대전 -->
-            <when test="indust_id == 'I21201' and region_id == '30'">
-                DELETE FROM cafe_daejeon
-            </when>
-            <!-- 울산 -->
-            <when test="indust_id == 'I21201' and region_id == '31'">
-                DELETE FROM cafe_ulsan
-            </when>
-            <!-- 세종 -->
-            <when test="indust_id == 'I21201' and region_id == '36'">
-                DELETE FROM cafe_sejong
-            </when>
-            <!-- 경기 -->
-            <when test="indust_id == 'I21201' and region_id == '41'">
-                DELETE FROM cafe_gyeonggi
-            </when>
-            <!-- 충청북도 -->
-            <when test="indust_id == 'I21201' and region_id == '43'">
-                DELETE FROM cafe_chungcheongbukdo
-            </when>
-            <!-- 충청남도 -->
-            <when test="indust_id == 'I21201' and region_id == '44'">
-                DELETE FROM cafe_chungcheongnamdo
-            </when>
-            <!-- 전라북도 -->
-            <when test="indust_id == 'I21201' and region_id == '45'">
-                DELETE FROM cafe_jeollabukdo
-            </when>
-            <!-- 전라남도 -->
-            <when test="indust_id == 'I21201' and region_id == '46'">
-                DELETE FROM cafe_jeollanamdo
-            </when>
-            <!-- 경상북도 -->
-            <when test="indust_id == 'I21201' and region_id == '47'">
-                DELETE FROM cafe_gyeongsangbukdo
-            </when>
-            <!-- 경상남도 -->
-            <when test="indust_id == 'I21201' and region_id == '48'">
-                DELETE FROM cafe_gyeongsangnamdo
-            </when>
-            <!-- 제주 -->
-            <when test="indust_id == 'I21201' and region_id == '50'">
-                DELETE FROM cafe_jeju
-            </when>
-            <!-- 강원 -->
-            <when test="indust_id == 'I21201' and region_id == '51'">
-                DELETE FROM cafe_gangwon
+            <!-- 카페 delete -->
+            <when test="indust_id == 'I21201'">
+                DELETE FROM cafe
             </when>
         </choose>
+<!--        <choose>-->
+<!--            &lt;!&ndash; 편의점 &ndash;&gt;-->
+<!--            &lt;!&ndash; 서울 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '11'">-->
+<!--                DELETE FROM convenience_seoul-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 부산 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '26'">-->
+<!--                DELETE FROM convenience_busan-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 대구 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '27'">-->
+<!--                DELETE FROM convenience_daegu-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 인천 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '28'">-->
+<!--                DELETE FROM convenience_incheon-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 광주 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '29'">-->
+<!--                DELETE FROM convenience_gwangju-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 대전 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '30'">-->
+<!--                DELETE FROM convenience_daejeon-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 울산 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '31'">-->
+<!--                DELETE FROM convenience_ulsan-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 세종 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '36'">-->
+<!--                DELETE FROM convenience_sejong-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 경기 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '41'">-->
+<!--                DELETE FROM convenience_gyeonggi-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 충청북도 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '43'">-->
+<!--                DELETE FROM convenience_chungcheongbukdo-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 충청남도 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '44'">-->
+<!--                DELETE FROM convenience_chungcheongnamdo-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 전라북도 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '45'">-->
+<!--                DELETE FROM convenience_jeollabukdo-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 전라남도 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '46'">-->
+<!--                DELETE FROM convenience_jeollanamdo-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 경상북도 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '47'">-->
+<!--                DELETE FROM convenience_gyeongsangbukdo-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 경상남도 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '48'">-->
+<!--                DELETE FROM convenience_gyeongsangnamdo-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 제주 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '50'">-->
+<!--                DELETE FROM convenience_jeju-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 강원 &ndash;&gt;-->
+<!--            <when test="indust_id == 'G20405' and region_id == '51'">-->
+<!--                DELETE FROM convenience_gangwon-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 카페 &ndash;&gt;-->
+<!--            &lt;!&ndash; 서울 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '11'">-->
+<!--                DELETE FROM cafe_seoul-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 부산 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '26'">-->
+<!--                DELETE FROM cafe_busan-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 대구 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '27'">-->
+<!--                DELETE FROM cafe_daegu-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 인천 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '28'">-->
+<!--                DELETE FROM cafe_incheon-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 광주 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '29'">-->
+<!--                DELETE FROM cafe_gwangju-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 대전 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '30'">-->
+<!--                DELETE FROM cafe_daejeon-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 울산 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '31'">-->
+<!--                DELETE FROM cafe_ulsan-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 세종 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '36'">-->
+<!--                DELETE FROM cafe_sejong-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 경기 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '41'">-->
+<!--                DELETE FROM cafe_gyeonggi-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 충청북도 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '43'">-->
+<!--                DELETE FROM cafe_chungcheongbukdo-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 충청남도 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '44'">-->
+<!--                DELETE FROM cafe_chungcheongnamdo-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 전라북도 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '45'">-->
+<!--                DELETE FROM cafe_jeollabukdo-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 전라남도 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '46'">-->
+<!--                DELETE FROM cafe_jeollanamdo-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 경상북도 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '47'">-->
+<!--                DELETE FROM cafe_gyeongsangbukdo-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 경상남도 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '48'">-->
+<!--                DELETE FROM cafe_gyeongsangnamdo-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 제주 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '50'">-->
+<!--                DELETE FROM cafe_jeju-->
+<!--            </when>-->
+<!--            &lt;!&ndash; 강원 &ndash;&gt;-->
+<!--            <when test="indust_id == 'I21201' and region_id == '51'">-->
+<!--                DELETE FROM cafe_gangwon-->
+<!--            </when>-->
+<!--        </choose>-->
     </delete>
 </mapper>

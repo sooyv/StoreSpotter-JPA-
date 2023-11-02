@@ -9,6 +9,7 @@ import org.locationtech.jts.geom.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StoreInfo {
+    private Integer regionId_fk;
     private String bizesId;
     private String bizesNm;
     private String rdnmAdr;

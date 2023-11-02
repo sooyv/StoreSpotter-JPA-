@@ -50,6 +50,7 @@ public class StoreInfoService {
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
     public List<Industry> industrySave() throws Exception {
         System.out.println("service단 industrySave 진입");
+        long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
 
         try {
             // 데이터 삭제 로직 동작
@@ -59,11 +60,12 @@ public class StoreInfoService {
             for (int i = 0; i < industry.size(); i++) {
                 connectToApi(industry.get(i));
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
+        System.out.println("시간차이(m) : "+secDiffTime);
         return null;
     }
 
@@ -173,6 +175,7 @@ public class StoreInfoService {
                 storeInfo.setBizesNm(bizesNm);
                 storeInfo.setRdnmAdr(rdnmAdr);
                 storeInfo.setCoordinates(lon, lat);
+                storeInfo.setRegionId_fk(region_id);
 
                 // DB에 저장하기
                 storeInfoMapper.insertApiData(storeInfo, indust_id, region_id);
