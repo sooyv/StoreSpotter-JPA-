@@ -157,25 +157,25 @@ public class StoreInfoService {
             System.out.println("publicApiDataSave에서 region_id 확인: " + region_id);
 
             for (Element item : itemList) {
-                String bizesId = item.getChildText("bizesId");
-                String bizesNm = item.getChildText("bizesNm");
-                String rdnmAdr = item.getChildText("rdnmAdr");
+                String bizes_id = item.getChildText("bizesId");
+                String bizes_nm = item.getChildText("bizesNm");
+                String rdnm_adr = item.getChildText("rdnmAdr");
                 // 위도, 경도 추가
                 Double lon = Double.valueOf(item.getChildText("lon"));
                 Double lat = Double.valueOf(item.getChildText("lat"));
 
-                System.out.println("bizesId: " + bizesId);
-                System.out.println("bizesNm: " + bizesNm);
-                System.out.println("rdnmAdr: " + rdnmAdr);
+                System.out.println("bizesId: " + bizes_id);
+                System.out.println("bizesNm: " + bizes_nm);
+                System.out.println("rdnmAdr: " + rdnm_adr);
                 System.out.println("lon: " + lon);
                 System.out.println("lat: " + lat);
 
                 StoreInfo storeInfo = new StoreInfo();
-                storeInfo.setBizesId(bizesId);
-                storeInfo.setBizesNm(bizesNm);
-                storeInfo.setRdnmAdr(rdnmAdr);
+                storeInfo.setBizes_id(bizes_id);
+                storeInfo.setBizes_nm(bizes_nm);
+                storeInfo.setRdnm_adr(rdnm_adr);
                 storeInfo.setCoordinates(lon, lat);
-                storeInfo.setRegionId_fk(region_id);
+                storeInfo.setRegion_fk(region_id);
 
                 // DB에 저장하기
                 storeInfoMapper.insertApiData(storeInfo, indust_id, region_id);

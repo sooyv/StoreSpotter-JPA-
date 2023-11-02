@@ -8,11 +8,12 @@ import org.locationtech.jts.geom.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter @Setter
 public class StoreInfo {
-    private Integer regionId_fk;
-    private String bizesId;
-    private String bizesNm;
-    private String rdnmAdr;
+    private Integer region_fk;
+    private String bizes_id;
+    private String bizes_nm;
+    private String rdnm_adr;
     private Geometry coordinates;
 //    private Point coordinates;
 

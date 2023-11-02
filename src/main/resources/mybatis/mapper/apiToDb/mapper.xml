@@ -7,14 +7,14 @@
     <insert id="insertApiData" keyProperty="bizesId" parameterType="map">
     <choose>
         <when test="indust_id == 'G20405'">
-            INSERT INTO convenience_store (bizesId, bizesNm, rdnmAdr, coordinates, regionId_fk)
-            VALUES (#{storeInfo.bizesId}, #{storeInfo.bizesNm}, #{storeInfo.rdnmAdr},
-            ST_GeomFromText(CONCAT('POINT(', #{storeInfo.coordinates.x}, ' ', #{storeInfo.coordinates.y}, ')')), #{storeInfo.regionId_fk})
+            INSERT INTO convenience_store (bizes_id, bizes_nm, rdnm_adr, coordinates, region_fk)
+            VALUES (#{storeInfo.bizes_id}, #{storeInfo.bizes_nm}, #{storeInfo.rdnm_adr},
+            ST_GeomFromText(CONCAT('POINT(', #{storeInfo.coordinates.x}, ' ', #{storeInfo.coordinates.y}, ')')), #{storeInfo.region_fk})
         </when>
         <when test="indust_id == 'I21201'">
-            INSERT INTO cafe (bizesId, bizesNm, rdnmAdr, coordinates)
-            VALUES (#{storeInfo.bizesId}, #{storeInfo.bizesNm}, #{storeInfo.rdnmAdr},
-            ST_GeomFromText(CONCAT('POINT(', #{storeInfo.coordinates.x}, ' ', #{storeInfo.coordinates.y}, ')')),  #{storeInfo.regionId_fk})
+            INSERT INTO cafe (bizes_id, bizes_nm, rdnm_adr, coordinates, region_fk)
+            VALUES (#{storeInfo.bizes_id}, #{storeInfo.bizes_nm}, #{storeInfo.rdnm_adr},
+            ST_GeomFromText(CONCAT('POINT(', #{storeInfo.coordinates.x}, ' ', #{storeInfo.coordinates.y}, ')')), #{storeInfo.region_fk})
         </when>
     </choose>
 <!--        <choose>-->
