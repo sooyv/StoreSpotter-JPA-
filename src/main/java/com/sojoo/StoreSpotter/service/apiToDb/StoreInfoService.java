@@ -50,6 +50,7 @@ public class StoreInfoService {
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
     public List<Industry> industrySave() throws Exception {
         System.out.println("service단 industrySave 진입");
+        long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
 
         try {
             // 데이터 삭제 로직 동작
@@ -59,11 +60,12 @@ public class StoreInfoService {
             for (int i = 0; i < industry.size(); i++) {
                 connectToApi(industry.get(i));
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
+        System.out.println("시간차이(m) : "+secDiffTime);
         return null;
     }
 
@@ -155,24 +157,25 @@ public class StoreInfoService {
             System.out.println("publicApiDataSave에서 region_id 확인: " + region_id);
 
             for (Element item : itemList) {
-                String bizesId = item.getChildText("bizesId");
-                String bizesNm = item.getChildText("bizesNm");
-                String rdnmAdr = item.getChildText("rdnmAdr");
+                String bizes_id = item.getChildText("bizesId");
+                String bizes_nm = item.getChildText("bizesNm");
+                String rdnm_adr = item.getChildText("rdnmAdr");
                 // 위도, 경도 추가
                 Double lon = Double.valueOf(item.getChildText("lon"));
                 Double lat = Double.valueOf(item.getChildText("lat"));
 
-                System.out.println("bizesId: " + bizesId);
-                System.out.println("bizesNm: " + bizesNm);
-                System.out.println("rdnmAdr: " + rdnmAdr);
+                System.out.println("bizesId: " + bizes_id);
+                System.out.println("bizesNm: " + bizes_nm);
+                System.out.println("rdnmAdr: " + rdnm_adr);
                 System.out.println("lon: " + lon);
                 System.out.println("lat: " + lat);
 
                 StoreInfo storeInfo = new StoreInfo();
-                storeInfo.setBizesId(bizesId);
-                storeInfo.setBizesNm(bizesNm);
-                storeInfo.setRdnmAdr(rdnmAdr);
+                storeInfo.setBizes_id(bizes_id);
+                storeInfo.setBizes_nm(bizes_nm);
+                storeInfo.setRdnm_adr(rdnm_adr);
                 storeInfo.setCoordinates(lon, lat);
+                storeInfo.setRegion_fk(region_id);
 
                 // DB에 저장하기
                 storeInfoMapper.insertApiData(storeInfo, indust_id, region_id);
