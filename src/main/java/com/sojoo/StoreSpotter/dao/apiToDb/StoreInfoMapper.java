@@ -7,8 +7,12 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface StoreInfoMapper {
-    void insertApiData(StoreInfo storeInfo, @Param("indust_id") String indust_id, @Param("region_id") Integer region_id);
+//    void insertApiData(StoreInfo storeInfo, @Param("indust_id") String indust_id, @Param("region_id") Integer region_id);
+    void insertApiData(StoreInfo storeInfo, @Param("indust_id") String indust_id);
 
-    void deleteIndustRegionTable(@Param("indust_id") String indust_id, @Param("region_id") Integer region_id);
+
+//    void deleteIndustRegionTable(@Param("indust_id") String indust_id, @Param("region_id") Integer region_id);
+    void deleteIndustTable(@Param("indust_id") String indust_id);
+
 }
 

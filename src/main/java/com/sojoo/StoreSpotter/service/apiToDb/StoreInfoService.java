@@ -6,14 +6,19 @@ import com.sojoo.StoreSpotter.dao.apiToDb.StoreInfoMapper;
 import com.sojoo.StoreSpotter.dto.apiToDb.Industry;
 import com.sojoo.StoreSpotter.dto.apiToDb.Region;
 import com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo;
+import org.apache.ibatis.jdbc.Null;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -34,23 +39,27 @@ public class StoreInfoService {
     // 업종 삭제 코드 - api 다시 받아오기 전 테이블 데이터 삭제
     public void deleteApiData() throws Exception {
         List<Industry> industryList = industryMapper.selectIndustryList();
-        List<Region> regionList = regionMapper.selectRegionList();
 
         for (int i = 0; i < industryList.size(); i++) {
-            for (int j = 0; j < regionList.size(); j++) {
-                String indust_id = industryList.get(i).getIndust_id();
-                int region_id = regionList.get(j).getRegion_id();
+            String indust_id = industryList.get(i).getIndust_id();
 
-//                System.out.println(indust_id +"    " + region_id);
-                storeInfoMapper.deleteIndustRegionTable(indust_id, region_id);
-            }
+            storeInfoMapper.deleteIndustTable(indust_id);
         }
+
+//        for (int i = 0; i < industryList.size(); i++) {
+//            for (int j = 0; j < regionList.size(); j++) {
+//                String indust_id = industryList.get(i).getIndust_id();
+//                int region_id = regionList.get(j).getRegion_id();
+//
+//                storeInfoMapper.deleteIndustRegionTable(indust_id, region_id);
+//            }
+//        }
     }
 
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
     public List<Industry> industrySave() throws Exception {
         System.out.println("service단 industrySave 진입");
-        long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
+        long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
         try {
             // 데이터 삭제 로직 동작
@@ -60,18 +69,19 @@ public class StoreInfoService {
             for (int i = 0; i < industry.size(); i++) {
                 connectToApi(industry.get(i));
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
-        long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
-        System.out.println("시간차이(m) : "+secDiffTime);
+        long secDiffTime = (afterTime - beforeTime) / 1000; //두 시간에 차 계산
+        System.out.println("시간차이(m) : " + secDiffTime);
         return null;
     }
 
 
     // 공공데이터 api 연결 및 Document 전달
-    public void connectToApi(Industry industry) throws Exception {
+    public void connectToApi(Industry industry) throws NullPointerException, Exception {
         System.out.println("industryCity 메서드 진입");
 
         try {
@@ -83,8 +93,6 @@ public class StoreInfoService {
             for (int i = 0; i < regions.size(); i++) {
                 Region region = regions.get(i);
                 Integer region_id = region.getRegion_id();
-//                System.out.println("지역코드 확인: " + region_id);
-//                System.out.println("업종코드 확인" + indust_id);
 
                 // 아래에서 totalPageCount 재할당
                 int totalPageCount = 1;
@@ -100,9 +108,8 @@ public class StoreInfoService {
                     sb.append("&numOfRows=" + 1000);
                     sb.append("&divId=" + "ctprvnCd");
                     sb.append("&key=" + region_id);             // 시도 코드(region_id)
-                    // ***현재 "&indsSclsCd=" + indust_id 로 하면 카페까지 store_info 테이블에 모두 저장.***
                     // ***업종 코드에 따라 테이블 구분 할 수 있도록 구현***
-                    sb.append("&indsSclsCd=" + indust_id);      // 업종 코드(industry_id) G20405
+                    sb.append("&indsSclsCd=" + indust_id);      // 업종 코드(industry_id) G20405, I21201
 
                     URL url = new URL(sb.toString());
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -114,17 +121,17 @@ public class StoreInfoService {
 
                     SAXBuilder builder = new SAXBuilder();
                     Document document = builder.build(conn.getInputStream());
-                    document.getRootElement();
 
                     // 페이지 개수 가져오기
                     Element root = document.getRootElement();
+                    System.out.println("-----root Null 여부 : " + root);
                     Element body = root.getChild("body");
+
 
                     Element totalCount = body.getChild("totalCount");
 
                     int totalCountValue = Integer.parseInt(totalCount.getText());
                     System.out.println("Total Count: " + totalCountValue);
-
 
                     // 재할당한 totalPageCount
                     // 페이지 개수 구하기
@@ -133,13 +140,23 @@ public class StoreInfoService {
 
 
                     // for문으로 각페이지 데이터 저장하기
-                     publicApiDataSave(document, indust_id, region_id);
+                    publicApiDataSave(document, indust_id, region_id);
+
+
+//                    Element header = root.getChild("header");
+//                    String resultMsg = header.getChildText("resultMsg");
+//                    System.out.println("****** resultMsg : " + resultMsg);
+//                    String resultCode = header.getChildText("resultCode");
+//                    System.out.println("****** resultCode : " + resultCode);
                 }
             }
 
+        } catch (NullPointerException nullPointerException) {
+            System.out.println("NullPointerException 발생: " + nullPointerException.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         System.out.println("industryCity 메서드 try-catch문 종료");
     }
 
@@ -152,17 +169,12 @@ public class StoreInfoService {
             Element items = body.getChild("items");
             List<Element> itemList = items.getChildren("item");
 
-            // 확인한 indust_id와 region_id로 xml 파일에서 구분하여 데이터베이스 저장
-            System.out.println("publicApiDataSave에서 indust_id 확인: " + indust_id);
-            System.out.println("publicApiDataSave에서 region_id 확인: " + region_id);
-
             for (Element item : itemList) {
                 String bizes_id = item.getChildText("bizesId");
                 String bizes_nm = item.getChildText("bizesNm");
                 String rdnm_adr = item.getChildText("rdnmAdr");
-                // 위도, 경도 추가
-                Double lon = Double.valueOf(item.getChildText("lon"));
-                Double lat = Double.valueOf(item.getChildText("lat"));
+                Double lon = Double.valueOf(item.getChildText("lon"));  // 경도(lon)
+                Double lat = Double.valueOf(item.getChildText("lat"));  // 위도(lat)
 
                 System.out.println("bizesId: " + bizes_id);
                 System.out.println("bizesNm: " + bizes_nm);
@@ -178,7 +190,7 @@ public class StoreInfoService {
                 storeInfo.setRegion_fk(region_id);
 
                 // DB에 저장하기
-                storeInfoMapper.insertApiData(storeInfo, indust_id, region_id);
+                storeInfoMapper.insertApiData(storeInfo, indust_id);
             }
 
         } catch (Exception e) {
