@@ -61,6 +61,7 @@ public class StoreInfoService {
         System.out.println("service단 industrySave 진입");
         long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
+
         try {
             // 데이터 삭제 로직 동작
             deleteApiData();
@@ -81,15 +82,14 @@ public class StoreInfoService {
 
 
     // 공공데이터 api 연결 및 Document 전달
-    public void connectToApi(Industry industry) throws NullPointerException, Exception {
-        System.out.println("industryCity 메서드 진입");
+    public void connectToApi(Industry industry) throws Exception {
 
         try {
             String indust_id = industry.getIndust_id();
 
             // 지역 가져오기
             List<Region> regions = regionMapper.selectRegionList();
-            System.out.println("지역명 확인: " + regions);                        // region 가져오기
+//            System.out.println("지역명 확인: " + regions);                        // region 가져오기
             for (int i = 0; i < regions.size(); i++) {
                 Region region = regions.get(i);
                 Integer region_id = region.getRegion_id();
@@ -117,7 +117,7 @@ public class StoreInfoService {
                     conn.setRequestProperty("Content-Type", "application/xml");
                     conn.setRequestMethod("GET");
                     conn.connect();
-                    System.out.println(conn.getContentLength());
+//                    System.out.println(conn.getContentLength());
 
                     SAXBuilder builder = new SAXBuilder();
                     Document document = builder.build(conn.getInputStream());
@@ -127,16 +127,24 @@ public class StoreInfoService {
                     System.out.println("-----root Null 여부 : " + root);
                     Element body = root.getChild("body");
 
+                    Element totalCount = null;
+                    if (body != null){
+                        totalCount = body.getChild("totalCount");
+                    } else {
+                        System.out.println("body null이 발생하여 해당 바퀴 종료하고 다음 바퀴로 이동");
+                        continue;
+                    }
 
-                    Element totalCount = body.getChild("totalCount");
+                    System.out.println("industry: " + industry);
+                    System.out.println("region : " + region);
+                    System.out.println("pageNo : " + j);
 
+                    assert totalCount != null;
                     int totalCountValue = Integer.parseInt(totalCount.getText());
-                    System.out.println("Total Count: " + totalCountValue);
 
                     // 재할당한 totalPageCount
                     // 페이지 개수 구하기
                     totalPageCount = (totalCountValue / 1000) + 1;
-                    System.out.println("전체 페이지 개수 카운트" + totalPageCount);
 
 
                     // for문으로 각페이지 데이터 저장하기
@@ -151,15 +159,12 @@ public class StoreInfoService {
                 }
             }
 
-        } catch (NullPointerException nullPointerException) {
-            System.out.println("NullPointerException 발생: " + nullPointerException.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         System.out.println("industryCity 메서드 try-catch문 종료");
-    }
 
+    }
 
     // api 데이터 저장 로직
     public void publicApiDataSave(Document document, String indust_id, Integer region_id) throws Exception {
@@ -176,11 +181,12 @@ public class StoreInfoService {
                 Double lon = Double.valueOf(item.getChildText("lon"));  // 경도(lon)
                 Double lat = Double.valueOf(item.getChildText("lat"));  // 위도(lat)
 
-                System.out.println("bizesId: " + bizes_id);
-                System.out.println("bizesNm: " + bizes_nm);
-                System.out.println("rdnmAdr: " + rdnm_adr);
-                System.out.println("lon: " + lon);
-                System.out.println("lat: " + lat);
+
+//                System.out.println("bizesId: " + bizes_id);
+//                System.out.println("bizesNm: " + bizes_nm);
+//                System.out.println("rdnmAdr: " + rdnm_adr);
+//                System.out.println("lon: " + lon);
+//                System.out.println("lat: " + lat);
 
                 StoreInfo storeInfo = new StoreInfo();
                 storeInfo.setBizes_id(bizes_id);
