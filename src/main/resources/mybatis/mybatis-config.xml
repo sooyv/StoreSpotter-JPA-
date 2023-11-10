@@ -4,7 +4,23 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0.1//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <!-- MyBatis 설정 -->
+    <settings>
+        <!-- 카멜 케이스 매핑 활성화 -->
+        <setting name="mapUnderscoreToCamelCase" value="true" />
+    </settings>
+
+    <!-- 타입 핸들러 설정 -->
+    <typeHandlers>
+        <!-- Geometry 타입을 처리할 수 있는 핸들러를 등록 -->
+        <typeHandler handler="org.locationtech.jts.geom.GeometryTypeHandler" jdbcType="BLOB"/>
+        <!-- 다른 타입 핸들러들도 필요한 경우 추가로 명시 -->
+    </typeHandlers>
+
+    <!-- 매퍼 경로 설정 -->
     <mappers>
-<!--        <mapper resource="mybatis/mybatis-config.xml"/>-->
+        <mapper resource="classpath:mybatis/mapper/storePair/DataPairMapper.xml"/>
+        <!-- 다른 매퍼 파일들도 필요한 경우 추가로 명시 -->
     </mappers>
 </configuration>
+

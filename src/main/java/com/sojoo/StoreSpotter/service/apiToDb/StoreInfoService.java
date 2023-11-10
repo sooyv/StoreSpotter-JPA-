@@ -61,7 +61,6 @@ public class StoreInfoService {
         System.out.println("service단 industrySave 진입");
         long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
-
         try {
             // 데이터 삭제 로직 동작
             deleteApiData();
@@ -74,6 +73,7 @@ public class StoreInfoService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
         long secDiffTime = (afterTime - beforeTime) / 1000; //두 시간에 차 계산
         System.out.println("시간차이(m) : " + secDiffTime);
@@ -108,7 +108,6 @@ public class StoreInfoService {
                     sb.append("&numOfRows=" + 1000);
                     sb.append("&divId=" + "ctprvnCd");
                     sb.append("&key=" + region_id);             // 시도 코드(region_id)
-                    // ***업종 코드에 따라 테이블 구분 할 수 있도록 구현***
                     sb.append("&indsSclsCd=" + indust_id);      // 업종 코드(industry_id) G20405, I21201
 
                     URL url = new URL(sb.toString());
@@ -117,7 +116,7 @@ public class StoreInfoService {
                     conn.setRequestProperty("Content-Type", "application/xml");
                     conn.setRequestMethod("GET");
                     conn.connect();
-//                    System.out.println(conn.getContentLength());
+                    System.out.println(conn.getContentLength());
 
                     SAXBuilder builder = new SAXBuilder();
                     Document document = builder.build(conn.getInputStream());
@@ -146,16 +145,9 @@ public class StoreInfoService {
                     // 페이지 개수 구하기
                     totalPageCount = (totalCountValue / 1000) + 1;
 
-
                     // for문으로 각페이지 데이터 저장하기
                     publicApiDataSave(document, indust_id, region_id);
 
-
-//                    Element header = root.getChild("header");
-//                    String resultMsg = header.getChildText("resultMsg");
-//                    System.out.println("****** resultMsg : " + resultMsg);
-//                    String resultCode = header.getChildText("resultCode");
-//                    System.out.println("****** resultCode : " + resultCode);
                 }
             }
 
@@ -181,12 +173,11 @@ public class StoreInfoService {
                 Double lon = Double.valueOf(item.getChildText("lon"));  // 경도(lon)
                 Double lat = Double.valueOf(item.getChildText("lat"));  // 위도(lat)
 
-
-//                System.out.println("bizesId: " + bizes_id);
-//                System.out.println("bizesNm: " + bizes_nm);
-//                System.out.println("rdnmAdr: " + rdnm_adr);
-//                System.out.println("lon: " + lon);
-//                System.out.println("lat: " + lat);
+                System.out.println("bizesId: " + bizes_id);
+                System.out.println("bizesNm: " + bizes_nm);
+                System.out.println("rdnmAdr: " + rdnm_adr);
+                System.out.println("lon: " + lon);
+                System.out.println("lat: " + lat);
 
                 StoreInfo storeInfo = new StoreInfo();
                 storeInfo.setBizes_id(bizes_id);

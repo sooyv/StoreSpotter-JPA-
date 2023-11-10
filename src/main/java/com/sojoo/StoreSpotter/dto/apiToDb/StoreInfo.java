@@ -26,4 +26,10 @@ public class StoreInfo {
         this.coordinates = geometryFactory.createPoint(new Coordinate(lon, lat));   // lon: x, lat: y
     }
 
+
+//    public Point getCoordinates() {
+//        GeometryFactory geometry = new GeometryFactory(); // coordinates는 Geometry 객체여야 함
+//        return geometry.createPoint();
+//    }
+
 }

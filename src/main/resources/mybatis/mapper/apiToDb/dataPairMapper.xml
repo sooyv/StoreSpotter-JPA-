@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sojoo.StoreSpotter.dao.storePair.DataPairMapper">
+    <select id="selectConvenienceData" parameterType="com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo">
+        SELECT bizes_id, bizes_nm, rdnm_adr, ST_AsText(coordinates) AS coordinates, region_fk
+        FROM convenience_store
+    </select>
+
+    <!-- 카페 데이터 -->
+    <select id="selectCafeData" parameterType="com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo">
+        SELECT bizes_id, bizes_nm, rdnm_adr, ST_AsBinary(coordinates) AS coordinates, region_fk
+        FROM cafe
+    </select>
+
+    <resultMap id="storeInfoResultMap" type="com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo">
+        <id property="bizes_id" column="bizes_id"/>
+        <result property="bizes_nm" column="bizes_nm"/>
+        <result property="rdnm_adr" column="rdnm_adr"/>
+        <result property="coordinates" column="coordinates" javaType="java.lang.String"/>
+        <result property="region_fk" column="region_fk"/>
+    </resultMap>
+</mapper>

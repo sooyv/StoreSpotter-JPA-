@@ -1,9 +1,10 @@
 package com.sojoo.StoreSpotter.controller.apiToDb;
 
 import com.sojoo.StoreSpotter.dto.apiToDb.Industry;
+import com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo;
 import com.sojoo.StoreSpotter.service.apiToDb.StoreInfoService;
+import com.sojoo.StoreSpotter.service.storePair.DataPairService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,24 +31,24 @@ import java.util.List;
 @RestController
 public class StoreInfoController {
     private final StoreInfoService storeInfoService;
+    private final DataPairService dataPairService;
 
     @Autowired
-    public StoreInfoController(StoreInfoService storeInfoService) {
+    public StoreInfoController(StoreInfoService storeInfoService, DataPairService dataPairService) {
         this.storeInfoService = storeInfoService;
+        this.dataPairService = dataPairService;
     }
 
 
     @GetMapping("/apiDataSave")
     public List<Industry> Industrys() throws Exception {
-        System.out.println("StoreInfoController industry 실행");
         return storeInfoService.industrySave();
     }
 
+    @GetMapping("/DataPair")
+    public void DataPairs() throws Exception {
+        dataPairService.selectDataPair();
+    }
 
-//    // deleteApiData() test
-//    @GetMapping("/deleteTableData")
-//    public void delete() throws Exception {
-//        storeInfoService.deleteApiData();
-//    }
 
 }
