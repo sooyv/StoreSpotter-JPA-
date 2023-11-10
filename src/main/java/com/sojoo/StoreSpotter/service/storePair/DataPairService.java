@@ -27,7 +27,6 @@ public class DataPairService {
                 System.out.println("편의점 데이터 ID: " + storeInfo.getBizes_id());
                 System.out.println("편의점 데이터 이름: " + storeInfo.getBizes_nm());
                 System.out.println("편의점 데이터 주소: " + storeInfo.getRdnm_adr());
-//                System.out.println("편의점 데이터 coor: " + storeInfo.getCoordinate());
                 System.out.println("편의점 데이터 coors: " + storeInfo.getCoordinates());
                 System.out.println("편의점 데이터 region_fk: " + storeInfo.getRegion_fk());
                 System.out.println("------");
