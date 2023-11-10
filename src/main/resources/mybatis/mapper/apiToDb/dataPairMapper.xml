@@ -5,7 +5,7 @@
 
 <mapper namespace="com.sojoo.StoreSpotter.dao.storePair.DataPairMapper">
     <select id="selectConvenienceData" parameterType="com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo">
-        SELECT bizes_id, bizes_nm, rdnm_adr, ST_AsText(coordinates) AS coordinates, region_fk
+        SELECT bizes_id, bizes_nm, rdnm_adr, ST_GeomFromText(ST_AsText(coordinates)) AS coordinates, region_fk
         FROM convenience_store
     </select>
 

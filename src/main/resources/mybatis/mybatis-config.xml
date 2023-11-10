@@ -1,26 +1,26 @@
-<!-- resources/mybatis/mybatis-config.xml -->
+<!--&lt;!&ndash; resources/mybatis/mybatis-config.xml &ndash;&gt;-->
 
-<!DOCTYPE configuration
-        PUBLIC "-//mybatis.org//DTD Config 3.0.1//EN"
-        "http://mybatis.org/dtd/mybatis-3-config.dtd">
-<configuration>
-    <!-- MyBatis 설정 -->
-    <settings>
-        <!-- 카멜 케이스 매핑 활성화 -->
-        <setting name="mapUnderscoreToCamelCase" value="true" />
-    </settings>
+<!--<!DOCTYPE configuration-->
+<!--        PUBLIC "-//mybatis.org//DTD Config 3.0.1//EN"-->
+<!--        "http://mybatis.org/dtd/mybatis-3-config.dtd">-->
+<!--<configuration>-->
+<!--    &lt;!&ndash; MyBatis 설정 &ndash;&gt;-->
+<!--    <settings>-->
+<!--        &lt;!&ndash; 카멜 케이스 매핑 활성화 &ndash;&gt;-->
+<!--        <setting name="mapUnderscoreToCamelCase" value="true" />-->
+<!--    </settings>-->
 
-    <!-- 타입 핸들러 설정 -->
-    <typeHandlers>
-        <!-- Geometry 타입을 처리할 수 있는 핸들러를 등록 -->
-        <typeHandler handler="org.locationtech.jts.geom.GeometryTypeHandler" jdbcType="BLOB"/>
-        <!-- 다른 타입 핸들러들도 필요한 경우 추가로 명시 -->
-    </typeHandlers>
+<!--    &lt;!&ndash; 타입 핸들러 설정 &ndash;&gt;-->
+<!--    <typeHandlers>-->
+<!--        &lt;!&ndash; Geometry 타입을 처리할 수 있는 핸들러를 등록 &ndash;&gt;-->
+<!--        <typeHandler handler="org.locationtech.jts.geom.GeometryTypeHandler" jdbcType="BLOB"/>-->
+<!--        &lt;!&ndash; 다른 타입 핸들러들도 필요한 경우 추가로 명시 &ndash;&gt;-->
+<!--    </typeHandlers>-->
 
-    <!-- 매퍼 경로 설정 -->
-    <mappers>
-        <mapper resource="classpath:mybatis/mapper/storePair/DataPairMapper.xml"/>
-        <!-- 다른 매퍼 파일들도 필요한 경우 추가로 명시 -->
-    </mappers>
-</configuration>
+<!--    &lt;!&ndash; 매퍼 경로 설정 &ndash;&gt;-->
+<!--    <mappers>-->
+<!--        <mapper resource="classpath:mybatis/mapper/storePair/DataPairMapper.xml"/>-->
+<!--        &lt;!&ndash; 다른 매퍼 파일들도 필요한 경우 추가로 명시 &ndash;&gt;-->
+<!--    </mappers>-->
+<!--</configuration>-->
 
