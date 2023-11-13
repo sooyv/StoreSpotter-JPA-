@@ -4,8 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.sojoo.StoreSpotter.dao.storePair.DataPairMapper">
+
     <select id="selectConvenienceData" parameterType="com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo">
-        SELECT ST_AsText(coordinates) AS coordinates
+        SELECT bizes_id, bizes_nm, rdnm_adr, ST_AsText(coordinates) AS coordinates, region_fk
         FROM convenience_store
     </select>
 
@@ -15,4 +16,17 @@
         FROM cafe
     </select>
 
+
+    <insert id="insertPairData" keyProperty="bizes_id">
+        INSERT INTO convenience_pair (pair_id, st_coor, com_coor, dist, region_fk)
+        VALUES (#{pairData.pair_id}, #{pairData.st_coor}, #{pairData.com_coor}, #{pairData.dist}, #{pairData.region_fk}
+    </insert>
+
+    <select id="distanceSphere">
+            SELECT ST_DISTANCE_SPHERE(ST_GeomFromText(#{point}), coordinates) AS dist
+            FROM convenience_store
+            WHERE convenience_store.region_fk = #{region}
+            order by dist
+            LIMIT 2;
+    </select>
 </mapper>
