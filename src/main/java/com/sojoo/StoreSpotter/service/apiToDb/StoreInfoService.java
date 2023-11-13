@@ -190,8 +190,8 @@ public class StoreInfoService {
                 storeInfoMapper.insertApiData(storeInfo, indust_id);
             }
 
-        } catch (DuplicateKeyException duplicateKeyException) {
-            duplicateKeyException.printStackTrace();
+        } catch (DuplicateKeyException e) {
+            System.out.println("Duplicate data found: " + e.getMessage());
         }
     }
 }
