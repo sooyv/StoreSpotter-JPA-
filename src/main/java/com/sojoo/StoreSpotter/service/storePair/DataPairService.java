@@ -24,18 +24,19 @@ public class DataPairService {
         try {
             List<StoreInfo> convenienceDataList = dataPairMapper.selectConvenienceData();
             for (StoreInfo storeInfo : convenienceDataList) {
-                System.out.println("편의점 데이터 ID: " + storeInfo.getBizes_id());
-                System.out.println("편의점 데이터 이름: " + storeInfo.getBizes_nm());
-                System.out.println("편의점 데이터 주소: " + storeInfo.getRdnm_adr());
+//                System.out.println("편의점 데이터 ID: " + storeInfo.getBizes_id());
+//                System.out.println("편의점 데이터 이름: " + storeInfo.getBizes_nm());
+//                System.out.println("편의점 데이터 주소: " + storeInfo.getRdnm_adr());
                 System.out.println("편의점 데이터 coors: " + storeInfo.getCoordinates());
-                System.out.println("편의점 데이터 region_fk: " + storeInfo.getRegion_fk());
+//                System.out.println("편의점 데이터 region_fk: " + storeInfo.getRegion_fk());
                 System.out.println("------");
             }
 
-                List<StoreInfo> cafeDataList = dataPairMapper.selectCafeData();
-                for (int i = 0; i < cafeDataList.size(); i++) {
-                    System.out.println("카페 데이터: " + cafeDataList.get(i));
-                }
+
+            List<StoreInfo> cafeDataList = dataPairMapper.selectCafeData();
+            for (int i = 0; i < cafeDataList.size(); i++) {
+                System.out.println("카페 데이터: " + cafeDataList.get(i));
+            }
 
         } catch(Exception e){
             e.printStackTrace();

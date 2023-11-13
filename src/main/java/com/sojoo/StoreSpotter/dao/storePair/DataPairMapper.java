@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface DataPairMapper {
     // 편의점 테이블 데이터 가져오기
-    List<StoreInfo> selectConvenienceData() throws Exception;
+     List<StoreInfo> selectConvenienceData() throws Exception;
 
     // 카페 테이블 데이터 가져오기
     List<StoreInfo> selectCafeData();

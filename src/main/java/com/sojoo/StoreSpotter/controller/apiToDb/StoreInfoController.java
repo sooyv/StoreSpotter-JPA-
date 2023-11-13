@@ -49,6 +49,4 @@ public class StoreInfoController {
     public void DataPairs() throws Exception {
         dataPairService.selectDataPair();
     }
-
-
 }

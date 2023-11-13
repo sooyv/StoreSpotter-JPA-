@@ -4,6 +4,8 @@ import lombok.*;
 //import org.springframework.data.geo.Point;
 import org.locationtech.jts.geom.*;
 
+import java.util.Collection;
+
 
 @Data
 @NoArgsConstructor
@@ -12,24 +14,16 @@ public class StoreInfo {
     private String bizes_id;
     private String bizes_nm;
     private String rdnm_adr;
-    private Geometry coordinates;
-//    private Point coordinates;
+    private String coordinates;
+//    private Geometry coordinates;
     private Integer region_fk;
 
-    // 위도(lat)와 경도(lon) 값을 받아서 coordinates 필드에 Point 객체로 저장
-//    public void setCoordinates(Float lon, Float lat) {
-//        this.coordinates = new Point(lon, lat); // 경도(lon), 위도(lat)
-//    }
 
     public void setCoordinates(Double lon, Double lat) {
         GeometryFactory geometryFactory = new GeometryFactory();
-        this.coordinates = geometryFactory.createPoint(new Coordinate(lon, lat));   // lon: x, lat: y
+        Point point = geometryFactory.createPoint(new Coordinate(lon, lat));
+        this.coordinates = String.valueOf(point);
     }
 
-
-//    public Point getCoordinates() {
-//        GeometryFactory geometry = new GeometryFactory(); // coordinates는 Geometry 객체여야 함
-//        return geometry.createPoint();
-//    }
 
 }

@@ -4,19 +4,33 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sojoo.StoreSpotter.dao.apiToDb.StoreInfoMapper">
 
-    <insert id="insertApiData" keyProperty="bizes_id" parameterType="Map">
-    <choose>
-        <when test="indust_id == 'G20405'">
-            INSERT INTO convenience_store (bizes_id, bizes_nm, rdnm_adr, coordinates, region_fk)
-            VALUES (#{storeInfo.bizes_id}, #{storeInfo.bizes_nm}, #{storeInfo.rdnm_adr},
-            ST_GeomFromText(CONCAT('POINT(', #{storeInfo.coordinates.x}, '', #{storeInfo.coordinates.y}, ')')), #{storeInfo.region_fk})
-        </when>
-        <when test="indust_id == 'I21201'">
-            INSERT INTO cafe (bizes_id, bizes_nm, rdnm_adr, coordinates, region_fk)
-            VALUES (#{storeInfo.bizes_id}, #{storeInfo.bizes_nm}, #{storeInfo.rdnm_adr},
-            ST_GeomFromText(CONCAT('POINT(', #{storeInfo.coordinates.x}, '', #{storeInfo.coordinates.y}, ')')), #{storeInfo.region_fk})
-        </when>
-    </choose>
+<!--    <insert id="insertApiData" keyProperty="bizes_id">-->
+<!--    <choose>-->
+<!--        <when test="indust_id == 'G20405'">-->
+<!--            INSERT INTO convenience_store (bizes_id, bizes_nm, rdnm_adr, coordinates, region_fk)-->
+<!--            VALUES (#{storeInfo.bizes_id}, #{storeInfo.bizes_nm}, #{storeInfo.rdnm_adr},-->
+<!--            ST_GeomFromText(CONCAT('POINT(', #{storeInfo.coordinates.x}, ' ', #{storeInfo.coordinates.y}, ')')), #{storeInfo.region_fk})-->
+<!--        </when>-->
+<!--        <when test="indust_id == 'I21201'">-->
+<!--            INSERT INTO cafe (bizes_id, bizes_nm, rdnm_adr, coordinates, region_fk)-->
+<!--            VALUES (#{storeInfo.bizes_id}, #{storeInfo.bizes_nm}, #{storeInfo.rdnm_adr},-->
+<!--            ST_GeomFromText(CONCAT('POINT(', #{storeInfo.coordinates.x}, ' ', #{storeInfo.coordinates.y}, ')')), #{storeInfo.region_fk})-->
+<!--        </when>-->
+<!--    </choose>-->
+<!--    </insert>-->
+    <insert id="insertApiData" keyProperty="bizes_id">
+        <choose>
+            <when test="indust_id == 'G20405'">
+                INSERT INTO convenience_store (bizes_id, bizes_nm, rdnm_adr, coordinates, region_fk)
+                VALUES (#{storeInfo.bizes_id}, #{storeInfo.bizes_nm}, #{storeInfo.rdnm_adr},
+                        ST_GeomFromText(#{storeInfo.coordinates}), #{storeInfo.region_fk})
+            </when>
+            <when test="indust_id == 'I21201'">
+                INSERT INTO cafe (bizes_id, bizes_nm, rdnm_adr, coordinates, region_fk)
+                VALUES (#{storeInfo.bizes_id}, #{storeInfo.bizes_nm}, #{storeInfo.rdnm_adr},
+                        ST_GeomFromText(#{storeInfo.coordinates}), #{storeInfo.region_fk})
+            </when>
+        </choose>
     </insert>
 
 </mapper>
