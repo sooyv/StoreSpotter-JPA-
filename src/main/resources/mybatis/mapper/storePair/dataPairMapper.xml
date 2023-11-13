@@ -23,7 +23,7 @@
     </insert>
 
     <select id="distanceSphere">
-            SELECT ST_DISTANCE_SPHERE(ST_GeomFromText(#{point}), coordinates) AS dist
+            SELECT bizes_nm, ST_DISTANCE_SPHERE(ST_GeomFromText(#{point}), coordinates) AS dist
             FROM convenience_store
             WHERE convenience_store.region_fk = #{region}
             order by dist

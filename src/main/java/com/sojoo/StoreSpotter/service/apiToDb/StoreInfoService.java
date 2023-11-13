@@ -11,6 +11,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -158,7 +159,7 @@ public class StoreInfoService {
     }
 
     // api 데이터 저장 로직
-    public void publicApiDataSave(Document document, String indust_id, Integer region_id) throws Exception {
+    public void publicApiDataSave(Document document, String indust_id, Integer region_id) throws DuplicateKeyException {
         try {
             Element root = document.getRootElement();
             Element body = root.getChild("body");
@@ -189,8 +190,8 @@ public class StoreInfoService {
                 storeInfoMapper.insertApiData(storeInfo, indust_id);
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (DuplicateKeyException duplicateKeyException) {
+            duplicateKeyException.printStackTrace();
         }
     }
 }

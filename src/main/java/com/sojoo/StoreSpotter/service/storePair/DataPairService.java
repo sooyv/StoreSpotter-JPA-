@@ -31,12 +31,12 @@ public class DataPairService {
                 distanceSphere(point, region);
             }
 
-        } catch(Exception e){
+        } catch(Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void distanceSphere(String point, Integer region){
+    public void distanceSphere(String point, Integer region) {
         System.out.println(dataPairMapper.distanceSphere(point, region));
 
     }
