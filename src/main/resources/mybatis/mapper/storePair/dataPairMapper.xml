@@ -17,16 +17,27 @@
     </select>
 
 
-    <insert id="insertPairData" keyProperty="bizes_id">
-        INSERT INTO convenience_pair (pair_id, st_coor, com_coor, dist, region_fk)
-        VALUES (#{pairData.pair_id}, #{pairData.st_coor}, #{pairData.com_coor}, #{pairData.dist}, #{pairData.region_fk}
+    <insert id="insertPairData" keyProperty="pair_id">
+        INSERT INTO convenience_pair (st_nm, st_coor, com_nm, com_coor, dist, region_fk)
+        VALUES ((#{pairData.st_nm}), ST_GeomFromText(#{pairdata.st_coor}, 4326), #{pairData.com_nm}, ST_GeomFromText(#{pairData.com_coor}, 4326), #{pairData.dist}, #{pairData.region_fk})
     </insert>
 
+
     <select id="distanceSphere">
-            SELECT ST_DISTANCE_SPHERE(ST_GeomFromText(#{point}), coordinates) AS dist
+            SELECT ST_DISTANCE_SPHERE(ST_GeomFromText(#{point}), coordinates) AS dist,
+                   #{region} AS region_fk,
+                   #{name} AS st_nm,
+                   #{point} AS st_coor,
+                   bizes_nm AS com_nm,
+                   ST_AsWKT(coordinates) AS com_coor
             FROM convenience_store
             WHERE convenience_store.region_fk = #{region} AND ST_DISTANCE_SPHERE(ST_GeomFromText(#{point}), coordinates) > 0
             ORDER BY dist
-            LIMIT 3;
+            LIMIT 1;
     </select>
+
+
+
+
+
 </mapper>
