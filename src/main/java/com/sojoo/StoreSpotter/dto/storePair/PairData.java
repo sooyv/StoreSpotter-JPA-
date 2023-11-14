@@ -11,8 +11,10 @@ import org.geolatte.geom.Geometry;
 @AllArgsConstructor
 public class PairData {
     private Integer pair_id;
+    private String st_nm;
     private String st_coor;
     private String com_coor;
+    private String com_nm;
     private Double dist;
     private Integer region_fk;
 

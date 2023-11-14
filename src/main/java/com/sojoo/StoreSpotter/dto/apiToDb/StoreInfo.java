@@ -25,5 +25,4 @@ public class StoreInfo {
         this.coordinates = String.valueOf(point);
     }
 
-
 }

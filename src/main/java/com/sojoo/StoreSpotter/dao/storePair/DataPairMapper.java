@@ -5,10 +5,7 @@ import com.sojoo.StoreSpotter.dto.storePair.PairData;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import javax.lang.model.element.Element;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface DataPairMapper {
@@ -21,10 +18,9 @@ public interface DataPairMapper {
     // 편의점 테이블 데이터 삽입
     List<PairData> insertPairData();
 
-    List<String> distanceSphere(@Param("point") String point, Integer region);
+//    List<String> distanceSphere(@Param("point") String point, Integer region);
+    List<PairData> distanceSphere(String st_nm, String coordinates, Integer region);
 
     // 각 pair table에 저장 메서드
-    void insertConveniencePairTable();
-
-    void insertCafePairTable();
+    void insertPairTable(PairData pairData);
 }

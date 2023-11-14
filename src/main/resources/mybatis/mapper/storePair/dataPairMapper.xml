@@ -22,11 +22,17 @@
         VALUES (#{pairData.pair_id}, #{pairData.st_coor}, #{pairData.com_coor}, #{pairData.dist}, #{pairData.region_fk}
     </insert>
 
-    <select id="distanceSphere">
-            SELECT ST_DISTANCE_SPHERE(ST_GeomFromText(#{point}), coordinates) AS dist
-            FROM convenience_store
-            WHERE convenience_store.region_fk = #{region} AND ST_DISTANCE_SPHERE(ST_GeomFromText(#{point}), coordinates) > 0
-            ORDER BY dist
-            LIMIT 3;
+    <select id="distanceSphere" parameterType="com.sojoo.StoreSpotter.dto.storePair.PairData">
+        SELECT
+            ST_DISTANCE_SPHERE(ST_GeomFromText(#{coordinates}), coordinates) AS dist,
+            #{st_nm} AS st_nm,
+            #{coordinates} AS st_coor,
+            bizes_nm AS com_nm,
+            ST_AsText(coordinates) AS com_coor,
+            #{region} AS region_fk
+        FROM convenience_store
+        WHERE convenience_store.region_fk = #{region} AND ST_DISTANCE_SPHERE(ST_GeomFromText(#{coordinates}), coordinates) > 0
+        ORDER BY dist
+            LIMIT 1;
     </select>
 </mapper>

@@ -6,7 +6,6 @@ import com.sojoo.StoreSpotter.dao.apiToDb.StoreInfoMapper;
 import com.sojoo.StoreSpotter.dto.apiToDb.Industry;
 import com.sojoo.StoreSpotter.dto.apiToDb.Region;
 import com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo;
-import org.apache.ibatis.jdbc.Null;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
@@ -14,12 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -154,8 +150,6 @@ public class StoreInfoService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("industryCity 메서드 try-catch문 종료");
-
     }
 
     // api 데이터 저장 로직
