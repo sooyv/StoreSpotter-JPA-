@@ -41,9 +41,8 @@ public class StoreInfoService {
     public void deleteApiData() throws Exception {
         List<Industry> industryList = industryMapper.selectIndustryList();
 
-        for (int i = 0; i < industryList.size(); i++) {
-            String indust_id = industryList.get(i).getIndust_id();
-
+        for (Industry industry : industryList) {
+            String indust_id = industry.getIndust_id();
             storeInfoMapper.deleteIndustTable(indust_id);
         }
 
