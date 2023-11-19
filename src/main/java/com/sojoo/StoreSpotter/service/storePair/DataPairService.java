@@ -37,10 +37,11 @@ public class DataPairService {
                 String indust_id = industry.getIndust_id();
                 List<StoreInfo> storeDataList = dataPairMapper.selectIndustryData(indust_id);
                 selectDataPair(storeDataList, indust_id);
+                dataPairMapper.deleteDuplicatePair(indust_id);
 
                 long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
                 long secDiffTime = (afterTime - beforeTime) / 1000; //두 시간에 차 계산
-                System.out.println(industry.getIndust_name() + " 소요시간 : " + secDiffTime/60 +"분 " + secDiffTime%60+"초");
+                System.out.println(industry.getIndust_name() + "Pair 생성 소요시간 : " + secDiffTime/60 +"분 " + secDiffTime%60+"초");
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -66,9 +67,6 @@ public class DataPairService {
     public void distanceSphere(String name, String point, Integer region, String indust_id) {
         List<PairData> pairDataList = dataPairMapper.distanceSphere(name, point, region, indust_id);
         for (PairData data : pairDataList) {
-//            PairData pairData = new PairData();
-//            pairData.setPairData(data);
-//            System.out.println(Data);
             insertPairData(data, indust_id);
         }
     }
