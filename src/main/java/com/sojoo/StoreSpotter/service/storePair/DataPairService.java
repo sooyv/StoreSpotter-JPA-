@@ -5,12 +5,15 @@ import com.sojoo.StoreSpotter.dao.storePair.DataPairMapper;
 import com.sojoo.StoreSpotter.dto.apiToDb.Industry;
 import com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo;
 import com.sojoo.StoreSpotter.dto.storePair.PairData;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Optional;
 
 @Service
 public class DataPairService {
@@ -25,43 +28,53 @@ public class DataPairService {
         this.industryMapper = industryMapper;
     }
 
+    public void save_industryPairData() throws Exception{
+        try{
+            long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
-    public void SavePairData() throws Exception {
-        try {
             List<Industry> industryList = industryMapper.selectIndustryList();
-            for (Industry industry : industryList) {
+            for (Industry industry : industryList){
                 String indust_id = industry.getIndust_id();
-                List<StoreInfo> storeInfoData = dataPairMapper.selectIndustryData(indust_id);
-                selectDataPair(storeInfoData, indust_id);
+                List<StoreInfo> storeDataList = dataPairMapper.selectIndustryData(indust_id);
+                selectDataPair(storeDataList, indust_id);
+                dataPairMapper.deleteDuplicatePair(indust_id);
+
+                long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+                long secDiffTime = (afterTime - beforeTime) / 1000; //두 시간에 차 계산
+                System.out.println(industry.getIndust_name() + "Pair 생성 소요시간 : " + secDiffTime/60 +"분 " + secDiffTime%60+"초");
             }
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public void selectDataPair(List<StoreInfo> storeDataList, String indust_id) {
-        for (StoreInfo storeData : storeDataList) {
-            String st_nm = storeData.getBizes_nm();
-            String coordinates = storeData.getCoordinates();
-            Integer region_fk = storeData.getRegion_fk();
 
-            distanceSphere(st_nm, coordinates, region_fk, indust_id);
+    public void selectDataPair(List<StoreInfo> storeDataList, String indust_id) throws Exception {
+        try {
+            for (StoreInfo storeData : storeDataList) {
+                String name = storeData.getBizes_nm();
+                String point = storeData.getCoordinates();
+                Integer region = storeData.getRegion_fk();
+                distanceSphere(name, point, region, indust_id);
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
         }
     }
 
 
-    public void distanceSphere(String st_nm, String coordinates, Integer region_fk, String indust_id) {
-        List<PairData> pairDataList = dataPairMapper.distanceSphere(st_nm, coordinates, region_fk, indust_id);
-        for (PairData pairData : pairDataList) {
-            insertPairData(pairData, indust_id);
+    public void distanceSphere(String name, String point, Integer region, String indust_id) {
+        List<PairData> pairDataList = dataPairMapper.distanceSphere(name, point, region, indust_id);
+        for (PairData data : pairDataList) {
+            insertPairData(data, indust_id);
         }
     }
-
 
     public void insertPairData(PairData pairData, String indust_id) {
-        System.out.println("insert 중! : " + pairData);
         dataPairMapper.insertPairData(pairData, indust_id);
     }
+
 
 }
 

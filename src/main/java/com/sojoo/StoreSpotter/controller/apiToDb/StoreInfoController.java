@@ -47,6 +47,6 @@ public class StoreInfoController {
 
     @GetMapping("/DataPair")
     public void DataPairs() throws Exception {
-        dataPairService.SavePairData();
+        dataPairService.save_industryPairData();
     }
 }

@@ -6,6 +6,7 @@ import com.sojoo.StoreSpotter.dao.apiToDb.StoreInfoMapper;
 import com.sojoo.StoreSpotter.dto.apiToDb.Industry;
 import com.sojoo.StoreSpotter.dto.apiToDb.Region;
 import com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo;
+import org.apache.ibatis.jdbc.Null;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
@@ -13,9 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -37,9 +41,8 @@ public class StoreInfoService {
     public void deleteApiData() throws Exception {
         List<Industry> industryList = industryMapper.selectIndustryList();
 
-        for (int i = 0; i < industryList.size(); i++) {
-            String indust_id = industryList.get(i).getIndust_id();
-
+        for (Industry industry : industryList) {
+            String indust_id = industry.getIndust_id();
             storeInfoMapper.deleteIndustTable(indust_id);
         }
 
@@ -55,7 +58,7 @@ public class StoreInfoService {
 
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
     public List<Industry> industrySave() throws Exception {
-        System.out.println("service단 industrySave 진입");
+        System.out.println("industrySave method start");
         long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
         try {
@@ -87,8 +90,7 @@ public class StoreInfoService {
             // 지역 가져오기
             List<Region> regions = regionMapper.selectRegionList();
 //            System.out.println("지역명 확인: " + regions);                        // region 가져오기
-            for (int i = 0; i < regions.size(); i++) {
-                Region region = regions.get(i);
+            for (Region region : regions) {
                 Integer region_id = region.getRegion_id();
 
                 // 아래에서 totalPageCount 재할당
@@ -97,17 +99,15 @@ public class StoreInfoService {
                 for (int j = 1; j <= totalPageCount; j++) {
 
                     // 해당 업종, 지역의 api 호출
-                    StringBuilder sb = new StringBuilder();
+                    String sb = "https://apis.data.go.kr/B553077/api/open/sdsc2/storeListInDong?" +
+                            "ServiceKey=kXVB%2FzGPSXqZrn%2F1NuCYPZGJONAmxZfu%2BjQDCfDP%2F5uo8QZ%2B6iWdY%2FXrV%2B0gg2z%2BMKVEA%2BrVFLs9l0TVQE2Cug%3D%3D" +
+                            "&pageNo=" + j +
+                            "&numOfRows=" + 1000 +
+                            "&divId=" + "ctprvnCd" +
+                            "&key=" + region_id +             // 시도 코드(region_id)
+                            "&indsSclsCd=" + indust_id;      // 업종 코드(industry_id) G20405, I21201
 
-                    sb.append("https://apis.data.go.kr/B553077/api/open/sdsc2/storeListInDong?");
-                    sb.append("ServiceKey=kXVB%2FzGPSXqZrn%2F1NuCYPZGJONAmxZfu%2BjQDCfDP%2F5uo8QZ%2B6iWdY%2FXrV%2B0gg2z%2BMKVEA%2BrVFLs9l0TVQE2Cug%3D%3D");
-                    sb.append("&pageNo=" + j);
-                    sb.append("&numOfRows=" + 1000);
-                    sb.append("&divId=" + "ctprvnCd");
-                    sb.append("&key=" + region_id);             // 시도 코드(region_id)
-                    sb.append("&indsSclsCd=" + indust_id);      // 업종 코드(industry_id) G20405, I21201
-
-                    URL url = new URL(sb.toString());
+                    URL url = new URL(sb);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                     conn.setRequestProperty("Content-Type", "application/xml");
@@ -150,6 +150,8 @@ public class StoreInfoService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("industryCity method exit");
+
     }
 
     // api 데이터 저장 로직
