@@ -1,67 +1,67 @@
 package com.sojoo.StoreSpotter.service.storePair;
 
+import com.sojoo.StoreSpotter.dao.apiToDb.IndustryMapper;
 import com.sojoo.StoreSpotter.dao.storePair.DataPairMapper;
+import com.sojoo.StoreSpotter.dto.apiToDb.Industry;
 import com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo;
 import com.sojoo.StoreSpotter.dto.storePair.PairData;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.io.WKTReader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class DataPairService {
 
     private final DataPairMapper dataPairMapper;
+    private final IndustryMapper industryMapper;
+
 
     @Autowired
-    public DataPairService(DataPairMapper dataPairMapper) {
+    public DataPairService(DataPairMapper dataPairMapper, IndustryMapper industryMapper) {
         this.dataPairMapper = dataPairMapper;
+        this.industryMapper = industryMapper;
     }
 
 
-    public void selectDataPair() throws Exception {
+    public void SavePairData() throws Exception {
         try {
-            List<StoreInfo> convenienceDataList = dataPairMapper.selectConvenienceData();
-            for (StoreInfo convenienceData : convenienceDataList) {
-                String st_nm = convenienceData.getBizes_nm();
-                String coordinates = convenienceData.getCoordinates();
-                Integer region = convenienceData.getRegion_fk();
-                distanceSphere(st_nm, coordinates, region);
-            }
-
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void distanceSphere(String st_nm, String coordinates, Integer region) throws Exception {
-//        System.out.println(dataPairMapper.distanceSphere(st_nm, coordinates, region));
-
-        try {
-            List<PairData> pairDataList = dataPairMapper.distanceSphere(st_nm, coordinates, region);
-            int count = 0;
-            for (PairData pairData : pairDataList) {
-                System.out.println("지역명: " + pairData.getRegion_fk());
-                System.out.println("기준좌표 상가명: " + pairData.getSt_nm());
-                System.out.println("기준좌표" + pairData.getSt_coor());
-                System.out.println("대상좌표 상가명: " + pairData.getCom_nm());
-                System.out.println("대상좌표" + pairData.getCom_coor());
-                System.out.println("비교거리" + pairData.getDist());
-                count++;
+            List<Industry> industryList = industryMapper.selectIndustryList();
+            for (Industry industry : industryList) {
+                String indust_id = industry.getIndust_id();
+                List<StoreInfo> storeInfoData = dataPairMapper.selectIndustryData(indust_id);
+                selectDataPair(storeInfoData, indust_id);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        PairData pairData = new PairData();
+    }
 
-//        dataPairMapper.insertConveniencePairTable(pairData);
+    public void selectDataPair(List<StoreInfo> storeDataList, String indust_id) {
+        for (StoreInfo storeData : storeDataList) {
+            String st_nm = storeData.getBizes_nm();
+            String coordinates = storeData.getCoordinates();
+            Integer region_fk = storeData.getRegion_fk();
+
+            distanceSphere(st_nm, coordinates, region_fk, indust_id);
+        }
     }
 
 
+    public void distanceSphere(String st_nm, String coordinates, Integer region_fk, String indust_id) {
+        List<PairData> pairDataList = dataPairMapper.distanceSphere(st_nm, coordinates, region_fk, indust_id);
+        for (PairData pairData : pairDataList) {
+            insertPairData(pairData, indust_id);
+        }
+    }
+
+
+    public void insertPairData(PairData pairData, String indust_id) {
+        System.out.println("insert 중! : " + pairData);
+        dataPairMapper.insertPairData(pairData, indust_id);
+    }
 
 }
 

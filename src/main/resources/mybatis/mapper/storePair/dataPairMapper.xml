@@ -5,34 +5,79 @@
 
 <mapper namespace="com.sojoo.StoreSpotter.dao.storePair.DataPairMapper">
 
-    <select id="selectConvenienceData" parameterType="com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo">
-        SELECT bizes_id, bizes_nm, rdnm_adr, ST_AsText(coordinates) AS coordinates, region_fk
-        FROM convenience_store
+    <select id="selectIndustryData" parameterType="com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo">
+        <choose>
+            <!-- 편의점 데이터 -->
+            <when test="indust_id == 'G20405'">
+                SELECT bizes_id, bizes_nm, rdnm_adr, ST_AsText(coordinates) AS coordinates, region_fk
+                FROM convenience_store
+            </when>
+            <!-- 카페 데이터 -->
+            <when test="indust_id == 'I21201'">
+                SELECT bizes_id, bizes_nm, rdnm_adr, ST_AsText(coordinates) AS coordinates, region_fk
+                FROM cafe
+            </when>
+        </choose>
     </select>
 
-    <!-- 카페 데이터 -->
-    <select id="selectCafeData" parameterType="com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo">
-        SELECT bizes_id, bizes_nm, rdnm_adr, ST_AsText(coordinates) AS coordinates, region_fk
-        FROM cafe
-    </select>
 
-
-    <insert id="insertPairData" keyProperty="bizes_id">
-        INSERT INTO convenience_pair (pair_id, st_coor, com_coor, dist, region_fk)
-        VALUES (#{pairData.pair_id}, #{pairData.st_coor}, #{pairData.com_coor}, #{pairData.dist}, #{pairData.region_fk}
+    <insert id="insertPairData" parameterType="com.sojoo.StoreSpotter.dto.storePair.PairData">
+        <choose>
+            <when test="indust_id == 'G20405'">
+                INSERT INTO convenience_pair (st_nm, st_coor, com_nm, com_coor, dist, region_fk)
+                VALUES (#{pairData.st_nm}, ST_GeomFromText(#{pairData.st_coor}), #{pairData.com_nm}, ST_GeomFromText(#{pairData.com_coor}), #{pairData.dist}, #{pairData.region_fk})
+            </when>
+            <when test="indust_id == 'I21201'">
+                INSERT INTO cafe_pair (st_nm, st_coor, com_nm, com_coor, dist, region_fk)
+                VALUES (#{pairData.st_nm}, ST_GeomFromText(#{pairData.st_coor}), #{pairData.com_nm}, ST_GeomFromText(#{pairData.com_coor}), #{pairData.dist}, #{pairData.region_fk})
+            </when>
+        </choose>
     </insert>
 
     <select id="distanceSphere" parameterType="com.sojoo.StoreSpotter.dto.storePair.PairData">
-        SELECT
-            ST_DISTANCE_SPHERE(ST_GeomFromText(#{coordinates}), coordinates) AS dist,
-            #{st_nm} AS st_nm,
-            #{coordinates} AS st_coor,
-            bizes_nm AS com_nm,
-            ST_AsText(coordinates) AS com_coor,
-            #{region} AS region_fk
-        FROM convenience_store
-        WHERE convenience_store.region_fk = #{region} AND ST_DISTANCE_SPHERE(ST_GeomFromText(#{coordinates}), coordinates) > 0
-        ORDER BY dist
-            LIMIT 1;
+        <choose>
+            <when test="indust_id == 'G20405'">
+                SELECT
+                ST_DISTANCE_SPHERE(ST_GeomFromText(#{coordinates}), coordinates) AS dist,
+                #{st_nm} AS st_nm,
+                #{coordinates} AS st_coor,
+                bizes_nm AS com_nm,
+                ST_AsText(coordinates) AS com_coor,
+                #{region} AS region_fk
+                FROM convenience_store
+                WHERE convenience_store.region_fk = #{region} AND ST_DISTANCE_SPHERE(ST_GeomFromText(#{coordinates}), coordinates) > 0
+                ORDER BY dist
+                LIMIT 1;
+            </when>
+            <when test="indust_id == 'I21201'">
+                SELECT
+                ST_DISTANCE_SPHERE(ST_GeomFromText(#{coordinates}), coordinates) AS dist,
+                #{st_nm} AS st_nm,
+                #{coordinates} AS st_coor,
+                bizes_nm AS com_nm,
+                ST_AsText(coordinates) AS com_coor,
+                #{region} AS region_fk
+                FROM cafe
+                WHERE cafe.region_fk = #{region} AND ST_DISTANCE_SPHERE(ST_GeomFromText(#{coordinates}), coordinates) > 0
+                ORDER BY dist
+                LIMIT 1;
+            </when>
+        </choose>
+
     </select>
+
+    <insert id="insertPairTable" >
+        <choose>
+            <when test="indust_id == 'G20405'">
+                INSERT INTO convenience_pair (st_nm, st_coor, com_nm, com_coor, dist, region_fk)
+                VALUES (#{pairData.st_nm}, ST_GeomFromText(#{pairData.st_coor}), #{pairData.com_nm},
+                ST_GeomFromText(#{pairData.com_coor}), #{pairData.dist}, #{pairData.region_fk})
+            </when>
+            <when test="indust_id == 'I21201'">
+                INSERT INTO cafe_pair (st_nm, st_coor, com_nm, com_coor, dist, region_fk)
+                VALUES (#{pairData.st_nm}, ST_GeomFromText(#{pairData.st_coor}), #{pairData.com_nm},
+                ST_GeomFromText(#{pairData.com_coor}), #{pairData.dist}, #{pairData.region_fk})
+            </when>
+        </choose>
+    </insert>
 </mapper>

@@ -9,18 +9,11 @@ import java.util.List;
 
 @Mapper
 public interface DataPairMapper {
-    // 편의점 테이블 데이터 가져오기
-     List<StoreInfo> selectConvenienceData() throws Exception;
+    // 테이블 데이터 가져오기, indust_id 파라미터 통해 각 테이블 구분
+     List<StoreInfo> selectIndustryData(@Param("indust_id") String indust_id) throws Exception;
 
-    // 카페 테이블 데이터 가져오기
-    List<StoreInfo> selectCafeData();
+    void insertPairData(PairData pairData, @Param("indust_id") String indust_id);
 
-    // 편의점 테이블 데이터 삽입
-    List<PairData> insertPairData();
+    List<PairData> distanceSphere(String st_nm, String coordinates, Integer region, String indust_id);
 
-//    List<String> distanceSphere(@Param("point") String point, Integer region);
-    List<PairData> distanceSphere(String st_nm, String coordinates, Integer region);
-
-    // 각 pair table에 저장 메서드
-    void insertPairTable(PairData pairData);
 }
