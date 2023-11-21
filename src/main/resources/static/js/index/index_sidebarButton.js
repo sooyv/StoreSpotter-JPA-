@@ -1,10 +1,19 @@
+/**
+ * sidebar
+ */
 const sideBar = document.getElementById("side-bar");
 const slideBtn = document.getElementById("slide-btn");
 const sideElems = document.querySelectorAll(".side-elem");
 
-console.log("index.js 실행");
-document.getElementById("side-bar-slide-btn").addEventListener("click", function() {
 
+// 초기 상태 설정
+sideBar.style.width = "378px";
+slideBtn.style.transform = "rotate(-180deg)";
+sideElems.forEach(function(elem) {
+    elem.style.display = "block";
+});
+
+document.getElementById("side-bar-slide-btn").addEventListener("click", function() {
     // side-bar의 너비를 0으로 만들어서 왼쪽으로 숨깁니다.
     if (sideBar.style.width === "378px") {
         sideBar.style.width = "0";

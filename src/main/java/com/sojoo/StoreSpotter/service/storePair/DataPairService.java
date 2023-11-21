@@ -37,6 +37,7 @@ public class DataPairService {
                 String indust_id = industry.getIndust_id();
                 List<StoreInfo> storeDataList = dataPairMapper.selectIndustryData(indust_id);
                 selectDataPair(storeDataList, indust_id);
+                System.out.println(industry.getIndust_name() + " delete duplicate");
                 dataPairMapper.deleteDuplicatePair(indust_id);
 
                 long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기

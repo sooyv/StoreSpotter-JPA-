@@ -9,34 +9,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//@RestController
-//@RequestMapping("/api")
-//public class StoreInfoController {
-//
-//    @Autowired
-//    private final StoreInfoService storeInfoService;
-//
-//    @Autowired
-//    public StoreInfoController(StoreInfoService storeInfoService) {
-//        this.storeInfoService = storeInfoService;
-//    }
-//
-//    @PostMapping("/saveStoreInfo")
-//    public void saveStoreInfo() {
-//        storeInfoService.saveStore();
-//    }
-//}
-
-
 @RestController
 public class StoreInfoController {
     private final StoreInfoService storeInfoService;
-    private final DataPairService dataPairService;
 
     @Autowired
-    public StoreInfoController(StoreInfoService storeInfoService, DataPairService dataPairService) {
+    public StoreInfoController(StoreInfoService storeInfoService) {
         this.storeInfoService = storeInfoService;
-        this.dataPairService = dataPairService;
     }
 
 
@@ -45,8 +24,4 @@ public class StoreInfoController {
         return storeInfoService.industrySave();
     }
 
-    @GetMapping("/DataPair")
-    public void DataPairs() throws Exception {
-        dataPairService.save_industryPairData();
-    }
 }

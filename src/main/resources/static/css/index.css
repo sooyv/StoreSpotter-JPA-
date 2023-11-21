@@ -91,7 +91,7 @@ html, body {
     border-radius: 15px;
 }
 
-#find-location-btn {
+#submit {
     font-family: 'IBM Plex Sans KR', sans-serif;
     font-size: medium;
     background-color: #41637d;
@@ -103,10 +103,19 @@ html, body {
     font-weight: bold;
 }
 
-#find-location-btn:hover {
-    background-color: lightgrey;
+#submit:hover {
+    background-color: lightblue;
     transition: 0.3s;
     font-weight: bold;
+}
+
+#address{
+    width: 350px;
+    height: 50px;
+    border-radius: 10px;
+    border: solid 1px lightgray;
+    margin-bottom: 10px;
+    text-indent: 1em;
 }
 
 body {

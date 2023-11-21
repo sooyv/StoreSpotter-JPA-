@@ -66,8 +66,8 @@ public class StoreInfoService {
             deleteApiData();
 
             List<Industry> industry = industryMapper.selectIndustryList();      // 업종 id, name 담긴 industry list 받아오기
-            for (int i = 0; i < industry.size(); i++) {
-                connectToApi(industry.get(i));
+            for (Industry value : industry) {
+                connectToApi(value);
             }
 
         } catch (Exception e) {
