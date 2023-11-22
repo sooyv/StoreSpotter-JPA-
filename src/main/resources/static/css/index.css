@@ -91,7 +91,7 @@ html, body {
     border-radius: 15px;
 }
 
-#find-location-btn {
+#submit {
     font-family: 'IBM Plex Sans KR', sans-serif;
     font-size: medium;
     background-color: #41637d;
@@ -103,10 +103,19 @@ html, body {
     font-weight: bold;
 }
 
-#find-location-btn:hover {
-    background-color: lightgrey;
+#submit:hover {
+    background-color: lightblue;
     transition: 0.3s;
     font-weight: bold;
+}
+
+#address{
+    width: 350px;
+    height: 50px;
+    border-radius: 10px;
+    border: solid 1px lightgray;
+    margin-bottom: 10px;
+    text-indent: 1em;
 }
 
 body {
@@ -118,8 +127,8 @@ body {
 
 
 
-/* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/
-/*768 이상이면 해당 스타일 시트 적용*/
+/*!* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*!*/
+/*!*768 이상이면 해당 스타일 시트 적용*!*/
 /*@media screen and (min-width:768px) and (max-width:1023px) {*/
 /*    #side-bar {*/
 /*        width: 40%;*/
@@ -141,7 +150,7 @@ body {
 /*        }*/
 /*}*/
 
-/*pc*/
+/*!*pc*!*/
 /*@media screen and (min-width: 1200px) {*/
 /*    #side-bar {*/
 /*        width: 25%;*/
@@ -163,7 +172,7 @@ body {
 /*    }*/
 /*}*/
 
-/*태블릿 가로, 세로 & pc 작은 화면*/
+/*!*태블릿 가로, 세로 & pc 작은 화면*!*/
 /*@media screen and (min-width: 768px) and (max-width: 1023px) {*/
 /*    #side-bar {*/
 /*        width: 60%;*/

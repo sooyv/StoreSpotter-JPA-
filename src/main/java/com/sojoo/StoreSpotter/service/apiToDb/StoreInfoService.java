@@ -66,8 +66,8 @@ public class StoreInfoService {
             deleteApiData();
 
             List<Industry> industry = industryMapper.selectIndustryList();      // 업종 id, name 담긴 industry list 받아오기
-            for (int i = 0; i < industry.size(); i++) {
-                connectToApi(industry.get(i));
+            for (Industry value : industry) {
+                connectToApi(value);
             }
 
         } catch (Exception e) {
@@ -168,12 +168,6 @@ public class StoreInfoService {
                 String rdnm_adr = item.getChildText("rdnmAdr");
                 Double lon = Double.valueOf(item.getChildText("lon"));  // 경도(lon)
                 Double lat = Double.valueOf(item.getChildText("lat"));  // 위도(lat)
-
-                System.out.println("bizesId: " + bizes_id);
-                System.out.println("bizesNm: " + bizes_nm);
-                System.out.println("rdnmAdr: " + rdnm_adr);
-                System.out.println("lon: " + lon);
-                System.out.println("lat: " + lat);
 
                 StoreInfo storeInfo = new StoreInfo();
                 storeInfo.setBizes_id(bizes_id);

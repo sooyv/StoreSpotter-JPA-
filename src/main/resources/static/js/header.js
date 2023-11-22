@@ -1,4 +1,3 @@
-console.log("header.js 실행")
 document.getElementById("menu-bar-btn").addEventListener("click", function () {
     let header_content = document.getElementById("header-content");
     console.log("Menu-bar-btn click")
