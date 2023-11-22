@@ -33,11 +33,15 @@
             <div class="side-elem-title">
                 주소 선택
             </div>
-            <div class="search">
+            <div class="search-address">
                 <input id="address" type="text" placeholder="도로명 주소 검색">
+                <button type="button" id="map-search">주소검색</button>
             </div>
         </div>
-        <button type="button" id="submit">검색하기</button>
+        <div class="side-elem">
+            <button type="button" id="submit">검색하기</button>
+        </div>
+
         <button type="button" id="side-bar-slide-btn"><img id="slide-btn" src="/style/free-icon-arrow.png" alt="side-bar 여닫기" ./></button>
     </div>
     <div id="map"></div>
@@ -56,8 +60,8 @@
         // ...
     }
 </script>
-<script src="/js/index/index_sidebarButton.js"></script>
 <script src="/js/index/index_naverMapSearchApi.js"></script>
+<script src="/js/index/index_sidebarButton.js"></script>
 
 <script src="/js/header.js"></script>
 </body>

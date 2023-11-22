@@ -110,12 +110,19 @@ html, body {
 }
 
 #address{
-    width: 350px;
+    width: 270px;
     height: 50px;
     border-radius: 10px;
     border: solid 1px lightgray;
     margin-bottom: 10px;
     text-indent: 1em;
+}
+
+#map-search {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    background-color: #41637d;
+    border-radius: 10px;
+    height: 50px;
 }
 
 body {

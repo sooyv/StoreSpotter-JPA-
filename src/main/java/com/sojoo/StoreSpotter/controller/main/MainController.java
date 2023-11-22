@@ -26,7 +26,7 @@ public class MainController {
             System.out.println(indust);
             System.out.println(region);
             System.out.println(dist);
-//        dataRecommendService.selectPairByDist(indust, region, dist);
+        dataRecommendService.selectPairByDist(indust, region, dist);
 
         }
     }

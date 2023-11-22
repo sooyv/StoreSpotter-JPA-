@@ -20,7 +20,7 @@ public class DataRecommendService {
 //        String indust_id = String.valueOf("G20405");
 //        String region_fk = String.valueOf("11");
 //        String dist = String.valueOf("200");
-//        System.out.println(dataRecommendMapper.selectByDist(region, dist, indust));
+        System.out.println(dataRecommendMapper.selectByDist(region, dist, indust));
 
     }
 

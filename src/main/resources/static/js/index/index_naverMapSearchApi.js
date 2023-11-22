@@ -103,7 +103,7 @@ function initGeocoder() {
         }
     });
 
-    $('#submit').on('click', function(e) {
+    $('#map-search').on('click', function(e) {
         e.preventDefault();
 
         searchAddressToCoordinate($('#address').val());
