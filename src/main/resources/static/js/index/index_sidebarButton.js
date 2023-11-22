@@ -15,8 +15,18 @@ $(".select-industry-detail").click(function() {
    indust = $(this).text();
 });
 
-$(".submit").click(function() {
-    console.log("검색하기 클릭")
+$("#submit").click(function() {
+    // let indust_id = "";
+    //
+    // if ($(this).text() === "편의점") {
+    //     indust_id = "G20405";
+    // } else if ($(this).text() === "카페") {
+    //     indust_id = "I21201";
+    // }
+    let indust = $('#select-industry .select-industry-detail.selected').text();
+    let region = $('#address').val();
+    console.log(indust, region)
+    let dist = "";
 
     // AJAX 요청
     $.ajax({
@@ -36,7 +46,37 @@ $(".submit").click(function() {
     });
 });
 
+$(document).ready(function() {
+    // 업종 선택을 위한 이벤트 리스너 추가
+    $('#select-industry .select-industry-detail').click(function() {
+        // 선택된 업종 초기화
+        $('#select-industry .select-industry-detail').removeClass('selected');
 
+        // 선택한 업종에 노란색 배경 적용
+        $(this).addClass('selected');
+
+        // 선택한 업종의 텍스트 색상을 흰색으로 변경
+        $(this).css('color', 'white');
+
+        // 나머지 업종의 텍스트 색상 초기화
+        $('#select-industry .select-industry-detail:not(.selected)').css('color', '');
+    });
+
+    // 검색하기 버튼 클릭 시 동작할 함수
+    $('#submit').click(function() {
+        // 선택된 업종 확인
+        var selectedIndustry = $('#select-industry .select-industry-detail.selected').text();
+
+        // 선택된 업종이 없을 경우 알림 또는 다른 동작 수행
+        if (!selectedIndustry) {
+            alert('업종을 선택해주세요.');
+            return;
+        }
+
+        // 여기에 선택된 업종에 따른 추가적인 동작을 수행할 수 있습니다.
+        // console.log('선택된 업종:', selectedIndustry);
+    });
+});
 
 
 // 초기 상태 설정

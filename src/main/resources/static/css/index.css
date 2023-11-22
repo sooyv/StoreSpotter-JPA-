@@ -121,6 +121,10 @@ html, body {
 body {
     margin: 0;
 }
+#select-industry .select-industry-detail.selected {
+    background-color: #41637d;
+    border-radius : 10px;
+}
 
 
 

@@ -17,16 +17,16 @@ public class MainController {
 
     @GetMapping("/")
     public ModelAndView index() {
-
         return new ModelAndView("index/index");
     }
 
     @GetMapping("/search/recommend")
-    public void chooseIndust(@RequestParam("indust") String indust,
-                             @RequestParam("region") String region, @RequestParam("dist") String dist) {
-        System.out.println(indust);
-        System.out.println(region);
-        System.out.println(dist);
+        public void chooseIndust (@RequestParam("indust") String indust,
+                @RequestParam("region") String region, @RequestParam("dist") String dist) {
+            System.out.println(indust);
+            System.out.println(region);
+            System.out.println(dist);
 //        dataRecommendService.selectPairByDist(indust, region, dist);
+
+        }
     }
-}
