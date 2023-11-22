@@ -16,11 +16,11 @@ public class DataRecommendService {
         this.dataRecommendMapper = dataRecommendMapper;
     }
 
-    public void selectPairByDist() {
-        String indust_id = String.valueOf("G20405");
-        String region_fk = String.valueOf("11");
-        String dist = String.valueOf("200");
-        System.out.println(dataRecommendMapper.selectByDist(region_fk, dist, indust_id));
+    public void selectPairByDist(String region, String dist, String indust) {
+//        String indust_id = String.valueOf("G20405");
+//        String region_fk = String.valueOf("11");
+//        String dist = String.valueOf("200");
+        dataRecommendMapper.selectByDist(region, dist, indust);
     }
 
 }

@@ -75,6 +75,7 @@ function searchAddressToCoordinate(address) {
         if (item.englishAddress) {
             htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
         }
+        console.log(item.roadAddress)
 
         infoWindow.setContent([
             '<div style="padding:10px;min-width:200px;line-height:150%;">',
@@ -120,6 +121,7 @@ function makeAddress(item) {
         land = item.land,
         isRoadAddress = name === 'roadaddr';
 
+
     var sido = '', sigugun = '', dongmyun = '', ri = '', rest = '';
 
     if (hasArea(region.area1)) {
@@ -164,7 +166,6 @@ function makeAddress(item) {
             }
         }
     }
-
     return [sido, sigugun, dongmyun, ri, rest].join(' ');
 }
 
@@ -183,5 +184,4 @@ function checkLastString (word, lastString) {
 function hasAddition (addition) {
     return !!(addition && addition.value);
 }
-
 naver.maps.onJSContentLoaded = initGeocoder;

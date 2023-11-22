@@ -27,8 +27,8 @@ public class PairDataController {
         dataPairService.save_industryPairData();
     }
 
-    @GetMapping("/DataByDist")
-    public void DataByDist() throws Exception{
-        dataRecommendService.selectPairByDist();
-    }
+//    @GetMapping("/DataByDist")
+//    public void DataByDist() throws Exception{
+//        dataRecommendService.selectPairByDist();
+//    }
 }
