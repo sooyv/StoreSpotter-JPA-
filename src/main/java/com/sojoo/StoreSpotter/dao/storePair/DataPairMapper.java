@@ -17,7 +17,7 @@ public interface DataPairMapper {
     void insertPairData(PairData pairData, @Param("indust_id") String indust_id);
 
     // List<ToPairData> distanceSphere(@Param("convenienceData") String point, Integer region);
-    List<PairData> distanceSphere(@Param("name") String name, @Param("point") String point, @Param("region") Integer region, @Param("indust_id") String indust_id);
+    List<PairData> distanceSphere(String name, String point, Integer region, @Param("indust_id") String indust_id);
 
     // 생성 된 pair 테이블의 데이터 중복제거(st=com and com=st)
     void deleteDuplicatePair(@Param("indust_id") String indust_id);

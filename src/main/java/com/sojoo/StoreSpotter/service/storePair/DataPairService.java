@@ -75,7 +75,6 @@ public class DataPairService {
         dataPairMapper.insertPairData(pairData, indust_id);
     }
 
-
 }
 
 
