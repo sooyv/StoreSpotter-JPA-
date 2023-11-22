@@ -4,24 +4,28 @@
 const sideBar = document.getElementById("side-bar");
 const slideBtn = document.getElementById("slide-btn");
 const sideElems = document.querySelectorAll(".side-elem");
+const searchBtn = document.getElementById("search-btn");
 
-// 업종명 받아와서 indust_id 변환하기 Ajax
+
+
+let indust = "";
+
+// 업종명 받아오기
 $(".select-industry-detail").click(function() {
-    let indust_id = "";
+   indust = $(this).text();
+});
 
-    if ($(this).text() === "편의점") {
-        indust_id = "G20405";
-    } else if ($(this).text() === "카페") {
-        indust_id = "I21201";
-    }
+$(".submit").click(function() {
+    console.log("검색하기 클릭")
 
     // AJAX 요청
     $.ajax({
-        type: "POST",
-        url: "/api/industry",
-        // contentType: "application/json;charset=UTF-8",
+        type: "GET",
+        url: "/search/recommend",
         data: {
-            indust_id: indust_id
+            indust: indust,
+            region: region,
+            dist: dist
         },
         success: function(response) {
             console.log("서버 응답: " + response);

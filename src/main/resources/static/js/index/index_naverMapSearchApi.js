@@ -66,6 +66,7 @@ function searchAddressToCoordinate(address) {
 
         if (item.roadAddress) {
             htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
+
         }
 
         if (item.jibunAddress) {
