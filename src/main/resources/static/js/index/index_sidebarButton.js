@@ -58,10 +58,17 @@ $(document).ready(function() {
     $('#submit').click(function() {
         // 선택된 업종 확인
         var selectedIndustry = $('#select-industry .select-industry-detail.selected').text();
+        let region = $('#address').val();
+
 
         // 선택된 업종이 없을 경우 알림 또는 다른 동작 수행
         if (!selectedIndustry) {
             alert('업종을 선택해주세요.');
+            return;
+        }
+
+        if (!region) {
+            alert('주소를 선택해주세요.');
             return;
         }
 

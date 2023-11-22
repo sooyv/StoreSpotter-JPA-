@@ -101,6 +101,7 @@ html, body {
     width: 100%;
     color: #FFF;
     font-weight: bold;
+    margin-top: 20px;
 }
 
 #submit:hover {
