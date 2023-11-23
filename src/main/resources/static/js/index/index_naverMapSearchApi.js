@@ -48,6 +48,23 @@ function searchCoordinateToAddress(latlng) {
     });
 }
 
+// 도로명 주소 서버로 전송
+function addressToServer(address) {
+    $.ajax({
+        type: "POST",
+        url: "/process-address",
+        contentType: "application/json;charset=UTF-8",
+        data: JSON.stringify({ address: address }),
+        success: function(response) {
+            console.log("서버 응답: " + response);
+            $("#address").val(address);
+        },
+        error: function(error) {
+            console.error("에러 발생: " + JSON.stringify(error));
+        }
+    });
+}
+
 function searchAddressToCoordinate(address) {
     naver.maps.Service.geocode({
         query: address
@@ -64,10 +81,13 @@ function searchAddressToCoordinate(address) {
             item = response.v2.addresses[0],
             point = new naver.maps.Point(item.x, item.y);
 
+
         if (item.roadAddress) {
             htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
-
+            let address = item.roadAddress.replace('[도로명 주소] ', ''); // '[도로명 주소] ' 문자열 제외
+            addressToServer(address);
         }
+
 
         if (item.jibunAddress) {
             htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
@@ -76,7 +96,6 @@ function searchAddressToCoordinate(address) {
         if (item.englishAddress) {
             htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
         }
-        console.log(item.roadAddress)
 
         infoWindow.setContent([
             '<div style="padding:10px;min-width:200px;line-height:150%;">',
@@ -89,6 +108,15 @@ function searchAddressToCoordinate(address) {
         infoWindow.open(map, point);
     });
 }
+
+// 주소 검색 버튼 클릭 이벤트 - 버튼 클릭시에도 검색
+$("#address-search").click(function() {
+    let searchedAddress = $("#address").val(); // 현재 입력란에 입력된 주소 가져오기
+    if (searchedAddress.trim() !== "") { // 입력된 주소가 비어 있지 않으면 naver 메서드
+        searchAddressToCoordinate(searchedAddress);
+    }
+});
+
 
 function initGeocoder() {
     map.addListener('click', function(e) {
@@ -109,7 +137,7 @@ function initGeocoder() {
         searchAddressToCoordinate($('#address').val());
     });
 
-    searchAddressToCoordinate('정자동 178-1');
+    // searchAddressToCoordinate('정자동 178-1');
 }
 
 function makeAddress(item) {
