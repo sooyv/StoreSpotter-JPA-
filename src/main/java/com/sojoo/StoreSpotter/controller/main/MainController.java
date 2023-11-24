@@ -42,6 +42,8 @@ public class MainController {
         String sido = (findsido != -1) ? address.substring(12, findsido) : address;
         System.out.println(sido);
 
+        dataRecommendService.selectSido(sido);
+
     }
 
 }

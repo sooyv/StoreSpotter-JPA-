@@ -8,4 +8,6 @@ import java.util.List;
 @Mapper
 public interface RegionMapper {
     List<Region> selectRegionList() throws Exception;
+
+    String selectSidoCode(String region_name);
 }
