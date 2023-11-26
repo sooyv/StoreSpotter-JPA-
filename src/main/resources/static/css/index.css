@@ -157,7 +157,34 @@ body {
     border-radius : 10px;
 }
 
+/*
+#distance{
+    text-align: center;
+}
 
+#dist-select{
+    width: 300px;
+    height: 20px;
+    accent-color: #41637d;
+}
+datalist{
+    justify-content: center;
+    grid-column-gap: 44px;
+    display: grid;
+    grid-auto-flow: column;
+    width:370px;
+}
+
+
+.tick {
+    position: relative;
+    width: 1px;
+    height: 5px;
+    background-color: #333;
+    display: inline-block;
+    margin-right: 10px;
+}
+*/
 
 
 

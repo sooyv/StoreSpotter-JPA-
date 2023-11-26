@@ -4,13 +4,12 @@ import com.sojoo.StoreSpotter.dao.apiToDb.IndustryMapper;
 import com.sojoo.StoreSpotter.service.apiToDb.IndustryService;
 import com.sojoo.StoreSpotter.service.apiToDb.RegionService;
 import com.sojoo.StoreSpotter.service.storePair.DataPairService;
+import com.sojoo.StoreSpotter.dto.storePair.DataRecommend;
 import com.sojoo.StoreSpotter.service.storePair.DataRecommendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RestController
 public class MainController {
@@ -36,33 +35,33 @@ public class MainController {
     public void chooseIndust (@RequestParam("indust") String indust,
             @RequestParam("region") String region, @RequestParam("dist") String dist) {
 
-        System.out.println("indust : "+ indust);
+        System.out.println("indust : " + indust);
         String indust_id = industryService.industryNameToCode(indust);
         System.out.println("indust : " + indust_id);
 
-        System.out.println("region : "+ region);
+        System.out.println("region : " + region);
         String region_name = sido(region);
         String region_fk = regionService.regionNameToCode(region_name);
         System.out.println("region_fk : " + region_fk);
 
         dist = String.valueOf(dataRecommendService.avgDistance(indust_id, region_fk));
         System.out.println("dist : " + dist);
+    }
 
 //        dataRecommendService.selectPairByDist(indust, region, dist);
-    }
 
-    // 주소선택 시 Ajax
-    @PostMapping("/process-address")
-    public void selectRegionCode(@RequestBody String address) {
-        System.out.println(address);
-        String region_name = sido(address);
+        // 주소선택 시 Ajax
+        @PostMapping("/process-address")
+        public void selectRegionCode (@RequestBody String address){
+            System.out.println(address);
+            String region_name = sido(address);
 
-        // region_id 가져오기
-        regionService.regionNameToCode(region_name);
-    }
+            // region_id 가져오기
+            regionService.regionNameToCode(region_name);
+        }
 
     // 주소 시도만 자르기
-    public String sido(String address) {
+    public String sido (String address){
         String region_name = "";
 
         if (address.contains("address")) {
@@ -77,4 +76,5 @@ public class MainController {
 
         return region_name;
     }
+
 }

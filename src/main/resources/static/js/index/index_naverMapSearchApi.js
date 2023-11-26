@@ -8,6 +8,8 @@ var infoWindow = new naver.maps.InfoWindow({
     anchorSkew: true
 });
 
+naver.maps.Circle
+
 map.setCursor('pointer');
 
 function searchCoordinateToAddress(latlng) {
@@ -133,8 +135,12 @@ function initGeocoder() {
 
     $('#map-search').on('click', function(e) {
         e.preventDefault();
+        searchAddressToCoordinate($('#address').val())
+        // var search_address = searchAddressToCoordinate($('#address').val());
 
-        searchAddressToCoordinate($('#address').val());
+
+
+
     });
 
     // searchAddressToCoordinate('정자동 178-1');
@@ -213,4 +219,10 @@ function checkLastString (word, lastString) {
 function hasAddition (addition) {
     return !!(addition && addition.value);
 }
+
+
+
+
+
+
 naver.maps.onJSContentLoaded = initGeocoder;

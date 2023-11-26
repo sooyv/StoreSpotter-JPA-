@@ -14,17 +14,12 @@ $(".select-industry-detail").click(function() {
 });
 
 $("#submit").click(function() {
-    // let indust_id = "";
-    //
-    // if ($(this).text() === "편의점") {
-    //     indust_id = "G20405";
-    // } else if ($(this).text() === "카페") {
-    //     indust_id = "I21201";
-    // }
-    let indust = $('#select-industry .select-industry-detail.selected').text();
-    let region = $('#address').val();
-    console.log(indust, region)
-    let dist = "";
+
+    // let indust = $('#select-industry .select-industry-detail.selected').text();
+    // let region = $('#address').val();
+    let indust = "G20405";
+    let region = "11";
+    let dist = "200";
 
     // AJAX 요청
     $.ajax({
@@ -36,7 +31,38 @@ $("#submit").click(function() {
             dist: dist
         },
         success: function(response) {
-            console.log("서버 응답: " + response);
+            console.log("서버 응답: " + "success");
+            var coordinates = response.map(function(item) {
+
+                var coordinatesString = item.center_coor.match(/\(([^)]+)\)/)[1];
+                var coordinatesArray = coordinatesString.split(' ');
+
+                return {
+                    x: parseFloat(coordinatesArray[0]),  // 경도
+                    y: parseFloat(coordinatesArray[1])   // 위도
+                };
+            });
+            console.log(coordinates)
+
+
+            function drawCirclesOnMap(coordinates) {
+                for (var i = 0; i < coordinates.length; i++) {
+                    var circle = new naver.maps.Circle({
+                        map: map,
+                        center: new naver.maps.LatLng(coordinates[i].y, coordinates[i].x),
+                        radius: 100,
+                        fillColor: 'crimson',
+                        fillOpacity: 0.8
+                    });
+                }
+
+            }
+
+            // 여기서 coordinates를 이용하여 지도에 원을 그리는 로직을 추가할 수 있습니다.
+            drawCirclesOnMap(coordinates);
+
+
+
         },
         error: function(error) {
             console.error("에러 발생: " + JSON.stringify(error));
@@ -111,6 +137,13 @@ document.getElementById("side-bar-slide-btn").addEventListener("click", function
         });
     }
 });
+
+// const distSelect = document.getElementById('dist-select');
+// const distValue = document.getElementById('dist-value');
+//
+// distSelect.addEventListener('input', function() {
+//     distValue.value = this.value;
+// });
 
 
 
