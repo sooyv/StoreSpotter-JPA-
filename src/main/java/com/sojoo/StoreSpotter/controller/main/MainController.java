@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 
 @RestController
 public class MainController {
@@ -32,8 +34,9 @@ public class MainController {
 
     // 전체 검색 시 Ajax
     @GetMapping("/search/recommend")
-    public void chooseIndust (@RequestParam("indust") String indust,
-            @RequestParam("region") String region, @RequestParam("dist") String dist) {
+    public List<DataRecommend> chooseIndust (@RequestParam("indust") String indust,
+                                             @RequestParam("region") String region,
+                                             @RequestParam("dist") String dist) {
 
         System.out.println("indust : " + indust);
         String indust_id = industryService.industryNameToCode(indust);
@@ -44,21 +47,23 @@ public class MainController {
         String region_fk = regionService.regionNameToCode(region_name);
         System.out.println("region_fk : " + region_fk);
 
-        dist = String.valueOf(dataRecommendService.avgDistance(indust_id, region_fk));
         System.out.println("dist : " + dist);
 
-        // dataRecommendService.selectPairByDist(indust, region, dist);
+        return dataRecommendService.selectPairByDist(indust, region, dist);
     }
 
-        // 주소선택 시 Ajax
-        @PostMapping("/process-address")
-        public void selectRegionCode (@RequestBody String address){
-            System.out.println(address);
-            String region_name = sido(address);
+    // 주소선택 시 Ajax
+    @PostMapping("/process-address")
+    public String selectRegionCode (@RequestBody String address){
+        System.out.println(address);
+        String region_name = sido(address);
 
-            // region_id 가져오기
-            regionService.regionNameToCode(region_name);
-        }
+        // region_id 가져오기
+        String region_fk = regionService.regionNameToCode(region_name);
+        String indust_id = "G20405";
+        return String.valueOf(dataRecommendService.avgDistance(indust_id, region_fk));
+
+    }
 
     // 주소 시도만 자르기
     public String sido (String address){

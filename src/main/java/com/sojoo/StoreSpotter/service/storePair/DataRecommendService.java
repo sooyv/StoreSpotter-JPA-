@@ -22,18 +22,17 @@ public class DataRecommendService {
     }
 
 
-    public void selectPairByDist(String indust_fk, String dist, String indust) {
+    public List<DataRecommend> selectPairByDist(String indust_fk, String dist, String indust) {
 //        String indust_id = String.valueOf("G20405");
 //        String region_fk = String.valueOf("11");
 //        String dist = String.valueOf("200");
-        System.out.println(dataRecommendMapper.selectByDist(indust_fk, dist, indust));
+        return dataRecommendMapper.selectByDist(indust_fk, dist, indust);
     }
 
 
     // 지역별 평균거리
     public Double avgDistance(String indust_id, String region_fk) {
-        Double dist = dataRecommendMapper.avgDist(indust_id, region_fk);
-        return dist;
+        return dataRecommendMapper.avgDist(indust_id, region_fk);
     }
 
 }

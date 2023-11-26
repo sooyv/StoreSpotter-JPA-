@@ -15,11 +15,10 @@ $(".select-industry-detail").click(function() {
 
 $("#submit").click(function() {
 
-    // let indust = $('#select-industry .select-industry-detail.selected').text();
-    // let region = $('#address').val();
-    let indust = "G20405";
-    let region = "11";
-    let dist = "200";
+    let indust = $('#select-industry .select-industry-detail.selected').text();
+    let region = $('#address').val();
+    let dist = $('#dist-value').text();
+
 
     // AJAX 요청
     $.ajax({
@@ -110,6 +109,8 @@ $(document).ready(function() {
 });
 
 
+
+
 // 초기 상태 설정
 sideBar.style.width = "378px";
 slideBtn.style.transform = "rotate(-180deg)";
@@ -138,12 +139,12 @@ document.getElementById("side-bar-slide-btn").addEventListener("click", function
     }
 });
 
-// const distSelect = document.getElementById('dist-select');
-// const distValue = document.getElementById('dist-value');
-//
-// distSelect.addEventListener('input', function() {
-//     distValue.value = this.value;
-// });
+const distSelect = document.getElementById('dist-select');
+const distValue = document.getElementById('dist-value');
+
+distSelect.addEventListener('input', function() {
+    distValue.value = this.value;
+});
 
 
 
