@@ -52,13 +52,20 @@ function searchCoordinateToAddress(latlng) {
 
 // 도로명 주소 서버로 전송
 function addressToServer(address) {
+    let indust = $('#select-industry .select-industry-detail.selected').text();
+
     $.ajax({
-        type: "POST",
-        url: "/process-address",
-        contentType: "application/json;charset=UTF-8",
-        data: JSON.stringify({ address: address }),
-        success: function(response) {
-            console.log("서버 응답: " + response);
+        type: "GET",
+        url: "/avg-dist",
+        data:
+        {
+            address: address,
+            indust : indust
+        },
+        success: function(avgDist) {
+            console.log("서버 응답 - avgDist: " + avgDist);
+
+
             $("#address").val(address);
         },
         error: function(error) {

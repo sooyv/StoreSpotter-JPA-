@@ -7,8 +7,7 @@ const sideElems = document.querySelectorAll(".side-elem");
 // const searchBtn = document.getElementById("search-btn");
 
 
-
-let indust = "";
+let indust = ""
 $(".select-industry-detail").click(function() {
    indust = $(this).text();
 });
@@ -18,7 +17,7 @@ $("#submit").click(function() {
     let indust = $('#select-industry .select-industry-detail.selected').text();
     let region = $('#address').val();
     let dist = $('#dist-value').text();
-
+    console.log(dist);
 
     // AJAX 요청
     $.ajax({
@@ -30,7 +29,7 @@ $("#submit").click(function() {
             dist: dist
         },
         success: function(response) {
-            console.log("서버 응답: " + "success");
+            console.log("서버 응답: " + response);
 
             var coordinates = response.map(function(item) {
 
@@ -42,8 +41,6 @@ $("#submit").click(function() {
                     y: parseFloat(coordinatesArray[1])   // 위도
                 };
             });
-            console.log(coordinates)
-
 
             function drawCirclesOnMap(coordinates) {
                 for (var i = 0; i < coordinates.length; i++) {
@@ -55,7 +52,6 @@ $("#submit").click(function() {
                         fillOpacity: 0.8
                     });
                 }
-
             }
 
             // 여기서 coordinates를 이용하여 지도에 원을 그리는 로직을 추가할 수 있습니다.

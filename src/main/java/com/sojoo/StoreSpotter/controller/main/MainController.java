@@ -36,6 +36,7 @@ public class MainController {
                                              @RequestParam("region") String region,
                                              @RequestParam("dist") String dist) {
 
+
         String indust_id = industryService.industryNameToCode(indust);
         System.out.println(indust_id);
         String region_name = sido(region);
@@ -46,32 +47,27 @@ public class MainController {
     }
 
     // 주소선택 시 Ajax
-    @PostMapping("/process-address")
-    public String selectRegionCode (@RequestBody String address){
+    @GetMapping ("/avg-dist")
+    public String selectRegionCode (@RequestParam String address, @RequestParam String indust) {
+
+        // region_fk, indust_id 가져오기
+        String indust_id = industryService.industryNameToCode(indust);
+        System.out.println(indust_id);
 
         System.out.println(address);
         String region_name = sido(address);
-
-        // region_id 가져오기
+        System.out.println(region_name);
         String region_fk = regionService.regionNameToCode(region_name);
-        String indust_id = "G20405";
+        System.out.println(region_fk);
+
         return String.valueOf(dataRecommendService.avgDistance(indust_id, region_fk));
 
     }
 
     // 주소 시도만 자르기
-    public String sido (String address){
-        String region_name = "";
-
-        if (address.contains("address")) {
-            // "address" 문자열이 포함된 주소 선택 시 (Ajax 값이라면)
+    public String sido (String address) {
             int findsido = address.indexOf(" ");
-            region_name = (findsido != -1) ? address.substring(12, findsido) : address;
-        } else {
-            // "address" 문자열이 포함되지 않은 전체 검색 시 값
-            int findsido = address.indexOf(" ");
-            region_name = (findsido != -1) ? address.substring(0, findsido) : address;
-        }
+            String region_name = (findsido != -1) ? address.substring(0, findsido) : address;
 
         return region_name;
     }
