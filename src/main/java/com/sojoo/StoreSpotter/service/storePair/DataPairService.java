@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class DataPairService {
         this.industryMapper = industryMapper;
     }
 
+    @Transactional
     public void save_industryPairData() throws Exception{
         try{
             long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기

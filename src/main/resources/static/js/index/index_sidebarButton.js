@@ -17,7 +17,8 @@ $("#submit").click(function() {
 
     let indust = $('#select-industry .select-industry-detail.selected').text();
     let region = $('#address').val();
-    let dist = "";
+    let dist = $('#dist-value').text();
+
 
     // AJAX 요청
     $.ajax({
@@ -30,6 +31,7 @@ $("#submit").click(function() {
         },
         success: function(response) {
             console.log("서버 응답: " + "success");
+
             var coordinates = response.map(function(item) {
 
                 var coordinatesString = item.center_coor.match(/\(([^)]+)\)/)[1];
@@ -48,7 +50,7 @@ $("#submit").click(function() {
                     var circle = new naver.maps.Circle({
                         map: map,
                         center: new naver.maps.LatLng(coordinates[i].y, coordinates[i].x),
-                        radius: 100,
+                        radius: Math.floor(dist / 2),
                         fillColor: 'crimson',
                         fillOpacity: 0.8
                     });
@@ -58,9 +60,6 @@ $("#submit").click(function() {
 
             // 여기서 coordinates를 이용하여 지도에 원을 그리는 로직을 추가할 수 있습니다.
             drawCirclesOnMap(coordinates);
-
-
-
         },
         error: function(error) {
             console.error("에러 발생: " + JSON.stringify(error));
@@ -108,6 +107,8 @@ $(document).ready(function() {
 });
 
 
+
+
 // 초기 상태 설정
 sideBar.style.width = "378px";
 slideBtn.style.transform = "rotate(-180deg)";
@@ -142,6 +143,8 @@ const distValue = document.getElementById('dist-value');
 distSelect.addEventListener('input', function() {
     distValue.value = this.value;
 });
+
+
 
 
 

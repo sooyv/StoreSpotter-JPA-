@@ -13,6 +13,7 @@ import org.jdom2.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -46,17 +47,10 @@ public class StoreInfoService {
             storeInfoMapper.deleteIndustTable(indust_id);
         }
 
-//        for (int i = 0; i < industryList.size(); i++) {
-//            for (int j = 0; j < regionList.size(); j++) {
-//                String indust_id = industryList.get(i).getIndust_id();
-//                int region_id = regionList.get(j).getRegion_id();
-//
-//                storeInfoMapper.deleteIndustRegionTable(indust_id, region_id);
-//            }
-//        }
     }
 
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
+    @Transactional
     public List<Industry> industrySave() throws Exception {
         System.out.println("industrySave method start");
         long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기

@@ -1,0 +1,11 @@
+#tab-bar{
+    margin-top : 20px;
+}
+
+#store-info{
+    width: 300px;
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
