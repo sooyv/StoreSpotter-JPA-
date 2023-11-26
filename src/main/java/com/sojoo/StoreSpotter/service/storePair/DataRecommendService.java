@@ -15,14 +15,10 @@ import java.util.List;
 public class DataRecommendService {
 
     private final DataRecommendMapper dataRecommendMapper;
-    private final RegionMapper regionMapper;
-    private final IndustryMapper industryMapper;
 
     @Autowired
-    public DataRecommendService(DataRecommendMapper dataRecommendMapper, RegionMapper regionMapper, IndustryMapper industryMapper){
+    public DataRecommendService(DataRecommendMapper dataRecommendMapper){
         this.dataRecommendMapper = dataRecommendMapper;
-        this.regionMapper = regionMapper;
-        this.industryMapper = industryMapper;
     }
 
 

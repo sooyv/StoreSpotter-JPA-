@@ -46,9 +46,9 @@ public class MainController {
 
         dist = String.valueOf(dataRecommendService.avgDistance(indust_id, region_fk));
         System.out.println("dist : " + dist);
-    }
 
-//        dataRecommendService.selectPairByDist(indust, region, dist);
+        // dataRecommendService.selectPairByDist(indust, region, dist);
+    }
 
         // 주소선택 시 Ajax
         @PostMapping("/process-address")
