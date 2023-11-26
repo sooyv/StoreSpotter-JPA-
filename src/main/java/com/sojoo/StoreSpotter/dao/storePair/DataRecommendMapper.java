@@ -10,4 +10,6 @@ import java.util.List;
 public interface DataRecommendMapper {
     List<DataRecommend> selectByDist(@Param("region_fk") String region_fk, @Param("dist") String dist, @Param("indust_id") String indust_id);
 
+    Double avgDist(@Param("indust_id") String indust_id, String region_fk);
+
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sojoo.StoreSpotter.dao.storePair.DataRecommendMapper">
+    <select id="selectByDist">
+        <choose>
+            <when test="indust_id = 'G20405'">
+                select
+                st_nm,
+                com_nm,
+                dist,
+                ST_AsText(ST_Centroid(LineString((st_coor), (com_coor)))) AS center_coor,
+                pair_id
+                from convenience_pair
+                where region_fk = #{region_fk} and convenience_pair.dist > #{dist}
+            </when>
+            <when test="indsut_id ='I21201'">
+                select
+                st_nm,
+                com_nm,
+                dist,
+                ST_AsText(ST_Centroid(LineString((st_coor), (com_coor)))) AS center_coor,
+                pair_id
+                from cafe_pair
+                where region_fk = #{region_fk} and cafe_pair.dist > #{dist}
+            </when>
+        </choose>
+    </select>
+
+    <select id="avgDist">
+        <choose>
+            <when test="indust_id == 'G20405'">
+                SELECT AVG(dist) AS dist
+                FROM convenience_pair
+                WHERE region_fk = #{region_fk}
+            </when>
+            <when test="indust_id == 'I21201'">
+                SELECT AVG(dist) AS dist
+                FROM cafe_pair
+                WHERE region_fk = #{region_fk}
+            </when>
+        </choose>
+    </select>
+
+
+</mapper>

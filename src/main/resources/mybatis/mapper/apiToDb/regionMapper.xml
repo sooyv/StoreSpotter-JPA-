@@ -9,7 +9,7 @@
         FROM region
     </select>
 
-    <select id="selectSidoCode" parameterType="com.sojoo.StoreSpotter.dto.apiToDb.Region">
+    <select id="selectRegionCode" parameterType="com.sojoo.StoreSpotter.dto.apiToDb.Region">
         SELECT region_id
         FROM region
         WHERE region_name = #{region_name}

@@ -9,5 +9,5 @@ import java.util.List;
 public interface RegionMapper {
     List<Region> selectRegionList() throws Exception;
 
-    String selectSidoCode(String region_name);
+    String selectRegionCode(String region_name);
 }

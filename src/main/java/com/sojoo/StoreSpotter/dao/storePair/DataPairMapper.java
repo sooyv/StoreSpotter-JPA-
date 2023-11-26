@@ -4,7 +4,6 @@ import com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo;
 import com.sojoo.StoreSpotter.dto.storePair.PairData;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.data.util.Pair;
 
 import java.util.List;
 

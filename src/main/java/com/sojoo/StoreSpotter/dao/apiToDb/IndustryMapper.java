@@ -8,4 +8,7 @@ import java.util.List;
 @Mapper
 public interface IndustryMapper {
     List<Industry> selectIndustryList() throws Exception;
+
+    String selectIndustryCode(String indust_name);
+
 }

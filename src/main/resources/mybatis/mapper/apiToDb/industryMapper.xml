@@ -8,4 +8,10 @@
         SELECT indust_id, indust_name
         FROM industry
     </select>
+
+    <select id="selectIndustryCode" parameterType="com.sojoo.StoreSpotter.dto.apiToDb.Industry">
+        SELECT indust_id
+        FROM industry
+        WHERE indust_name = #{indust_name}
+    </select>
 </mapper>

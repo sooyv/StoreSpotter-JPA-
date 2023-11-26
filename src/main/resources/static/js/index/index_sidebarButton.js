@@ -4,13 +4,11 @@
 const sideBar = document.getElementById("side-bar");
 const slideBtn = document.getElementById("slide-btn");
 const sideElems = document.querySelectorAll(".side-elem");
-const searchBtn = document.getElementById("search-btn");
+// const searchBtn = document.getElementById("search-btn");
 
 
 
 let indust = "";
-
-// 업종명 받아오기
 $(".select-industry-detail").click(function() {
    indust = $(this).text();
 });

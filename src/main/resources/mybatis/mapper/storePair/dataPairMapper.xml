@@ -19,7 +19,6 @@
     </select>
 
 
-
     <insert id="insertPairData" keyProperty="pair_id">
         <choose>
             <when test="indust_id == 'G20405'">
@@ -66,6 +65,7 @@
             </when>
         </choose>
     </select>
+
 
     <delete id="deleteDuplicatePair">
         <choose>
