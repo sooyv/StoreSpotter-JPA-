@@ -91,6 +91,7 @@ function searchAddressToCoordinate(address) {
             point = new naver.maps.Point(item.x, item.y);
 
 
+
         if (item.roadAddress) {
             htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
             let address = item.roadAddress.replace('[도로명 주소] ', ''); // '[도로명 주소] ' 문자열 제외
@@ -115,11 +116,13 @@ function searchAddressToCoordinate(address) {
 
         map.setCenter(point);
         infoWindow.open(map, point);
+        console.log(response)
     });
 }
 
 // 주소 검색 버튼 클릭 이벤트 - 버튼 클릭시에도 검색
 $("#address-search").click(function() {
+
     let searchedAddress = $("#address").val(); // 현재 입력란에 입력된 주소 가져오기
     if (searchedAddress.trim() !== "") { // 입력된 주소가 비어 있지 않으면 naver 메서드
         searchAddressToCoordinate(searchedAddress);
@@ -138,6 +141,7 @@ function initGeocoder() {
         if (keyCode === 13) { // Enter Key
             searchAddressToCoordinate($('#address').val());
         }
+
     });
 
     $('#map-search').on('click', function(e) {
@@ -225,8 +229,6 @@ function hasAddition (addition) {
 }
 
 
-
-
-
-
 naver.maps.onJSContentLoaded = initGeocoder;
+
+

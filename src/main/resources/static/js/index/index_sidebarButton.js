@@ -12,12 +12,16 @@ $(".select-industry-detail").click(function() {
    indust = $(this).text();
 });
 
+
+// let circles=[]
+
 $("#submit").click(function() {
+
 
     let indust = $('#select-industry .select-industry-detail.selected').text();
     let region = $('#address').val();
     let dist = $('#dist-value').text();
-    console.log(dist);
+
 
     // AJAX 요청
     $.ajax({
@@ -29,7 +33,20 @@ $("#submit").click(function() {
             dist: dist
         },
         success: function(response) {
-            console.log("서버 응답: " + response);
+            console.log("서버 응답: " + "success");
+
+            // var map = new naver.maps.Map(document.getElementById('map'));
+
+            searchAddressToCoordinate($('#address').val());
+
+
+            // if(circles){
+            //     console.log("삭제시작")
+            //     for (let circle of circles){
+            //         circle.setMap(null);
+            //     }
+            //     circles = []
+            // }
 
             var coordinates = response.map(function(item) {
 
@@ -44,18 +61,22 @@ $("#submit").click(function() {
 
             function drawCirclesOnMap(coordinates) {
                 for (var i = 0; i < coordinates.length; i++) {
-                    var circle = new naver.maps.Circle({
+                        var circle = new naver.maps.Circle({
                         map: map,
                         center: new naver.maps.LatLng(coordinates[i].y, coordinates[i].x),
                         radius: dist / 2,
                         fillColor: 'crimson',
                         fillOpacity: 0.8
                     });
+                    // circles.push(circle)
                 }
             }
 
             // 여기서 coordinates를 이용하여 지도에 원을 그리는 로직을 추가할 수 있습니다.
             drawCirclesOnMap(coordinates);
+
+
+
         },
         error: function(error) {
             console.error("에러 발생: " + JSON.stringify(error));
@@ -139,10 +160,6 @@ const distValue = document.getElementById('dist-value');
 distSelect.addEventListener('input', function() {
     distValue.value = this.value;
 });
-
-
-
-
 
 
 
