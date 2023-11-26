@@ -50,7 +50,7 @@ $("#submit").click(function() {
                     var circle = new naver.maps.Circle({
                         map: map,
                         center: new naver.maps.LatLng(coordinates[i].y, coordinates[i].x),
-                        radius: Math.floor(dist / 2),
+                        radius: dist / 2,
                         fillColor: 'crimson',
                         fillOpacity: 0.8
                     });
