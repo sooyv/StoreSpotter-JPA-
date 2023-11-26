@@ -22,11 +22,12 @@ public class DataRecommendService {
     }
 
 
-    public List<DataRecommend> selectPairByDist(String indust_fk, String dist, String indust) {
+    public List<DataRecommend> selectPairByDist(String indust_id, String region_fk, String dist) {
 //        String indust_id = String.valueOf("G20405");
 //        String region_fk = String.valueOf("11");
 //        String dist = String.valueOf("200");
-        return dataRecommendMapper.selectByDist(indust_fk, dist, indust);
+        System.out.println("data recommend service 실행");
+        return dataRecommendMapper.selectByDist(indust_id, region_fk, dist);
     }
 
 

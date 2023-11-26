@@ -38,18 +38,12 @@ public class MainController {
                                              @RequestParam("region") String region,
                                              @RequestParam("dist") String dist) {
 
-        System.out.println("indust : " + indust);
-        String indust_id = industryService.industryNameToCode(indust);
-        System.out.println("indust : " + indust_id);
 
-        System.out.println("region : " + region);
+        String indust_id = industryService.industryNameToCode(indust);
         String region_name = sido(region);
         String region_fk = regionService.regionNameToCode(region_name);
-        System.out.println("region_fk : " + region_fk);
 
-        System.out.println("dist : " + dist);
-
-        return dataRecommendService.selectPairByDist(indust, region, dist);
+        return dataRecommendService.selectPairByDist(region_fk, dist, indust_id);
     }
 
     // 주소선택 시 Ajax
