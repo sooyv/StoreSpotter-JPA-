@@ -138,9 +138,6 @@ function initGeocoder() {
         searchAddressToCoordinate($('#address').val())
         // var search_address = searchAddressToCoordinate($('#address').val());
 
-
-
-
     });
 
     // searchAddressToCoordinate('정자동 178-1');

@@ -38,33 +38,25 @@
                 <button id="address-search" type="button"><img src="/style/돋보기.png"></button>
             </div>
         </div>
-        <div class="side-elem">
-            <div class="side-elem-title">
-                거리 선택
-            </div>
-            <div class="dist-slide-bar">
-                <input type="range" class="slider">
+
+        <div>
+            <div class="side-elem">
+                <div class="side-elem-title">
+                    거리 선택
+                </div>
+                <div id="distance">
+                    <input id="dist-select" type="range" min="0" max="300" list="tickmarks" />
+                    <datalist id="tickmarks">
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="150">150</option>
+                        <option value="200">200</option>
+                        <option value="250">250</option>
+                    </datalist>
+                    <output id="dist-value"></output>
+                </div>
             </div>
         </div>
-
-<!--        <div>-->
-<!--            <div class="side-elem">-->
-<!--                <div class="side-elem-title">-->
-<!--                    거리 선택-->
-<!--                </div>-->
-<!--                <div id="distance">-->
-<!--                    <input id="dist-select" type="range" min="0" max="300" list="tickmarks" />-->
-<!--                    <datalist id="tickmarks">-->
-<!--                        <option value="50">50</option>-->
-<!--                        <option value="100">100</option>-->
-<!--                        <option value="150">150</option>-->
-<!--                        <option value="200">200</option>-->
-<!--                        <option value="250">250</option>-->
-<!--                    </datalist>-->
-<!--                    <output id="dist-value"></output>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
 
         <div id="selectedValue"></div>
         <div class="side-elem">

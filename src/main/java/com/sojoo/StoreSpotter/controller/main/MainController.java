@@ -37,28 +37,28 @@ public class MainController {
 
         System.out.println("indust : " + indust);
         String indust_id = industryService.industryNameToCode(indust);
-        System.out.println("indust : " + indust_id);
+        System.out.println("indust_id : " + indust_id);
 
         System.out.println("region : " + region);
         String region_name = sido(region);
         String region_fk = regionService.regionNameToCode(region_name);
         System.out.println("region_fk : " + region_fk);
 
-        dist = String.valueOf(dataRecommendService.avgDistance(indust_id, region_fk));
+//        dist = String.valueOf(dataRecommendService.avgDistance(indust_id, region_fk));
         System.out.println("dist : " + dist);
 
-        // dataRecommendService.selectPairByDist(indust, region, dist);
+//        dataRecommendService.selectPairByDist(indust, region, dist);
     }
 
-        // 주소선택 시 Ajax
-        @PostMapping("/process-address")
-        public void selectRegionCode (@RequestBody String address){
-            System.out.println(address);
-            String region_name = sido(address);
+    // 주소선택 시 Ajax
+    @PostMapping("/process-address")
+    public void selectRegionCode (@RequestBody String address){
+        System.out.println(address);
+        String region_name = sido(address);
 
-            // region_id 가져오기
-            regionService.regionNameToCode(region_name);
-        }
+        // region_id 가져오기
+        regionService.regionNameToCode(region_name);
+    }
 
     // 주소 시도만 자르기
     public String sido (String address){
