@@ -21,7 +21,17 @@ $("#submit").click(function() {
     let indust = $('#select-industry .select-industry-detail.selected').text();
     let region = $('#address').val();
     let dist = $('#dist-value').text();
+    var map = new naver.maps.Map('map');
+    naver.maps.Service.geocode({
+        query: region
+    }, function(status, response) {
+            item = response.v2.addresses[0];
+            point = new naver.maps.Point(item.x, item.y);
 
+
+        map.setCenter(point); // 중심 좌표 이동
+        map.setZoom(15);     // 줌 레벨 변경
+    })
 
     // AJAX 요청
     $.ajax({
@@ -35,25 +45,7 @@ $("#submit").click(function() {
         success: function(response) {
             console.log("서버 응답: " + "success");
 
-            var map = new naver.maps.Map(document.getElementById('map'));
 
-            naver.maps.Service.geocode({
-                    query: region
-                }, function(status, response) {
-                if (status === naver.maps.Service.Status.ERROR) {
-                    return alert('Something Wrong!');
-                }
-                if (response.v2.meta.totalCount === 0) {
-                    return alert('totalCount' + response.v2.meta.totalCount);
-                }
-                var htmlAddresses = [],
-                    item = response.v2.addresses[0],
-                    point = new naver.maps.Point(item.x, item.y);
-
-
-                map.setCenter(point); // 중심 좌표 이동
-                map.setZoom(15);     // 줌 레벨 변경
-            })
 
             // if(circles){
             //     console.log("삭제시작")
