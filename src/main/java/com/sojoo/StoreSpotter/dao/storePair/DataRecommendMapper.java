@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface DataRecommendMapper {
-    List<DataRecommend> selectByDist(@Param("region_fk") String region_fk, @Param("dist") String dist, @Param("indust_id") String indust_id);
+    List<DataRecommend> selectByDist(@Param("indust_id") String indust_id, @Param("region_fk") String region_fk, @Param("dist") String dist);
 
     Double avgDist(@Param("indust_id") String indust_id, String region_fk);
 
