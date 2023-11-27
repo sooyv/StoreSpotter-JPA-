@@ -185,6 +185,15 @@ datalist{
     margin-right: 10px;
 }
 
+#show-avg-dist {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    display: none;
+    background-color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-bottom: solid 1px lightgrey;
+}
+
 .main{
     margin: 0 auto;
     text-align: center;

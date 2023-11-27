@@ -4,9 +4,10 @@
 const sideBar = document.getElementById("side-bar");
 const slideBtn = document.getElementById("slide-btn");
 const sideElems = document.querySelectorAll(".side-elem");
-// const searchBtn = document.getElementById("search-btn");
-
+// const showAvgDist = document.getElementById("show-avg-dist");
 //
+// showAvgDist.hide();
+
 let indust = ""
 // let region = ""
 
