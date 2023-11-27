@@ -167,10 +167,10 @@ $(document).ready(function() {
         }
     });
 
-    const distSelect = document.getElementById('dist-select');
+    const distSlider = document.getElementById('dist-slider');
     const distValue = document.getElementById('dist-value');
 
-    distSelect.addEventListener('input', function () {
+    distSlider.addEventListener('input', function () {
         distValue.value = this.value;
     });
 })

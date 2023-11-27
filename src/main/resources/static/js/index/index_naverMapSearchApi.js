@@ -68,7 +68,7 @@ function addressToServer(address) {
 
             $('#show-avg-dist').html(
                 '<p><b style="color: #e14242;">' + region + '</b>에 위치한 <b style="color: #e14242;">' + indust + '</b>의</p>' +
-                '<p>평균거리는 <b style="color: #e14242;">' + Math.round(avgDist, 0) + '</b>m 입니다.</p>');
+                '<p>평균거리는 <b style="color: #e14242;">' + Math.round(avgDist, 0) + 'm' + '</b> 입니다.</p>');
             $('#show-avg-dist').show();
             // $("#address").val(address);
         },
@@ -87,13 +87,13 @@ function searchAddressToCoordinate(address) {
         }
 
         if (response.v2.meta.totalCount === 0) {
-            return alert('totalCount' + response.v2.meta.totalCount);
+            // return alert('totalCount' + response.v2.meta.totalCount);
+            return alert('정확한 주소를 입력해 주세요.')
         }
 
         var htmlAddresses = [],
             item = response.v2.addresses[0],
             point = new naver.maps.Point(item.x, item.y);
-
 
 
         if (item.roadAddress) {
