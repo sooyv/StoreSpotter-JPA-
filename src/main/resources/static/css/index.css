@@ -118,7 +118,7 @@ html, body {
 }
 
 #address {
-    width: 75%;
+    width: 80%;
     height: 3rem;
     border-radius: 10px;
     border: solid 1px lightgray;
@@ -126,11 +126,11 @@ html, body {
 }
 
 #address-search {
-    width: 20%;
+    width: 15%;
     height: 3rem;
     border-radius: 10px;
     border: none;
-    background-color: #F2F2F2;
+    background-color: white;
     cursor: pointer;
 }
 
@@ -157,9 +157,16 @@ body {
     border-radius : 10px;
 }
 
+#select-dist {
+    display: none;
+}
 
 #distance{
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 #dist-slider{
@@ -167,9 +174,11 @@ body {
     height: 20px;
     accent-color: #41637d;
 }
+
 datalist{
     justify-content: center;
-    grid-column-gap: 44px;
+    /*grid-column-gap: 44px;*/
+    grid-column-gap: 20px;
     display: grid;
     grid-auto-flow: column;
     width:370px;

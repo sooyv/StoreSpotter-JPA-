@@ -50,9 +50,11 @@ function searchCoordinateToAddress(latlng) {
     });
 }
 
-// 도로명 주소 서버로 전송
+
+// 도로명 주소, 업종 서버로 전송
 function addressToServer(address) {
     let indust = $('#select-industry .select-industry-detail.selected').text();
+    let distList = [];
 
     $.ajax({
         type: "GET",
@@ -65,11 +67,71 @@ function addressToServer(address) {
         success: function(avgDist) {
             const findsido = address.indexOf(" ");
             const region = (findsido != -1) ? address.substring(0, findsido) : address;
+            let avgDistance = Math.round(avgDist, 0);
 
             $('#show-avg-dist').html(
                 '<p><b style="color: #e14242;">' + region + '</b>에 위치한 <b style="color: #e14242;">' + indust + '</b>의</p>' +
-                '<p>평균거리는 <b style="color: #e14242;">' + Math.round(avgDist, 0) + 'm' + '</b> 입니다.</p>');
+                '<p>평균거리는 <b style="color: #e14242;">' + avgDistance + 'm' + '</b> 입니다.</p>'
+            );
             $('#show-avg-dist').show();
+
+            // if (avgDist > 300) {
+            //     rowAppendDist(30)
+            //     overAppendDist(30)
+            // } else if (avgDist > 200) {
+            //     rowAppendDist(20)
+            //     overAppendDist(20)
+            // } else if (avgDist > 100) {
+            //     rowAppendDist(10)
+            //     overAppendDist(10)
+            // } else {
+            //     rowAppendDist(5)
+            //     overAppendDist(5)
+            // }
+            //
+            // function rowAppendDist(interval) {
+            //     for (let i = 3; i >= 1; i--) {
+            //         var tmp = `<option value="${avgDistance - (interval * i)}">${avgDistance - (interval * i)}</option>`;
+            //         distList.push(tmp);
+            //     }
+            //     distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
+            // }
+            //
+            // function overAppendDist(interval) {
+            //     for (let i = 1; i <= 3; i++) {
+            //         var tmp = `<option value="${avgDistance + (interval * i)}">${avgDistance + (interval * i)}</option>`;
+            //         distList.push(tmp);
+            //     }
+            // }
+            //
+            function appendDist(interval, direction) {
+                for (let i = 1; i <= 3; i++) {
+                    const value = (direction === 'over') ? avgDistance + (interval * i) : avgDistance - (interval * i);
+                    const tmp = `<option value="${value}">${value}</option>`;
+                    distList.push(tmp);
+                }
+            }
+
+            if (avgDist > 300) {
+                appendDist(30, 'row');
+                distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
+                appendDist(30, 'over');
+            } else if (avgDist > 200) {
+                appendDist(20, 'row');
+                distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
+                appendDist(20, 'over');
+            } else if (avgDist > 100) {
+                appendDist(10, 'row');
+                distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
+                appendDist(10, 'over');
+            } else {
+                appendDist(5, 'row');
+                distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
+                appendDist(5, 'over');
+            }
+            console.log(distList)
+
+            $('#select-dist').show();
             // $("#address").val(address);
         },
         error: function(error) {
@@ -79,6 +141,7 @@ function addressToServer(address) {
 }
 
 function searchAddressToCoordinate(address) {
+    var map = new naver.maps.Map('map');
     naver.maps.Service.geocode({
         query: address
     }, function(status, response) {
@@ -117,21 +180,25 @@ function searchAddressToCoordinate(address) {
             htmlAddresses.join('<br />'),
             '</div>'
         ].join('\n'));
-
+        const addbox = document.getElementById('address');
+        addbox.style.border = "solid 2px #41637d";
         map.setCenter(point);
         infoWindow.open(map, point);
-        console.log(response)
+
+        // console.log(item)
+        // console.log(point)
+        // console.log(response)
     });
 }
 
 // 주소 검색 버튼 클릭 이벤트 - 버튼 클릭시에도 검색
-$("#address-search").click(function() {
-
-    let searchedAddress = $("#address").val(); // 현재 입력란에 입력된 주소 가져오기
-    if (searchedAddress.trim() !== "") { // 입력된 주소가 비어 있지 않으면 naver 메서드
-        searchAddressToCoordinate(searchedAddress);
-    }
-});
+// $("#address-search").click(function() {
+//
+//     let searchedAddress = $("#address").val(); // 현재 입력란에 입력된 주소 가져오기
+//     if (searchedAddress.trim() !== "") { // 입력된 주소가 비어 있지 않으면 naver 메서드
+//         searchAddressToCoordinate(searchedAddress);
+//     }
+// });
 
 
 function initGeocoder() {
@@ -143,12 +210,13 @@ function initGeocoder() {
         var keyCode = e.which;
 
         if (keyCode === 13) { // Enter Key
+            var map = new naver.maps.Map('map');
             searchAddressToCoordinate($('#address').val());
         }
 
     });
 
-    $('#map-search').on('click', function(e) {
+    $('#address-search').on('click', function(e) {
         e.preventDefault();
         searchAddressToCoordinate($('#address').val())
         // var search_address = searchAddressToCoordinate($('#address').val());
