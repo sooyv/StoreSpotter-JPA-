@@ -112,6 +112,8 @@ function searchAddressToCoordinate(address) {
             htmlAddresses.join('<br />'),
             '</div>'
         ].join('\n'));
+        const addbox = document.getElementById('address');
+        addbox.style.border = "solid 2px #41637d";
         map.setCenter(point);
         infoWindow.open(map, point);
 

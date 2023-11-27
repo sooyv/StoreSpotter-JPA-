@@ -6,14 +6,17 @@ const slideBtn = document.getElementById("slide-btn");
 const sideElems = document.querySelectorAll(".side-elem");
 // const searchBtn = document.getElementById("search-btn");
 
-//
+
 let indust = ""
-// let region = ""
+const addbox = document.getElementById('address');
+const originalBorderStyle = addbox.style.border;
 
-// map 초기화 및 좌표 재설정
-function setcoord() {
-
+function handleInputValueChange() {
+    // 입력 상자의 값이 변경되면 원래 상태로 되돌림
+    addbox.style.border = originalBorderStyle;
 }
+addbox.addEventListener('input', handleInputValueChange);
+
 
 // 로딩중
 function loading(){
@@ -42,16 +45,17 @@ $("#submit").click(function() {
     let indust = $('#select-industry .select-industry-detail.selected').text();
     let region = $('#address').val();
     let dist = $('#dist-value').text();
+    const addbox = document.getElementById('address');
 
     // 선택된 업종이 없을 경우 알림 또는 다른 동작 수행
     if (!indust) {
-        alert('업종을 선택해주세요.');
-        return;
+        return alert('업종을 선택해주세요.');
     }
-
     if (!region) {
-        alert('주소를 선택해주세요.');
-        return;
+        return alert('주소를 선택해주세요.');
+    }
+    if (getComputedStyle(addbox).border !== "2px solid rgb(65, 99, 125)") {
+        return alert("주소 검색을 해주세요.")
     }
 
     else{
