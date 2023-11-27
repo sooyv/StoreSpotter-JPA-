@@ -13,25 +13,33 @@ $(".select-industry-detail").click(function() {
 });
 
 
-// let circles=[]
+let circles=[]
 
 $("#submit").click(function() {
+
+
+
 
 
     let indust = $('#select-industry .select-industry-detail.selected').text();
     let region = $('#address').val();
     let dist = $('#dist-value').text();
+
     var map = new naver.maps.Map('map');
-    naver.maps.Service.geocode({
-        query: region
-    }, function(status, response) {
+
+    // map 초기화 및 좌표 재설정
+    function refreshMap() {
+        naver.maps.Service.geocode({
+            query: region
+        }, function (status, response) {
             item = response.v2.addresses[0];
             point = new naver.maps.Point(item.x, item.y);
 
 
-        map.setCenter(point); // 중심 좌표 이동
-        map.setZoom(15);     // 줌 레벨 변경
-    })
+            map.setCenter(point); // 중심 좌표 이동
+            map.setZoom(15);     // 줌 레벨 변경
+        })
+    }
 
     // AJAX 요청
     $.ajax({
@@ -45,15 +53,24 @@ $("#submit").click(function() {
         success: function(response) {
             console.log("서버 응답: " + "success");
 
+            // 로딩중
+            const modalOverlay = document.getElementById('modal-overlay');
+            const modal = document.getElementById('modal');
 
+            modalOverlay.style.display = 'block';
+            modal.style.display = 'block';
 
-            // if(circles){
-            //     console.log("삭제시작")
-            //     for (let circle of circles){
-            //         circle.setMap(null);
-            //     }
-            //     circles = []
-            // }
+            // 모달에서 이벤트 전파 방지
+            modal.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+
+            setTimeout(function() {
+                modalOverlay.style.display = 'none';
+                modal.style.display = 'none';
+            }, 2000);
+
+            refreshMap();
 
             var coordinates = response.map(function(item) {
 
@@ -75,11 +92,9 @@ $("#submit").click(function() {
                         fillColor: 'crimson',
                         fillOpacity: 0.8
                     });
-                    // circles.push(circle)
                 }
             }
 
-            // 여기서 coordinates를 이용하여 지도에 원을 그리는 로직을 추가할 수 있습니다.
             drawCirclesOnMap(coordinates);
 
 
@@ -125,8 +140,6 @@ $(document).ready(function() {
             return;
         }
 
-        // 여기에 선택된 업종에 따른 추가적인 동작을 수행할 수 있습니다.
-        // console.log('선택된 업종:', selectedIndustry);
     });
 });
 
