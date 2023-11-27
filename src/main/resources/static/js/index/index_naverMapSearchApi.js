@@ -75,6 +75,7 @@ function addressToServer(address) {
 }
 
 function searchAddressToCoordinate(address) {
+    var map = new naver.maps.Map('map');
     naver.maps.Service.geocode({
         query: address
     }, function(status, response) {
@@ -89,8 +90,6 @@ function searchAddressToCoordinate(address) {
         var htmlAddresses = [],
             item = response.v2.addresses[0],
             point = new naver.maps.Point(item.x, item.y);
-
-
 
         if (item.roadAddress) {
             htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
@@ -113,21 +112,23 @@ function searchAddressToCoordinate(address) {
             htmlAddresses.join('<br />'),
             '</div>'
         ].join('\n'));
-
         map.setCenter(point);
         infoWindow.open(map, point);
-        console.log(response)
+
+        // console.log(item)
+        // console.log(point)
+        // console.log(response)
     });
 }
 
 // 주소 검색 버튼 클릭 이벤트 - 버튼 클릭시에도 검색
-$("#address-search").click(function() {
-
-    let searchedAddress = $("#address").val(); // 현재 입력란에 입력된 주소 가져오기
-    if (searchedAddress.trim() !== "") { // 입력된 주소가 비어 있지 않으면 naver 메서드
-        searchAddressToCoordinate(searchedAddress);
-    }
-});
+// $("#address-search").click(function() {
+//
+//     let searchedAddress = $("#address").val(); // 현재 입력란에 입력된 주소 가져오기
+//     if (searchedAddress.trim() !== "") { // 입력된 주소가 비어 있지 않으면 naver 메서드
+//         searchAddressToCoordinate(searchedAddress);
+//     }
+// });
 
 
 function initGeocoder() {
@@ -139,12 +140,13 @@ function initGeocoder() {
         var keyCode = e.which;
 
         if (keyCode === 13) { // Enter Key
+            var map = new naver.maps.Map('map');
             searchAddressToCoordinate($('#address').val());
         }
 
     });
 
-    $('#map-search').on('click', function(e) {
+    $('#address-search').on('click', function(e) {
         e.preventDefault();
         searchAddressToCoordinate($('#address').val())
         // var search_address = searchAddressToCoordinate($('#address').val());
