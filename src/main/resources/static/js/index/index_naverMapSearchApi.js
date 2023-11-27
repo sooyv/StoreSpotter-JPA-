@@ -63,16 +63,13 @@ function addressToServer(address) {
             indust : indust
         },
         success: function(avgDist) {
-            console.log("서버 응답 - avgDist: " + avgDist);
             const findsido = address.indexOf(" ");
             const region = (findsido != -1) ? address.substring(0, findsido) : address;
 
             $('#show-avg-dist').html(
-                '<p><b>' + region + '</b>에 위치한 <b>' + indust + '</b>의</p>' +
-                '<p>평균거리는 <b>' + Math.round(avgDist, 0) + '</b>m 입니다.</p>');
+                '<p><b style="color: #e14242;">' + region + '</b>에 위치한 <b style="color: #e14242;">' + indust + '</b>의</p>' +
+                '<p>평균거리는 <b style="color: #e14242;">' + Math.round(avgDist, 0) + '</b>m 입니다.</p>');
             $('#show-avg-dist').show();
-
-
             // $("#address").val(address);
         },
         error: function(error) {
