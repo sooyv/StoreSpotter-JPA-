@@ -55,6 +55,7 @@ function searchCoordinateToAddress(latlng) {
 function addressToServer(address) {
     let indust = $('#select-industry .select-industry-detail.selected').text();
     let distList = [];
+    let distSlider = document.getElementById('dist-slider');
 
     $.ajax({
         type: "GET",
@@ -75,61 +76,85 @@ function addressToServer(address) {
             );
             $('#show-avg-dist').show();
 
+            // 새로운 지역이나 업종을 선택할때마다 기존의 <option>은 삭제
+            const datalist = document.getElementById('tickmarks');
+            while (datalist.firstChild) {
+                datalist.removeChild(datalist.firstChild);
+            }
+
             // if (avgDist > 300) {
-            //     rowAppendDist(30)
-            //     overAppendDist(30)
+            //     appendDist(40, 'row');
+            //     // distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
+            //     appendDist(40, 'over');
             // } else if (avgDist > 200) {
-            //     rowAppendDist(20)
-            //     overAppendDist(20)
-            // } else if (avgDist > 100) {
-            //     rowAppendDist(10)
-            //     overAppendDist(10)
-            // } else {
-            //     rowAppendDist(5)
-            //     overAppendDist(5)
-            // }
-            //
-            // function rowAppendDist(interval) {
-            //     for (let i = 3; i >= 1; i--) {
-            //         var tmp = `<option value="${avgDistance - (interval * i)}">${avgDistance - (interval * i)}</option>`;
-            //         distList.push(tmp);
-            //     }
+            //     appendDist(30, 'row');
             //     distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
+            //     appendDist(30, 'over');
+            // } else if (avgDist > 100) {
+            //     appendDist(20, 'row');
+            //     distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
+            //     appendDist(20, 'over');
+            // } else {
+            //     appendDist(10, 'row');
+            //     distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
+            //     appendDist(10, 'over');
             // }
+
+            // // HTML datalist에 추가
+            // distList.forEach(option => {
+            //     const optionElement = document.createElement('option');
+            //     optionElement.innerHTML = option;
+            //     datalist.appendChild(optionElement);
+            // });
             //
-            // function overAppendDist(interval) {
-            //     for (let i = 1; i <= 3; i++) {
-            //         var tmp = `<option value="${avgDistance + (interval * i)}">${avgDistance + (interval * i)}</option>`;
-            //         distList.push(tmp);
-            //     }
-            // }
-            //
+            // console.log(distList)
+
             function appendDist(interval, direction) {
                 for (let i = 1; i <= 3; i++) {
                     const value = (direction === 'over') ? avgDistance + (interval * i) : avgDistance - (interval * i);
-                    const tmp = `<option value="${value}">${value}</option>`;
-                    distList.push(tmp);
+                    distList.push(value)
                 }
             }
 
+            const mid = Math.floor(distList.length / 2);
+
             if (avgDist > 300) {
-                appendDist(30, 'row');
-                distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
-                appendDist(30, 'over');
+                appendDist(40, 'row');
+                distList.splice(mid, 0, avgDistance);
+                appendDist(40, 'over');
             } else if (avgDist > 200) {
-                appendDist(20, 'row');
-                distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
-                appendDist(20, 'over');
+                appendDist(30, 'row');
+                distList.splice(mid, 0, avgDistance);
+                appendDist(30, 'over');
             } else if (avgDist > 100) {
-                appendDist(10, 'row');
-                distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
-                appendDist(10, 'over');
+                appendDist(20, 'row');
+                distList.splice(mid, 0, avgDistance);
+                appendDist(20, 'over');
             } else {
-                appendDist(5, 'row');
-                distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
-                appendDist(5, 'over');
+                appendDist(10, 'row');
+                distList.splice(mid, 0, avgDistance);
+                appendDist(10, 'over');
             }
-            console.log(distList)
+            console.log(distList.sort((a, b) => a - b));
+
+            // 가장 작은 값과 가장 큰 값을 가져옴
+            const minValue = distList[0];
+            const maxValue = distList[distList.length - 1];
+
+            // input 요소에 min과 max 속성 설정
+            distSlider.min = minValue;
+            distSlider.max = maxValue;
+            distSlider.value = avgDistance; // 초기 값 설정
+
+            // HTML datalist 초기화
+            datalist.innerHTML = '';
+            // 정렬된 list를 기반으로 option 요소 생성 및 datalist에 추가
+            distList.forEach(val => {
+                const optionElement = document.createElement('option');
+                optionElement.value = val;
+                optionElement.innerText = val;
+                datalist.appendChild(optionElement);
+            });
 
             $('#select-dist').show();
             // $("#address").val(address);
