@@ -175,14 +175,22 @@ body {
     accent-color: #41637d;
 }
 
-datalist{
+datalist {
     /*justify-content: center;*/
     /*grid-column-gap: 44px;*/
     /*grid-column-gap: 20px;*/
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    font-size: small;
     display: grid;
     grid-auto-flow: column;
     /*width:370px;*/
     width: 350px;
+}
+
+output {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    font-size: medium;
+    font-weight: bold;
 }
 
 

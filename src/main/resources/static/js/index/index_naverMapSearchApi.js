@@ -54,7 +54,6 @@ function searchCoordinateToAddress(latlng) {
 // 도로명 주소, 업종 서버로 전송
 function addressToServer(address) {
     let indust = $('#select-industry .select-industry-detail.selected').text();
-    let distList = [];
     let distSlider = document.getElementById('dist-slider');
 
     $.ajax({
@@ -76,38 +75,16 @@ function addressToServer(address) {
             );
             $('#show-avg-dist').show();
 
+            // 새로운 지역이나 업종 검색시 output 태그의 내용을 비워줌
+            $('#dist-value').html('');
+
             // 새로운 지역이나 업종을 선택할때마다 기존의 <option>은 삭제
             const datalist = document.getElementById('tickmarks');
             while (datalist.firstChild) {
                 datalist.removeChild(datalist.firstChild);
             }
 
-            // if (avgDist > 300) {
-            //     appendDist(40, 'row');
-            //     // distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
-            //     appendDist(40, 'over');
-            // } else if (avgDist > 200) {
-            //     appendDist(30, 'row');
-            //     distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
-            //     appendDist(30, 'over');
-            // } else if (avgDist > 100) {
-            //     appendDist(20, 'row');
-            //     distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
-            //     appendDist(20, 'over');
-            // } else {
-            //     appendDist(10, 'row');
-            //     distList.push(`<option value="${avgDistance}">${avgDistance}</option>`);
-            //     appendDist(10, 'over');
-            // }
-
-            // // HTML datalist에 추가
-            // distList.forEach(option => {
-            //     const optionElement = document.createElement('option');
-            //     optionElement.innerHTML = option;
-            //     datalist.appendChild(optionElement);
-            // });
-            //
-            // console.log(distList)
+            let distList = [];      // 평균거리 기준으로 row,over 데이터를 넣을 list
 
             function appendDist(interval, direction) {
                 for (let i = 1; i <= 3; i++) {
@@ -146,8 +123,6 @@ function addressToServer(address) {
             distSlider.max = maxValue;
             distSlider.value = avgDistance; // 초기 값 설정
 
-            // HTML datalist 초기화
-            datalist.innerHTML = '';
             // 정렬된 list를 기반으로 option 요소 생성 및 datalist에 추가
             distList.forEach(val => {
                 const optionElement = document.createElement('option');
