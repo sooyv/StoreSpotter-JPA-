@@ -12,7 +12,7 @@
     <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=2n6hjq6jro&submodules=geocoder"></script>
     <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <link href="https://www.flaticon.com/kr/free-icons/" title="아이콘  제작자: Freepik - Flaticon">
+    <link href="https://www.flaticon.com/kr/free-icons/" title="물음표 아이콘  제작자: Saepul Nahwan - Flaticon, 화살표 버튼 아이콘  제작자: Stasy - Flaticon, 위치 핀 아이콘  제작자: Smashicons - Flaticon, 더 아이콘  제작자: Amazona Adorada - Flaticon, 확대경 아이콘  제작자: Creative Stall Premium - Flaticon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;500&family=Ubuntu:wght@500&display=swap" rel="stylesheet"></head>
@@ -57,17 +57,16 @@
             <div class="side-elem">
                 <div class="side-elem-title">
                     거리 선택
+                    <div id="dist-info"><img src="/style/물음표.png"></div>
+                    <div id="dist-explain">
+                        선택거리 이상 떨어진 업종의
+                        <br>
+                        추천 위치를 보여줍니다.
+                    </div>
                 </div>
                 <div id="distance">
                     <input id="dist-slider" type="range" min="" max="" list="tickmarks"/>
                     <datalist id="tickmarks">
-<!--                        <option value="1"></option>-->
-<!--                        <option value="2"></option>-->
-<!--                        <option value="3"></option>-->
-<!--                        <option value="4"></option>-->
-<!--                        <option value="5"></option>-->
-<!--                        <option value="6"></option>-->
-<!--                        <option value="7"></option>-->
                     </datalist>
                     <output id="dist-value"></output>
                 </div>

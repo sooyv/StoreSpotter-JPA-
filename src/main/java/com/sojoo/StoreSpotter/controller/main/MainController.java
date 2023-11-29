@@ -53,8 +53,8 @@ public class MainController {
 
         // region_fk, indust_id 가져오기
         String indust_id = industryService.industryNameToCode(indust);
-
         String region_name = sido(address);
+
         String region_fk = regionService.regionNameToCode(region_name);
 
         return String.valueOf(dataRecommendService.avgDistance(indust_id, region_fk));
