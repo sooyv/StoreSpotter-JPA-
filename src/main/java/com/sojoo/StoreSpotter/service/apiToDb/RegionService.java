@@ -14,7 +14,6 @@ public class RegionService {
     }
 
     public String regionNameToCode(String region_name) {
-        String region_fk = regionMapper.selectRegionCode(region_name);
-        return region_fk;
+        return regionMapper.selectRegionCode(region_name);
     }
 }

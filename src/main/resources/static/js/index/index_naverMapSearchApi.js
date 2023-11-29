@@ -132,7 +132,7 @@ function addressToServer(address) {
             });
 
             $('#select-dist').show();
-            // $("#address").val(address);
+            $("#address").val(address);
         },
         error: function(error) {
             console.error("에러 발생: " + JSON.stringify(error));

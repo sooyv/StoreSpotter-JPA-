@@ -38,7 +38,6 @@ function loading(){
     }, 2000);
 }
 
-// 지도에 원 그리기
 
 
 $("#submit").click(function() {
@@ -56,7 +55,7 @@ $("#submit").click(function() {
         return alert('주소를 선택해주세요.');
     }
     if (getComputedStyle(addbox).border !== "2px solid rgb(65, 99, 125)") {
-        return alert("주소 검색을 해주세요.")
+        return alert("주소 검색을 해주세요.");
     }
 
     else{
@@ -72,7 +71,7 @@ $("#submit").click(function() {
             data: {
                 indust: indust,
                 region: region,
-                dist: dist
+                dist: dist*2
             },
             success: function(response) {
                 console.log("서버 응답: " + "success");
@@ -102,12 +101,16 @@ $("#submit").click(function() {
                 //원 그리기
                 function drawCirclesOnMap(coordinates) {
                     for (var i = 0; i < coordinates.length; i++) {
-                        var circle = new naver.maps.Circle({
+                        // var circle = new naver.maps.Circle({
+                        var marker = new naver.maps.Marker({
                             map: map,
-                            center: new naver.maps.LatLng(coordinates[i].y, coordinates[i].x),
-                            radius: dist / 2,
-                            fillColor: 'crimson',
-                            fillOpacity: 0.8
+                            position: new naver.maps.LatLng(coordinates[i].y, coordinates[i].x),
+                            // center: new naver.maps.LatLng(coordinates[i].y, coordinates[i].x),
+                            // radius: dist / 2,
+                            // fillColor: 'crimson',
+                            // fillOpacity: 0.8,
+                            // stroke: null
+
                         });
                     }
                 }
