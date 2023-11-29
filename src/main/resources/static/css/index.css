@@ -63,6 +63,9 @@ html, body {
     font-family: 'IBM Plex Sans KR', sans-serif;
     font-size: large;
     font-weight: bold;
+    height: 35px;
+    display: flex;
+    align-items: center;
     padding: 10px;
 }
 
@@ -147,11 +150,10 @@ html, body {
     display: block;
 }
 
-
-
 body {
     margin: 0;
 }
+
 #select-industry .select-industry-detail.selected {
     background-color: #41637d;
     border-radius : 10px;
@@ -160,6 +162,69 @@ body {
 #select-dist {
     display: none;
 }
+
+#dist-info img {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#dist-info img:hover{
+    background-color: lightgrey;
+    transition: 0.3s;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+#dist-explain {
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    /*top: 355px;*/
+    top: 28em;
+    /*right: 45px;*/
+    right: 4em;
+    width: auto;
+    height: auto;
+    background: white;
+    border: solid 1px lightgrey;
+    border-radius: 10px;
+    z-index: 5;
+    padding: 15px;
+    font-size: small;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    gap: 4px;
+}
+
+#dist-explain::before {
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 10px 10px 0px;
+    border-color: transparent lightgrey;
+    left: -11px;
+    top: 3em;
+}
+
+#dist-explain::after {
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 10px 10px 0px;
+    border-color: transparent white;
+    left: -10px;
+    top: 3em;
+}
+
 
 #distance{
     text-align: center;
@@ -206,15 +271,21 @@ output {
 #show-avg-dist {
     font-family: 'IBM Plex Sans KR', sans-serif;
     display: none;
+    flex-direction: column;
     background-color: white;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 20px;
+    gap: 10px;
     border-bottom: solid 1px lightgrey;
 }
 
 .main{
     margin: 0 auto;
     text-align: center;
+}
+
+p {
+    margin-block-start: 0;
+    margin-block-end: 0;
 }
 
 .droplet_spinner {

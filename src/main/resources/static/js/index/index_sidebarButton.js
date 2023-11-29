@@ -5,8 +5,7 @@ const sideBar = document.getElementById("side-bar");
 const slideBtn = document.getElementById("slide-btn");
 const sideElems = document.querySelectorAll(".side-elem");
 
-// const searchBtn = document.getElementById("search-btn");
-
+// distExplain.hide();
 
 let indust = ""
 const addbox = document.getElementById('address');
@@ -20,7 +19,7 @@ addbox.addEventListener('input', handleInputValueChange);
 
 
 // 로딩중
-function loading(){
+function loading() {
     const modalOverlay = document.getElementById('modal-overlay');
     const modal = document.getElementById('modal');
 
@@ -38,9 +37,8 @@ function loading(){
     }, 2000);
 }
 
+
 // 지도에 원 그리기
-
-
 $("#submit").click(function() {
 
     let indust = $('#select-industry .select-industry-detail.selected').text();
@@ -122,9 +120,8 @@ $("#submit").click(function() {
             }
         });
     }
-
-
 });
+
 
 $(document).ready(function() {
     // 업종 선택을 위한 이벤트 리스너 추가
@@ -178,6 +175,33 @@ $(document).ready(function() {
         distValue.value = this.value;
     });
 })
+
+// 거리 선택 설명 물음표 버튼
+document.addEventListener("DOMContentLoaded", function() {
+    var distInfo = document.getElementById("dist-info");
+    var distExplain = document.getElementById("dist-explain");
+
+    // 초기 상태 설정
+    var isOpen = false;
+
+    // 토글 함수 정의
+    function toggleDistExplain() {
+        isOpen = !isOpen; // 상태 반전
+
+        // 상태에 따라 dist-explain 표시 또는 숨김
+        if (isOpen) {
+            distExplain.style.display = "flex";
+        } else {
+            distExplain.style.display = "none";
+        }
+    }
+
+    // 클릭 이벤트에 토글 함수 연결
+    distInfo.addEventListener("click", toggleDistExplain);
+});
+
+
+
 
 
 

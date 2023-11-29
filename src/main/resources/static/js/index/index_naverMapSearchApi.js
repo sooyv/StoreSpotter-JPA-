@@ -73,10 +73,10 @@ function addressToServer(address) {
                 '<p><b style="color: #e14242;">' + region + '</b>에 위치한 <b style="color: #e14242;">' + indust + '</b>의</p>' +
                 '<p>평균거리는 <b style="color: #e14242;">' + avgDistance + 'm' + '</b> 입니다.</p>'
             );
-            $('#show-avg-dist').show();
+            $('#show-avg-dist').css('display', 'flex').show();
 
-            // 새로운 지역이나 업종 검색시 output 태그의 내용을 비워줌
-            $('#dist-value').html('');
+            // 새로운 지역이나 업종 검색시 avgDistance
+            $('#dist-value').html(avgDistance);
 
             // 새로운 지역이나 업종을 선택할때마다 기존의 <option>은 삭제
             const datalist = document.getElementById('tickmarks');
@@ -112,7 +112,7 @@ function addressToServer(address) {
                 distList.splice(mid, 0, avgDistance);
                 appendDist(10, 'over');
             }
-            console.log(distList.sort((a, b) => a - b));
+            distList.sort((a, b) => a - b);
 
             // 가장 작은 값과 가장 큰 값을 가져옴
             const minValue = distList[0];
@@ -132,7 +132,8 @@ function addressToServer(address) {
             });
 
             $('#select-dist').show();
-            // $("#address").val(address);
+            // 검색한 주소의 정확한 주소를 input에 입력
+            $("#address").val(address);
         },
         error: function(error) {
             console.error("에러 발생: " + JSON.stringify(error));
