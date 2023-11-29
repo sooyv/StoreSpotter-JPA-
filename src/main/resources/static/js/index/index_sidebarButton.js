@@ -94,9 +94,21 @@ $("#submit").click(function() {
                     return {
                         x: parseFloat(coordinatesArray[0]),  // 경도
                         y: parseFloat(coordinatesArray[1])   // 위도
-                    };
+                     };
                 });
 
+                // 두 원이 겹치는지 확인하는 함수
+                function getDist(lat1,lng1,lat2,lng2) {
+                    function deg2rad(deg) { return deg * (Math.PI/180) }
+                    var R = 6371;
+                    var dLat = deg2rad(lat2-lat1);
+                    var dLon = deg2rad(lng2-lng1);
+                    var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *   Math.sin(dLon/2) * Math.sin(dLon/2);
+                    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                    return R * c;
+                }
+
+                let circles=[]
                 //원 그리기
                 function drawCirclesOnMap(coordinates) {
                     for (var i = 0; i < coordinates.length; i++) {
@@ -104,15 +116,27 @@ $("#submit").click(function() {
                             map: map,
                             center: new naver.maps.LatLng(coordinates[i].y, coordinates[i].x),
                             radius: dist / 2,
-                            fillColor: 'crimson',
-                            fillOpacity: 0.8
+                            fillColor: '#6775E0',
+                            fillOpacity: 0.8,
+                            clickable: true,
+                            stroke: null
                         });
+                        // 중복 확인
+                        if (circles.length > 0){
+                            for (var j = 0; j < circles.length; j++) {
+                                let distance = getDist(circle.center.y, circle.center.x, circles[j].center.y, circles[j].center.x)
+                                if (distance < 0.005) {
+                                    console.log("dist: "+ distance)
+                                    circle.setMap(null);
+                                }
+                            }
+                        }
+                        circles.push(circle);
                     }
                 }
 
                 drawCirclesOnMap(coordinates);
-
-
+                circles=[]
 
             },
             error: function(error) {
