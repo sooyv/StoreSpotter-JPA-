@@ -98,20 +98,33 @@ $("#submit").click(function() {
                     };
                 });
 
+                function getDistance(x1, y1, x2, y2) {
+                    let x = x2 - x1;
+                    let y = y2 - y1;
+
+                    return Math.sqrt(x * x + y * y);
+                }
+                let circles = []
                 //원 그리기
                 function drawCirclesOnMap(coordinates) {
                     for (var i = 0; i < coordinates.length; i++) {
-                        // var circle = new naver.maps.Circle({
-                        var marker = new naver.maps.Marker({
+                        var circle = new naver.maps.Circle({
+                        // var marker = new naver.maps.Marker({
                             map: map,
-                            position: new naver.maps.LatLng(coordinates[i].y, coordinates[i].x),
-                            // center: new naver.maps.LatLng(coordinates[i].y, coordinates[i].x),
-                            // radius: dist / 2,
-                            // fillColor: 'crimson',
-                            // fillOpacity: 0.8,
-                            // stroke: null
-
+                            // position: new naver.maps.LatLng(coordinates[i].y, coordinates[i].x),
+                            center: new naver.maps.LatLng(coordinates[i].y, coordinates[i].x),
+                            radius: dist / 2,
+                            fillColor: 'crimson',
+                            fillOpacity: 0.8,
+                            stroke: null
                         });
+                        // for (object of circles){
+                        //     if (object.center === circle.center || getDistance(object.x, object.y, circle.x, circle.y) < 30) {
+                        //         console.log("Dd")
+                        //         return circle.setMap(null)
+                        //     }
+                        // }
+                        circles.push(circle)
                     }
                 }
 

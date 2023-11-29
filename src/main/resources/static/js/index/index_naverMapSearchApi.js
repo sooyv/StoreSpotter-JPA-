@@ -112,7 +112,7 @@ function addressToServer(address) {
                 distList.splice(mid, 0, avgDistance);
                 appendDist(10, 'over');
             }
-            console.log(distList.sort((a, b) => a - b));
+            // console.log(distList.sort((a, b) => a - b));
 
             // 가장 작은 값과 가장 큰 값을 가져옴
             const minValue = distList[0];
