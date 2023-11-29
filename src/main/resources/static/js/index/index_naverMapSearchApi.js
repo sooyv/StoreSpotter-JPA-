@@ -73,6 +73,7 @@ function addressToServer(address) {
                 '<p><b style="color: #e14242;">' + region + '</b>에 위치한 <b style="color: #e14242;">' + indust + '</b>의</p>' +
                 '<p>평균거리는 <b style="color: #e14242;">' + avgDistance + 'm' + '</b> 입니다.</p>'
             );
+
             $('#show-avg-dist').css('display', 'flex').show();
 
             // 새로운 지역이나 업종 검색시 avgDistance
