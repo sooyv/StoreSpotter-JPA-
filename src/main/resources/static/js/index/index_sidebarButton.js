@@ -79,6 +79,7 @@ $("#submit").click(function() {
                 naver.maps.Service.geocode({
                     query: region
                 }, function (status, response) {
+                    console.log(response)
                     item = response.v2.addresses[0];
                     point = new naver.maps.Point(item.x, item.y);
 
@@ -87,13 +88,22 @@ $("#submit").click(function() {
                 })
 
                 var coordinates = response.map(function(item) {
+                    var stCoorString = item.st_coor.match(/\(([^)]+)\)/)[1];
+                    var stCoorArray = stCoorString.split(' ');
 
-                    var coordinatesString = item.center_coor.match(/\(([^)]+)\)/)[1];
-                    var coordinatesArray = coordinatesString.split(' ');
+                    var comCoorString = item.com_coor.match(/\(([^)]+)\)/)[1];
+                    var comCoorArray = comCoorString.split(' ');
+
+                    var centerCoorString = item.center_coor.match(/\(([^)]+)\)/)[1];
+                    var centerCoorArray = centerCoorString.split(' ');
 
                     return {
-                        x: parseFloat(coordinatesArray[0]),  // 경도
-                        y: parseFloat(coordinatesArray[1])   // 위도
+                        st_x : parseFloat(stCoorArray[0]), // 기준경도
+                        st_y : parseFloat(stCoorArray[1]), // 기준위도
+                        com_x : parseFloat(comCoorArray[0]), // 대상경도
+                        com_y : parseFloat(comCoorArray[1]), // 대상위도
+                        center_x: parseFloat(centerCoorArray[0]),  // 중점경도
+                        center_y: parseFloat(centerCoorArray[1])   // 중점위도
                      };
                 });
 
@@ -114,19 +124,25 @@ $("#submit").click(function() {
                     for (var i = 0; i < coordinates.length; i++) {
                         var circle = new naver.maps.Circle({
                             map: map,
-                            center: new naver.maps.LatLng(coordinates[i].y, coordinates[i].x),
+                            center: new naver.maps.LatLng(coordinates[i].center_y, coordinates[i].center_x),
                             radius: dist / 2,
                             fillColor: '#6775E0',
                             fillOpacity: 0.8,
                             clickable: true,
-                            stroke: null
+                            stroke: null,
+                            st_coor : new naver.maps.LatLng(coordinates[i].st_y, coordinates[i].st_x),
+                            // com_coor : new naver.maps.LatLng(coordinates[i].com_y, coordinates[i].com_x)
                         });
+                        var nearCircle = new naver.maps.Marker({
+                            map : map,
+                            position : new naver.maps.LatLng(coordinates[i].st_y, coordinates[i].st_x)
+                            // position2 : new naver.maps.LatLng(coordinates[i].com_y, coordinates[i].com_x)
+                        })
                         // 중복 확인
                         if (circles.length > 0){
                             for (var j = 0; j < circles.length; j++) {
                                 let distance = getDist(circle.center.y, circle.center.x, circles[j].center.y, circles[j].center.x)
                                 if (distance < 0.005) {
-                                    console.log("dist: "+ distance)
                                     circle.setMap(null);
                                 }
                             }
