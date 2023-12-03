@@ -62,7 +62,6 @@ $("#submit").click(function() {
         // 지도 초기화
         var map = new naver.maps.Map('map');
 
-
         // AJAX 요청
         $.ajax({
             type: "GET",
@@ -121,8 +120,8 @@ $("#submit").click(function() {
                 let circles=[]
                 //원 그리기
                 function drawCirclesOnMap(coordinates) {
-                    for (var i = 0; i < coordinates.length; i++) {
-                        var circle = new naver.maps.Circle({
+                    for (let i = 0; i < coordinates.length; i++) {
+                        let circle = new naver.maps.Circle({
                             map: map,
                             center: new naver.maps.LatLng(coordinates[i].center_y, coordinates[i].center_x),
                             radius: dist / 2,
@@ -130,24 +129,90 @@ $("#submit").click(function() {
                             fillOpacity: 0.8,
                             clickable: true,
                             stroke: null,
-                            st_coor : new naver.maps.LatLng(coordinates[i].st_y, coordinates[i].st_x),
-                            // com_coor : new naver.maps.LatLng(coordinates[i].com_y, coordinates[i].com_x)
                         });
-                        var nearCircle = new naver.maps.Marker({
-                            map : map,
-                            position : new naver.maps.LatLng(coordinates[i].st_y, coordinates[i].st_x)
-                            // position2 : new naver.maps.LatLng(coordinates[i].com_y, coordinates[i].com_x)
+
+
+                    // 원 클릭 시 Event
+                    naver.maps.Event.addListener(circle, 'click', function(e) {
+                        var latlng = e.center
+                        naver.maps.Service.reverseGeocode({
+                            coords: circle.center,
+                            orders: [
+                                naver.maps.Service.OrderType.ADDR,
+                                naver.maps.Service.OrderType.ROAD_ADDR
+                            ].join(',')
+                        }, function(status, response) {
+                            if (status !== naver.maps.Service.Status.OK) {
+                                // 재접속 시도
+                                console.log("에러났다")
+                            }
+                            var items = response.v2.results
+                                , address = ''
+                                , htmlAddresses = [];
+
+                            for (var i = 0, ii = items.length, item, addrType; i < ii; i++) {
+                                item = items[i];
+                                address = makeAddress(item) || '';
+                                addrType = item.name === 'roadaddr' ? '[도로명 주소]' : '[지번 주소]';
+
+                                htmlAddresses.push((i + 1) + '. ' + addrType + ' ' + address);
+                            }
+                            let contentString = [
+                                '<div class="iw_inner">',
+                                '<div style="margin-top: 5px; margin-right: 10px; text-align: right; ">', '❤️', '</div>',
+                                '<h3>주소</h3>',
+                                htmlAddresses.join('<br />'),
+                                '<div>', '</div>',
+                                '<button id="near-button" type="button">근처 상권보기</button>',
+                                '</div>'
+                            ].join('');
+
+                            let infoWindow = new naver.maps.InfoWindow({
+                                anchorSkew: true,
+                                content: contentString,
+                                position: circle.center,
+                                anchorSize: new naver.maps.Size(10, 20),
+                                maxWidth: 200,
+                                height: 50,
+                                backgroundColor: "white",
+                                borderColor: "black",
+                                borderWidth: 2,
+                                disableAnchor: true,
+                                textAlign: "center",
+                                marginBottom: 20,
+                            });
+                            if (infoWindow.getMap()) {
+                                infowindow.close();
+                            } else {
+                                infoWindow.open(circle.map, latlng);
+                            }
+                            // 근처 상가 좌표 찍어주기
+                            // var nearCircle1 = new naver.maps.Marker({
+                            //     map : map,
+                            //     position : new naver.maps.LatLng(coordinates[i].st_y, coordinates[i].st_x)
+                            // })
+                            // var nearCircle2 = new naver.maps.Marker({
+                            //     map : map,
+                            //     position : new naver.maps.LatLng(coordinates[i].com_y, coordinates[i].com_x)
+                            // })
+                        });
+
                         })
-                        // 중복 확인
-                        if (circles.length > 0){
-                            for (var j = 0; j < circles.length; j++) {
-                                let distance = getDist(circle.center.y, circle.center.x, circles[j].center.y, circles[j].center.x)
-                                if (distance < 0.005) {
-                                    circle.setMap(null);
-                                }
+
+
+
+
+
+                    // 중복 확인
+                    if (circles.length > 0){
+                        for (var j = 0; j < circles.length; j++) {
+                            let distance = getDist(circle.center.y, circle.center.x, circles[j].center.y, circles[j].center.x)
+                            if (distance < 0.005) {
+                                circle.setMap(null);
                             }
                         }
-                        circles.push(circle);
+                    }
+                    circles.push(circle);
                     }
                 }
 

@@ -38,11 +38,8 @@ public class MainController {
 
 
         String indust_id = industryService.industryNameToCode(indust);
-        System.out.println(indust_id);
         String region_name = sido(region);
-        System.out.println("rm"+region_name);
         String region_fk = regionService.regionNameToCode(region_name);
-        System.out.println("rf"+region_fk);
 
         return dataRecommendService.selectPairByDist(indust_id, region_fk, dist);
     }
