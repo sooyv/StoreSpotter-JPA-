@@ -210,6 +210,7 @@ function initGeocoder() {
 
     $('#address').on('keydown', function(e) {
         var keyCode = e.which;
+        console.log("naverMapJS : " + keyCode);
 
         if (keyCode === 13) { // Enter Key
             var map = new naver.maps.Map('map');
@@ -243,18 +244,22 @@ function makeAddress(item) {
 
     if (hasArea(region.area1)) {
         sido = region.area1.name;
+        console.log(sido)
     }
 
     if (hasArea(region.area2)) {
         sigugun = region.area2.name;
+        console.log(sigugun)
     }
 
     if (hasArea(region.area3)) {
         dongmyun = region.area3.name;
+        console.log(dongmyun)
     }
 
     if (hasArea(region.area4)) {
         ri = region.area4.name;
+        console.log(ri)
     }
 
     if (land) {

@@ -54,14 +54,13 @@ $("#submit").click(function() {
         return alert('주소를 선택해주세요.');
     }
     if (getComputedStyle(addbox).border !== "2px solid rgb(65, 99, 125)") {
-        return alert("주소 검색을 해주세요.")
+        return alert("주소 검색을 해주세요.");
     }
 
-    else{
+    else {
         loading()
         // 지도 초기화
         var map = new naver.maps.Map('map');
-
 
         // AJAX 요청
         $.ajax({
@@ -122,11 +121,11 @@ $("#submit").click(function() {
                             stroke: null
                         });
                         // 중복 확인
-                        if (circles.length > 0){
+                        if (circles.length > 0) {
                             for (var j = 0; j < circles.length; j++) {
-                                let distance = getDist(circle.center.y, circle.center.x, circles[j].center.y, circles[j].center.x)
+                                let distance = getDist(circle.center.y, circle.center.x, circles[j].center.y, circles[j].center.x);
                                 if (distance < 0.005) {
-                                    console.log("dist: "+ distance)
+                                    console.log("dist: "+ distance);
                                     circle.setMap(null);
                                 }
                             }
