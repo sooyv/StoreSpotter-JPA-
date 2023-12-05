@@ -357,9 +357,8 @@ p {
 
 
 .iw_inner{
-    text-align: center;
-    width: 130px;
-    height: 50px;
+    /*width: 300px;*/
+    /*height: 50px;*/
     /*border: solid 2px darkgreen;*/
     /*background: seashell;*/
 }
@@ -373,6 +372,42 @@ p {
 
 }
 
+.favorite-icon {
+ font-variation-settings:
+         'FILL' 0,
+         'wght' 400,
+         'GRAD' 0,
+         'opsz' 24;
+    color : darkred;
+}
+
+.favorite-icon.active {
+    font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+    color : darkred;
+}
+
+.material-symbols-outlined {
+ font-variation-settings:
+         'FILL' 0,
+         'wght' 400,
+         'GRAD' 0,
+         'opsz' 24
+}
+
+.copy-notification {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+}
 
 /*!* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*!*/
 /*!*768 이상이면 해당 스타일 시트 적용*!*/

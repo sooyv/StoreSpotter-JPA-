@@ -154,37 +154,91 @@ $("#submit").click(function() {
                                 item = items[i];
                                 address = makeAddress(item) || '';
                                 addrType = item.name === 'roadaddr' ? '[도로명 주소]' : '[지번 주소]';
-
-                                htmlAddresses.push((i + 1) + '. ' + addrType + ' ' + address);
+                                if (i===0){
+                                    htmlAddresses.push(addrType + ' ' + address + ' ' + '<span class="material-symbols-outlined" id="areacopy1" style="cursor: pointer">content_copy</span>');
+                                }else{
+                                    htmlAddresses.push(addrType + ' ' + address + ' ' + '<span class="material-symbols-outlined" id="areacopy2" style="cursor: pointer">content_copy</span>');
+                                }
                             }
+
+
                             let contentString = [
                                 '<div class="iw_inner">',
-                                '<div style="margin-top: 5px; margin-right: 10px; text-align: right; ">', '❤️', '</div>',
-                                '<h3>주소</h3>',
-                                htmlAddresses.join('<br />'),
-                                '<div>', '</div>',
-                                '<button id="near-button" type="button">근처 상권보기</button>',
+                                '<div style="display: flex; justify-content: space-between; margin:10px 10px;">',
+                                '<span style="font-size: 25px">주소</span>',
+                                '<span id="favorite-icon" class="material-symbols-outlined favorite-icon" style="cursor: pointer; font-size: 30px; user-select: none;">favorite</span>',
+                                '</div>',
+                                '<div style="margin: 10px 10px">', htmlAddresses.join('<br />'), '</div>',
+                                '<button id="near-button" type="button" >근처 상권보기</button>',
                                 '</div>'
                             ].join('');
+
 
                             let infoWindow = new naver.maps.InfoWindow({
                                 anchorSkew: true,
                                 content: contentString,
                                 position: circle.center,
-                                anchorSize: new naver.maps.Size(10, 20),
-                                maxWidth: 200,
-                                height: 50,
-                                backgroundColor: "white",
-                                borderColor: "black",
                                 borderWidth: 2,
-                                disableAnchor: true,
-                                textAlign: "center",
-                                marginBottom: 20,
+                                borderRadius: "15px"
                             });
+
                             if (infoWindow.getMap()) {
                                 infowindow.close();
                             } else {
                                 infoWindow.open(circle.map, latlng);
+                                // 찜 버튼 클릭 이벤트
+                                const favoriteIcon = document.getElementById('favorite-icon');
+                                favoriteIcon.addEventListener('click', function() {
+                                    this.classList.toggle('active'); // 'active' 클래스 추가/제거
+                                });
+                                function extractTextFromHTML(html) {
+                                    // 임시 요소를 생성하여 HTML을 파싱합니다.
+                                    var tempElement = document.createElement("div");
+                                    tempElement.innerHTML = html;
+
+                                    // 텍스트를 추출하고 공백을 제거한 후 반환합니다.
+                                    return tempElement.innerText.trim();
+                                }
+
+                                const areacopy1 = document.getElementById("areacopy1");
+                                const areacopy2 = document.getElementById("areacopy2");
+                                // button 클릭 이벤트
+                                areacopy1.onclick = () => {
+                                    var add = extractTextFromHTML(htmlAddresses[0].replace(/\[지번 주소\]/g, '').trim()).replace('content_copy', '');
+                                    console.log(add)
+                                    // 주소를 복사
+                                    navigator.clipboard.writeText(add).then(
+                                        () => {
+                                            // 클립보드에 write이 성공했을 때 불리는 핸들러
+                                            var copyNotification = document.createElement('div');
+                                            copyNotification.className = 'copy-notification';
+                                            copyNotification.textContent = '복사되었습니다';
+                                            document.body.appendChild(copyNotification);
+
+                                            // 1.5초 후에 메시지를 제거
+                                            setTimeout(function () {
+                                                document.body.removeChild(copyNotification);
+                                            }, 1500);
+                                        });
+                                };
+                                areacopy2.onclick = () => {
+                                    var add = extractTextFromHTML(htmlAddresses[1].replace(/\[도로명 주소\]/g, '').trim()).replace('content_copy', '');
+                                    // 주소를 복사
+                                    navigator.clipboard.writeText(add).then(
+                                        () => {
+                                            // 클립보드에 write이 성공했을 때 불리는 핸들러
+                                            var copyNotification = document.createElement('div');
+                                            copyNotification.className = 'copy-notification';
+                                            copyNotification.textContent = '복사되었습니다';
+                                            document.body.appendChild(copyNotification);
+
+                                            // 1.5초 후에 메시지를 제거
+                                            setTimeout(function () {
+                                                document.body.removeChild(copyNotification);
+                                            }, 1500);
+
+                                        });
+                                };
                             }
                             // 근처 상가 좌표 찍어주기
                             // var nearCircle1 = new naver.maps.Marker({
@@ -195,12 +249,11 @@ $("#submit").click(function() {
                             //     map : map,
                             //     position : new naver.maps.LatLng(coordinates[i].com_y, coordinates[i].com_x)
                             // })
+
+
                         });
 
                         })
-
-
-
 
 
                     // 중복 확인
@@ -304,9 +357,4 @@ document.addEventListener("DOMContentLoaded", function() {
     // 클릭 이벤트에 토글 함수 연결
     distInfo.addEventListener("click", toggleDistExplain);
 });
-
-
-
-
-
 
