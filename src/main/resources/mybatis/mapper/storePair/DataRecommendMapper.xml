@@ -18,7 +18,7 @@
                 FROM convenience_pair
                 WHERE region_fk = #{region_fk} AND convenience_pair.dist > #{dist}
             </when>
-            <when test="indust_id =='I21201'">
+            <when test="indust_id == 'I21201'">
                 SELECT
                 st_nm,
                 ST_AsText(st_coor) AS st_coor,
