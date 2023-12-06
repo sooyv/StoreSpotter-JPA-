@@ -1,3 +1,4 @@
+
 html, body {
     height: 100%;
     width: 100%;
@@ -354,6 +355,23 @@ p {
     /*overflow: auto; !* 내용이 모달을 넘어갈 경우 스크롤 허용 *!*/
 }
 
+
+.iw_inner{
+    text-align: center;
+    width: 130px;
+    height: 50px;
+    /*border: solid 2px darkgreen;*/
+    /*background: seashell;*/
+}
+
+#near-button{
+    margin-top: 10px;
+    border : solid 1px lightgray;
+    border-radius : 10px;
+    background : #41637d;
+    color: white;
+
+}
 
 
 /*!* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*!*/

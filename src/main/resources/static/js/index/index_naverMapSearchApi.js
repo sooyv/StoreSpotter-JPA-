@@ -23,7 +23,7 @@ function searchCoordinateToAddress(latlng) {
             naver.maps.Service.OrderType.ROAD_ADDR
         ].join(',')
     }, function(status, response) {
-        if (status === naver.maps.Service.Status.ERROR) {
+        if (status !== naver.maps.Service.Status.OK) {
             return alert('Something Wrong!');
         }
 

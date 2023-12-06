@@ -9,7 +9,9 @@
             <when test="indust_id = 'G20405'">
                 select
                 st_nm,
+                ST_AsText(st_coor) AS st_coor,
                 com_nm,
+                ST_AsText(com_coor) AS com_coor,
                 dist,
                 ST_AsText(ST_Centroid(LineString((st_coor), (com_coor)))) AS center_coor,
                 pair_id
@@ -19,7 +21,9 @@
             <when test="indsut_id ='I21201'">
                 select
                 st_nm,
+                ST_AsText(st_coor) AS st_coor,
                 com_nm,
+                ST_AsText(com_coor) AS com_coor,
                 dist,
                 ST_AsText(ST_Centroid(LineString((st_coor), (com_coor)))) AS center_coor,
                 pair_id
