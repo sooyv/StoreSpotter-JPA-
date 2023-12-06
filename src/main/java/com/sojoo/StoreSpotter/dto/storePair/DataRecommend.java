@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DataRecommend {
-
     private String st_nm;
     private String st_coor;
     private String com_nm;

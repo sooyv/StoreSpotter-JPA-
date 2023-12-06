@@ -36,8 +36,10 @@ public class MainController {
                                              @RequestParam("region") String region,
                                              @RequestParam("dist") String dist) {
 
-
         String indust_id = industryService.industryNameToCode(indust);
+        System.out.println("MainCon : " + indust);
+        System.out.println("MainCon : " + indust_id);
+
         String region_name = sido(region);
         String region_fk = regionService.regionNameToCode(region_name);
 

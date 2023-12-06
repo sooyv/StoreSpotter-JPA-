@@ -40,13 +40,22 @@ function searchCoordinateToAddress(latlng) {
         }
 
         infoWindow.setContent([
-            '<div style="padding:10px;min-width:200px;line-height:150%;">',
+            '<div style="padding: 10px;">',
+            '<div style="min-width:200px;line-height:150%; display: flex; justify-content: space-between">',
             '<h4 style="margin-top:5px;">검색 좌표</h4><br />',
+            '<button id="search-coord" type="button">주소선택</button>',
+            '</div>',
             htmlAddresses.join('<br />'),
             '</div>'
         ].join('\n'));
 
         infoWindow.open(map, latlng);
+
+        // 선택 주소 input창으로
+        const searchCoord = document.getElementById("search-coord");
+        searchCoord.onclick = () => {
+            $("#address").val(htmlAddresses[0].replace(/1. \[지번 주소\]/g, '').trim());
+        }
     });
 }
 
@@ -90,7 +99,7 @@ function addressToServer(address) {
             function appendDist(interval, direction) {
                 for (let i = 1; i <= 3; i++) {
                     const value = (direction === 'over') ? avgDistance + (interval * i) : avgDistance - (interval * i);
-                    distList.push(value)
+                    distList.push(value);
                 }
             }
 
@@ -187,9 +196,6 @@ function searchAddressToCoordinate(address) {
         map.setCenter(point);
         infoWindow.open(map, point);
 
-        // console.log(item)
-        // console.log(point)
-        // console.log(response)
     });
 }
 
@@ -210,7 +216,7 @@ function initGeocoder() {
 
     $('#address').on('keydown', function(e) {
         var keyCode = e.which;
-        console.log("naverMapJS : " + keyCode);
+        // console.log("naverMapJS : " + keyCode);
 
         if (keyCode === 13) { // Enter Key
             var map = new naver.maps.Map('map');
