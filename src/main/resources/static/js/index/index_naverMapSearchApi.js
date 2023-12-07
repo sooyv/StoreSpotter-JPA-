@@ -239,6 +239,10 @@ function initGeocoder() {
         var keyCode = e.which;
         // console.log("naverMapJS : " + keyCode);
 
+        // keydown 발생
+        $('#show-avg-dist').hide();
+        $('#select-dist').hide();
+
         if (keyCode === 13) { // Enter Key
             var map = new naver.maps.Map('map');
             searchAddressToCoordinate($('#address').val());
