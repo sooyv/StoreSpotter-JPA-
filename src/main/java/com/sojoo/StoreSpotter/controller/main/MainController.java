@@ -39,6 +39,7 @@ public class MainController {
         String indust_id = industryService.industryNameToCode(indust);
         System.out.println("MainCon : " + indust);
         System.out.println("MainCon : " + indust_id);
+        System.out.println("MainCon : " + dist);
 
         String region_name = sido(region);
         String region_fk = regionService.regionNameToCode(region_name);
