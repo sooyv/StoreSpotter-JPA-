@@ -44,7 +44,6 @@ let markers = [];
 $("#submit").click(function () {
 
     let indust = $('#select-industry .select-industry-detail.selected').text();
-    console.log("indust1: "+ indust)
     let region = $('#address').val();
     let dist = $('#dist-value').text();
     const addbox = document.getElementById('address');
@@ -74,13 +73,12 @@ $("#submit").click(function () {
             },
             success: function (response) {
                 console.log("서버 응답: " + "success");
-                console.log(indust);
+                console.log(indust, region, dist );
 
                 // 지도 초기화에 움직이는 지도 좌표 검색된 좌표로 재설정
                 naver.maps.Service.geocode({
                     query: region
                 }, function (status, response) {
-                    console.log(response)
                     item = response.v2.addresses[0];
                     point = new naver.maps.Point(item.x, item.y);
 

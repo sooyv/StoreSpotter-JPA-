@@ -59,24 +59,44 @@ function searchCoordinateToAddress(latlng) {
     });
 }
 
+$('.select-industry-detail').on('click', function() {
+    console.log("업종 클릭 이벤트")
+    // 주소 가져오기
+    let address = $('#address').val();
+    // 클릭한 indust 가져오기
+    indust = $(this).text();
 
-// 도로명 주소, 업종 서버로 전송
-function addressToServer(address) {
-    let indust = $('#select-industry .select-industry-detail.selected').text();
+    // 처음 업종 선택 시에는 address 빈칸, .hide(); 보여주지 않기
+    if (!address) {
+        $('#show-avg-dist').hide();
+        $('#select-dist').hide();
+    } else {
+        console.log("naver : ", address, indust)
+        addressToServer(address, indust);
+    }
+});
+
+
+// 주소 선택 시 지역 - 업종 평균 거리 나타내기
+function addressToServer(address, indust) {
+    // let indust = $('#select-industry .select-industry-detail.selected').text();
+    console.log("address : " + address, "indust : " + indust)
     let distSlider = document.getElementById('dist-slider');
 
-    $.ajax({
+    $.ajax ({
         type: "GET",
         url: "/avg-dist",
         data:
-        {
-            address: address,
-            indust : indust
-        },
+            {
+                address: address,
+                indust : indust
+            },
         success: function(avgDist) {
             const findsido = address.indexOf(" ");
             const region = (findsido != -1) ? address.substring(0, findsido) : address;
             let avgDistance = Math.round(avgDist, 0);
+
+            console.log("클릭시 업종, 주소 바로 적용 확인 : ", address, region, indust);
 
             $('#show-avg-dist').html(
                 '<p><b style="color: #e14242;">' + region + '</b>에 위치한 <b style="color: #e14242;">' + indust + '</b>의</p>' +
@@ -85,7 +105,7 @@ function addressToServer(address) {
 
             $('#show-avg-dist').css('display', 'flex').show();
 
-            // 새로운 지역이나 업종 검색시 avgDistance
+            // 검색 시 바로 해당 avgDistance 보여주기
             $('#dist-value').html(avgDistance);
 
             // 새로운 지역이나 업종을 선택할때마다 기존의 <option>은 삭제
@@ -173,7 +193,8 @@ function searchAddressToCoordinate(address) {
         if (item.roadAddress) {
             htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
             let address = item.roadAddress.replace('[도로명 주소] ', ''); // '[도로명 주소] ' 문자열 제외
-            addressToServer(address);
+            console.log("searchAddressToCoordinate : ", address, indust)
+            addressToServer(address, indust);
         }
 
 
