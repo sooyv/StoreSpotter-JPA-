@@ -59,14 +59,31 @@ function searchCoordinateToAddress(latlng) {
     });
 }
 
+// *** 수정중 ***
+// address와 indust 값의 존재 여부 파악 Exception 방지
+// function checkAddressAndIndust(address, indust) {
+//     if (!address) {
+//         $('#show-avg-dist').hide();
+//         $('#select-dist').hide();
+//     } else if (indust = "") {
+//         alert("업종을 선택해주세요.");
+//     } else {
+//         addressToServer(address, indust);
+//     }
+// }
+
+
+// 업종 선택 시 즉시 전송
 $('.select-industry-detail').on('click', function() {
-    console.log("업종 클릭 이벤트")
     // 주소 가져오기
     let address = $('#address').val();
     // 클릭한 indust 가져오기
     indust = $(this).text();
 
-    // 처음 업종 선택 시에는 address 빈칸, .hide(); 보여주지 않기
+    console.log("업종 클릭 이벤트 : " ,"address : " + address, "indust : " + indust);
+
+    // 처음 업종 선택 시에는 address 빈칸,
+    // 주소가 변경되어 address가 선택되지 않았을때도 .hide(); 보여주지 않기
     if (!address) {
         $('#show-avg-dist').hide();
         $('#select-dist').hide();
@@ -80,7 +97,7 @@ $('.select-industry-detail').on('click', function() {
 // 주소 선택 시 지역 - 업종 평균 거리 나타내기
 function addressToServer(address, indust) {
     // let indust = $('#select-industry .select-industry-detail.selected').text();
-    console.log("address : " + address, "indust : " + indust)
+    console.log("addressToServer의 " ,"address : " + address, "indust : " + indust)
     let distSlider = document.getElementById('dist-slider');
 
     $.ajax ({
@@ -96,7 +113,7 @@ function addressToServer(address, indust) {
             const region = (findsido != -1) ? address.substring(0, findsido) : address;
             let avgDistance = Math.round(avgDist, 0);
 
-            console.log("클릭시 업종, 주소 바로 적용 확인 : ", address, region, indust);
+            console.log("ajax 성공 메서드 : ", address, region, indust);
 
             $('#show-avg-dist').html(
                 '<p><b style="color: #e14242;">' + region + '</b>에 위치한 <b style="color: #e14242;">' + indust + '</b>의</p>' +
@@ -193,7 +210,7 @@ function searchAddressToCoordinate(address) {
         if (item.roadAddress) {
             htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
             let address = item.roadAddress.replace('[도로명 주소] ', ''); // '[도로명 주소] ' 문자열 제외
-            console.log("searchAddressToCoordinate : ", address, indust)
+            console.log("업종 클릭 searchAddressToCoordinate의 : " ,"address : " + address, "indust : " + indust)
             addressToServer(address, indust);
         }
 
