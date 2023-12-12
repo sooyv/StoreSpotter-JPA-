@@ -237,16 +237,6 @@ function searchAddressToCoordinate(address) {
     });
 }
 
-// 주소 검색 버튼 클릭 이벤트 - 버튼 클릭시에도 검색
-// $("#address-search").click(function() {
-//
-//     let searchedAddress = $("#address").val(); // 현재 입력란에 입력된 주소 가져오기
-//     if (searchedAddress.trim() !== "") { // 입력된 주소가 비어 있지 않으면 naver 메서드
-//         searchAddressToCoordinate(searchedAddress);
-//     }
-// });
-
-
 function initGeocoder() {
     map.addListener('click', function(e) {
         searchCoordinateToAddress(e.coord);
@@ -261,17 +251,31 @@ function initGeocoder() {
         $('#select-dist').hide();
 
         if (keyCode === 13) { // Enter Key
-            var map = new naver.maps.Map('map');
-            searchAddressToCoordinate($('#address').val());
+
+            let indust = $('#select-industry .select-industry-detail.selected').text();
+            let address = $('#address').val();
+            if (!indust) {
+                alert("업종을 선택해 주세요.")
+            } else if (!address) {
+                alert("주소선택을 완료해주세요.")
+            } else {
+                var map = new naver.maps.Map('map');
+                searchAddressToCoordinate($('#address').val());
+            }
         }
 
     });
 
     $('#address-search').on('click', function(e) {
         e.preventDefault();
-        searchAddressToCoordinate($('#address').val())
-        // var search_address = searchAddressToCoordinate($('#address').val());
-
+        if (!indust) {
+            alert("업종을 선택해 주세요.")
+        } else if (!address) {
+            alert("주소선택을 완료해주세요.")
+        } else {
+            var map = new naver.maps.Map('map');
+            searchAddressToCoordinate($('#address').val());
+        }
     });
 
     // searchAddressToCoordinate('정자동 178-1');

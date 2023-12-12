@@ -42,7 +42,6 @@ function loading() {
 let markers = [];
 // 지도에 원 그리기
 $("#submit").click(function () {
-
     let indust = $('#select-industry .select-industry-detail.selected').text();
     let region = $('#address').val();
     let dist = $('#dist-value').text();
@@ -69,7 +68,7 @@ $("#submit").click(function () {
             data: {
                 indust: indust,
                 region: region,
-                dist: dist
+                dist: dist*2
             },
             success: function (response) {
                 console.log("서버 응답: " + "success");
@@ -139,7 +138,7 @@ $("#submit").click(function () {
                             clickable: true,
                             stroke: null,
                         });
-
+되
                         // 원 클릭 시 Event
                         naver.maps.Event.addListener(circle, 'click', function (e) {
                             var latlng = e.center
