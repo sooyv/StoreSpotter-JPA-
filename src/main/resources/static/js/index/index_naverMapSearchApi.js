@@ -42,8 +42,8 @@ function searchCoordinateToAddress(latlng) {
         infoWindow.setContent([
             '<div style="padding: 10px;">',
             '<div style="min-width:200px;line-height:150%; display: flex; justify-content: space-between">',
-            '<h4 style="margin-top:5px;">주소선택</h4><br />',
-            '<button id="search-coord" type="button">검색하기</button>',
+            '<h4 style="margin-top:5px;">검색 좌표</h4><br />',
+            '<button id="search-coord" type="button">주소선택</button>',
             '</div>',
             htmlAddresses.join('<br />'),
             '</div>'
@@ -51,32 +51,69 @@ function searchCoordinateToAddress(latlng) {
 
         infoWindow.open(map, latlng);
 
+        // 선택 주소 input창으로
         const searchCoord = document.getElementById("search-coord");
         searchCoord.onclick = () => {
             $("#address").val(htmlAddresses[0].replace(/1. \[지번 주소\]/g, '').trim());
         }
-
     });
 }
 
+// *** 수정중 ***
+// address와 indust 값의 존재 여부 파악 Exception 방지
+// function checkAddressAndIndust(address, indust) {
+//     if (!address) {
+//         $('#show-avg-dist').hide();
+//         $('#select-dist').hide();
+//     } else if (indust = "") {
+//         alert("업종을 선택해주세요.");
+//     } else {
+//         addressToServer(address, indust);
+//     }
+// }
 
-// 도로명 주소, 업종 서버로 전송
-function addressToServer(address) {
-    let indust = $('#select-industry .select-industry-detail.selected').text();
+
+// 업종 선택 시 즉시 전송
+$('.select-industry-detail').on('click', function() {
+    // 주소 가져오기
+    let address = $('#address').val();
+    // 클릭한 indust 가져오기
+    indust = $(this).text();
+
+    console.log("업종 클릭 이벤트 : " ,"address : " + address, "indust : " + indust);
+
+    // 처음 업종 선택 시에는 address 빈칸,
+    // 주소가 변경되어 address가 선택되지 않았을때도 .hide(); 보여주지 않기
+    if (!address) {
+        $('#show-avg-dist').hide();
+        $('#select-dist').hide();
+    } else {
+        console.log("naver : ", address, indust)
+        addressToServer(address, indust);
+    }
+});
+
+
+// 주소 선택 시 지역 - 업종 평균 거리 나타내기
+function addressToServer(address, indust) {
+    // let indust = $('#select-industry .select-industry-detail.selected').text();
+    console.log("addressToServer의 " ,"address : " + address, "indust : " + indust)
     let distSlider = document.getElementById('dist-slider');
 
-    $.ajax({
+    $.ajax ({
         type: "GET",
         url: "/avg-dist",
         data:
-        {
-            address: address,
-            indust : indust
-        },
+            {
+                address: address,
+                indust : indust
+            },
         success: function(avgDist) {
             const findsido = address.indexOf(" ");
             const region = (findsido != -1) ? address.substring(0, findsido) : address;
             let avgDistance = Math.round(avgDist, 0);
+
+            console.log("ajax 성공 메서드 : ", address, region, indust);
 
             $('#show-avg-dist').html(
                 '<p><b style="color: #e14242;">' + region + '</b>에 위치한 <b style="color: #e14242;">' + indust + '</b>의</p>' +
@@ -85,7 +122,7 @@ function addressToServer(address) {
 
             $('#show-avg-dist').css('display', 'flex').show();
 
-            // 새로운 지역이나 업종 검색시 avgDistance
+            // 검색 시 바로 해당 avgDistance 보여주기
             $('#dist-value').html(avgDistance);
 
             // 새로운 지역이나 업종을 선택할때마다 기존의 <option>은 삭제
@@ -99,7 +136,7 @@ function addressToServer(address) {
             function appendDist(interval, direction) {
                 for (let i = 1; i <= 3; i++) {
                     const value = (direction === 'over') ? avgDistance + (interval * i) : avgDistance - (interval * i);
-                    distList.push(value)
+                    distList.push(value);
                 }
             }
 
@@ -173,7 +210,8 @@ function searchAddressToCoordinate(address) {
         if (item.roadAddress) {
             htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
             let address = item.roadAddress.replace('[도로명 주소] ', ''); // '[도로명 주소] ' 문자열 제외
-            addressToServer(address);
+            console.log("업종 클릭 searchAddressToCoordinate의 : " ,"address : " + address, "indust : " + indust)
+            addressToServer(address, indust);
         }
 
 
@@ -196,9 +234,6 @@ function searchAddressToCoordinate(address) {
         map.setCenter(point);
         infoWindow.open(map, point);
 
-        // console.log(item)
-        // console.log(point)
-        // console.log(response)
     });
 }
 
@@ -219,6 +254,11 @@ function initGeocoder() {
 
     $('#address').on('keydown', function(e) {
         var keyCode = e.which;
+        // console.log("naverMapJS : " + keyCode);
+
+        // keydown 발생
+        $('#show-avg-dist').hide();
+        $('#select-dist').hide();
 
         if (keyCode === 13) { // Enter Key
             var map = new naver.maps.Map('map');
@@ -252,18 +292,22 @@ function makeAddress(item) {
 
     if (hasArea(region.area1)) {
         sido = region.area1.name;
+        console.log(sido)
     }
 
     if (hasArea(region.area2)) {
         sigugun = region.area2.name;
+        console.log(sigugun)
     }
 
     if (hasArea(region.area3)) {
         dongmyun = region.area3.name;
+        console.log(dongmyun)
     }
 
     if (hasArea(region.area4)) {
         ri = region.area4.name;
+        console.log(ri)
     }
 
     if (land) {

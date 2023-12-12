@@ -29,6 +29,12 @@ public class DataRecommendService {
 
     // 지역별 평균거리
     public Double avgDistance(String indust_id, String region_fk) {
+        // 만약 업종이나 주소 선택을 하지 않고 검색을 눌렀을 경우
+//        if (indust_id.isEmpty()) {
+//
+//        } else if (region_fk.isEmpty()) {
+//
+//        }
         return dataRecommendMapper.avgDist(indust_id, region_fk);
     }
 

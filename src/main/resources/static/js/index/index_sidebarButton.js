@@ -38,8 +38,8 @@ function loading() {
     }, 2000);
 }
 
-let markers = []
 
+let markers = [];
 // 지도에 원 그리기
 $("#submit").click(function () {
 
@@ -56,7 +56,7 @@ $("#submit").click(function () {
         return alert('주소를 선택해주세요.');
     }
     if (getComputedStyle(addbox).border !== "2px solid rgb(65, 99, 125)") {
-        return alert("주소 검색을 해주세요.")
+        return alert("주소 검색을 해주세요.");
     } else {
         loading()
         // 지도 초기화
@@ -73,6 +73,7 @@ $("#submit").click(function () {
             },
             success: function (response) {
                 console.log("서버 응답: " + "success");
+                console.log(indust, region, dist );
 
                 // 지도 초기화에 움직이는 지도 좌표 검색된 좌표로 재설정
                 naver.maps.Service.geocode({
@@ -87,10 +88,11 @@ $("#submit").click(function () {
 
                 var coordinates = response.map(function (item) {
                     var stNm = item.st_nm;
+                    var comNm = item.com_nm;
+
                     var stCoorString = item.st_coor.match(/\(([^)]+)\)/)[1];
                     var stCoorArray = stCoorString.split(' ');
 
-                    var comNm = item.com_nm;
                     var comCoorString = item.com_coor.match(/\(([^)]+)\)/)[1];
                     var comCoorArray = comCoorString.split(' ');
 
@@ -98,10 +100,10 @@ $("#submit").click(function () {
                     var centerCoorArray = centerCoorString.split(' ');
 
                     return {
-                        st_nm : stNm, // 기준이름
+                        st_nm: stNm,
                         st_x: parseFloat(stCoorArray[0]), // 기준경도
                         st_y: parseFloat(stCoorArray[1]), // 기준위도
-                        com_nm : comNm, //대상 이름
+                        com_nm: comNm,
                         com_x: parseFloat(comCoorArray[0]), // 대상경도
                         com_y: parseFloat(comCoorArray[1]), // 대상위도
                         center_x: parseFloat(centerCoorArray[0]),  // 중점경도
@@ -123,11 +125,7 @@ $("#submit").click(function () {
                     return R * c;
                 }
 
-                let circles = []
-                let nearCircle1 = new naver.maps.Marker()
-                let nearCircle2 = new naver.maps.Marker()
-                let infoWindowMarker1 = new naver.maps.InfoWindow({})
-                let infoWindowMarker2 = new naver.maps.InfoWindow({})
+                let circles = [];
 
                 //원 그리기
                 function drawCirclesOnMap(coordinates) {
@@ -171,94 +169,53 @@ $("#submit").click(function () {
                                     }
                                 }
 
-                                // circle click infoWindow content
+                                // 전체 html
                                 let contentString = [
-                                    '<div class="iw_inner">',
+                                    '<div class="iw_inner" style="border-radius: 15px">',
                                     '<div style="display: flex; justify-content: space-between;">',
                                     '<span style="font-size: 25px">주소</span>',
                                     '<span id="favorite-icon" class="material-symbols-outlined favorite-icon" style="cursor: pointer; font-size: 30px; user-select: none;">favorite</span>',
                                     '</div>',
                                     '<div>', htmlAddresses.join('<br />'), '</div>',
-                                    '<button id="near-button" type="button" >근처 상권보기</button>',
-                                    '</div>'
-                                ].join('');
-
-                                // circle click infoWindowMarker1 content
-                                let contentStringMarker1 = [
-                                    '<div class="iw_inner">',
-                                    '<div style="display: flex; justify-content: space-between;">',
-                                    '<span style="font-size: 25px">주소1</span>',
-                                    '</div>',
-                                    '<div>', htmlAddresses.join('<br />'), '</div>',
-                                    '<button id="near-button" type="button" >근처 상권보기</button>',
-                                    '</div>'
-                                ].join('');
-
-                                // circle click infoWindowMarker2 content
-                                let contentStringMarker2 = [
-                                    '<div class="iw_inner">',
-                                    '<div style="display: flex; justify-content: space-between;">',
-                                    '<span style="font-size: 25px">주소2</span>',
-                                    '<span id="favorite-icon" class="material-symbols-outlined favorite-icon" style="cursor: pointer; font-size: 30px; user-select: none;">favorite</span>',
-                                    '</div>',
-                                    '<div>', htmlAddresses.join('<br />'), '</div>',
-                                    '<button id="near-button" type="button" >근처 상권보기</button>',
+                                    '<button id="near-button" type="button">근처 상권보기</button>',
                                     '</div>'
                                 ].join('');
 
                                 let infoWindow = new naver.maps.InfoWindow({
                                     anchorSkew: true,
-                                    content: contentString,
-                                    position: circle.center,
-                                    borderWidth: 2,
+                                    content: contentString,         // 여기 넣음
+                                    position: circle.center,        // 좌표
+                                    textAlign: "center",
+                                    borderWidth: 1
                                 });
 
-                                infoWindowMarker1 = new naver.maps.InfoWindow({
-                                    anchorSkew: true,
-                                    content: contentStringMarker1,
-                                    position: new naver.maps.LatLng(coordinates[i].st_y, coordinates[i].st_x),
-                                    borderWidth: 2,
-                                });
-
-                                    infoWindowMarker2 = new naver.maps.InfoWindow({
-                                    anchorSkew: true,
-                                    content: contentStringMarker2,
-                                    position: new naver.maps.LatLng(coordinates[i].com_y, coordinates[i].com_x),
-                                    borderWidth: 2,
-                                });
-
+                                // map 클릭 시 이전 선택 마커와 infoWindow 지우기
                                 map.addListener('click', function (e) {
                                     infoWindow.close();
                                 });
 
+                                let nearCircle1 = new naver.maps.Marker();
+                                let nearCircle2 = new naver.maps.Marker();
 
-                                for (const marker of markers) {
-                                    marker.setMap(null)
+                                for (let marker of markers) {
+                                    marker.setMap(null);
                                 }
 
                                 infoWindow.close();
-                                infoWindow.open(circle.map, latlng);
 
+                                infoWindow.open(circle.map, latlng);
                                 // 근처 상가 좌표 찍어주기
                                 let nearButton = document.getElementById("near-button")
                                 nearButton.onclick = () => {
-                                    nearCircle1 = new naver.maps.Marker({
-                                        map: map,
-                                        position: new naver.maps.LatLng(coordinates[i].st_y, coordinates[i].st_x),
-                                        clickable: true,
-                                        st_nm: coordinates[i].st_nm,
-                                        });
+                                    nearCircle1.setMap(map)
+                                    nearCircle1.setPosition(new naver.maps.LatLng(coordinates[i].st_y, coordinates[i].st_x))
+                                    markers.push(nearCircle1);
+                                    nearCircle2.setMap(map)
+                                    nearCircle2.setPosition(new naver.maps.LatLng(coordinates[i].com_y, coordinates[i].com_x))
+                                    markers.push(nearCircle2);
 
-                                    nearCircle2 = new naver.maps.Marker({
-                                        map: map,
-                                        position: new naver.maps.LatLng(coordinates[i].com_y, coordinates[i].com_x),
-                                        clickable: true
-                                    });
-
-                                    markers.push(nearCircle1)
-                                    markers.push(nearCircle2)
+                                    console.log(coordinates[i].st_nm, coordinates[i].com_nm)
                                 }
-
 
                                 // 찜 버튼 클릭 이벤트
                                 const favoriteIcon = document.getElementById('favorite-icon');
@@ -266,6 +223,7 @@ $("#submit").click(function () {
                                     this.classList.toggle('active'); // 'active' 클래스 추가/제거
                                 });
 
+                                // 클립보드 주소 복사
                                 function extractTextFromHTML(html) {
                                     // 임시 요소를 생성하여 HTML을 파싱합니다.
                                     var tempElement = document.createElement("div");
@@ -280,6 +238,7 @@ $("#submit").click(function () {
                                 // button 클릭 이벤트
                                 areacopy1.onclick = () => {
                                     var add = extractTextFromHTML(htmlAddresses[0].replace(/\[지번 주소\]/g, '').trim()).replace('content_copy', '');
+                                    console.log(add)
                                     // 주소를 복사
                                     navigator.clipboard.writeText(add).then(
                                         () => {
@@ -311,13 +270,13 @@ $("#submit").click(function () {
                                                 setTimeout(function () {
                                                     document.body.removeChild(copyNotification);
                                                 }, 1500);
-
                                             });
                                     };
                                 }
-                            });
 
+                            });
                         })
+
 
                         // 중복 확인
                         if (circles.length > 0) {
@@ -332,12 +291,6 @@ $("#submit").click(function () {
                     }
                 }
 
-                // 마커 클릭시 정보창
-                // naver.maps.Event.addListener(nearCircle1, 'click', function (e) {
-                //     console.log("yes")
-                //     infoWindowMarker1.open(nearCircle1.map, nearCircle1);
-                // });
-
                 drawCirclesOnMap(coordinates);
                 circles = []
 
@@ -348,7 +301,6 @@ $("#submit").click(function () {
         });
     }
 });
-
 
 
 $(document).ready(function () {

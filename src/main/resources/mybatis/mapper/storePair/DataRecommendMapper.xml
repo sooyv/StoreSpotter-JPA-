@@ -7,7 +7,7 @@
     <select id="selectByDist">
         <choose>
             <when test="indust_id == 'G20405'">
-                select
+                SELECT
                 st_nm,
                 ST_AsText(st_coor) AS st_coor,
                 com_nm,
@@ -15,11 +15,11 @@
                 dist,
                 ST_AsText(ST_Centroid(LineString((st_coor), (com_coor)))) AS center_coor,
                 pair_id
-                from convenience_pair
-                where region_fk = #{region_fk} and convenience_pair.dist > #{dist}
+                FROM convenience_pair
+                WHERE region_fk = #{region_fk} AND convenience_pair.dist > #{dist}
             </when>
-            <when test="indust_id =='I21201'">
-                select
+            <when test="indust_id == 'I21201'">
+                SELECT
                 st_nm,
                 ST_AsText(st_coor) AS st_coor,
                 com_nm,
@@ -27,8 +27,8 @@
                 dist,
                 ST_AsText(ST_Centroid(LineString((st_coor), (com_coor)))) AS center_coor,
                 pair_id
-                from cafe_pair
-                where region_fk = #{region_fk} and cafe_pair.dist > #{dist}
+                FROM cafe_pair
+                WHERE region_fk = #{region_fk} AND cafe_pair.dist > #{dist}
             </when>
         </choose>
     </select>

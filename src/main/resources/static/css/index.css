@@ -67,12 +67,13 @@ html, body {
     height: 35px;
     display: flex;
     align-items: center;
-    padding: 10px;
+    /*padding: 10px;*/
+    padding: 1rem;
 }
 
 .side-elem {
     border-bottom: solid 1px lightgrey;
-    padding: 10px;
+    /*padding: 10px;*/
     transition: height 0.5s ease;
 }
 
@@ -82,7 +83,8 @@ html, body {
     grid-template-columns: repeat(3, minmax(70px, auto));
     gap: 5px;
     justify-items: center;
-    margin: 10px;
+    /*margin: 10px;*/
+    padding: 0 1rem 1rem 1rem;
 }
 
 .select-industry-detail {
@@ -118,7 +120,8 @@ html, body {
     justify-content: space-between;
     align-items: center;
     text-align: center;
-    margin-bottom: 10px;
+    /*margin-bottom: 10px;*/
+    padding: 0 1rem 1rem 1rem;
 }
 
 #address {
@@ -233,6 +236,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    padding: 0 1rem 1rem 1rem;
 }
 
 #dist-slider{
@@ -242,14 +246,10 @@ body {
 }
 
 datalist {
-    /*justify-content: center;*/
-    /*grid-column-gap: 44px;*/
-    /*grid-column-gap: 20px;*/
     font-family: 'IBM Plex Sans KR', sans-serif;
     font-size: small;
     display: grid;
     grid-auto-flow: column;
-    /*width:370px;*/
     width: 350px;
 }
 
@@ -258,7 +258,6 @@ output {
     font-size: medium;
     font-weight: bold;
 }
-
 
 .tick {
     position: relative;
@@ -276,7 +275,6 @@ output {
     background-color: white;
     padding: 20px;
     gap: 10px;
-    border-bottom: solid 1px lightgrey;
 }
 
 .main{
@@ -357,14 +355,11 @@ p {
 
 
 .iw_inner{
-    /*width: 300px;*/
-    /*height: 50px;*/
-    /*border: solid 2px darkgreen;*/
-    /*background: seashell;*/
+    border-radius: 20px;
     padding: 10px;
 }
 
-#near-button{
+#near-button {
     margin-top: 10px;
     border : solid 1px lightgray;
     border-radius : 10px;
@@ -410,35 +405,34 @@ p {
     border-radius: 5px;
 }
 
-#search-coord{
+#search-coord {
     width: 75px;
-    height: 31px;
+    height: 30px;
     border: 1px solid lightgray;
     border-radius: 15px;
-    background: #41637D;
+    background: #41637d;
     color: white;
     cursor: pointer;
 }
 
-#search-coord:hover{
-    background-color: #6796B4;
+#search-coord:hover {
+    background-color: #6796b4;
     transition: 0.3s;
-    border-radius: 15px;
 }
 
-#near-button{
+#near-button {
     width: 95px;
     height: 30px;
     border: 1px solid lightgray;
     border-radius: 15px;
-    background: #41637D;
+    background: #41637d;
     color: white;
     cursor: pointer;
 }
-#near-button:hover{
-    background-color: #6796B4;
+
+#near-button:hover {
+    background-color: #6796b4;
     transition: 0.3s;
-    border-radius: 15px;
 }
 
 /*!* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*!*/
