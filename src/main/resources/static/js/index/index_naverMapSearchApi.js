@@ -40,13 +40,22 @@ function searchCoordinateToAddress(latlng) {
         }
 
         infoWindow.setContent([
-            '<div style="padding:10px;min-width:200px;line-height:150%;">',
-            '<h4 style="margin-top:5px;">검색 좌표</h4><br />',
+            '<div style="padding: 10px;">',
+            '<div style="min-width:200px;line-height:150%; display: flex; justify-content: space-between">',
+            '<h4 style="margin-top:5px;">주소선택</h4><br />',
+            '<button id="search-coord" type="button">검색하기</button>',
+            '</div>',
             htmlAddresses.join('<br />'),
             '</div>'
         ].join('\n'));
 
         infoWindow.open(map, latlng);
+
+        const searchCoord = document.getElementById("search-coord");
+        searchCoord.onclick = () => {
+            $("#address").val(htmlAddresses[0].replace(/1. \[지번 주소\]/g, '').trim());
+        }
+
     });
 }
 

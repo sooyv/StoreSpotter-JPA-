@@ -6,7 +6,7 @@
 <mapper namespace="com.sojoo.StoreSpotter.dao.storePair.DataRecommendMapper">
     <select id="selectByDist">
         <choose>
-            <when test="indust_id = 'G20405'">
+            <when test="indust_id == 'G20405'">
                 select
                 st_nm,
                 ST_AsText(st_coor) AS st_coor,
@@ -18,7 +18,7 @@
                 from convenience_pair
                 where region_fk = #{region_fk} and convenience_pair.dist > #{dist}
             </when>
-            <when test="indsut_id ='I21201'">
+            <when test="indust_id =='I21201'">
                 select
                 st_nm,
                 ST_AsText(st_coor) AS st_coor,
