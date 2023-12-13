@@ -68,7 +68,7 @@ $("#submit").click(function () {
             data: {
                 indust: indust,
                 region: region,
-                dist: dist*2
+                dist: dist
             },
             success: function (response) {
                 console.log("서버 응답: " + "success");
@@ -138,7 +138,7 @@ $("#submit").click(function () {
                             clickable: true,
                             stroke: null,
                         });
-되
+
                         // 원 클릭 시 Event
                         naver.maps.Event.addListener(circle, 'click', function (e) {
                             var latlng = e.center
