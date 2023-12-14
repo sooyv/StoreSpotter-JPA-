@@ -24,11 +24,24 @@ public class MainController {
         this.industryService = industryService;
     }
 
-
     @GetMapping("/")
     public ModelAndView index() {
         return new ModelAndView("index/index");
     }
+
+
+    // 회원가입
+    @GetMapping("/signup")
+    public ModelAndView signUp() {
+        return new ModelAndView("/signIn-signUp/signUp");
+    }
+
+    // 로그인
+    @GetMapping("/signin")
+    public ModelAndView signIn() {
+        return new ModelAndView("/signIn-signUp/signIn");
+    }
+
 
     // 전체 검색 시 Ajax
     @GetMapping("/search/recommend")
@@ -64,5 +77,6 @@ public class MainController {
 
         return region_name;
     }
+
 
 }

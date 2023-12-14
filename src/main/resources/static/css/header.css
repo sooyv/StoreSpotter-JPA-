@@ -1,7 +1,7 @@
 #header {
+    height: 10%;
     justify-content: space-between;
     display: flex;
-    /*flex-direction: row;*/
     align-items: center;
     border-bottom: solid 1px lightgrey;
     background-color: white;
@@ -90,7 +90,8 @@ img {
     #header-content.active {
         /*display: block;*/
         position: absolute;
-        margin-top: 185px;
+        /*margin-top: 200px;*/
+        margin-top: 9em;
         margin-right: 100px;
         background-color: #FFFFFF;
         width: 120px;
@@ -100,10 +101,10 @@ img {
         justify-content: center;
         flex-direction: column;
         border-radius: 10px;
-
     }
 
     .header-ele {
+        margin: 0;
         width: fit-content;
         padding: 10px;
         display: flex;
