@@ -1,5 +1,6 @@
 package com.sojoo.StoreSpotter.controller.main;
 
+import com.sojoo.StoreSpotter.controller.form.memberForm;
 import com.sojoo.StoreSpotter.service.apiToDb.IndustryService;
 import com.sojoo.StoreSpotter.service.apiToDb.RegionService;
 import com.sojoo.StoreSpotter.dto.storePair.DataRecommend;
@@ -8,6 +9,7 @@ import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,18 +37,29 @@ public class MainController {
 
     // 회원가입 page
     @GetMapping("/signup")
-    public ModelAndView signUpPage() {
+    public ModelAndView signUpPage(Model member) {
+        member.addAttribute("member", new memberForm());
         return new ModelAndView("/signIn-signUp/signUp");
     }
 
     // 회원가입
     @PostMapping("/member/signup")
-    public ResponseEntity<String> signUp(@RequestParam("userName") String name, @RequestParam("email") String email,
-                         @RequestParam("password") String password, @RequestParam("userPhone") String phone) {
+    public String signUp(memberForm memeber) {
+//    public ResponseEntity<String> signUp(@RequestParam("userName") String name, @RequestParam("email") String email,
+//                         @RequestParam("password") String password, @RequestParam("userPhone") String phone) {
 
 //        System.out.println(userName, email, password, phone);
+        String name = memeber.getName();
+        String email = memeber.getEmail();
+        String password = memeber.getPassword();
+        String phone = memeber.getPhone();
 
-        return new ResponseEntity<>("Successfully Registered", HttpStatus.OK);
+        System.out.println(name);
+        System.out.println(email);
+        System.out.println(password);
+        System.out.println(phone);
+
+        return "redirect:/";
     }
 
     // 로그인

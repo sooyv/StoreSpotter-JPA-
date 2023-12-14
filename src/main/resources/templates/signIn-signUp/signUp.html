@@ -17,14 +17,14 @@
 <div th:replace="/header :: header"></div>
     <div class="container" id="container">
     <div class="sign-up-container">
-        <form id="signUpForm" action="/member/signup" method="post">
+        <form id="signUpForm" th:action="@{/member/signup}" th:object="${member}" method="post">
             <h1>Create Account</h1>
 <!--            <span>use your email for registration</span>-->
-            <input type="text" id="name" placeholder="Name" />
-            <input type="email" id="email" placeholder="Email" />
-            <input type="password" id="password" placeholder="Password" />
+            <input type="text" id="name" th:field="*{name}" placeholder="Name" />
+            <input type="email" id="email" th:field="*{email}" placeholder="Email" />
+            <input type="password" id="password" th:field="*{password}" placeholder="Password" />
             <input type="password" id="checkPassword" placeholder="Repeat password" />
-            <input type="text" id="phone" placeholder="Phone" />
+            <input type="text" id="phone" th:field="*{phone}" placeholder="Phone" />
             <button type="submit" id="signUpBtn">Sign Up</button>
         </form>
 
