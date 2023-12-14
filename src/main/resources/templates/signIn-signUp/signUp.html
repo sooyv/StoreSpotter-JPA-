@@ -5,24 +5,27 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>StoreSpotter Sing up</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;500&family=Ubuntu:wght@500&display=swap" rel="stylesheet"></head>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;500&family=Ubuntu:wght@500&display=swap" rel="stylesheet">
     <link href="/css/header.css" rel="stylesheet">
     <link href="/css/signIn-signUp/signUp.css" rel="stylesheet">
-    <title>StoreSpotter Sing up</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
 <div th:replace="/header :: header"></div>
     <div class="container" id="container">
     <div class="sign-up-container">
-        <form action="#">
+        <form id="signUpForm" action="/member/signup" method="post">
             <h1>Create Account</h1>
 <!--            <span>use your email for registration</span>-->
-            <input type="text" placeholder="Name" />
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <button>Sign Up</button>
+            <input type="text" id="name" placeholder="Name" />
+            <input type="email" id="email" placeholder="Email" />
+            <input type="password" id="password" placeholder="Password" />
+            <input type="password" id="checkPassword" placeholder="Repeat password" />
+            <input type="text" id="phone" placeholder="Phone" />
+            <button type="submit" id="signUpBtn">Sign Up</button>
         </form>
 
         <div class="separator"><p>OR</p></div>
@@ -38,4 +41,5 @@
 </div>
 
 <script src="/js/header.js"></script>
+<script  src="/js/signIn-signUp/signUp.js"></script>
 </body>

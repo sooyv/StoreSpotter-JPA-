@@ -39,9 +39,7 @@ a {
 button {
     font-family: 'Ubuntu', sans-serif;
     border-radius: 20px;
-    /*border: 1px solid #FF4B2B;*/
     border: 1px solid #23567d;
-    /*background-color: #FF4B2B;*/
     background-color: #23567d;
     color: #FFFFFF;
     font-size: 12px;
@@ -52,17 +50,19 @@ button {
     transition: transform 80ms ease-in;
 }
 
+button:hover {
+    background: #6bb4d0;
+    border: 1px solid #6bb4d0;
+    transition: 0.2s ease;
+}
+
 form {
-    /*background-color: #fcfeff;*/
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     padding: 6em 0 1em;
     text-align: center;
-    /*border-radius: 1.5em;*/
-    /*box-shadow: 0 14px 28px rgba(0,0,0,0.25),*/
-    /*0 10px 10px rgba(0,0,0,0.22);*/
     position: relative;
 }
 
@@ -88,7 +88,6 @@ input {
     background: #fcfeff;
     height: 100%;
     width: 100%;
-    /*z-index: 2;*/
 }
 
 .social-container {
@@ -120,10 +119,7 @@ input {
     display: block;
     margin: 40px auto 40px;
     text-align: center;
-    /*height: 40px;*/
     position: relative;
-    /*background: transparent;*/
-    /*color: rgba(#0f132a,.4);*/
     color: #8a8a8a;
     font-size: 13px;
     width: 90%;
@@ -135,7 +131,6 @@ input {
     position: absolute;
     top: 8px;
     left: 0;
-    /*background: rgba(#0f132a,.2);*/
     background: #969696;
     height:1px;
     width:45%;
@@ -146,7 +141,6 @@ input {
     position: absolute;
     top: 8px;
     right: 0;
-    /*background: rgba(#0f132a,.2);*/
     background: #969696;
     height: 1px;
     width: 45%;

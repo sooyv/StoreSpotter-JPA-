@@ -4,7 +4,10 @@ import com.sojoo.StoreSpotter.service.apiToDb.IndustryService;
 import com.sojoo.StoreSpotter.service.apiToDb.RegionService;
 import com.sojoo.StoreSpotter.dto.storePair.DataRecommend;
 import com.sojoo.StoreSpotter.service.storePair.DataRecommendService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -30,10 +33,20 @@ public class MainController {
     }
 
 
-    // 회원가입
+    // 회원가입 page
     @GetMapping("/signup")
-    public ModelAndView signUp() {
+    public ModelAndView signUpPage() {
         return new ModelAndView("/signIn-signUp/signUp");
+    }
+
+    // 회원가입
+    @PostMapping("/member/signup")
+    public ResponseEntity<String> signUp(@RequestParam("userName") String name, @RequestParam("email") String email,
+                         @RequestParam("password") String password, @RequestParam("userPhone") String phone) {
+
+//        System.out.println(userName, email, password, phone);
+
+        return new ResponseEntity<>("Successfully Registered", HttpStatus.OK);
     }
 
     // 로그인
