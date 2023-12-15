@@ -9,5 +9,6 @@ public class memberForm {
     private String name;
     private String email;
     private String password;
+    private String checkPassword;
     private String phone;
 }

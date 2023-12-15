@@ -1,4 +1,4 @@
-package com.sojoo.StoreSpotter.domain;
+package com.sojoo.StoreSpotter.dto.user;
 
 import lombok.Getter;
 import lombok.Setter;

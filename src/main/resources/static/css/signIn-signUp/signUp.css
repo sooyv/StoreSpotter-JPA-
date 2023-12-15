@@ -101,7 +101,7 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 20px 0;
+    padding: 20px 0 100px 0;
     width: 100%;
 }
 
