@@ -24,7 +24,9 @@
             <input type="text" id="name" th:field="*{name}" placeholder="Name" />
             <input type="email" id="email" th:field="*{email}" placeholder="Email" />
             <input type="password" id="password" th:field="*{password}" placeholder="Password" />
+            <small id="passwordHelp">비밀번호는 문자, 숫자, 특수문자가 포함된 8-20자로 작성해주세요</small>
             <input type="password" id="checkPassword" th:field="*{checkPassword}" placeholder="Repeat password" />
+            <small id="passwordCheckHelp">비밀번호가 일치하지 않습니다</small>
             <input type="text" id="phone" th:field="*{phone}" placeholder="Phone" />
             <button type="submit" id="signUpBtn">Sign Up</button>
         </form>

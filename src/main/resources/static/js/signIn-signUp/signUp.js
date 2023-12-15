@@ -1,17 +1,44 @@
 let form = document.getElementById("signUpForm");
+$("#passwordCheckHelp").hide();
+$("#passwordHelp").hide();
 
+
+
+// 비밀번호 형식 정규화(최소 8자, 영문 숫자 특수문자)
+$("#password").on("keyup", function(event) {
+    console.log("pw keyup 발생")
+
+    var pwRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+
+    if (!pwRegExp.test($("#password").val())) {       // 비밀번호 정규화
+        $("#passwordHelp").show();
+    } else {
+        $("#passwordHelp").hide();
+    }
+});
+
+// password passwordcheck 일치 검사
+$("#checkPassword").on("keyup", function(event) {
+    console.log("pw 일치 검사");
+
+    if ($("#password").val() !== $("#checkPassword").val()) {
+        $("#passwordCheckHelp").show();
+    } else {
+        $("#passwordCheckHelp").hide();
+    }
+});
 
 form.addEventListener("submit", event => {
     event.preventDefault();
 
     $(document).ready(function () {
 
-        let name = $("#name").val();
-        let email = $("#email").val();
-// let authNum = $("#emailAuthNum").val();
-        let password = $("#password").val();
-        let checkPassword = $("#checkPassword").val();
-        let phone = $("#phone").val();
+        const name = $("#name").val();
+        const email = $("#email").val();
+// const authNum = $("#emailAuthNum").val();
+        const password = $("#password").val();
+        const checkPassword = $("#checkPassword").val();
+        const phone = $("#phone").val();
 
         // 모든 항목 작성 검사
         if (!name || !email || !password || !checkPassword || !phone) {
@@ -42,10 +69,10 @@ form.addEventListener("submit", event => {
 
                 // back 모든 항목 검사
                 if (error.responseText == "memberInfo") {
-                    alert("모든 항목을 입력해주세요.")
+                    alert("모든 항목을 입력해주세요.");
                 }
 
-                if (error.responseText == "password") {
+                if (error.responseText == "notEqualPassword") {
                     alert("비밀번호 확인을 체크해주세요.");
                     checkPassword.focus();
                 }

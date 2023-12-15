@@ -153,6 +153,13 @@ input {
     width: 45%;
 }
 
+small {
+    display: flex;
+    width: 70%;
+    max-width: 500px;
+    color: #f12222;
+}
+
 
 
 /*태블릿 - 900px 이하의 화면*/
