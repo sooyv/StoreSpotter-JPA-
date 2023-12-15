@@ -17,7 +17,7 @@ $("#password").on("keyup", function(event) {
     }
 });
 
-// password passwordcheck 일치 검사
+// 비밀번호 일치 검사
 $("#checkPassword").on("keyup", function(event) {
     console.log("pw 일치 검사");
 
@@ -46,8 +46,6 @@ form.addEventListener("submit", event => {
             return;
         }
 
-        console.log("/member/signup");
-
         $.ajax({
             type: 'POST',
             url: "/member/signup",
@@ -61,7 +59,6 @@ form.addEventListener("submit", event => {
             },
             success: function (response) {
                 console.log(response);
-
                 // window.location.replace("/");
             },
             error: function (error) {
