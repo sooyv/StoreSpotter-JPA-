@@ -6,6 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>StoreSpotter Sing up</title>
+    <link rel="StoreSpotter Icon" type="png" href="/style/main/free-icon-pin.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;500&family=Ubuntu:wght@500&display=swap" rel="stylesheet">
@@ -17,12 +18,13 @@
 <div th:replace="/header :: header"></div>
     <div class="container" id="container">
     <div class="sign-up-container">
-        <form id="signUpForm" th:action="@{/member/signup}" th:object="${member}" method="post">
+        <form id="signUpForm" th:action="@{/member/signup}" th:object="${memberForm}" method="post">
 <!--        <form id="signUpForm" method="post">-->
             <h1>Create Account</h1>
 <!--            <span>use your email for registration</span>-->
             <input type="text" id="name" th:field="*{name}" placeholder="Name" />
             <input type="email" id="email" th:field="*{email}" placeholder="Email" />
+            <small id="emailHelp"></small>
             <input type="password" id="password" th:field="*{password}" placeholder="Password" />
             <small id="passwordHelp">비밀번호는 문자, 숫자, 특수문자가 포함된 8-20자로 작성해주세요</small>
             <input type="password" id="checkPassword" th:field="*{checkPassword}" placeholder="Repeat password" />

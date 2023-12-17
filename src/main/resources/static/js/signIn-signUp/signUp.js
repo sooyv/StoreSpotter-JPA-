@@ -1,7 +1,58 @@
 let form = document.getElementById("signUpForm");
 $("#passwordCheckHelp").hide();
 $("#passwordHelp").hide();
+// $("#emailHelp").hide();
+let idchk = false;
+let mailchk = false;
 
+let email = $("#email");
+// 이메일 중복 검사
+$("#email").on("keyup", function (event) {
+    console.log("email 검사")
+
+    const emailRegExp = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/;
+
+    // 이메일 정규식 적용
+    if (!emailRegExp.test($("#email").val())) {
+        idchk = false;
+        var emailHelp = document.getElementById("emailHelp");
+        emailHelp.innerHTML = "이메일 형식에 맞게 작성해주세요"
+        $("#emailHelp").css({
+            "color": "#FA3E3E",
+        })
+
+    } else {            // 중복체크
+        idchk = true;
+        $.ajax({
+            type : "POST",
+            url : "/signup/checkid",
+            data : {
+                "id" : email.val(),
+                "type" : "email"
+            },
+            success : function(data) {
+                if (data === 1) {                // 1이면 이메일 중복
+                    console.log(data);
+                    mailchk = false;
+                    var elements = document.getElementById("emailHelp");
+                    elements.innerHTML = "이미 사용중인 이메일입니다"
+                    $("#emailHelp").css({
+                        "color": "#FA3E3E",
+                    })
+
+                } else if (data === 0) {                // 아니면 중복아님
+                    console.log(data);
+                    mailchk = true;
+                    var emailHelp = document.getElementById("emailHelp");
+                    emailHelp.innerHTML = "사용 가능한 이메일입니다"
+                    $("#emailHelp").css({
+                        "color": "green",
+                    })
+                }
+            }
+        })
+    }
+});
 
 
 // 비밀번호 형식 정규화(최소 8자, 영문 숫자 특수문자)
@@ -59,7 +110,7 @@ form.addEventListener("submit", event => {
             },
             success: function (response) {
                 console.log(response);
-                // window.location.replace("/");
+                window.location.replace("/");
             },
             error: function (error) {
                 console.log(error);
@@ -79,13 +130,10 @@ form.addEventListener("submit", event => {
                     password.focus();
                 }
 
-                // if (error.responseText == "authNum") {
-                //     alert("인증번호를 확인해주세요.");
-                //     emailAuthInput.focus();
-                // } else if (error.responseText == "codeNull") {
-                //     alert("세션이 만료되었습니다. 처음부터 다시 시도해주세요.");
-                //     emailAuthInput.focus();
-                // }
+                if (error.responseText == "validateDuplicateMember") {
+                    alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.")
+                    email.focus();
+                }
 
                 $("#signUpBtn").addClass('shake');
                 setTimeout(function() {
