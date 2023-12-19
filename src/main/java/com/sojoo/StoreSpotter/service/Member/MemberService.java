@@ -2,34 +2,31 @@ package com.sojoo.StoreSpotter.service.Member;
 
 import com.sojoo.StoreSpotter.dto.Member.Member;
 import com.sojoo.StoreSpotter.repository.Member.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class MemberService {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private final String pwRegExp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$";
 
 
-    // 회원가입
-//    public Long join(Member member) {
-//        validateDuplicateMember(member);
-//        memberRepository.save(member);
-//        return member.getMemberId();
-//    }
     public ResponseEntity<String> join(Member member) {
         if (validateDuplicateMember(member) != null) {
             return new ResponseEntity<>("validateDuplicateMember", HttpStatus.BAD_REQUEST);
         } else {
+            member.setMemberPassword(bCryptPasswordEncoder.encode(member.getPassword()));
             memberRepository.save(member);
         }
 
@@ -37,14 +34,6 @@ public class MemberService {
     }
 
 
-
-    // 이메일 중복 검증
-//    private void validateDuplicateMember(Member user) {
-//        Optional<Member> findUserEmail = memberRepository.findByMemberEmail(user.getMemberEmail());
-//        if (!findUserEmail.isEmpty()) {
-//            throw new IllegalStateException("이미 존재하는 회원입니다");
-//        }
-//    }
     private ResponseEntity<String> validateDuplicateMember(Member user) {
         Optional<Member> findUserEmail = memberRepository.findByMemberEmail(user.getMemberEmail());
         if (!findUserEmail.isEmpty()) {

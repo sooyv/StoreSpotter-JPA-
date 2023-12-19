@@ -1,5 +1,4 @@
 package com.sojoo.StoreSpotter.repository.Member;
-
 import com.sojoo.StoreSpotter.dto.Member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

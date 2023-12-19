@@ -85,6 +85,7 @@ img {
         justify-content: center;
         /*margin: 0px;*/
         padding-right: 15px;
+        cursor: pointer;
     }
 
     #header-content.active {

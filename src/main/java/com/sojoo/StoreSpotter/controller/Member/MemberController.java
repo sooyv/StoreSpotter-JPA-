@@ -1,10 +1,10 @@
 package com.sojoo.StoreSpotter.controller.Member;
 
 import com.sojoo.StoreSpotter.controller.form.memberForm;
-//import com.sojoo.StoreSpotter.service.user.SignUpService;
 import com.sojoo.StoreSpotter.dto.Member.Member;
 import com.sojoo.StoreSpotter.service.Member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,7 @@ public class MemberController {
     @GetMapping("/signup")
     public ModelAndView signUpPage(Model memberForm) {
         memberForm.addAttribute("memberForm", new memberForm());
-        return new ModelAndView("/signIn-signUp/signUp");
+        return new ModelAndView("/loginSignUp/signUp");
     }
 
     // 회원가입 이메일 중복 검사
@@ -87,13 +87,14 @@ public class MemberController {
 
 
     // 로그인
-    @GetMapping("/signin")
+    @GetMapping("/login")
     public ModelAndView signIn() {
-        return new ModelAndView("/signIn-signUp/signIn");
+        return new ModelAndView("loginSignUp/login");
     }
+
 
     @GetMapping("/signInfo")
     public ModelAndView signInfo() {
-        return new ModelAndView("/signIn-signUp/findSignInfo");
+        return new ModelAndView("/loginSignUp/findSignInfo");
     }
 }
