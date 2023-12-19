@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .loginProcessingUrl("/member/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/", true)
                 .and()
                 .logout()                           // 로그아웃 설정
                 .logoutSuccessUrl("/login");
