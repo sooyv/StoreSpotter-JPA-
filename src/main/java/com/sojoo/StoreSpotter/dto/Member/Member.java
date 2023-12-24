@@ -1,15 +1,13 @@
 package com.sojoo.StoreSpotter.dto.Member;
 
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,9 +17,13 @@ public class Member implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
+    @Column(nullable = false)
     private String memberName;
+    @Column(unique = true, nullable = false) // 유일한 값만 저장 가능. 중복 저장 불가
     private String memberEmail;
+    @Column(nullable = false)
     private String memberPassword;
+    @Column(nullable = false)
     private String memberPhone;
 
     @Override
@@ -64,4 +66,5 @@ public class Member implements UserDetails {
     public boolean isEnabled() {
         return true;    // true -> 사용 가능
     }
+
 }

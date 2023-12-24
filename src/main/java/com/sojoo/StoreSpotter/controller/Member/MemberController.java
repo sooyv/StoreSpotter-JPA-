@@ -1,5 +1,6 @@
 package com.sojoo.StoreSpotter.controller.Member;
 
+import com.sojoo.StoreSpotter.config.jwt.JwtTokenProvider;
 import com.sojoo.StoreSpotter.controller.form.memberForm;
 import com.sojoo.StoreSpotter.dto.Member.Member;
 import com.sojoo.StoreSpotter.service.Member.MemberService;
@@ -7,7 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -40,6 +46,7 @@ public class MemberController {
     }
 
     // 회원가입
+    @Transactional
     @PostMapping("/member/signup")
     public ResponseEntity<String> signUp(memberForm memberInfo) {
 
@@ -67,14 +74,12 @@ public class MemberController {
             return passwordRegExp;
         }
 
-
         Member member = new Member();
         member.setMemberName(name);
         member.setMemberEmail(email);
         member.setMemberPassword(password);
         member.setMemberPhone(phone);
 
-//        memberService.join(member);
         // 이메일 중복 검사
         ResponseEntity<String> validateDuplicateMember = memberService.join(member);
         if (validateDuplicateMember != null) {
@@ -91,7 +96,6 @@ public class MemberController {
     public ModelAndView signIn() {
         return new ModelAndView("loginSignUp/login");
     }
-
 
     @GetMapping("/signInfo")
     public ModelAndView signInfo() {

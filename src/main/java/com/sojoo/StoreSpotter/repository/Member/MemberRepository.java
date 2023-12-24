@@ -16,4 +16,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     // 회원 한명 조회
     Member getOne(Long userId);
+
+
 }
