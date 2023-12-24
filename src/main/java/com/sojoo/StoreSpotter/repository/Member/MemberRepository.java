@@ -8,14 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    // 모든 회원 정보 찾기
-    List<Member> findAll();
 
     // email로 회원 찾기
     Optional<Member> findByMemberEmail(String memberEmail);
-
-    // 회원 한명 조회
-    Member getOne(Long userId);
-
 
 }

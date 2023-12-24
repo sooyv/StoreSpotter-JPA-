@@ -80,13 +80,9 @@ public class MemberController {
         member.setMemberPassword(password);
         member.setMemberPhone(phone);
 
-        // 이메일 중복 검사
-        ResponseEntity<String> validateDuplicateMember = memberService.join(member);
-        if (validateDuplicateMember != null) {
-            return validateDuplicateMember;
-        }
+        memberService.joinMember(member);
 
-        return new ResponseEntity<>("sign up success", HttpStatus.OK);
+        return new ResponseEntity<>("Successfully sign-up", HttpStatus.OK);
     }
 
 

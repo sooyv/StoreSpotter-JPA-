@@ -16,31 +16,32 @@ import java.util.List;
 public class Member implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id", updatable = false)
     private Long memberId;
-    @Column(nullable = false)
+    @Column(name = "member_name", nullable = false)
     private String memberName;
-    @Column(unique = true, nullable = false) // 유일한 값만 저장 가능. 중복 저장 불가
+    @Column(name = "member_email", unique = true, nullable = false) // 유일한 값만 저장 가능. 중복 저장 불가
     private String memberEmail;
-    @Column(nullable = false)
+    @Column(name = "member_password", nullable = false)
     private String memberPassword;
-    @Column(nullable = false)
+    @Column(name = "member_phone", nullable = false)
     private String memberPhone;
 
-    @Override
+    @Override       // 권한 반환
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("user"));
-    }
-
-    // 사용자 비밀번호 반환
-    @Override
-    public String getPassword() {
-        return memberPassword;
     }
 
     // 사용자 id = email 반환
     @Override
     public String getUsername() {
         return memberEmail;
+    }
+
+    // 사용자 비밀번호 반환
+    @Override
+    public String getPassword() {
+        return memberPassword;
     }
 
     // 계정 만료 여부 반환

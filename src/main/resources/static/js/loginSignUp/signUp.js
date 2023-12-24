@@ -130,10 +130,10 @@ form.addEventListener("submit", event => {
                     password.focus();
                 }
 
-                if (error.responseText == "validateDuplicateMember") {
-                    alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.")
-                    email.focus();
-                }
+                // if (error.responseText == "validateDuplicateMember") {
+                //     alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.")
+                //     email.focus();
+                // }
 
                 $("#signUpBtn").addClass('shake');
                 setTimeout(function() {

@@ -1,7 +1,5 @@
 package com.sojoo.StoreSpotter.config;
 
-import com.sojoo.StoreSpotter.config.jwt.JwtTokenProvider;
-import com.sojoo.StoreSpotter.config.jwt.TokenAuthenticationFilter;
 import com.sojoo.StoreSpotter.service.Member.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -11,15 +9,13 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-
-    private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailService memberService;
 
     @Bean
@@ -54,7 +50,6 @@ public class SecurityConfig {
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-//        http.addFilterBefore(new TokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

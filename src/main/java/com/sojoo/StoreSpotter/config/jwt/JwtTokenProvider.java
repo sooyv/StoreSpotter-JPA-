@@ -30,19 +30,20 @@ public class JwtTokenProvider {
     // JWT 토큰 생성 메서드
     private String makeToken(Date expiry, Member member) {
         Date now = new Date();
+        System.out.println("getIssuer" + jwtProperties.getIssuer());
+        System.out.println("getSecretKey" + jwtProperties.getSecretKey());
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)   // 헤더 typ : JWT
                 // 내용 iss : propertise 파일에서 설정한 값
                 .setIssuer(jwtProperties.getIssuer())
-                .setIssuedAt(now)   // 내용 iat : 현재시간
-                .setExpiration(expiry)   // 내용 exp : expiry 멤버 변수값
-                .setSubject(member.getMemberEmail())       // 클레임 id : 유저 id = email
-                .claim("id", member.getMemberId())      // 클레임 id : 유저 id
+                .setIssuedAt(now)                   // 내용 iat : 현재시간
+                .setExpiration(expiry)              // 내용 exp : expiry 멤버 변수값
+                .setSubject(member.getMemberEmail())            // 내용 sub : 유저 email
+                .claim("id", member.getMemberId())        // 클레임 id : 유저 id
                 // 서명 : 비밀값과 함께 해시값을 HS256 방식으로 암호화
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
                 .compact();
-
     }
 
     // jwt 유효성 검사 메서드
@@ -76,6 +77,5 @@ public class JwtTokenProvider {
                 .setSigningKey(jwtProperties.getSecretKey())
                 .parseClaimsJws(token)
                 .getBody();
-
     }
 }
