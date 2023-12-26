@@ -1,6 +1,5 @@
 package com.sojoo.StoreSpotter.dto.Member;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,9 +26,10 @@ public class Member implements UserDetails {
     @Column(name = "member_phone", nullable = false)
     private String memberPhone;
 
+
     @Override       // 권한 반환
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("user"));
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     // 사용자 id = email 반환
@@ -67,5 +67,6 @@ public class Member implements UserDetails {
     public boolean isEnabled() {
         return true;    // true -> 사용 가능
     }
+
 
 }

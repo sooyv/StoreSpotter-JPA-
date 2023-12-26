@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -27,11 +28,10 @@ public class JwtTokenProvider {
         return makeToken(new Date(now.getTime() + expiredAt.toMillis()), member);
     }
 
+
     // JWT 토큰 생성 메서드
     private String makeToken(Date expiry, Member member) {
         Date now = new Date();
-        System.out.println("getIssuer" + jwtProperties.getIssuer());
-        System.out.println("getSecretKey" + jwtProperties.getSecretKey());
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)   // 헤더 typ : JWT
@@ -45,6 +45,7 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
                 .compact();
     }
+
 
     // jwt 유효성 검사 메서드
     public boolean validToken(String token) {

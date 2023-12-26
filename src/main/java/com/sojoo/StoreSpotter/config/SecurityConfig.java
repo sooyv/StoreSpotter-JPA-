@@ -43,8 +43,8 @@ public class SecurityConfig {
                 .passwordParameter("password")
                 .defaultSuccessUrl("/", true)
                 .and()
-                .logout()                           // 로그아웃 설정
-                .logoutSuccessUrl("/login");
+                .logout()   // 로그아웃 설정
+                    .logoutSuccessUrl("/login");
 
         // 세션 사용 안함
         http.sessionManagement()

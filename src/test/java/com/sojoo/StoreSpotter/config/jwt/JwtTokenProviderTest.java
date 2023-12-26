@@ -1,7 +1,5 @@
-//package com.sojoo.StoreSpotter.config.configu.jwt;
+//package com.sojoo.StoreSpotter.config.jwt;
 //
-//import com.sojoo.StoreSpotter.config.jwt.JwtProperties;
-//import com.sojoo.StoreSpotter.config.jwt.JwtTokenProvider;
 //import com.sojoo.StoreSpotter.dto.Member.Member;
 //import com.sojoo.StoreSpotter.repository.Member.MemberRepository;
 //import io.jsonwebtoken.Jwts;
@@ -12,9 +10,9 @@
 //import org.springframework.security.core.Authentication;
 //import org.springframework.security.core.userdetails.User;
 //import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.test.web.reactive.server.JsonPathAssertions;
 //
 //import java.time.Duration;
+//import java.util.Date;
 //import java.util.Map;
 //
 //import static org.assertj.core.api.Assertions.assertThat;
@@ -36,8 +34,8 @@
 //    void generateToken() {
 //        // given
 //        Member testMember = memberRepository.save(User.builder()
-//                .email("user@gmail.com")
-//                .password("test")
+//                .username("user@gmail.com")
+//                .password("test1111!")
 //                .build());
 //
 //        // when
@@ -53,9 +51,26 @@
 //        assertThat(userId).isEqualTo(testMember.getMemberId());
 //    }
 //
-//    @DisplayName("valideToken(): 유효한 토큰일때에 유효성 검증에 성공")
+//    @DisplayName("validToken(): 만료된 토큰인 때에 유효성 검증에 실패.")
 //    @Test
-//    void validToken_valideToken() {
+//    void validToken_invalidToken() {
+//        // given
+//        String token = JwtFactory.builder()
+//                .expiration(new Date(new Date().getTime() - Duration.ofDays(7).toMillis()))
+//                .build()
+//                .createToken(jwtProperties);
+//
+//        // when
+//        boolean result = jwtTokenProvider.validToken(token);
+//
+//        // then
+//        assertThat(result).isFalse();
+//
+//    }
+//
+//    @DisplayName("validToken(): 유효한 토큰일때에 유효성 검증에 성공")
+//    @Test
+//    void validToken_validToken() {
 //        // given
 //        String token = JwtFactory.withDefaultValues().createToken(jwtProperties);
 //
@@ -66,11 +81,12 @@
 //        assertThat(result).isTrue();
 //    }
 //
-//    @DisplayName(("getAuthenication(): 토큰 기반으로 인증 정보를 가져올 수 있다."))
+//    // getAuthentication() 검증 테스트
+//    @DisplayName(("getAuthentication(): 토큰 기반으로 인증 정보를 가져올 수 있다."))
 //    @Test
 //    void getAuthentication() {
 //        // given
-//        String userEmail = "user@email.com";
+//        String userEmail = "test@gmail.com";
 //        String token = JwtFactory.builder()
 //                .subject(userEmail)
 //                .build()
@@ -80,7 +96,7 @@
 //        Authentication authentication = jwtTokenProvider.getAuthentication(token);
 //
 //        // then
-//        assertThat(((UserDetails) authentication.getPrincipal()).getUsername().isEqualTo(userEmail));
+//        assertThat(((UserDetails) authentication.getPrincipal()).getUsername().equals(userEmail));
 //    }
 //
 //    @DisplayName("getUserId(): 토큰으로 유저 ID를 가져올 수 있다.")
@@ -94,10 +110,9 @@
 //                .createToken(jwtProperties);
 //
 //        // when
-//        Long userIdByToken = jwtTokenProvider.getUserEmail(token);
+//        Long userIdByToken = jwtTokenProvider.getUserId(token);
 //
 //        // then
 //        assertThat(userIdByToken).isEqualTo(userId);
 //    }
-//
 //}

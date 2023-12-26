@@ -21,8 +21,6 @@ public class TokenApiController {
     public ResponseEntity<CreateAccessTokenResponse> createNewAccessToken(@RequestBody CreateAccessTokenRequest request) {
         String newAccessToken = jwtTokenService.createNewAccessToken(request.getRefreshToken());
 
-        System.out.println("TokenApiController : " + newAccessToken);
-
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new CreateAccessTokenResponse(newAccessToken));
     }
