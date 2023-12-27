@@ -35,6 +35,7 @@ public class SecurityConfig {
         http.authorizeRequests()
                 // main, login 페이지, login 프로세스, 회원가입 페이지, 회원가입 프로세스, 이메일 중복체크 ajax, JWT token 발급
                 .antMatchers("/", "/login", "/member/login", "/signup", "/member/signup", "/signup/checkid", "/api/token").permitAll()
+//                .antMatchers("/admin/**").hasRole("user")
                 .anyRequest().authenticated();  // 그 외 인증 없이 차단
 
         http.formLogin()
