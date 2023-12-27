@@ -34,8 +34,10 @@ class JwtTokenProviderTest {
     void generateToken() {
         // given
         Member testMember = memberRepository.save(Member.builder()
+                .memberName("이개똥")
                 .memberEmail("test@gmail.com")
                 .memberPassword("test111!")
+                .memberPhone("010-1111-1111")
                 .build());
 
         // when

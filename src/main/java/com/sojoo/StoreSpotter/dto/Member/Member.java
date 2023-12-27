@@ -28,10 +28,16 @@ public class Member implements UserDetails {
     private String memberPhone;
 
     @Builder
-    public Member(String memberEmail, String memberPassword, String auth) {
+    public Member(String memberName, String memberEmail, String memberPassword, String memberPhone, String auth) {
+        this.memberName = memberName;
         this.memberEmail = memberEmail;
         this.memberPassword = memberPassword;
+        this.memberPhone = memberPhone;
     }
+//    public Member(String memberEmail, String memberPassword, String auth) {
+//        this.memberEmail = memberEmail;
+//        this.memberPassword = memberPassword;
+//    }
 
     @Override       // 권한 반환
     public Collection<? extends GrantedAuthority> getAuthorities() {
