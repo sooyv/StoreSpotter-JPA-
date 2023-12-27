@@ -29,7 +29,7 @@ public class JwtTokenProvider {
     }
 
 
-    // JWT 토큰 생성 메서드
+    // JWT 토큰 생성 메서드 - 만료시간, 유저정보
     private String makeToken(Date expiry, Member member) {
         Date now = new Date();
 
@@ -37,8 +37,8 @@ public class JwtTokenProvider {
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)   // 헤더 typ : JWT
                 // 내용 iss : propertise 파일에서 설정한 값
                 .setIssuer(jwtProperties.getIssuer())
-                .setIssuedAt(now)                   // 내용 iat : 현재시간
-                .setExpiration(expiry)              // 내용 exp : expiry 멤버 변수값
+                .setIssuedAt(now)                   // 내용 iat(발급일시) : 현재시간
+                .setExpiration(expiry)              // 내용 exp(만료일자) : expiry 멤버 변수값
                 .setSubject(member.getMemberEmail())            // 내용 sub : 유저 email
                 .claim("id", member.getMemberId())        // 클레임 id : 유저 id
                 // 서명 : 비밀값과 함께 해시값을 HS256 방식으로 암호화
@@ -59,7 +59,7 @@ public class JwtTokenProvider {
         }
     }
 
-    // 토큰 기반으로 인증 정보를 가져오는 메서드
+    // 토큰 기반으로 인증 정보를 가져오는 메서드 - 인증정보 조회
     public Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -40,9 +41,11 @@ public class MemberController {
     }
 
     // 회원가입
-    @Transactional
+//    @Transactional
     @PostMapping("/member/signup")
     public ResponseEntity<String> signUp(memberForm memberInfo) {
+//    public Long signUp(memberForm memberForm) {
+//        return memberService.joinMember(memberForm);
 
         String name = memberInfo.getName();
         String email = memberInfo.getEmail();

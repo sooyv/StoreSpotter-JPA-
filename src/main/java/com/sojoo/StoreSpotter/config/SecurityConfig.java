@@ -1,5 +1,6 @@
 package com.sojoo.StoreSpotter.config;
 
+import com.sojoo.StoreSpotter.config.jwt.JwtTokenProvider;
 import com.sojoo.StoreSpotter.service.Member.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

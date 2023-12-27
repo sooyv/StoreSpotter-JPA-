@@ -14,8 +14,12 @@ public class UserDetailService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String memberEmail) throws UsernameNotFoundException {
-        return memberRepository.findByMemberEmail(memberEmail)
-                .orElseThrow(() -> new IllegalArgumentException(memberEmail));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return memberRepository.findByMemberEmail(username)
+                .orElseThrow(() -> new IllegalArgumentException(username));
     }
+//    public UserDetails loadUserByUsername(String memberEmail) throws UsernameNotFoundException {
+//        return memberRepository.findByMemberEmail(memberEmail)
+//                .orElseThrow(() -> new IllegalArgumentException(memberEmail));
+//    }
 }

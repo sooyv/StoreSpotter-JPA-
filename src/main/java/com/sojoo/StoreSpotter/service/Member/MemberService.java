@@ -1,17 +1,18 @@
 package com.sojoo.StoreSpotter.service.Member;
 
+import com.sojoo.StoreSpotter.controller.form.memberForm;
 import com.sojoo.StoreSpotter.dto.Member.Member;
 import com.sojoo.StoreSpotter.repository.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -37,6 +38,11 @@ public class MemberService {
 //
 //        return null;
 //    }
+
+
+
+
+
     @Transactional
     public Long joinMember(Member member) {
         // 사용자 비밀번호 암호화
@@ -44,7 +50,23 @@ public class MemberService {
 //        validateDuplicateMember(member);        // 회원 중복 검증
         memberRepository.save(member);
         return member.getMemberId();
+
+//    public Long joinMember(memberForm memberInfo) {
+
+//        Member member = Member.builder()
+//                .memberName(memberInfo.getName())
+//                .memberEmail(memberInfo.getEmail())
+//                .memberPassword(bCryptPasswordEncoder.encode(memberInfo.getPassword()))  //비밀번호 인코딩
+//                .memberPhone(memberInfo.getPhone())
+////                .mem(Collections.singletonList("ROLE_USER"))         //roles는 최초 USER로 설정
+//                .build();
+//
+//        return memberRepository.save(member).getMemberId();
     }
+
+
+
+
 
 //    private void validateDuplicateMember(Member member) {
 //        Optional<Member> memberEmail = memberRepository.findByMemberEmail(member.getMemberEmail());

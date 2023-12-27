@@ -1,7 +1,6 @@
 package com.sojoo.StoreSpotter.dto.Member;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +10,8 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Member implements UserDetails {
     @Id
@@ -26,10 +27,15 @@ public class Member implements UserDetails {
     @Column(name = "member_phone", nullable = false)
     private String memberPhone;
 
+    @Builder
+    public Member(String memberEmail, String memberPassword, String auth) {
+        this.memberEmail = memberEmail;
+        this.memberPassword = memberPassword;
+    }
 
     @Override       // 권한 반환
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority("user"));
     }
 
     // 사용자 id = email 반환
