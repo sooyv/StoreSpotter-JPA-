@@ -1,20 +1,21 @@
 package com.sojoo.StoreSpotter.service.apiToDb;
 
-import com.sojoo.StoreSpotter.dao.apiToDb.IndustryMapper;
+import com.sojoo.StoreSpotter.dao.apiToDb.IndustryRepository;
+import com.sojoo.StoreSpotter.dto.apiToDb.Industry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class IndustryService {
-    private final IndustryMapper industryMapper;
+    private final IndustryRepository industryRepository;
 
     @Autowired
-    public IndustryService(IndustryMapper industryMapper) {
-        this.industryMapper = industryMapper;
+    public IndustryService(IndustryRepository industryRepository) {
+        this.industryRepository = industryRepository;
     }
 
     public String industryNameToCode(String indust_name) {
-        String indust_id = industryMapper.selectIndustryCode(indust_name);
-        return indust_id;
+        Industry industry = industryRepository.findAllByIndustName(indust_name);
+        return industry.getIndustId();
     }
 }

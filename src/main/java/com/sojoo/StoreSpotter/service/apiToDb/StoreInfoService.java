@@ -1,12 +1,7 @@
 package com.sojoo.StoreSpotter.service.apiToDb;
 
-import com.sojoo.StoreSpotter.dao.apiToDb.IndustryMapper;
-import com.sojoo.StoreSpotter.dao.apiToDb.RegionMapper;
-import com.sojoo.StoreSpotter.dao.apiToDb.StoreInfoMapper;
-import com.sojoo.StoreSpotter.dto.apiToDb.Industry;
-import com.sojoo.StoreSpotter.dto.apiToDb.Region;
-import com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo;
-import org.apache.ibatis.jdbc.Null;
+import com.sojoo.StoreSpotter.dao.apiToDb.*;
+import com.sojoo.StoreSpotter.dto.apiToDb.*;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
@@ -15,53 +10,43 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.List;
-import java.util.Optional;
-
+import java.util.Objects;
 
 @Service
 public class StoreInfoService {
 
-    private final StoreInfoMapper storeInfoMapper;
-    private final IndustryMapper industryMapper;
-    private final RegionMapper regionMapper;
+    private final ConvenienceStoreRepository convenienceStoreRepository;
+    private final CafeRepository cafeRepository;
+    private final IndustryRepository industryRepository;
+    private final RegionRepository regionRepository;
 
     @Autowired
-    public StoreInfoService(StoreInfoMapper storeInfoMapper, IndustryMapper industryMapper, RegionMapper regionMapper) {
-        this.storeInfoMapper = storeInfoMapper;
-        this.industryMapper = industryMapper;
-        this.regionMapper = regionMapper;
+    public StoreInfoService(ConvenienceStoreRepository convenienceStoreRepository, CafeRepository cafeRepository, IndustryRepository industryRepository, RegionRepository regionRepository) {
+        this.convenienceStoreRepository = convenienceStoreRepository;
+        this.cafeRepository = cafeRepository;
+        this.industryRepository = industryRepository;
+        this.regionRepository = regionRepository;
     }
 
 
-    // 업종 삭제 코드 - api 다시 받아오기 전 테이블 데이터 삭제
-    public void deleteApiData() throws Exception {
-        List<Industry> industryList = industryMapper.selectIndustryList();
-
-        for (Industry industry : industryList) {
-            String indust_id = industry.getIndust_id();
-            storeInfoMapper.deleteIndustTable(indust_id);
-        }
-
-    }
 
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
-    @Transactional
+//    @Transactional
     public List<Industry> industrySave() throws Exception {
         System.out.println("industrySave method start");
         long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
         try {
-            // 데이터 삭제 로직 동작
-            deleteApiData();
-
-            List<Industry> industry = industryMapper.selectIndustryList();      // 업종 id, name 담긴 industry list 받아오기
-            for (Industry value : industry) {
-                connectToApi(value);
+            // api 데이터 업데이트 전 기존 데이터 삭제
+            convenienceStoreRepository.deleteAll();
+            cafeRepository.deleteAll();
+            //각 업종마다 api 데이터 받기
+            List<Industry> industryList = industryRepository.findAll();
+            for (Industry industry : industryList) {
+                connectToApi(industry);
             }
 
         } catch (Exception e) {
@@ -79,13 +64,12 @@ public class StoreInfoService {
     public void connectToApi(Industry industry) throws Exception {
 
         try {
-            String indust_id = industry.getIndust_id();
+            String indust_id = industry.getIndustId();
 
             // 지역 가져오기
-            List<Region> regions = regionMapper.selectRegionList();
-//            System.out.println("지역명 확인: " + regions);                        // region 가져오기
+            List<Region> regions = regionRepository.findAll();
             for (Region region : regions) {
-                Integer region_id = region.getRegion_id();
+                Integer region_id = region.getRegionId();
 
                 // 아래에서 totalPageCount 재할당
                 int totalPageCount = 1;
@@ -148,6 +132,7 @@ public class StoreInfoService {
 
     }
 
+    @Transactional
     // api 데이터 저장 로직
     public void publicApiDataSave(Document document, String indust_id, Integer region_id) throws DuplicateKeyException {
         try {
@@ -163,15 +148,32 @@ public class StoreInfoService {
                 Double lon = Double.valueOf(item.getChildText("lon"));  // 경도(lon)
                 Double lat = Double.valueOf(item.getChildText("lat"));  // 위도(lat)
 
-                StoreInfo storeInfo = new StoreInfo();
-                storeInfo.setBizes_id(bizes_id);
-                storeInfo.setBizes_nm(bizes_nm);
-                storeInfo.setRdnm_adr(rdnm_adr);
-                storeInfo.setCoordinates(lon, lat);
-                storeInfo.setRegion_fk(region_id);
+                if (Objects.equals(indust_id, "G20405")){
+                    ConvenienceStore convenienceStore = new ConvenienceStore();
+                    convenienceStore.setBizesId(bizes_id);
+                    convenienceStore.setBizesNm(bizes_nm);
+                    convenienceStore.setRdnmAdr(rdnm_adr);
+                    convenienceStore.setCoordinates(lon, lat);
+                    convenienceStore.setRegionFk(region_id);
 
-                // DB에 저장하기
-                storeInfoMapper.insertApiData(storeInfo, indust_id);
+                    String coordinates = String.valueOf(convenienceStore.getCoordinates());
+//                    convenienceStoreRepository.save(convenienceStore);
+
+                    convenienceStoreRepository.insertConv(convenienceStore, coordinates);
+
+                } else if (Objects.equals(indust_id, "I21201")) {
+                    Cafe cafe = new Cafe();
+                    cafe.setBizesId(bizes_id);
+                    cafe.setBizesNm(bizes_nm);
+                    cafe.setRdnmAdr(rdnm_adr);
+                    cafe.setCoordinates(lon, lat);
+                    cafe.setRegionFk(region_id);
+
+                    String coordinates = String.valueOf(cafe.getCoordinates());
+
+//                    cafeRepository.save(cafe);
+                    cafeRepository.insertCafe(cafe, coordinates);
+                }
             }
 
         } catch (DuplicateKeyException e) {

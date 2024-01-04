@@ -1,8 +1,5 @@
 package com.sojoo.StoreSpotter.service.storePair;
 
-import com.sojoo.StoreSpotter.dao.apiToDb.IndustryMapper;
-import com.sojoo.StoreSpotter.dao.apiToDb.RegionMapper;
-import com.sojoo.StoreSpotter.dao.storePair.DataPairMapper;
 import com.sojoo.StoreSpotter.dao.storePair.DataRecommendMapper;
 import com.sojoo.StoreSpotter.dto.storePair.DataRecommend;
 import org.springframework.beans.factory.annotation.Autowired;

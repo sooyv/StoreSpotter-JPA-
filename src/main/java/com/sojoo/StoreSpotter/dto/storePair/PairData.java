@@ -2,27 +2,50 @@ package com.sojoo.StoreSpotter.dto.storePair;
 
 import com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.geolatte.geom.Geometry;
+import org.locationtech.jts.geom.Point;
+
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-public class PairData {
-    private String st_nm;
-    private String st_coor;
-    private String com_nm;
-    private String com_coor;
+@MappedSuperclass
+public abstract class PairData {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pair_id")
+    private Long pairId;
+
+    @Column(name = "st_nm")
+    private String stNm;
+
+    @Column(name = "st_coor")
+    private String stCoor;
+
+    @Column(name = "com_nm")
+    private String comNm;
+
+    @Column(name = "com_coor")
+    private String comCoor;
+
+    @Column(name = "dist")
     private Double dist;
-    private Integer region_fk;
 
-//    private Object pairData; // 'pairData' 속성 추가
+    @Column(name = "region_fk")
+    private Integer regionFk;
 
-//    public Object getPairData() {
-//        return pairData;
-//    }
-//    public void setPairData(Object pairData) {
-//        this.pairData = pairData;
+
+//    @Builder
+//    public PairData(Long pairId, String stNm, String stCoor, String comNm, String comCoor, Double dist, Integer regionFk){
+//        this.pairId = pairId;
+//        this.stNm = stNm;
+//        this.stCoor = stCoor;
+//        this.comNm = comNm;
+//        this.comCoor = comCoor;
+//        this.dist = dist;
+//        this.regionFk = regionFk;
 //    }
 }

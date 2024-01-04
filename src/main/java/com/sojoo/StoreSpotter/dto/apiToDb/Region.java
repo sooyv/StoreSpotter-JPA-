@@ -4,10 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Region {
-    private Integer region_id;      // 지역 코드
-    private String region_name;     // 지역명
+    @Id
+    @Column(name="region_id")
+    private Integer regionId;      // 지역 코드
+
+    @Column(name="region_name")
+    private String regionName;     // 지역명
 }
