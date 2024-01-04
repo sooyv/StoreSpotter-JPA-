@@ -1,6 +1,7 @@
 package com.sojoo.StoreSpotter.config;
 
 import com.sojoo.StoreSpotter.config.jwt.JwtTokenProvider;
+import com.sojoo.StoreSpotter.config.jwt.TokenAuthenticationFilter;
 import com.sojoo.StoreSpotter.service.Member.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,11 +14,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final UserDetailService memberService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
     public WebSecurityCustomizer configure() {
@@ -33,17 +36,16 @@ public class SecurityConfig {
         http.csrf().disable();
 
         http.authorizeRequests()
-                // main, login 페이지, login 프로세스, 회원가입 페이지, 회원가입 프로세스, 이메일 중복체크 ajax, JWT token 발급
-                .antMatchers("/", "/login", "/member/login", "/signup", "/member/signup", "/signup/checkid", "/api/token").permitAll()
-//                .antMatchers("/admin/**").hasRole("user")
-                .anyRequest().authenticated();  // 그 외 인증 없이 차단
+                // main, login 페이지, login 프로세스, 회원가입 페이지, 회원가입 프로세스, 이메일 중복체크 ajax, JWT token 발급, 평균 거리 검색 ajax
+                .antMatchers("/", "/login", "/signup", "/member/signup", "/signup/checkid", "/avg-dist").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated();   // 그 외 인증 없이 차단
 
         http.formLogin()
                 .loginPage("/login")               // 로그인 설정
-                .loginProcessingUrl("/member/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/", true)
+                .defaultSuccessUrl("/")
                 .and()
                 .logout()   // 로그아웃 설정
                     .logoutSuccessUrl("/login");
@@ -52,6 +54,7 @@ public class SecurityConfig {
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+        http.addFilterBefore(new TokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

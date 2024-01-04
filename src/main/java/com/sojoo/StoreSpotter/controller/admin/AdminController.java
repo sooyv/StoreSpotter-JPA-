@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 //
 @RestController
-//@RequestMapping(value = "/admin")
+@RequestMapping(value = "/admin")
 public class AdminController {
 
     private final DataPairService dataPairService;

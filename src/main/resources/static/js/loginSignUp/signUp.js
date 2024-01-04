@@ -108,9 +108,10 @@ form.addEventListener("submit", event => {
                 checkPassword: checkPassword,
                 phone : phone
             },
+
             success: function (response) {
                 console.log(response);
-                window.location.replace("/");
+                window.location.replace("/login");
             },
             error: function (error) {
                 console.log(error);

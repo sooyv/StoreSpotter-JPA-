@@ -13,13 +13,12 @@ public class UserDetailService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
+    // 사용자 이메일로 사용자 정보 가져오는 메서드
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return memberRepository.findByMemberEmail(username)
-                .orElseThrow(() -> new IllegalArgumentException(username));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        System.out.println("userDetailService : " + email);
+        return memberRepository.findByMemberEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException(email));
     }
-//    public UserDetails loadUserByUsername(String memberEmail) throws UsernameNotFoundException {
-//        return memberRepository.findByMemberEmail(memberEmail)
-//                .orElseThrow(() -> new IllegalArgumentException(memberEmail));
-//    }
+
 }

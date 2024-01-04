@@ -1,6 +1,6 @@
 package com.sojoo.StoreSpotter.controller.main;
 
-import com.sojoo.StoreSpotter.controller.form.memberForm;
+//import com.sojoo.StoreSpotter.controller.form.memberForm;
 import com.sojoo.StoreSpotter.service.apiToDb.IndustryService;
 import com.sojoo.StoreSpotter.service.apiToDb.RegionService;
 import com.sojoo.StoreSpotter.dto.storePair.DataRecommend;

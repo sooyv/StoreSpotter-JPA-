@@ -6,6 +6,7 @@ import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +17,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class JwtTokenProvider {
@@ -58,9 +60,10 @@ public class JwtTokenProvider {
         }
     }
 
+
     // 토큰 기반으로 인증 정보를 가져오는 메서드 - 인증정보 조회
     public Authentication getAuthentication(String token) {
-        Claims claims = getClaims(token);
+        Claims claims = getClaims(token);   // 토큰 복호화
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
 
         return new UsernamePasswordAuthenticationToken(new org.springframework.security.core.userdetails.User(claims.getSubject(), "", authorities), token, authorities);
@@ -78,4 +81,6 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
+
 }

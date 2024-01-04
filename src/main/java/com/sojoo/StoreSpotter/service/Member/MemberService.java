@@ -1,7 +1,7 @@
 package com.sojoo.StoreSpotter.service.Member;
 
-import com.sojoo.StoreSpotter.controller.form.memberForm;
 import com.sojoo.StoreSpotter.dto.Member.Member;
+import com.sojoo.StoreSpotter.dto.Member.SignupDto;
 import com.sojoo.StoreSpotter.repository.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,41 +39,20 @@ public class MemberService {
 //        return null;
 //    }
 
-
-
-
-
+    // 회원가입
     @Transactional
-    public Long joinMember(Member member) {
-        // 사용자 비밀번호 암호화
-        member.setMemberPassword(bCryptPasswordEncoder.encode(member.getMemberPassword()));
-//        validateDuplicateMember(member);        // 회원 중복 검증
-        memberRepository.save(member);
-        return member.getMemberId();
+    public Long joinMember(Member memberInfo) {
+        Member member = Member.builder()
+                .memberName(memberInfo.getMemberName())
+                .memberEmail(memberInfo.getMemberEmail())
+                .memberPassword(bCryptPasswordEncoder.encode(memberInfo.getPassword()))  //비밀번호 인코딩
+                .memberPhone(memberInfo.getMemberPhone())
+//                .mem(Collections.singletonList("ROLE_USER"))         //roles는 최초 USER로 설정
+                .build();
 
-//    public Long joinMember(memberForm memberInfo) {
-
-//        Member member = Member.builder()
-//                .memberName(memberInfo.getName())
-//                .memberEmail(memberInfo.getEmail())
-//                .memberPassword(bCryptPasswordEncoder.encode(memberInfo.getPassword()))  //비밀번호 인코딩
-//                .memberPhone(memberInfo.getPhone())
-////                .mem(Collections.singletonList("ROLE_USER"))         //roles는 최초 USER로 설정
-//                .build();
-//
-//        return memberRepository.save(member).getMemberId();
+        return memberRepository.save(member).getMemberId();
     }
 
-
-
-
-
-//    private void validateDuplicateMember(Member member) {
-//        Optional<Member> memberEmail = memberRepository.findByMemberEmail(member.getMemberEmail());
-//        if (!memberEmail.isEmpty()) {
-//            throw new IllegalStateException("이미 존재하는 회원입니다");
-//        }
-//    }
 
     // 이메일 중복 검증
     @PostMapping("/signup/checkemail")

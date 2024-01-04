@@ -27,6 +27,9 @@ public class Member implements UserDetails {
     @Column(name = "member_phone", nullable = false)
     private String memberPhone;
 
+//    @Enumerated(EnumType.STRING)
+//    private Authority authority;
+
     @Builder
     public Member(String memberName, String memberEmail, String memberPassword, String memberPhone, String auth) {
         this.memberName = memberName;
@@ -34,14 +37,10 @@ public class Member implements UserDetails {
         this.memberPassword = memberPassword;
         this.memberPhone = memberPhone;
     }
-//    public Member(String memberEmail, String memberPassword, String auth) {
-//        this.memberEmail = memberEmail;
-//        this.memberPassword = memberPassword;
-//    }
 
     @Override       // 권한 반환
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("user"));
+        return List.of(new SimpleGrantedAuthority("USER"));
     }
 
     // 사용자 id = email 반환

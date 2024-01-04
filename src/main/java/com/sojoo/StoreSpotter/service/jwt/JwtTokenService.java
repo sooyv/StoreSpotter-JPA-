@@ -22,9 +22,10 @@ public class JwtTokenService {
             throw new IllegalArgumentException("Unexpected token");
         }
 
+        // 유효한 토큰일때 리프레시 토큰으로 사용자 id 찾기
         Long memberId = refreshTokenService.findByRefreshToken(refreshToken).getUserId();
+        // 사용자 id를 찾은 뒤, generateToken() 메서드로 새로운 액세스 토큰 생성
         Member member = memberService.findById(memberId);
-
         return tokenProvider.generateToken(member, Duration.ofHours(2));
     }
 }
