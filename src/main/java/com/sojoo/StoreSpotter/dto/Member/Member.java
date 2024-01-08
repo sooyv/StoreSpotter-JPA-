@@ -27,15 +27,17 @@ public class Member implements UserDetails {
     @Column(name = "member_phone", nullable = false)
     private String memberPhone;
 
-//    @Enumerated(EnumType.STRING)
-//    private Authority authority;
+    // 사용자 이름
+    @Column(name = "nickname", unique = true)
+    private String nickname;
 
     @Builder
-    public Member(String memberName, String memberEmail, String memberPassword, String memberPhone, String auth) {
+    public Member(String memberName, String memberEmail, String memberPassword, String memberPhone, String nickname) {
         this.memberName = memberName;
         this.memberEmail = memberEmail;
         this.memberPassword = memberPassword;
         this.memberPhone = memberPhone;
+        this.nickname = nickname;
     }
 
     @Override       // 권한 반환
@@ -79,5 +81,11 @@ public class Member implements UserDetails {
         return true;    // true -> 사용 가능
     }
 
+
+    // 사용자 이름 변경
+    public Member update(String nickname) {
+        this.nickname = nickname;
+        return this;
+    }
 
 }
