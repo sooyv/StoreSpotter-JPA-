@@ -3,7 +3,7 @@ package com.sojoo.StoreSpotter.controller.Member;
 import com.sojoo.StoreSpotter.config.jwt.JwtTokenProvider;
 //import com.sojoo.StoreSpotter.controller.form.memberForm;
 import com.sojoo.StoreSpotter.dto.Member.Member;
-import com.sojoo.StoreSpotter.dto.Member.SignupDto;
+import com.sojoo.StoreSpotter.dto.Member.MemberDto;
 import com.sojoo.StoreSpotter.repository.Member.MemberRepository;
 import com.sojoo.StoreSpotter.service.Member.MemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ public class MemberController {
 
     @GetMapping("/signup")
     public ModelAndView signUpPage(Model signUpDto) {
-        signUpDto.addAttribute("signUpDto", new SignupDto());
+        signUpDto.addAttribute("memberDto", new MemberDto());
         return new ModelAndView("/loginSignUp/signUp");
     }
 
@@ -63,13 +63,13 @@ public class MemberController {
     // 회원가입
     @Transactional
     @PostMapping("/member/signup")
-    public ResponseEntity<String> signUp(SignupDto signupDto) {
+    public ResponseEntity<String> signUp(MemberDto memberDto) {
 
-        String name = signupDto.getName();
-        String email = signupDto.getEmail();
-        String password = signupDto.getPassword();
-        String checkPassword = signupDto.getCheckPassword();
-        String phone = signupDto.getPhone();
+        String name = memberDto.getName();
+        String email = memberDto.getEmail();
+        String password = memberDto.getPassword();
+        String checkPassword = memberDto.getCheckPassword();
+        String phone = memberDto.getPhone();
 
         // 모든 항목 입력 검사
         ResponseEntity<String> notNullMemberInfo = memberService.notNullMemberInfo(name, email, password, checkPassword, phone);

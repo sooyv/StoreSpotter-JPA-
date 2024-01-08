@@ -1,7 +1,6 @@
 package com.sojoo.StoreSpotter.service.Member;
 
 import com.sojoo.StoreSpotter.dto.Member.Member;
-import com.sojoo.StoreSpotter.dto.Member.SignupDto;
 import com.sojoo.StoreSpotter.repository.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Collections;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -20,12 +18,23 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private final String pwRegExp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$";
 
 
     // 회원가입
+    @Transactional
+    public Long joinMember(Member memberInfo) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return memberRepository.save(Member.builder()
+                .memberName(memberInfo.getMemberName())
+                .memberEmail(memberInfo.getMemberEmail())
+                .memberPassword(encoder.encode(memberInfo.getPassword()))
+                .memberPhone(memberInfo.getMemberPhone())
+                .build()).getMemberId();
+    }
+//    회원가입
 //    public ResponseEntity<String> joinMember(Member member) {
 //        if (validateDuplicateMember(member) != null) {
 //            return new ResponseEntity<>("validateDuplicateMember", HttpStatus.BAD_REQUEST);
@@ -38,20 +47,6 @@ public class MemberService {
 //
 //        return null;
 //    }
-
-    // 회원가입
-    @Transactional
-    public Long joinMember(Member memberInfo) {
-        Member member = Member.builder()
-                .memberName(memberInfo.getMemberName())
-                .memberEmail(memberInfo.getMemberEmail())
-                .memberPassword(bCryptPasswordEncoder.encode(memberInfo.getPassword()))  //비밀번호 인코딩
-                .memberPhone(memberInfo.getMemberPhone())
-//                .mem(Collections.singletonList("ROLE_USER"))         //roles는 최초 USER로 설정
-                .build();
-
-        return memberRepository.save(member).getMemberId();
-    }
 
 
     // 이메일 중복 검증
@@ -104,6 +99,11 @@ public class MemberService {
     public Member findById(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+    }
+
+    public Member findByEmail(String email) {
+        return memberRepository.findByMemberEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Unexpected User"));
     }
 
 
