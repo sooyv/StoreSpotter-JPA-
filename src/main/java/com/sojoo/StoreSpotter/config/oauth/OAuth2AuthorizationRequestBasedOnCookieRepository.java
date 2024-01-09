@@ -20,16 +20,18 @@ public class OAuth2AuthorizationRequestBasedOnCookieRepository implements Author
     }
 
     @Override
-    public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request, HttpServletResponse response) {
+    public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest,
+                                         HttpServletRequest request, HttpServletResponse response) {
         if (authorizationRequest == null) {
             removeAuthorizationRequestCookies(request, response);
             return;
         }
-        CookieUtil.addCookie(response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME, CookieUtil.serialize(authorizationRequest), COOKIE_EXPIRE_SECONDS);
+        CookieUtil.addCookie(response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME,
+                CookieUtil.serialize(authorizationRequest), COOKIE_EXPIRE_SECONDS);
     }
 
     @Override
-    public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request, HttpServletResponse response) {
+    public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request) {
         return this.loadAuthorizationRequest(request);
     }
 
