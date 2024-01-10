@@ -12,16 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-//
+
 @RestController
 public class AdminController {
-
     private final DataPairService dataPairService;
     private final StoreInfoService storeInfoService;
 
     @Autowired
-    public AdminController(DataPairService dataPairService,
-                           StoreInfoService storeInfoService) {
+    public AdminController(DataPairService dataPairService, StoreInfoService storeInfoService) {
         this.dataPairService = dataPairService;
         this.storeInfoService = storeInfoService;
     }
