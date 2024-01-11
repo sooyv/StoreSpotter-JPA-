@@ -63,7 +63,10 @@ public class DataPairService {
                 String indust_id = industry.getIndustId();
                 switch (indust_id){
                     case "G20405":
-                        List<ConvenienceStore> convenienceStoreList = convenienceStoreRepository.findAll();
+//                        List<ConvenienceStore> convenienceStoreList = convenienceStoreRepository.findAll();
+                        List<ConvenienceStore> convenienceStoreList = convenienceStoreRepository.findConvenienceStore();
+                        System.out.println("첫번째 좌표값 확인" + convenienceStoreList.get(0).getCoordinates());
+                        System.out.println("첫번째 상가명 확인" + convenienceStoreList.get(0).getBizesNm());
                         selectDataPair(convenienceStoreList, indust_id);
                     case "I21201":
                         List<Cafe> cafeList = cafeRepository.findAll();
@@ -92,6 +95,9 @@ public class DataPairService {
                 String name = storeData.getBizesNm();
                 Point point = storeData.getCoordinates();
                 Integer region = storeData.getRegionFk();
+                System.out.println("selectDataPair name : "+ name);
+                System.out.println("selectDataPair point : "+ point);
+                System.out.println("selectDataPair region : "+ region);
                 distanceSphere(name, point, region, indust_id);
             }
 
@@ -106,12 +112,20 @@ public class DataPairService {
 //        for (PairData pairdata : pairDataList) {
 //            insertPairData(pairdata, indust_id);
 //        }
-        switch (indust_id){
-//            case "G20405":
-//                List<ConveniencePair> conveniencePairList= conveniencePairRepository.convenience_distanceSphere(name, point, region);
+        switch (indust_id) {
+            case "G20405":
+//                System.out.println("distanceSphere 메서드");
+//                List<ConveniencePair> conveniencePairList = conveniencePairRepository.convenience_distanceSphere(name, point, region);
+//                System.out.println("DataPairService 기준좌표 확인 : " + conveniencePairList.get(0).getStCoor());
+//                System.out.println("DataPairService 기준상가명 확인 : " + conveniencePairList.get(0).getStNm());
 //                conveniencePairRepository.saveAll(conveniencePairList);
+                System.out.println("distanceSphere 메서드");
+                List<ConveniencePair> conveniencePairList = conveniencePairRepository.convenience_distanceSphere(name, point, region);
+                System.out.println("DataPairService 기준좌표 확인 : " + conveniencePairList.get(0).getStCoor());
+                System.out.println("DataPairService 기준상가명 확인 : " + conveniencePairList.get(0).getStNm());
+                conveniencePairRepository.saveAll(conveniencePairList);
             case "I21201":
-                List<CafePair> cafePairList= cafePairRepository.cafe_distanceSphere(name, point, region);
+                List<CafePair> cafePairList = cafePairRepository.cafe_distanceSphere(name, point, region);
                 for (CafePair cafePair : cafePairList){
                     cafePairRepository.save(cafePair);
                 }

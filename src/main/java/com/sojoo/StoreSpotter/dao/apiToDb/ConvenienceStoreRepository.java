@@ -10,7 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface ConvenienceStoreRepository extends JpaRepository<ConvenienceStore, Long> {
-    List<ConvenienceStore> findAll();
+
+    @Query(value = "SELECT c.bizes_id, c.bizes_nm, c.coordinates, c.rdnm_adr, c.region_fk " +
+            "FROM convenience_store c", nativeQuery = true)
+    List<ConvenienceStore> findConvenienceStore();
 
     @Modifying
     @Transactional
@@ -18,5 +21,6 @@ public interface ConvenienceStoreRepository extends JpaRepository<ConvenienceSto
             "VALUES (:#{#convenienceStore.bizesId}, :#{#convenienceStore.bizesNm}, " +
             ":#{#convenienceStore.rdnmAdr}, ST_GeomFromText(:coordinates), :#{#convenienceStore.regionFk})", nativeQuery = true)
     void insertConv(@Param("convenienceStore") ConvenienceStore convenienceStore, @Param("coordinates") String coordinates);
+
 
 }

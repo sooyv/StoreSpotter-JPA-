@@ -5,5 +5,5 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "convenience_pair")
-public class ConveniencePair extends PairData{
+public class ConveniencePair extends PairData {
 }

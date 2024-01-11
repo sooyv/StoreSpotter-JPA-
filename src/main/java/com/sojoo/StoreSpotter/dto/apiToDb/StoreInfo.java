@@ -2,10 +2,7 @@ package com.sojoo.StoreSpotter.dto.apiToDb;
 
 import lombok.*;
 import org.hibernate.annotations.Type;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.PrecisionModel;
+import org.locationtech.jts.geom.*;
 //import org.springframework.data.geo.Point;
 
 import javax.persistence.Column;
@@ -23,12 +20,13 @@ public abstract class StoreInfo {
     @Column(name = "bizes_nm")
     private String bizesNm;
 
+    @Column(name="coordinates", columnDefinition = "Point")
+    private Point coordinates;
+//        private Geometry coordinates;
+
     @Column(name = "rdnm_adr")
     private String rdnmAdr;
 
-    @Column(name="coordinates", columnDefinition = "geometry")
-    private Point coordinates;
-//    private Geometry coordinates;
     @Column(name = "region_fk")
     private Integer regionFk;
 
