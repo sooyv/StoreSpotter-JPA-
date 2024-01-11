@@ -10,16 +10,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface ConvenienceStoreRepository extends JpaRepository<ConvenienceStore, Long> {
-    @Query(value = "SELECT c.bizes_id, c.bizes_nm, c.coordinates, c.rdnm_adr, c.region_fk " +
-            "FROM convenience_store c", nativeQuery = true)
-    List<ConvenienceStore> findConvenienceStore();
 
-    @Modifying
-    @Transactional
-    @Query(value = "INSERT INTO convenience_store (bizes_id, bizes_nm, rdnm_adr, coordinates, region_fk) " +
-            "VALUES (:#{#convenienceStore.bizesId}, :#{#convenienceStore.bizesNm}, " +
-            ":#{#convenienceStore.rdnmAdr}, ST_GeomFromText(:coordinates), :#{#convenienceStore.regionFk})", nativeQuery = true)
-    void insertConv(@Param("convenienceStore") ConvenienceStore convenienceStore, @Param("coordinates") String coordinates);
+//    @Modifying
+//    @Transactional
+//    @Query(value = "INSERT INTO convenience_store (bizes_id, bizes_nm, rdnm_adr, coordinates, region_fk) " +
+//            "VALUES (:#{#convenienceStore.bizesId}, :#{#convenienceStore.bizesNm}, " +
+//            ":#{#convenienceStore.rdnmAdr}, ST_GeomFromText(:coordinates), :#{#convenienceStore.regionFk})", nativeQuery = true)
+//    void insertConv(@Param("convenienceStore") ConvenienceStore convenienceStore, @Param("coordinates") String coordinates);
 
+//    @Modifying
+//    @Transactional
+//    @Query(value = "INSERT INTO convenience_store (bizes_id, bizes_nm, rdnm_adr, coordinates, region_fk) " +
+//            "VALUES (:#{#convenienceStore.bizesId}, :#{#convenienceStore.bizesNm}, " +
+//            ":#{#convenienceStore.rdnmAdr}, :#{#convenienceStore.coordinates}, :#{#convenienceStore.regionFk})", nativeQuery = true)
+//    void insertConv(@Param("convenienceStore") ConvenienceStore convenienceStore);
 
 }

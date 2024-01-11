@@ -156,10 +156,7 @@ public class StoreInfoService {
                     convenienceStore.setCoordinates(lon, lat);
                     convenienceStore.setRegionFk(region_id);
 
-                    String coordinates = String.valueOf(convenienceStore.getCoordinates());
-//                    convenienceStoreRepository.save(convenienceStore);
-
-                    convenienceStoreRepository.insertConv(convenienceStore, coordinates);
+                    convenienceStoreRepository.save(convenienceStore);
 
                 } else if (Objects.equals(indust_id, "I21201")) {
                     Cafe cafe = new Cafe();

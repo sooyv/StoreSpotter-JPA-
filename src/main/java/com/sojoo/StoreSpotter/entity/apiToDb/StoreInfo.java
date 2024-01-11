@@ -22,7 +22,7 @@ public abstract class StoreInfo {
     @Column(name = "bizes_nm")
     private String bizesNm;
 
-    @Column(name="coordinates", columnDefinition = "Point")
+    @Column(name="coordinates", columnDefinition = "Geometry")
     private Point coordinates;
 //        private Geometry coordinates;
 

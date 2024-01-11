@@ -54,17 +54,11 @@ public class DataPairService {
             List<Industry> industryList = industryRepository.findAll();
             for (Industry industry : industryList){
                 String indust_id = industry.getIndustId();
-                switch (indust_id){
+                switch (indust_id) {
                     case "G20405":
-//                        List<ConvenienceStore> convenienceStoreList = convenienceStoreRepository.findAll();
-//                        List<ConvenienceStore> convenienceStoreList = convenienceStoreRepository.findConvenienceStore();
                         List<ConvenienceStore> convenienceStoreList = convenienceStoreRepository.findAll();
-
-                        System.out.println("첫번째 좌표값 확인" + convenienceStoreList.get(0).getCoordinates());
-                        System.out.println("첫번째 상가명 확인" + convenienceStoreList.get(0).getBizesNm());
-                        System.out.println("save_industryPairData: " + convenienceStoreList);
-
                         selectDataPair(convenienceStoreList, indust_id);
+
                     case "I21201":
                         List<Cafe> cafeList = cafeRepository.findAll();
                         selectDataPair(cafeList, indust_id);

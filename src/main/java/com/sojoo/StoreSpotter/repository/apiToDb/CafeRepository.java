@@ -10,9 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface CafeRepository extends JpaRepository<Cafe, Long> {
-    List<Cafe> findAll();
-
-
 
     @Modifying
     @Transactional
