@@ -2,7 +2,7 @@ package com.sojoo.StoreSpotter.config;
 
 import com.sojoo.StoreSpotter.config.jwt.JwtTokenProvider;
 import com.sojoo.StoreSpotter.config.jwt.TokenAuthenticationFilter;
-import com.sojoo.StoreSpotter.service.Member.UserDetailService;
+import com.sojoo.StoreSpotter.service.member.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -38,8 +37,8 @@ public class SecurityConfig {
         http.authorizeRequests()
                 // main, login 페이지, login 프로세스, 회원가입 페이지, 회원가입 프로세스, 이메일 중복체크 ajax, JWT token 발급, 평균 거리 검색 ajax
                 .antMatchers("/", "/login", "/signup", "/member/signup", "/signup/checkid", "/avg-dist").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated();   // 그 외 인증 없이 차단
+//                .antMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().permitAll();   // 그 외 인증 없이 차단
 
         http.formLogin()
                 .loginPage("/login")               // 로그인 설정

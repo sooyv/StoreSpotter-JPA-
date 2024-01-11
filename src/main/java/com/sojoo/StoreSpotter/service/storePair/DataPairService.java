@@ -1,29 +1,22 @@
 package com.sojoo.StoreSpotter.service.storePair;
 
-import com.sojoo.StoreSpotter.dao.apiToDb.CafeRepository;
-import com.sojoo.StoreSpotter.dao.apiToDb.ConvenienceStoreRepository;
-import com.sojoo.StoreSpotter.dao.apiToDb.IndustryRepository;
-import com.sojoo.StoreSpotter.dao.storePair.CafePairRepository;
-import com.sojoo.StoreSpotter.dao.storePair.ConveniencePairRepository;
-import com.sojoo.StoreSpotter.dao.storePair.DataPairMapper;
-import com.sojoo.StoreSpotter.dao.storePair.DataPairRepository;
-import com.sojoo.StoreSpotter.dto.apiToDb.Cafe;
-import com.sojoo.StoreSpotter.dto.apiToDb.ConvenienceStore;
-import com.sojoo.StoreSpotter.dto.apiToDb.Industry;
-import com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo;
-import com.sojoo.StoreSpotter.dto.storePair.CafePair;
-import com.sojoo.StoreSpotter.dto.storePair.ConveniencePair;
-import com.sojoo.StoreSpotter.dto.storePair.PairData;
-import com.sojoo.StoreSpotter.service.apiToDb.IndustryService;
-import org.apache.catalina.Store;
-import org.locationtech.jts.geom.Geometry;
+import com.sojoo.StoreSpotter.repository.apiToDb.CafeRepository;
+import com.sojoo.StoreSpotter.repository.apiToDb.ConvenienceStoreRepository;
+import com.sojoo.StoreSpotter.repository.apiToDb.IndustryRepository;
+import com.sojoo.StoreSpotter.repository.storePair.CafePairRepository;
+import com.sojoo.StoreSpotter.repository.storePair.ConveniencePairRepository;
+import com.sojoo.StoreSpotter.repository.storePair.DataPairMapper;
+import com.sojoo.StoreSpotter.repository.storePair.DataPairRepository;
+import com.sojoo.StoreSpotter.entity.apiToDb.Cafe;
+import com.sojoo.StoreSpotter.entity.apiToDb.ConvenienceStore;
+import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
+import com.sojoo.StoreSpotter.entity.apiToDb.StoreInfo;
+import com.sojoo.StoreSpotter.entity.storePair.CafePair;
+import com.sojoo.StoreSpotter.entity.storePair.ConveniencePair;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Entity;
 import java.util.List;
 
 @Service
@@ -63,7 +56,8 @@ public class DataPairService {
                 String indust_id = industry.getIndustId();
                 switch (indust_id){
                     case "G20405":
-                        List<ConvenienceStore> convenienceStoreList = convenienceStoreRepository.findAll();
+//                        List<ConvenienceStore> convenienceStoreList = convenienceStoreRepository.findAll();
+                        List<ConvenienceStore> convenienceStoreList = convenienceStoreRepository.findConvenienceStore();
                         selectDataPair(convenienceStoreList, indust_id);
                     case "I21201":
                         List<Cafe> cafeList = cafeRepository.findAll();
@@ -107,9 +101,9 @@ public class DataPairService {
 //            insertPairData(pairdata, indust_id);
 //        }
         switch (indust_id){
-//            case "G20405":
-//                List<ConveniencePair> conveniencePairList= conveniencePairRepository.convenience_distanceSphere(name, point, region);
-//                conveniencePairRepository.saveAll(conveniencePairList);
+            case "G20405":
+                List<ConveniencePair> conveniencePairList= conveniencePairRepository.convenience_distanceSphere(name, point, region);
+                conveniencePairRepository.saveAll(conveniencePairList);
             case "I21201":
                 List<CafePair> cafePairList= cafePairRepository.cafe_distanceSphere(name, point, region);
                 for (CafePair cafePair : cafePairList){

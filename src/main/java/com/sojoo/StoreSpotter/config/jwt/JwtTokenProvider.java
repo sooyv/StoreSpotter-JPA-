@@ -1,6 +1,6 @@
 package com.sojoo.StoreSpotter.config.jwt;
 
-import com.sojoo.StoreSpotter.dto.Member.Member;
+import com.sojoo.StoreSpotter.entity.Member.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;

@@ -1,7 +1,7 @@
 package com.sojoo.StoreSpotter.service.jwt;
 
-import com.sojoo.StoreSpotter.dto.jwt.RefreshToken;
-import com.sojoo.StoreSpotter.repository.jwt.RefreshTokenRepository;
+import com.sojoo.StoreSpotter.jwt.RefreshToken;
+import com.sojoo.StoreSpotter.jwt.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

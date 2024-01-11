@@ -3,11 +3,11 @@ package com.sojoo.StoreSpotter.controller.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sojoo.StoreSpotter.config.jwt.JwtFactory;
 import com.sojoo.StoreSpotter.config.jwt.JwtProperties;
-import com.sojoo.StoreSpotter.dto.Member.Member;
-import com.sojoo.StoreSpotter.dto.jwt.CreateAccessTokenRequest;
-import com.sojoo.StoreSpotter.dto.jwt.RefreshToken;
-import com.sojoo.StoreSpotter.repository.Member.MemberRepository;
-import com.sojoo.StoreSpotter.repository.jwt.RefreshTokenRepository;
+import com.sojoo.StoreSpotter.entity.Member.Member;
+import com.sojoo.StoreSpotter.jwt.CreateAccessTokenRequest;
+import com.sojoo.StoreSpotter.jwt.RefreshToken;
+import com.sojoo.StoreSpotter.repository.member.MemberRepository;
+import com.sojoo.StoreSpotter.jwt.RefreshTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,14 +16,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

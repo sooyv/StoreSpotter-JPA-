@@ -3,9 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.sojoo.StoreSpotter.dao.storePair.DataPairMapper">
+<mapper namespace="com.sojoo.StoreSpotter.repository.storePair.DataPairMapper">
 
-    <select id="selectIndustryData" parameterType="com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo">
+    <select id="selectIndustryData" parameterType="com.sojoo.StoreSpotter.entity.apiToDb.StoreInfo">
         <choose>
             <when test="indust_id == 'G20405'">
                 SELECT bizes_id, bizes_nm, rdnm_adr, ST_AsText(coordinates) AS coordinates, region_fk
@@ -33,7 +33,7 @@
     </insert>
 
 
-    <select id="distanceSphere" parameterType="com.sojoo.StoreSpotter.dto.storePair.PairData">
+    <select id="distanceSphere" parameterType="com.sojoo.StoreSpotter.entity.storePair.PairData">
         <choose>
             <when test="indust_id == 'G20405'">
                 SELECT ST_DISTANCE_SPHERE(ST_GeomFromText(#{point}), coordinates) AS dist,

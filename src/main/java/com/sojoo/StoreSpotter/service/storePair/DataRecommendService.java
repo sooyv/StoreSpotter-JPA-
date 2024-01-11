@@ -1,7 +1,7 @@
 package com.sojoo.StoreSpotter.service.storePair;
 
-import com.sojoo.StoreSpotter.dao.storePair.DataRecommendMapper;
-import com.sojoo.StoreSpotter.dto.storePair.DataRecommend;
+import com.sojoo.StoreSpotter.repository.storePair.DataRecommendMapper;
+import com.sojoo.StoreSpotter.entity.storePair.DataRecommend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

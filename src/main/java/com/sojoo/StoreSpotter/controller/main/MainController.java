@@ -3,14 +3,9 @@ package com.sojoo.StoreSpotter.controller.main;
 //import com.sojoo.StoreSpotter.controller.form.memberForm;
 import com.sojoo.StoreSpotter.service.apiToDb.IndustryService;
 import com.sojoo.StoreSpotter.service.apiToDb.RegionService;
-import com.sojoo.StoreSpotter.dto.storePair.DataRecommend;
+import com.sojoo.StoreSpotter.entity.storePair.DataRecommend;
 import com.sojoo.StoreSpotter.service.storePair.DataRecommendService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
