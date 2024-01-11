@@ -1,9 +1,7 @@
 package com.sojoo.StoreSpotter.controller.apiToDb;
 
-import com.sojoo.StoreSpotter.dto.apiToDb.Industry;
-import com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo;
+import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
 import com.sojoo.StoreSpotter.service.apiToDb.StoreInfoService;
-import com.sojoo.StoreSpotter.service.storePair.DataPairService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

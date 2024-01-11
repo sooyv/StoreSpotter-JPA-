@@ -1,8 +1,8 @@
 package com.sojoo.StoreSpotter.service.jwt;
 
 import com.sojoo.StoreSpotter.config.jwt.JwtTokenProvider;
-import com.sojoo.StoreSpotter.dto.Member.Member;
-import com.sojoo.StoreSpotter.service.Member.MemberService;
+import com.sojoo.StoreSpotter.entity.Member.Member;
+import com.sojoo.StoreSpotter.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

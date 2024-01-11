@@ -1,29 +1,22 @@
 package com.sojoo.StoreSpotter.service.storePair;
 
-import com.sojoo.StoreSpotter.dao.apiToDb.CafeRepository;
-import com.sojoo.StoreSpotter.dao.apiToDb.ConvenienceStoreRepository;
-import com.sojoo.StoreSpotter.dao.apiToDb.IndustryRepository;
-import com.sojoo.StoreSpotter.dao.storePair.CafePairRepository;
-import com.sojoo.StoreSpotter.dao.storePair.ConveniencePairRepository;
-import com.sojoo.StoreSpotter.dao.storePair.DataPairMapper;
-import com.sojoo.StoreSpotter.dao.storePair.DataPairRepository;
-import com.sojoo.StoreSpotter.dto.apiToDb.Cafe;
-import com.sojoo.StoreSpotter.dto.apiToDb.ConvenienceStore;
-import com.sojoo.StoreSpotter.dto.apiToDb.Industry;
-import com.sojoo.StoreSpotter.dto.apiToDb.StoreInfo;
-import com.sojoo.StoreSpotter.dto.storePair.CafePair;
-import com.sojoo.StoreSpotter.dto.storePair.ConveniencePair;
-import com.sojoo.StoreSpotter.dto.storePair.PairData;
-import com.sojoo.StoreSpotter.service.apiToDb.IndustryService;
-import org.apache.catalina.Store;
-import org.locationtech.jts.geom.Geometry;
+import com.sojoo.StoreSpotter.repository.apiToDb.CafeRepository;
+import com.sojoo.StoreSpotter.repository.apiToDb.ConvenienceStoreRepository;
+import com.sojoo.StoreSpotter.repository.apiToDb.IndustryRepository;
+import com.sojoo.StoreSpotter.repository.storePair.CafePairRepository;
+import com.sojoo.StoreSpotter.repository.storePair.ConveniencePairRepository;
+import com.sojoo.StoreSpotter.repository.storePair.DataPairMapper;
+import com.sojoo.StoreSpotter.repository.storePair.DataPairRepository;
+import com.sojoo.StoreSpotter.entity.apiToDb.Cafe;
+import com.sojoo.StoreSpotter.entity.apiToDb.ConvenienceStore;
+import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
+import com.sojoo.StoreSpotter.entity.apiToDb.StoreInfo;
+import com.sojoo.StoreSpotter.entity.storePair.CafePair;
+import com.sojoo.StoreSpotter.entity.storePair.ConveniencePair;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Entity;
 import java.util.List;
 
 @Service
@@ -64,9 +57,13 @@ public class DataPairService {
                 switch (indust_id){
                     case "G20405":
 //                        List<ConvenienceStore> convenienceStoreList = convenienceStoreRepository.findAll();
-                        List<ConvenienceStore> convenienceStoreList = convenienceStoreRepository.findConvenienceStore();
+//                        List<ConvenienceStore> convenienceStoreList = convenienceStoreRepository.findConvenienceStore();
+                        List<ConvenienceStore> convenienceStoreList = convenienceStoreRepository.findAll();
+
                         System.out.println("첫번째 좌표값 확인" + convenienceStoreList.get(0).getCoordinates());
                         System.out.println("첫번째 상가명 확인" + convenienceStoreList.get(0).getBizesNm());
+                        System.out.println("save_industryPairData: " + convenienceStoreList);
+
                         selectDataPair(convenienceStoreList, indust_id);
                     case "I21201":
                         List<Cafe> cafeList = cafeRepository.findAll();
@@ -112,6 +109,7 @@ public class DataPairService {
 //        for (PairData pairdata : pairDataList) {
 //            insertPairData(pairdata, indust_id);
 //        }
+
         switch (indust_id) {
             case "G20405":
 //                System.out.println("distanceSphere 메서드");
@@ -123,6 +121,7 @@ public class DataPairService {
                 List<ConveniencePair> conveniencePairList = conveniencePairRepository.convenience_distanceSphere(name, point, region);
                 System.out.println("DataPairService 기준좌표 확인 : " + conveniencePairList.get(0).getStCoor());
                 System.out.println("DataPairService 기준상가명 확인 : " + conveniencePairList.get(0).getStNm());
+
                 conveniencePairRepository.saveAll(conveniencePairList);
             case "I21201":
                 List<CafePair> cafePairList = cafePairRepository.cafe_distanceSphere(name, point, region);

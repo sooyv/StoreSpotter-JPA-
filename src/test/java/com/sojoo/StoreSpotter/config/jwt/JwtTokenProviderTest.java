@@ -1,14 +1,13 @@
 package com.sojoo.StoreSpotter.config.jwt;
 
-import com.sojoo.StoreSpotter.dto.Member.Member;
-import com.sojoo.StoreSpotter.repository.Member.MemberRepository;
+import com.sojoo.StoreSpotter.entity.Member.Member;
+import com.sojoo.StoreSpotter.repository.member.MemberRepository;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Duration;
@@ -16,7 +15,6 @@ import java.util.Date;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class JwtTokenProviderTest {

@@ -1,7 +1,7 @@
 package com.sojoo.StoreSpotter.service.apiToDb;
 
-import com.sojoo.StoreSpotter.dao.apiToDb.*;
-import com.sojoo.StoreSpotter.dto.apiToDb.*;
+import com.sojoo.StoreSpotter.repository.apiToDb.*;
+import com.sojoo.StoreSpotter.entity.apiToDb.*;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;

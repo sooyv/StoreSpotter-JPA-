@@ -1,7 +1,7 @@
 package com.sojoo.StoreSpotter.service.apiToDb;
 
-import com.sojoo.StoreSpotter.dao.apiToDb.IndustryRepository;
-import com.sojoo.StoreSpotter.dto.apiToDb.Industry;
+import com.sojoo.StoreSpotter.repository.apiToDb.IndustryRepository;
+import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
