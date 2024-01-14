@@ -30,13 +30,29 @@ public interface CafePairRepository extends JpaRepository<CafePair, Integer> {
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM CafePair c1 " +
-            "WHERE EXISTS (" +
-            "    SELECT c2 " +
-            "    FROM CafePair c2 " +
-            "    WHERE c1.stNm = c2.comNm " +
-            "      AND c1.comNm = c2.stNm " +
-            "      AND c1.pairId > c2.pairId)")
+    @Query(value = "DELETE t1" +
+            "                FROM cafe_pair t1" +
+            "                JOIN cafe_pair t2" +
+            "                ON t1.st_nm = t2.com_nm" +
+            "                AND t1.com_nm = t2.st_nm" +
+            "                AND t1.pair_id > t2.pair_id;", nativeQuery = true)
     void cafe_deleteDuplicatePairs();
+
+    @Query(value = "SELECT c.st_nm AS stNm," +
+            "                ST_AsText(c.st_coor) AS stCoor," +
+            "                c.com_nm AS comNm," +
+            "                ST_AsText(c.com_coor) AS comCoor," +
+            "                c.dist," +
+            "                ST_AsText(ST_Centroid(LineString((c.st_coor), (c.com_coor)))) AS centerCoor," +
+            "                c.pair_id AS pairId" +
+            "                FROM cafe_pair c" +
+            "                WHERE c.region_fk = :region_fk " +
+            "                AND c.dist > :dist", nativeQuery = true)
+    List<DataRecommandProjection> selectByDist(@Param("region_fk") String region_fk, @Param("dist") String dist);
+
+    @Query("SELECT AVG(c.dist) AS dist" +
+            "                FROM CafePair c" +
+            "                WHERE c.regionFk = :region_fk")
+    Double avgDist(@Param("region_fk") Integer region_fk);
 
 }

@@ -10,49 +10,53 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ConveniencePairRepository extends JpaRepository<ConveniencePair, Long> {
 
-    @Query(value = "SELECT ST_DISTANCE_SPHERE(:st_coor, c.coordinates) AS dist," +
-            "                       :region_fk AS region_fk," +
-            "                       :st_nm AS st_nm," +
-            "                       :st_coor AS st_coor," +
-            "                       c.bizes_nm AS com_nm," +
-            "                       c.coordinates AS com_coor" +
+    @Query(value = "        SELECT :st_nm as stNm, " +
+            "                       ST_AsText(:st_coor) as stCoor, " +
+            "                       c.bizes_nm as comNm, " +
+            "                       ST_AsText(c.coordinates) as comCoor," +
+            "                       ST_DISTANCE_SPHERE(:st_coor, c.coordinates) as dist," +
+            "                       :region_fk as regionFk" +
             "                FROM convenience_store c" +
             "                WHERE c.region_fk = :region_fk" +
             "                AND ST_Within(c.coordinates, ST_Buffer(:st_coor, 500))" +
             "                AND ST_DISTANCE_SPHERE(:st_coor, c.coordinates) > 10" +
             "                ORDER BY dist" +
             "                LIMIT 1", nativeQuery=true)
-    List<ConveniencePair> convenience_distanceSphere(@Param("st_nm") String st_nm, @Param("st_coor") Point st_coor, @Param("region_fk") Integer region_fk);
-
-//    @Query(value = "SELECT ST_DISTANCE_SPHERE(ST_GeomFromText(:st_coor), c.coordinates) AS dist," +
-//            "                       :region_fk AS region_fk," +
-//            "                       :st_nm AS st_nm," +
-//            "                       :st_coor AS st_coor," +
-//            "                       c.bizes_nm AS com_nm," +
-//            "                       ST_AsWKT(c.coordinates) AS com_coor" +
-//            "                FROM convenience_store c" +
-//            "                WHERE c.region_fk = :region_fk" +
-//            "                AND ST_Within(c.coordinates, ST_Buffer(ST_GeomFromText(:st_coor), 500))" +
-//            "                AND ST_Distance_Sphere(ST_GeomFromText(:st_coor), c.coordinates) > 10" +
-//            "                ORDER BY dist" +
-//            "                LIMIT 1", nativeQuery=true)
-//    List<ConveniencePair> convenience_distanceSphere(@Param("st_nm") String st_nm, @Param("st_coor") Point st_coor, @Param("region_fk") Integer region_fk);
-
+    List<StoreInfoProjection> convenience_distanceSphere(@Param("st_nm") String st_nm, @Param("st_coor") Point st_coor, @Param("region_fk") Integer region_fk);
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM ConveniencePair c1 " +
-            "WHERE EXISTS (" +
-            "    SELECT c2 " +
-            "    FROM ConveniencePair c2 " +
-            "    WHERE c1.stNm = c2.comNm " +
-            "      AND c1.comNm = c2.stNm " +
-            "      AND c1.pairId > c2.pairId)")
+    @Query(value = "DELETE t1" +
+            "                FROM convenience_pair t1" +
+            "                JOIN convenience_pair t2" +
+            "                ON t1.st_nm = t2.com_nm" +
+            "                AND t1.com_nm = t2.st_nm" +
+            "                AND t1.pair_id > t2.pair_id;", nativeQuery = true)
     void convenience_deleteDuplicatePairs();
+
+    @Query(value = "SELECT c.st_nm AS stNm," +
+            "                ST_AsText(c.st_coor) AS stCoor," +
+            "                c.com_nm AS comNm," +
+            "                ST_AsText(c.com_coor) AS comCoor," +
+            "                c.dist," +
+            "                ST_AsText(ST_Centroid(LineString((c.st_coor), (c.com_coor)))) AS centerCoor," +
+            "                c.pair_id AS pairId" +
+            "                FROM convenience_pair c" +
+            "                WHERE c.region_fk = :region_fk " +
+            "                AND c.dist > :dist", nativeQuery = true)
+    List<DataRecommandProjection> selectByDist(@Param("region_fk") String region_fk, @Param("dist") String dist);
+
+    @Query("SELECT AVG(c.dist) AS dist" +
+            "                FROM ConveniencePair c" +
+            "                WHERE c.regionFk = :region_fk")
+    Double avgDist(@Param("region_fk") Integer region_fk);
+
+
 
 
 }

@@ -72,8 +72,7 @@ $("#submit").click(function () {
             },
             success: function (response) {
                 console.log("서버 응답: " + "success");
-                console.log(indust, region, dist );
-
+                console.log("테스트 : " + Object.entries(response[0]))
                 // 지도 초기화에 움직이는 지도 좌표 검색된 좌표로 재설정
                 naver.maps.Service.geocode({
                     query: region
@@ -86,6 +85,7 @@ $("#submit").click(function () {
                 })
 
                 var coordinates = response.map(function (item) {
+                    console.log("아이템은" + item[0])
                     var stNm = item.st_nm;
                     var comNm = item.com_nm;
 

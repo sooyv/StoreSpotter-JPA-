@@ -1,6 +1,7 @@
 package com.sojoo.StoreSpotter.controller.main;
 
 //import com.sojoo.StoreSpotter.controller.form.memberForm;
+import com.sojoo.StoreSpotter.repository.storePair.DataRecommandProjection;
 import com.sojoo.StoreSpotter.service.apiToDb.IndustryService;
 import com.sojoo.StoreSpotter.service.apiToDb.RegionService;
 import com.sojoo.StoreSpotter.entity.storePair.DataRecommend;
@@ -33,9 +34,9 @@ public class MainController {
 
     // 전체 검색 시 Ajax
     @GetMapping("/search/recommend")
-    public List<DataRecommend> chooseIndust (@RequestParam("indust") String indust,
-                                             @RequestParam("region") String region,
-                                             @RequestParam("dist") String dist) {
+    public List<DataRecommandProjection> chooseIndust (@RequestParam("indust") String indust,
+                                                       @RequestParam("region") String region,
+                                                       @RequestParam("dist") String dist) {
 
         String indust_id = industryService.industryNameToCode(indust);
         String region_name = sido(region);

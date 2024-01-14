@@ -1,15 +1,13 @@
 package com.sojoo.StoreSpotter.entity.apiToDb;
 
+import com.sojoo.StoreSpotter.entity.storePair.PairData;
 import lombok.*;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.PrecisionModel;
+import org.locationtech.jts.geom.*;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 //import org.springframework.data.geo.Point;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
@@ -22,7 +20,7 @@ public abstract class StoreInfo {
     @Column(name = "bizes_nm")
     private String bizesNm;
 
-    @Column(name="coordinates", columnDefinition = "Point")
+    @Column(name="coordinates", columnDefinition = "geometry")
     private Point coordinates;
 //        private Geometry coordinates;
 
@@ -31,6 +29,8 @@ public abstract class StoreInfo {
 
     @Column(name = "region_fk")
     private Integer regionFk;
+
+
 
 //    @Builder
 //    public StoreInfo(String bizes_id, String bizes_nm, String rdnm_adr, String coordinates, Integer region_fk){
@@ -47,6 +47,22 @@ public abstract class StoreInfo {
         Coordinate coordinate = new Coordinate(lon, lat);
         System.out.println(geometryFactory.createPoint(new Coordinate(lon, lat)));
         this.coordinates = geometryFactory.createPoint(coordinate);
+    }
+
+    public static Point createPointFromWkt(String wktPoint) {
+        WKTReader wktReader = new WKTReader();
+        try {
+            Geometry geometry = wktReader.read(wktPoint);
+            if (geometry instanceof Point) {
+                return (Point) geometry;
+            } else {
+                // Handle the case where the input is not a Point (optional)
+                throw new IllegalArgumentException("Input is not a Point");
+            }
+        } catch (ParseException e) {
+            // Handle parsing exception
+            throw new IllegalArgumentException("Error parsing WKT", e);
+        }
     }
 
 }

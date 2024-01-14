@@ -155,11 +155,8 @@ public class StoreInfoService {
                     convenienceStore.setRdnmAdr(rdnm_adr);
                     convenienceStore.setCoordinates(lon, lat);
                     convenienceStore.setRegionFk(region_id);
+                    convenienceStoreRepository.save(convenienceStore);
 
-                    String coordinates = String.valueOf(convenienceStore.getCoordinates());
-//                    convenienceStoreRepository.save(convenienceStore);
-
-                    convenienceStoreRepository.insertConv(convenienceStore, coordinates);
 
                 } else if (Objects.equals(indust_id, "I21201")) {
                     Cafe cafe = new Cafe();
@@ -169,10 +166,7 @@ public class StoreInfoService {
                     cafe.setCoordinates(lon, lat);
                     cafe.setRegionFk(region_id);
 
-                    String coordinates = String.valueOf(cafe.getCoordinates());
-
-//                    cafeRepository.save(cafe);
-                    cafeRepository.insertCafe(cafe, coordinates);
+                    cafeRepository.save(cafe);
                 }
             }
 
