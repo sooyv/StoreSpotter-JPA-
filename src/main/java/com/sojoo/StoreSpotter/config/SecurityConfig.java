@@ -2,6 +2,11 @@ package com.sojoo.StoreSpotter.config;
 
 import com.sojoo.StoreSpotter.config.jwt.JwtTokenProvider;
 import com.sojoo.StoreSpotter.config.jwt.TokenAuthenticationFilter;
+import com.sojoo.StoreSpotter.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
+import com.sojoo.StoreSpotter.config.oauth.OAuth2SuccessHandler;
+import com.sojoo.StoreSpotter.config.oauth.OAuth2UserCustomService;
+import com.sojoo.StoreSpotter.jwt.RefreshTokenRepository;
+import com.sojoo.StoreSpotter.service.member.MemberService;
 import com.sojoo.StoreSpotter.service.member.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +24,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final UserDetailService memberService;
+    private final MemberService memberServiceOauth;
     private final JwtTokenProvider jwtTokenProvider;
+    private final OAuth2UserCustomService oAuth2UserCustomService;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Bean
     public WebSecurityCustomizer configure() {
@@ -48,7 +56,18 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/")
                 .and()
                 .logout()   // 로그아웃 설정
-                    .logoutSuccessUrl("/login");
+                .logoutSuccessUrl("/login");
+
+        http.oauth2Login()
+                .loginPage("/login")
+                .authorizationEndpoint()
+                // Authorization 요청과 관련된 상태 저장
+                .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
+                .and()
+                .successHandler(oAuth2SuccessHandler())
+                .userInfoEndpoint()
+                .userService(oAuth2UserCustomService);
+
 
         // 세션 사용 안함
         http.sessionManagement()
@@ -67,6 +86,21 @@ public class SecurityConfig {
                 .passwordEncoder(bCryptPasswordEncoder)
                 .and()
                 .build();
+    }
+
+    @Bean
+    public OAuth2SuccessHandler oAuth2SuccessHandler() {
+        return new OAuth2SuccessHandler(jwtTokenProvider, refreshTokenRepository, oAuth2AuthorizationRequestBasedOnCookieRepository(), memberServiceOauth);
+    }
+
+    @Bean
+    public TokenAuthenticationFilter tokenAuthenticationFilter() {
+        return new TokenAuthenticationFilter(jwtTokenProvider);
+    }
+
+    @Bean
+    public OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository() {
+        return new OAuth2AuthorizationRequestBasedOnCookieRepository();
     }
 
     @Bean
