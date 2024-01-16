@@ -25,7 +25,7 @@ public interface CafePairRepository extends JpaRepository<CafePair, Integer> {
             "                AND ST_Distance_Sphere(ST_GeomFromText(:st_coor, 4326), c.coordinates) > 10" +
             "                ORDER BY dist" +
             "                LIMIT 1", nativeQuery=true)
-    List<CafePair> cafe_distanceSphere(@Param("st_nm") String st_nm, @Param("st_coor") Point st_coor, @Param("region_fk") Integer region_fk);
+    List<StoreInfoProjection> cafe_distanceSphere(@Param("st_nm") String st_nm, @Param("st_coor") Point st_coor, @Param("region_fk") Integer region_fk);
 
 
     @Modifying

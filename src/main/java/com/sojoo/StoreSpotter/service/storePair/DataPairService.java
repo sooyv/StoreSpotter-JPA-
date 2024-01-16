@@ -12,8 +12,11 @@ import com.sojoo.StoreSpotter.entity.storePair.CafePair;
 import com.sojoo.StoreSpotter.entity.storePair.ConveniencePair;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,7 +97,6 @@ public class DataPairService {
 
     public void distanceSphere(String name, Point point, Integer region, String indust_id) {
 
-        System.out.println(name + point + region);
         switch (indust_id){
             case "G20405":
                 List<StoreInfoProjection> conveniencePairList = conveniencePairRepository.convenience_distanceSphere(name, point, region);
@@ -114,7 +116,7 @@ public class DataPairService {
                     conveniencePairRepository.save(conveniencePair);
                 }
             case "I21201":
-                List<StoreInfoProjection> cafePairList = conveniencePairRepository.convenience_distanceSphere(name, point, region);
+                List<StoreInfoProjection> cafePairList = cafePairRepository.cafe_distanceSphere(name, point, region);
                 for (StoreInfoProjection cafeProjection : cafePairList) {
 
                     Point stCoor = StoreInfo.createPointFromWkt(cafeProjection.getStCoor());

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ConveniencePairRepository extends JpaRepository<ConveniencePair, Long> {
@@ -28,6 +27,7 @@ public interface ConveniencePairRepository extends JpaRepository<ConveniencePair
             "                ORDER BY dist" +
             "                LIMIT 1", nativeQuery=true)
     List<StoreInfoProjection> convenience_distanceSphere(@Param("st_nm") String st_nm, @Param("st_coor") Point st_coor, @Param("region_fk") Integer region_fk);
+
 
     @Modifying
     @Transactional

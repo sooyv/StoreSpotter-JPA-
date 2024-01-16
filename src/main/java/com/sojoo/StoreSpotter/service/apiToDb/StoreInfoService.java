@@ -157,7 +157,6 @@ public class StoreInfoService {
                     convenienceStore.setRegionFk(region_id);
                     convenienceStoreRepository.save(convenienceStore);
 
-
                 } else if (Objects.equals(indust_id, "I21201")) {
                     Cafe cafe = new Cafe();
                     cafe.setBizesId(bizes_id);

@@ -20,7 +20,7 @@ public abstract class StoreInfo {
     @Column(name = "bizes_nm")
     private String bizesNm;
 
-    @Column(name="coordinates", columnDefinition = "geometry")
+    @Column(name="coordinates", columnDefinition = "point")
     private Point coordinates;
 //        private Geometry coordinates;
 
@@ -45,7 +45,6 @@ public abstract class StoreInfo {
     public void setCoordinates(Double lon, Double lat) {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
         Coordinate coordinate = new Coordinate(lon, lat);
-        System.out.println(geometryFactory.createPoint(new Coordinate(lon, lat)));
         this.coordinates = geometryFactory.createPoint(coordinate);
     }
 

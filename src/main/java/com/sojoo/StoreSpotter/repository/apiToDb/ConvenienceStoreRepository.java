@@ -9,6 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface ConvenienceStoreRepository extends JpaRepository<ConvenienceStore, Long> {
+public interface ConvenienceStoreRepository extends JpaRepository<ConvenienceStore, String> {
 
 }

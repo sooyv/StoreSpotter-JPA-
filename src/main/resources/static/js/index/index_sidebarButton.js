@@ -70,43 +70,56 @@ $("#submit").click(function () {
                 region: region,
                 dist: dist
             },
-            success: function (response) {
-                console.log("서버 응답: " + "success");
-                console.log("테스트 : " + Object.entries(response[0]))
-                // 지도 초기화에 움직이는 지도 좌표 검색된 좌표로 재설정
-                naver.maps.Service.geocode({
-                    query: region
-                }, function (status, response) {
-                    item = response.v2.addresses[0];
-                    point = new naver.maps.Point(item.x, item.y);
 
-                    map.setCenter(point); // 중심 좌표 이동
-                    map.setZoom(15);     // 줌 레벨 변경
-                })
+                success: function (response) {
+                    console.log("서버 응답: " + "success");
+                    // 지도 초기화에 움직이는 지도 좌표 검색된 좌표로 재설정
+                    naver.maps.Service.geocode({
+                        query: region
+                    }, function (status, response) {
+                        item = response.v2.addresses[0];
+                        console.log(item)
+                        point = new naver.maps.Point(item.x, item.y);
 
+                        map.setCenter(point); // 중심 좌표 이동
+                        map.setZoom(15);     // 줌 레벨 변경
+                    })
                 var coordinates = response.map(function (item) {
-                    console.log("아이템은" + item[0])
-                    var stNm = item.st_nm;
-                    var comNm = item.com_nm;
+                    var stNm = item.stNm;
+                    var comNm = item.comNm;
 
-                    var stCoorString = item.st_coor.match(/\(([^)]+)\)/)[1];
+
+                    var stCoorString = item.stCoor.match(/\(([^)]+)\)/)[1];
                     var stCoorArray = stCoorString.split(' ');
 
-                    var comCoorString = item.com_coor.match(/\(([^)]+)\)/)[1];
+                    var comCoorString = item.comCoor.match(/\(([^)]+)\)/)[1];
                     var comCoorArray = comCoorString.split(' ');
 
-                    var centerCoorString = item.center_coor.match(/\(([^)]+)\)/)[1];
+                    var centerCoorString = item.centerCoor.match(/\(([^)]+)\)/)[1];
                     var centerCoorArray = centerCoorString.split(' ');
+
+                    console.log(Object.entries(item))
+
+
+                    console.log("st_nm"+ stNm);
+                    console.log("st_x" + parseFloat(stCoorArray[0])) // 기준경도
+                    console.log("st_y" + parseFloat(stCoorArray[1])) // 기준위도
+                    console.log("com_nm" + comNm)
+                    console.log("com_x" + parseFloat(comCoorArray[0])) // 대상경도
+                    console.log("com_y" + parseFloat(comCoorArray[1])) // 대상위도
+                    console.log("center_x" + parseFloat(centerCoorArray[0]))  // 중점경도
+                    console.log("center_y" + parseFloat(centerCoorArray[1]))   // 중점위도
+
 
                     return {
                         st_nm: stNm,
-                        st_x: parseFloat(stCoorArray[0]), // 기준경도
-                        st_y: parseFloat(stCoorArray[1]), // 기준위도
+                        st_x: parseFloat(stCoorArray[1]), // 기준경도
+                        st_y: parseFloat(stCoorArray[0]), // 기준위도
                         com_nm: comNm,
-                        com_x: parseFloat(comCoorArray[0]), // 대상경도
-                        com_y: parseFloat(comCoorArray[1]), // 대상위도
-                        center_x: parseFloat(centerCoorArray[0]),  // 중점경도
-                        center_y: parseFloat(centerCoorArray[1])   // 중점위도
+                        com_x: parseFloat(comCoorArray[1]), // 대상경도
+                        com_y: parseFloat(comCoorArray[0]), // 대상위도
+                        center_x: parseFloat(centerCoorArray[1]),  // 중점경도
+                        center_y: parseFloat(centerCoorArray[0])   // 중점위도
                     };
                 });
 
@@ -138,6 +151,7 @@ $("#submit").click(function () {
                             clickable: true,
                             stroke: null,
                         });
+                        console.log("서클의 센터" + circle.center)
 
                         // 원 클릭 시 Event
                         naver.maps.Event.addListener(circle, 'click', function (e) {
