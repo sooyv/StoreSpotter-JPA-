@@ -36,7 +36,6 @@ public class StoreInfoService {
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
 //    @Transactional
     public List<Industry> industrySave() throws Exception {
-        System.out.println("industrySave method start");
         long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
         try {
@@ -97,7 +96,6 @@ public class StoreInfoService {
 
                     // 페이지 개수 가져오기
                     Element root = document.getRootElement();
-                    System.out.println("-----root Null 여부 : " + root);
                     Element body = root.getChild("body");
 
                     Element totalCount = null;
@@ -155,21 +153,18 @@ public class StoreInfoService {
                     convenienceStore.setRdnmAdr(rdnm_adr);
                     convenienceStore.setCoordinates(lon, lat);
                     convenienceStore.setRegionFk(region_id);
-
                     convenienceStoreRepository.save(convenienceStore);
+
 
                 } else if (Objects.equals(indust_id, "I21201")) {
                     Cafe cafe = new Cafe();
                     cafe.setBizesId(bizes_id);
                     cafe.setBizesNm(bizes_nm);
                     cafe.setRdnmAdr(rdnm_adr);
-                    cafe.setCoordinates(lon, lat);
+                    cafe.setCoordinates(lat, lon);
                     cafe.setRegionFk(region_id);
 
-                    String coordinates = String.valueOf(cafe.getCoordinates());
-
-//                    cafeRepository.save(cafe);
-                    cafeRepository.insertCafe(cafe, coordinates);
+                    cafeRepository.save(cafe);
                 }
             }
 

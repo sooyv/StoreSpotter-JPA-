@@ -1,7 +1,7 @@
 //package com.sojoo.StoreSpotter.config.oauth;
 //
-//import com.sojoo.StoreSpotter.dto.Member.Member;
-//import com.sojoo.StoreSpotter.repository.Member.MemberRepository;
+//import com.sojoo.StoreSpotter.entity.Member.Member;
+//import com.sojoo.StoreSpotter.repository.member.MemberRepository;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 //import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

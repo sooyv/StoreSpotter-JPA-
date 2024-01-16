@@ -1,10 +1,10 @@
 //package com.sojoo.StoreSpotter.config.oauth;
 //
 //import com.sojoo.StoreSpotter.config.jwt.JwtTokenProvider;
-//import com.sojoo.StoreSpotter.dto.Member.Member;
-//import com.sojoo.StoreSpotter.dto.jwt.RefreshToken;
-//import com.sojoo.StoreSpotter.repository.jwt.RefreshTokenRepository;
-//import com.sojoo.StoreSpotter.service.Member.MemberService;
+//import com.sojoo.StoreSpotter.entity.Member.Member;
+//import com.sojoo.StoreSpotter.jwt.RefreshToken;
+//import com.sojoo.StoreSpotter.jwt.RefreshTokenRepository;
+//import com.sojoo.StoreSpotter.service.member.MemberService;
 //import com.sojoo.StoreSpotter.util.CookieUtil;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.security.core.Authentication;
@@ -21,7 +21,7 @@
 //@RequiredArgsConstructor
 //@Component
 //public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-//    public static final String REFRESH_TOKEN_COOKIE_NAME = "";
+//    public static final String REFRESH_TOKEN_COOKIE_NAME = "refresh_token";
 //    public static final Duration REFRESH_TOKEN_DURATION = Duration.ofDays(14);
 //    public static final Duration ACCESS_TOKEN_DURATION = Duration.ofDays(1);
 //    public static final String REDIRECH_PATH = "/";
