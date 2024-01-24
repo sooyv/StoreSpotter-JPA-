@@ -3,8 +3,6 @@ package com.sojoo.StoreSpotter.service.storePair;
 import com.sojoo.StoreSpotter.repository.storePair.CafePairRepository;
 import com.sojoo.StoreSpotter.repository.storePair.ConveniencePairRepository;
 import com.sojoo.StoreSpotter.repository.storePair.DataRecommandProjection;
-import com.sojoo.StoreSpotter.repository.storePair.DataRecommendMapper;
-import com.sojoo.StoreSpotter.entity.storePair.DataRecommend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,16 +24,16 @@ public class DataRecommendService {
     }
 
 
-    public List<DataRecommandProjection> selectPairByDist(String indust_id, String region_fk, String dist) {
+    public List<DataRecommandProjection> selectPairByDist(String industId, String regionFk, String dist) {
         List<DataRecommandProjection> result = null;
         try{
-            switch (indust_id) {
+            switch (industId) {
                 case "G20405":
-                    result = conveniencePairRepository.selectByDist(region_fk, dist);
+                    result = conveniencePairRepository.selectByDist(regionFk, dist);
                     break;
 
                 case "I21201":
-                    result =  cafePairRepository.selectByDist(region_fk, dist);
+                    result =  cafePairRepository.selectByDist(regionFk, dist);
                     break;
             }
         }
@@ -47,18 +45,18 @@ public class DataRecommendService {
     }
 
     // 지역별 평균거리
-    public Double avgDistance(String indust_id, String region_fk) {
+    public Double avgDistance(String industId, String regionFk) {
         // 만약 업종이나 주소 선택을 하지 않고 검색을 눌렀을 경우
 //        if (indust_id.isEmpty()) {
 //
 //        } else if (region_fk.isEmpty()) {
 //
 //        }
-        System.out.println("받아오는값" + indust_id + region_fk);
+        System.out.println("받아오는값" + industId + regionFk);
         Double result = null;
-        Integer region = Integer.parseInt(region_fk);
+        Integer region = Integer.parseInt(regionFk);
         try{
-            switch (indust_id) {
+            switch (industId) {
                 case "G20405":
                     result = conveniencePairRepository.avgDist(region);
                     break;

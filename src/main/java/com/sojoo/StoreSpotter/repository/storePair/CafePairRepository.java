@@ -1,6 +1,7 @@
 package com.sojoo.StoreSpotter.repository.storePair;
 
 import com.sojoo.StoreSpotter.entity.storePair.CafePair;
+import com.sojoo.StoreSpotter.repository.apiToDb.StoreInfoProjection;
 import org.apache.ibatis.annotations.Param;
 import org.locationtech.jts.geom.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,19 +14,19 @@ import java.util.List;
 
 @Repository
 public interface CafePairRepository extends JpaRepository<CafePair, Integer> {
-    @Query(value = "SELECT ST_DISTANCE_SPHERE(ST_GeomFromText(:st_coor, 4326), c.coordinates) AS dist," +
-            "                       :region_fk AS region_fk," +
-            "                       :st_nm AS st_nm," +
-            "                       :st_coor AS st_coor," +
-            "                       c.bizes_nm AS com_nm," +
-            "                       ST_AsWKT(c.coordinates) AS com_coor" +
+    @Query(value = "        SELECT :st_nm as stNm, " +
+            "                       ST_AsText(:st_coor) as stCoor, " +
+            "                       c.bizes_nm as comNm, " +
+            "                       ST_AsText(c.coordinates) as comCoor," +
+            "                       ST_DISTANCE_SPHERE(:st_coor, c.coordinates) as dist," +
+            "                       :region_fk as regionFk" +
             "                FROM cafe c" +
             "                WHERE c.region_fk = :region_fk" +
-            "                AND ST_Within(c.coordinates, ST_Buffer(ST_GeomFromText(:st_coor, 4326), 500))" +
-            "                AND ST_Distance_Sphere(ST_GeomFromText(:st_coor, 4326), c.coordinates) > 10" +
+            "                AND ST_Within(c.coordinates, ST_Buffer(:st_coor, 500))" +
+            "                AND ST_DISTANCE_SPHERE(:st_coor, c.coordinates) > 10" +
             "                ORDER BY dist" +
             "                LIMIT 1", nativeQuery=true)
-    List<CafePair> cafe_distanceSphere(@Param("st_nm") String st_nm, @Param("st_coor") Point st_coor, @Param("region_fk") Integer region_fk);
+    List<StoreInfoProjection> cafe_distanceSphere(@Param("st_nm") String st_nm, @Param("st_coor") Point st_coor, @Param("region_fk") Integer region_fk);
 
 
     @Modifying

@@ -5,6 +5,7 @@ import com.sojoo.StoreSpotter.entity.apiToDb.*;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
+import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,6 @@ public class StoreInfoService {
 
 
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
-//    @Transactional
     public List<Industry> industrySave() throws Exception {
         long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
@@ -59,11 +59,13 @@ public class StoreInfoService {
     }
 
 
+
     // 공공데이터 api 연결 및 Document 전달
+    @Transactional
     public void connectToApi(Industry industry) throws Exception {
 
         try {
-            String indust_id = industry.getIndustId();
+            String industId = industry.getIndustId();
 
             // 지역 가져오기
             List<Region> regions = regionRepository.findAll();
@@ -82,7 +84,7 @@ public class StoreInfoService {
                             "&numOfRows=" + 1000 +
                             "&divId=" + "ctprvnCd" +
                             "&key=" + region_id +             // 시도 코드(region_id)
-                            "&indsSclsCd=" + indust_id;      // 업종 코드(industry_id) G20405, I21201
+                            "&indsSclsCd=" + industId;      // 업종 코드(industry_id) G20405, I21201
 
                     URL url = new URL(sb);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -96,6 +98,10 @@ public class StoreInfoService {
 
                     // 페이지 개수 가져오기
                     Element root = document.getRootElement();
+<<<<<<< HEAD
+=======
+//                    System.out.println("-----root Null 여부 : " + root);
+>>>>>>> 0ffc609f808c3114ee9584847f628cd49f20ef61
                     Element body = root.getChild("body");
 
                     Element totalCount = null;
@@ -106,9 +112,9 @@ public class StoreInfoService {
                         continue;
                     }
 
-                    System.out.println("industry: " + industry);
-                    System.out.println("region : " + region);
-                    System.out.println("pageNo : " + j);
+//                    System.out.println("industry: " + industry);
+//                    System.out.println("region : " + region);
+//                    System.out.println("pageNo : " + j);
 
                     assert totalCount != null;
                     int totalCountValue = Integer.parseInt(totalCount.getText());
@@ -118,7 +124,7 @@ public class StoreInfoService {
                     totalPageCount = (totalCountValue / 1000) + 1;
 
                     // for문으로 각페이지 데이터 저장하기
-                    publicApiDataSave(document, indust_id, region_id);
+                    publicApiDataSave(document, industId, region_id);
 
                 }
             }
@@ -130,9 +136,8 @@ public class StoreInfoService {
 
     }
 
-    @Transactional
     // api 데이터 저장 로직
-    public void publicApiDataSave(Document document, String indust_id, Integer region_id) throws DuplicateKeyException {
+    public void publicApiDataSave(Document document, String industId, Integer regionId) throws DuplicateKeyException {
         try {
             Element root = document.getRootElement();
             Element body = root.getChild("body");
@@ -140,22 +145,42 @@ public class StoreInfoService {
             List<Element> itemList = items.getChildren("item");
 
             for (Element item : itemList) {
-                String bizes_id = item.getChildText("bizesId");
-                String bizes_nm = item.getChildText("bizesNm");
-                String rdnm_adr = item.getChildText("rdnmAdr");
+                String bizesId = item.getChildText("bizesId");
+                String bizesNm = item.getChildText("bizesNm");
+                String rdnmAdr = item.getChildText("rdnmAdr");
                 Double lon = Double.valueOf(item.getChildText("lon"));  // 경도(lon)
                 Double lat = Double.valueOf(item.getChildText("lat"));  // 위도(lat)
+                switch (industId){
+                    case "G20405":
+//                        ConvenienceStore convenienceStore = new ConvenienceStore();
+//                        convenienceStore.setBizesId();
+//                        convenienceStore.setBizesNm(bizes_nm);
+//                        convenienceStore.setRdnmAdr(rdnm_adr);
+//                        convenienceStore.setCoordinates(lon, lat);
+//                        convenienceStore.setRegionFk(region_id);
+//                        convenienceStoreRepository.save(convenienceStore);
 
-                if (Objects.equals(indust_id, "G20405")){
-                    ConvenienceStore convenienceStore = new ConvenienceStore();
-                    convenienceStore.setBizesId(bizes_id);
-                    convenienceStore.setBizesNm(bizes_nm);
-                    convenienceStore.setRdnmAdr(rdnm_adr);
-                    convenienceStore.setCoordinates(lon, lat);
-                    convenienceStore.setRegionFk(region_id);
-                    convenienceStoreRepository.save(convenienceStore);
+                            Point convPoint = StoreInfo.setCoordinates(lon, lat);
+                            ConvenienceStore convenienceStore = ConvenienceStore.builder()
+                                    .bizesId(bizesId)
+                                    .bizesNm(bizesNm)
+                                    .rdnmAdr(rdnmAdr)
+                                    .coordinates(convPoint)
+                                    .regionFk(regionId)
+                                    .build();
+                            convenienceStoreRepository.save(convenienceStore);
+                        break;
 
+                    case "I21201":
+//                        Cafe cafe = new Cafe();
+//                        cafe.setBizesId();
+//                        cafe.setBizesNm(bizes_nm);
+//                        cafe.setRdnmAdr(rdnm_adr);
+//                        cafe.setCoordinates(lon, lat);
+//                        cafe.setRegionFk(region_id);
+//                        cafeRepository.save(cafe);
 
+<<<<<<< HEAD
                 } else if (Objects.equals(indust_id, "I21201")) {
                     Cafe cafe = new Cafe();
                     cafe.setBizesId(bizes_id);
@@ -165,6 +190,18 @@ public class StoreInfoService {
                     cafe.setRegionFk(region_id);
 
                     cafeRepository.save(cafe);
+=======
+                        Point cafePoint = StoreInfo.setCoordinates(lon, lat);
+                        Cafe cafe = Cafe.builder()
+                                .bizesId(bizesId)
+                                .bizesNm(bizesNm)
+                                .rdnmAdr(rdnmAdr)
+                                .coordinates(cafePoint)
+                                .regionFk(regionId)
+                                .build();
+                        cafeRepository.save(cafe);
+                        break;
+>>>>>>> 0ffc609f808c3114ee9584847f628cd49f20ef61
                 }
             }
 

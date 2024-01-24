@@ -97,7 +97,6 @@ $('.select-industry-detail').on('click', function() {
 // 주소 선택 시 지역 - 업종 평균 거리 나타내기
 function addressToServer(address, indust) {
     // let indust = $('#select-industry .select-industry-detail.selected').text();
-    console.log("addressToServer의 " ,"address : " + address, "indust : " + indust)
     let distSlider = document.getElementById('dist-slider');
 
     $.ajax ({
