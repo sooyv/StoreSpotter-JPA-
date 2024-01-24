@@ -152,13 +152,6 @@ public class StoreInfoService {
                 Double lat = Double.valueOf(item.getChildText("lat"));  // 위도(lat)
                 switch (industId){
                     case "G20405":
-//                        ConvenienceStore convenienceStore = new ConvenienceStore();
-//                        convenienceStore.setBizesId();
-//                        convenienceStore.setBizesNm(bizes_nm);
-//                        convenienceStore.setRdnmAdr(rdnm_adr);
-//                        convenienceStore.setCoordinates(lon, lat);
-//                        convenienceStore.setRegionFk(region_id);
-//                        convenienceStoreRepository.save(convenienceStore);
 
                             Point convPoint = StoreInfo.setCoordinates(lon, lat);
                             ConvenienceStore convenienceStore = ConvenienceStore.builder()
@@ -172,13 +165,6 @@ public class StoreInfoService {
                         break;
 
                     case "I21201":
-//                        Cafe cafe = new Cafe();
-//                        cafe.setBizesId();
-//                        cafe.setBizesNm(bizes_nm);
-//                        cafe.setRdnmAdr(rdnm_adr);
-//                        cafe.setCoordinates(lon, lat);
-//                        cafe.setRegionFk(region_id);
-//                        cafeRepository.save(cafe);
 
 <<<<<<< HEAD
                 } else if (Objects.equals(indust_id, "I21201")) {

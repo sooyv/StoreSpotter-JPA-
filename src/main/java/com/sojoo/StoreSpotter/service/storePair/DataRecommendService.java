@@ -46,12 +46,7 @@ public class DataRecommendService {
 
     // 지역별 평균거리
     public Double avgDistance(String industId, String regionFk) {
-        // 만약 업종이나 주소 선택을 하지 않고 검색을 눌렀을 경우
-//        if (indust_id.isEmpty()) {
-//
-//        } else if (region_fk.isEmpty()) {
-//
-//        }
+
         System.out.println("받아오는값" + industId + regionFk);
         Double result = null;
         Integer region = Integer.parseInt(regionFk);
