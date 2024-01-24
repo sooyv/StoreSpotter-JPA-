@@ -9,11 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "cafe_pair")
-<<<<<<< HEAD
-public class CafePair extends PairData {
-=======
 @SuperBuilder
 @NoArgsConstructor()
 public class CafePair extends PairData{
->>>>>>> 0ffc609f808c3114ee9584847f628cd49f20ef61
 }

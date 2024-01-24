@@ -39,17 +39,4 @@ public abstract class PairData {
     @Column(name = "region_fk", nullable = false)
     private Integer regionFk;
 
-
-
-
-//    @Builder
-//    public PairData(Long pairId, String stNm, String stCoor, String comNm, String comCoor, Double dist, Integer regionFk){
-//        this.pairId = pairId;
-//        this.stNm = stNm;
-//        this.stCoor = stCoor;
-//        this.comNm = comNm;
-//        this.comCoor = comCoor;
-//        this.dist = dist;
-//        this.regionFk = regionFk;
-//    }
 }

@@ -98,10 +98,6 @@ public class StoreInfoService {
 
                     // 페이지 개수 가져오기
                     Element root = document.getRootElement();
-<<<<<<< HEAD
-=======
-//                    System.out.println("-----root Null 여부 : " + root);
->>>>>>> 0ffc609f808c3114ee9584847f628cd49f20ef61
                     Element body = root.getChild("body");
 
                     Element totalCount = null;
@@ -152,7 +148,6 @@ public class StoreInfoService {
                 Double lat = Double.valueOf(item.getChildText("lat"));  // 위도(lat)
                 switch (industId){
                     case "G20405":
-
                             Point convPoint = StoreInfo.setCoordinates(lon, lat);
                             ConvenienceStore convenienceStore = ConvenienceStore.builder()
                                     .bizesId(bizesId)
@@ -165,18 +160,6 @@ public class StoreInfoService {
                         break;
 
                     case "I21201":
-
-<<<<<<< HEAD
-                } else if (Objects.equals(indust_id, "I21201")) {
-                    Cafe cafe = new Cafe();
-                    cafe.setBizesId(bizes_id);
-                    cafe.setBizesNm(bizes_nm);
-                    cafe.setRdnmAdr(rdnm_adr);
-                    cafe.setCoordinates(lat, lon);
-                    cafe.setRegionFk(region_id);
-
-                    cafeRepository.save(cafe);
-=======
                         Point cafePoint = StoreInfo.setCoordinates(lon, lat);
                         Cafe cafe = Cafe.builder()
                                 .bizesId(bizesId)
@@ -187,7 +170,6 @@ public class StoreInfoService {
                                 .build();
                         cafeRepository.save(cafe);
                         break;
->>>>>>> 0ffc609f808c3114ee9584847f628cd49f20ef61
                 }
             }
 
