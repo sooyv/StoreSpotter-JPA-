@@ -1,4 +1,4 @@
-package com.sojoo.StoreSpotter.repository.storePair;
+package com.sojoo.StoreSpotter.repository.apiToDb;
 
 import org.locationtech.jts.geom.Point;
 
