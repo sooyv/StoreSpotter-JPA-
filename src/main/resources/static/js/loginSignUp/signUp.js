@@ -117,7 +117,7 @@ form.addEventListener("submit", event => {
                 console.log(error);
 
                 // back 모든 항목 검사
-                if (error.responseText == "memberInfo") {
+                if (error.responseText == "memberInfoNull") {
                     alert("모든 항목을 입력해주세요.");
                 }
 

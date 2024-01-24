@@ -37,15 +37,8 @@ public class Member implements UserDetails {
     @Column(name = "nickname", unique = true)
     private String nickname;
 
-//    @Builder
-//    public Member(String memberName, String memberEmail, String memberPassword, String memberPhone, String nickname) {
-//        this.memberName = memberName;
-//        this.memberEmail = memberEmail;
-//        this.memberPassword = memberPassword;
-//        this.memberPhone = memberPhone;
-//        this.nickname = nickname;
-//    }
-//
+
+
     @Override       // 권한 반환
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("USER"));

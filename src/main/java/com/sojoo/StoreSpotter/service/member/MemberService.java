@@ -59,15 +59,15 @@ public class MemberService {
     // 모든 항목 일치 검사
     public ResponseEntity<String> notNullMemberInfo(MemberDto memberDto) {
         if (memberDto.getName() == null || memberDto.getName() == "") {
-            return new ResponseEntity<>("memberInfo", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("memberInfoNull", HttpStatus.BAD_REQUEST);
         } else if (memberDto.getEmail() == null || memberDto.getEmail() == "") {
-            return new ResponseEntity<>("memberInfo", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("memberInfoNull", HttpStatus.BAD_REQUEST);
         } else if (memberDto.getPassword() == null || memberDto.getPassword() == "") {
-            return new ResponseEntity<>("memberInfo", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("memberInfoNull", HttpStatus.BAD_REQUEST);
         } else if (memberDto.getCheckPassword() == null || memberDto.getCheckPassword() == "") {
-            return new ResponseEntity<>("memberInfo", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("memberInfoNull", HttpStatus.BAD_REQUEST);
         } else if (memberDto.getPhone() == null || memberDto.getPhone() == "") {
-            return new ResponseEntity<>("memberInfo", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("memberInfoNull", HttpStatus.BAD_REQUEST);
         }
         return null;
     }
