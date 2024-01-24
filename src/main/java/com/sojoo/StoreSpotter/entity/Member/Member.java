@@ -1,6 +1,5 @@
 package com.sojoo.StoreSpotter.entity.Member;
 
-import com.sojoo.StoreSpotter.repository.apiToDb.StoreInfoRepository;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

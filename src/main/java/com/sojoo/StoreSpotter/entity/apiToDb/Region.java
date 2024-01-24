@@ -3,9 +3,9 @@ package com.sojoo.StoreSpotter.entity.apiToDb;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -17,4 +17,6 @@ public class Region {
 
     @Column(name="region_name")
     private String regionName;     // 지역명
+
+
 }
