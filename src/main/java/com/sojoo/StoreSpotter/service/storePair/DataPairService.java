@@ -44,7 +44,7 @@ public class DataPairService {
         this.cafePairRepository = cafePairRepository;
     }
 
-//    @Transactional
+
     public void save_industryPairData() throws Exception{
         try{
             long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
