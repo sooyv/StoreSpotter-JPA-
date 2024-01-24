@@ -1,9 +1,11 @@
 package com.sojoo.StoreSpotter.entity.Member;
 
+import com.sojoo.StoreSpotter.repository.apiToDb.StoreInfoRepository;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -13,7 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 public class Member implements UserDetails {
+//public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id", updatable = false)
@@ -22,24 +26,26 @@ public class Member implements UserDetails {
     private String memberName;
     @Column(name = "member_email", unique = true, nullable = false) // 유일한 값만 저장 가능. 중복 저장 불가
     private String memberEmail;
-    @Column(name = "member_password", nullable = false)
+//    @Column(name = "member_password", nullable = false)
+    @Column(name = "member_password")
     private String memberPassword;
-    @Column(name = "member_phone", nullable = false)
+//    @Column(name = "member_phone", nullable = false)
+    @Column(name = "member_phone")
     private String memberPhone;
 
     // 사용자 이름
     @Column(name = "nickname", unique = true)
     private String nickname;
 
-    @Builder
-    public Member(String memberName, String memberEmail, String memberPassword, String memberPhone, String nickname) {
-        this.memberName = memberName;
-        this.memberEmail = memberEmail;
-        this.memberPassword = memberPassword;
-        this.memberPhone = memberPhone;
-        this.nickname = nickname;
-    }
-
+//    @Builder
+//    public Member(String memberName, String memberEmail, String memberPassword, String memberPhone, String nickname) {
+//        this.memberName = memberName;
+//        this.memberEmail = memberEmail;
+//        this.memberPassword = memberPassword;
+//        this.memberPhone = memberPhone;
+//        this.nickname = nickname;
+//    }
+//
     @Override       // 권한 반환
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("USER"));

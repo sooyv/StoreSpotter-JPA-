@@ -16,9 +16,9 @@
 <div th:replace="/header :: header"></div>
 <div class="container" id="container">
     <div class="sign-in-container">
-        <form th:action="@{/login}" method="POST">
+        <form th:action="@{/member/login}" method="POST">
             <h1>Sign in</h1>
-            <input type="email" name="email" placeholder="Email" />
+            <input type="email" name="username" placeholder="Email" />
             <input type="password" name="password" placeholder="Password" />
             <a href="/signInfo">Forgot your password?</a>
             <button type="submit">Sign In</button>

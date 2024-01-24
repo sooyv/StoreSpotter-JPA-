@@ -1,5 +1,6 @@
 package com.sojoo.StoreSpotter.service.member;
 
+import com.sojoo.StoreSpotter.entity.Member.Member;
 import com.sojoo.StoreSpotter.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,9 +17,18 @@ public class UserDetailService implements UserDetailsService {
     // 사용자 이메일로 사용자 정보 가져오는 메서드
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("userDetailService : " + email);
+        System.out.println("userDetailService loadUserByUsername : " + email);
         return memberRepository.findByMemberEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException(email));
     }
+//    @Override
+//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+//        System.out.println("userDetailService loadUserByUsername : " + email);
+//        Member member = memberRepository.findByMemberEmail(email).orElseThrow(
+//                () -> new IllegalArgumentException(email)
+//        );
+//
+//        return new CustomMemberDetails(member);
+//    }
 
 }

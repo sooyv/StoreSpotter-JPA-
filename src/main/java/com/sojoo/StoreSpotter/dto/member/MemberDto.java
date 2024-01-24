@@ -13,6 +13,7 @@ public class MemberDto {
     private String password;
     private String checkPassword;
     private String phone;
+    private String nickname;
 }
 
 

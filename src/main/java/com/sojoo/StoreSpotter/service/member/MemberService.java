@@ -1,10 +1,13 @@
 package com.sojoo.StoreSpotter.service.member;
 
+import com.sojoo.StoreSpotter.config.jwt.JwtTokenProvider;
+import com.sojoo.StoreSpotter.dto.member.MemberDto;
 import com.sojoo.StoreSpotter.entity.Member.Member;
 import com.sojoo.StoreSpotter.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,34 +22,23 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 //    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final JwtTokenProvider jwtTokenProvider;
+
 
     private final String pwRegExp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$";
 
-
     // 회원가입
     @Transactional
-    public Long joinMember(Member memberInfo) {
+    public Long joinMember(MemberDto memberDto) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return memberRepository.save(Member.builder()
-                .memberName(memberInfo.getMemberName())
-                .memberEmail(memberInfo.getMemberEmail())
-                .memberPassword(encoder.encode(memberInfo.getPassword()))
-                .memberPhone(memberInfo.getMemberPhone())
+                .memberName(memberDto.getName())
+                .memberEmail(memberDto.getEmail())
+                .memberPassword(encoder.encode(memberDto.getPassword()))
+                .memberPhone(memberDto.getPhone())
                 .build()).getMemberId();
     }
-//    회원가입
-//    public ResponseEntity<String> joinMember(Member member) {
-//        if (validateDuplicateMember(member) != null) {
-//            return new ResponseEntity<>("validateDuplicateMember", HttpStatus.BAD_REQUEST);
-//        } else {
-//            // 비밀번호 암호화
-//            member.setMemberPassword(bCryptPasswordEncoder.encode(member.getPassword()));
-//            memberRepository.save(member);
-//
-//        }
-//
-//        return null;
-//    }
 
 
     // 이메일 중복 검증
@@ -63,26 +55,26 @@ public class MemberService {
         return "0";
     }
 
+
     // 모든 항목 일치 검사
-    public ResponseEntity<String> notNullMemberInfo(String name, String email, String password,
-                                                    String checkPassword, String phone) {
-        if (name == null || name == "") {
+    public ResponseEntity<String> notNullMemberInfo(MemberDto memberDto) {
+        if (memberDto.getName() == null || memberDto.getName() == "") {
             return new ResponseEntity<>("memberInfo", HttpStatus.BAD_REQUEST);
-        } else if (email == null || email == "") {
+        } else if (memberDto.getEmail() == null || memberDto.getEmail() == "") {
             return new ResponseEntity<>("memberInfo", HttpStatus.BAD_REQUEST);
-        } else if (password == null || password == "") {
+        } else if (memberDto.getPassword() == null || memberDto.getPassword() == "") {
             return new ResponseEntity<>("memberInfo", HttpStatus.BAD_REQUEST);
-        } else if (checkPassword == null || checkPassword == "") {
+        } else if (memberDto.getCheckPassword() == null || memberDto.getCheckPassword() == "") {
             return new ResponseEntity<>("memberInfo", HttpStatus.BAD_REQUEST);
-        } else if (phone == null || phone == "") {
+        } else if (memberDto.getPhone() == null || memberDto.getPhone() == "") {
             return new ResponseEntity<>("memberInfo", HttpStatus.BAD_REQUEST);
         }
         return null;
     }
 
     // 비밀번호 일치 검사
-    public ResponseEntity<String> checkEqualPassword(String password, String checkPassword) {
-        if (!password.equals(checkPassword)) {
+    public ResponseEntity<String> checkEqualPassword(MemberDto memberDto) {
+        if (!memberDto.getPassword().equals(memberDto.getCheckPassword())) {
             return new ResponseEntity<>("notEqualPassword", HttpStatus.BAD_REQUEST);
         }
         return null;
@@ -105,7 +97,4 @@ public class MemberService {
         return memberRepository.findByMemberEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected User"));
     }
-
-
-
 }

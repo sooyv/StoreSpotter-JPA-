@@ -1,9 +1,7 @@
 package com.sojoo.StoreSpotter.controller.Member;
 
-//import com.sojoo.StoreSpotter.controller.form.memberForm;
-import com.sojoo.StoreSpotter.entity.Member.Member;
 import com.sojoo.StoreSpotter.dto.member.MemberDto;
-        import com.sojoo.StoreSpotter.service.member.MemberService;
+import com.sojoo.StoreSpotter.service.member.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,62 +59,45 @@ public class MemberController {
     @PostMapping("/member/signup")
     public ResponseEntity<String> signUp(MemberDto memberDto) {
 
-        String name = memberDto.getName();
-        String email = memberDto.getEmail();
-        String password = memberDto.getPassword();
-        String checkPassword = memberDto.getCheckPassword();
-        String phone = memberDto.getPhone();
-
         // 모든 항목 입력 검사
-        ResponseEntity<String> notNullMemberInfo = memberService.notNullMemberInfo(name, email, password, checkPassword, phone);
+        ResponseEntity<String> notNullMemberInfo = memberService.notNullMemberInfo(memberDto);
         if (notNullMemberInfo != null) {
             return notNullMemberInfo;
         }
 
         // 비밀번호 일치 검사
-        ResponseEntity<String> checkEqualPassword = memberService.checkEqualPassword(password, checkPassword);
+        ResponseEntity<String> checkEqualPassword = memberService.checkEqualPassword(memberDto);
         if (checkEqualPassword != null) {
             return checkEqualPassword;
         }
 
         // 비밀번호 정규식 검사
-        ResponseEntity<String> passwordRegExp = memberService.passwordRegExp(password);
+        ResponseEntity<String> passwordRegExp = memberService.passwordRegExp(memberDto.getPassword());
         if (passwordRegExp != null) {
             return passwordRegExp;
         }
 
-        Member member = new Member();
-        member.setMemberName(name);
-        member.setMemberEmail(email);
-        member.setMemberPassword(password);
-        member.setMemberPhone(phone);
-
-        memberService.joinMember(member);
+        memberService.joinMember(memberDto);
 
         return new ResponseEntity<>("Successfully sign-up", HttpStatus.OK);
     }
 
-
-    // 로그인 springsecurity + jwt
-//    @PostMapping("/member/login")
-//    public String login(@RequestBody Map<String, String> Member) {
-////        log.info("user email = {}", member.get("email"));
-//        Member member = memberRepository.findByMemberEmail(member.getMemberEmail())
-//                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
+//    회원가입 수정
+//    @PostMapping("/member/signup")
+//    public String signup(MemberDto memberDto) {
 //
-//        return jwtTokenProvider.generateToken(member.getUsername());
+//        memberService.joinMember(memberDto);
+//        return "redirect:/login";
 //    }
-
-
 
 
     // 로그인 페이지
     @GetMapping("/login")
-    public ModelAndView signIn() {
+    public ModelAndView login() {
         return new ModelAndView("loginSignUp/login");
     }
 
-
+    // 로그아웃
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());

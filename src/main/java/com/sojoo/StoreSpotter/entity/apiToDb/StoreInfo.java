@@ -1,6 +1,5 @@
 package com.sojoo.StoreSpotter.entity.apiToDb;
 
-import com.sojoo.StoreSpotter.entity.storePair.PairData;
 import lombok.*;
 import org.locationtech.jts.geom.*;
 import org.locationtech.jts.io.ParseException;

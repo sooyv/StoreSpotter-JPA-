@@ -1,6 +1,7 @@
 package com.sojoo.StoreSpotter.config.jwt;
 
 import com.sojoo.StoreSpotter.controller.jwt.TokenApiController;
+import com.sojoo.StoreSpotter.entity.Member.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -30,12 +31,15 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader(HEADER_AUTHORIZATION);
         // 가져온 값에서 접두사 제거
         String token = getAccessToken(authorizationHeader);
+        System.out.println("doFilterInternal authorizationHeader 확인: " + authorizationHeader);
+        System.out.println("doFilterInternal token 확인: " + token);
 
         // validToken()으로 가져온 토큰이 유효한지 확인
         // 유효하다면 인증정보를 관리하는 시큐리티 컨텍스트에 인증 정보를 설정
         // 인증 정보가 설정된 이후에 컨텍스트 홀더에서 getAuthentication() 메서드를 사용해 인증 정보를 가져오면 유저 객체가 반환
         if (tokenProvider.validToken(token)) {
             Authentication authentication = tokenProvider.getAuthentication(token);
+            System.out.println("doFilterInternal authentication 확인 : " + authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
@@ -44,6 +48,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private String getAccessToken(String authorizationHeader) {
         if (authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
+            System.out.println("getAccessToken : "+ authorizationHeader);
             return authorizationHeader.substring(TOKEN_PREFIX.length());
         }
         // 만약 값이 null이거나 Bearer로 시작하지 않으면 null을 return
