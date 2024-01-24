@@ -108,10 +108,6 @@ public class StoreInfoService {
                         continue;
                     }
 
-//                    System.out.println("industry: " + industry);
-//                    System.out.println("region : " + region);
-//                    System.out.println("pageNo : " + j);
-
                     assert totalCount != null;
                     int totalCountValue = Integer.parseInt(totalCount.getText());
 
