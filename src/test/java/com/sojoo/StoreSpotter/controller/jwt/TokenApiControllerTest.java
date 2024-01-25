@@ -2,12 +2,12 @@ package com.sojoo.StoreSpotter.controller.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sojoo.StoreSpotter.config.jwt.JwtFactory;
-import com.sojoo.StoreSpotter.config.jwt.JwtProperties;
+import com.sojoo.StoreSpotter.jwt.config.JwtProperties;
 import com.sojoo.StoreSpotter.entity.Member.Member;
 import com.sojoo.StoreSpotter.jwt.CreateAccessTokenRequest;
 import com.sojoo.StoreSpotter.jwt.RefreshToken;
 import com.sojoo.StoreSpotter.repository.member.MemberRepository;
-import com.sojoo.StoreSpotter.jwt.RefreshTokenRepository;
+import com.sojoo.StoreSpotter.jwt.jwtRepository.RefreshTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,8 @@
 package com.sojoo.StoreSpotter.config.jwt;
 
 import com.sojoo.StoreSpotter.entity.Member.Member;
+import com.sojoo.StoreSpotter.jwt.config.JwtProperties;
+import com.sojoo.StoreSpotter.jwt.config.JwtTokenProvider;
 import com.sojoo.StoreSpotter.repository.member.MemberRepository;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.DisplayName;

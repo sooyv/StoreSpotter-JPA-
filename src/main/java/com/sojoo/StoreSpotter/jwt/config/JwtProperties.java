@@ -1,4 +1,4 @@
-package com.sojoo.StoreSpotter.config.jwt;
+package com.sojoo.StoreSpotter.jwt.config;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,6 @@
 package com.sojoo.StoreSpotter.service.member;
 
-import com.sojoo.StoreSpotter.config.jwt.JwtTokenProvider;
+import com.sojoo.StoreSpotter.jwt.config.JwtTokenProvider;
 import com.sojoo.StoreSpotter.dto.member.MemberDto;
 import com.sojoo.StoreSpotter.entity.Member.Member;
 import com.sojoo.StoreSpotter.repository.member.MemberRepository;

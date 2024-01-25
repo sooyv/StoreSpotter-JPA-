@@ -1,4 +1,5 @@
 package com.sojoo.StoreSpotter.config.jwt;
+import com.sojoo.StoreSpotter.jwt.config.JwtProperties;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

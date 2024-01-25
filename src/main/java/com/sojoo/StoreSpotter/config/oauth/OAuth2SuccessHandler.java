@@ -1,9 +1,9 @@
 package com.sojoo.StoreSpotter.config.oauth;
 
-import com.sojoo.StoreSpotter.config.jwt.JwtTokenProvider;
+import com.sojoo.StoreSpotter.jwt.config.JwtTokenProvider;
 import com.sojoo.StoreSpotter.entity.Member.Member;
 import com.sojoo.StoreSpotter.jwt.RefreshToken;
-import com.sojoo.StoreSpotter.jwt.RefreshTokenRepository;
+import com.sojoo.StoreSpotter.jwt.jwtRepository.RefreshTokenRepository;
 import com.sojoo.StoreSpotter.service.member.MemberService;
 import com.sojoo.StoreSpotter.util.CookieUtil;
 import lombok.RequiredArgsConstructor;

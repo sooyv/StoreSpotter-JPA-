@@ -1,11 +1,11 @@
 package com.sojoo.StoreSpotter.config;
 
-import com.sojoo.StoreSpotter.config.jwt.JwtTokenProvider;
-import com.sojoo.StoreSpotter.config.jwt.TokenAuthenticationFilter;
+import com.sojoo.StoreSpotter.jwt.config.JwtTokenProvider;
+import com.sojoo.StoreSpotter.jwt.config.TokenAuthenticationFilter;
 import com.sojoo.StoreSpotter.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.sojoo.StoreSpotter.config.oauth.OAuth2SuccessHandler;
 import com.sojoo.StoreSpotter.config.oauth.OAuth2UserCustomService;
-import com.sojoo.StoreSpotter.jwt.RefreshTokenRepository;
+import com.sojoo.StoreSpotter.jwt.jwtRepository.RefreshTokenRepository;
 import com.sojoo.StoreSpotter.service.member.MemberService;
 import com.sojoo.StoreSpotter.service.member.UserDetailService;
 import lombok.RequiredArgsConstructor;
@@ -55,14 +55,6 @@ public class SecurityConfig {
 //                .anyRequest().permitAll();   // 일시 허용
 
         http.addFilterBefore(new TokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
-
-        http.formLogin()
-                .loginPage("/login")               // 로그인 설정
-                .loginProcessingUrl("/member/login")
-                .defaultSuccessUrl("/")
-                .and()
-                .logout()   // 로그아웃 설정
-                .logoutSuccessUrl("/login");
 
         http.oauth2Login()
                 .loginPage("/login")

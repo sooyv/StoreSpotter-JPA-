@@ -1,8 +1,8 @@
-package com.sojoo.StoreSpotter.controller.jwt;
+package com.sojoo.StoreSpotter.jwt.jwtContoller;
 
 import com.sojoo.StoreSpotter.jwt.CreateAccessTokenRequest;
 import com.sojoo.StoreSpotter.jwt.CreateAccessTokenResponse;
-import com.sojoo.StoreSpotter.service.jwt.JwtTokenService;
+import com.sojoo.StoreSpotter.jwt.jwtService.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

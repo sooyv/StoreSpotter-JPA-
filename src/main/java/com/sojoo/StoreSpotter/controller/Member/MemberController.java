@@ -31,8 +31,8 @@ public class MemberController {
 //    }
 
     @GetMapping("/signup")
-    public ModelAndView signUpPage(Model signUpDto) {
-        signUpDto.addAttribute("memberDto", new MemberDto());
+    public ModelAndView signUpPage(Model model) {
+        model.addAttribute("memberDto", new MemberDto());
         return new ModelAndView("/loginSignUp/signUp");
     }
 

@@ -1,6 +1,7 @@
-package com.sojoo.StoreSpotter.config.jwt;
+package com.sojoo.StoreSpotter.jwt.config;
 
 import com.sojoo.StoreSpotter.entity.Member.Member;
+import com.sojoo.StoreSpotter.jwt.config.JwtProperties;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor

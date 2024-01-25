@@ -1,12 +1,10 @@
-package com.sojoo.StoreSpotter.config.jwt;
+package com.sojoo.StoreSpotter.jwt.config;
 
-import com.sojoo.StoreSpotter.controller.jwt.TokenApiController;
-import com.sojoo.StoreSpotter.entity.Member.Member;
+import com.sojoo.StoreSpotter.jwt.config.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;

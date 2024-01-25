@@ -1,11 +1,11 @@
 //package com.sojoo.StoreSpotter.config;
 //
-//import com.sojoo.StoreSpotter.config.jwt.JwtTokenProvider;
-//import com.sojoo.StoreSpotter.config.jwt.TokenAuthenticationFilter;
+//import com.sojoo.StoreSpotter.jwt.config.JwtTokenProvider;
+//import com.sojoo.StoreSpotter.jwt.config.TokenAuthenticationFilter;
 //import com.sojoo.StoreSpotter.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
 //import com.sojoo.StoreSpotter.config.oauth.OAuth2SuccessHandler;
 //import com.sojoo.StoreSpotter.config.oauth.OAuth2UserCustomService;
-//import com.sojoo.StoreSpotter.jwt.RefreshTokenRepository;
+//import com.sojoo.StoreSpotter.jwt.jwtRepository.RefreshTokenRepository;
 //import com.sojoo.StoreSpotter.service.member.MemberService;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.context.annotation.Bean;

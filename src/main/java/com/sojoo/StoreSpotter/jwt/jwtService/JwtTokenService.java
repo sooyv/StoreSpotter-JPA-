@@ -1,6 +1,6 @@
-package com.sojoo.StoreSpotter.service.jwt;
+package com.sojoo.StoreSpotter.jwt.jwtService;
 
-import com.sojoo.StoreSpotter.config.jwt.JwtTokenProvider;
+import com.sojoo.StoreSpotter.jwt.config.JwtTokenProvider;
 import com.sojoo.StoreSpotter.entity.Member.Member;
 import com.sojoo.StoreSpotter.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
