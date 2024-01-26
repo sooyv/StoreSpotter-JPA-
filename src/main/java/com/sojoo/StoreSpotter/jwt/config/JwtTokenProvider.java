@@ -1,7 +1,6 @@
 package com.sojoo.StoreSpotter.jwt.config;
 
 import com.sojoo.StoreSpotter.entity.Member.Member;
-import com.sojoo.StoreSpotter.jwt.config.JwtProperties;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +48,7 @@ public class JwtTokenProvider {
 
     // jwt 유효성 검사 메서드
     public boolean validToken(String token) {
+        System.out.println("JwtTokenProvider validToken");
         try {
             Jwts.parser()
                     .setSigningKey(jwtProperties.getSecretKey())    // 비밀값으로 복호화
@@ -62,6 +62,7 @@ public class JwtTokenProvider {
 
     // 토큰 기반으로 인증 정보를 가져오는 메서드 - 인증정보 조회
     public Authentication getAuthentication(String token) {
+        System.out.println("JwtTokenProvider getAuthentication");
         Claims claims = getClaims(token);   // 토큰 복호화
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("USER"));
 

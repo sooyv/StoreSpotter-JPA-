@@ -1,4 +1,4 @@
-package com.sojoo.StoreSpotter.controller.Member;
+package com.sojoo.StoreSpotter.controller.member;
 
 import com.sojoo.StoreSpotter.dto.member.MemberDto;
 import com.sojoo.StoreSpotter.service.member.MemberService;

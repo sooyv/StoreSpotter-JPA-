@@ -7,10 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
-@Getter @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -32,15 +32,24 @@ public class Member implements UserDetails {
     @Column(name = "member_phone")
     private String memberPhone;
 
+    @Enumerated(EnumType.STRING)
+    private SocialType socialType;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
+
     // 사용자 이름
     @Column(name = "nickname", unique = true)
     private String nickname;
 
 
-
     @Override       // 권한 반환
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("USER"));
+//        return List.of(new SimpleGrantedAuthority("USER"));
+        return this.roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
     // 사용자 id = email 반환
@@ -53,6 +62,7 @@ public class Member implements UserDetails {
     @Override
     public String getPassword() {
         return memberPassword;
+//        return null;
     }
 
     // 계정 만료 여부 반환

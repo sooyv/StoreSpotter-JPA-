@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -37,6 +38,7 @@ public class MemberService {
                 .memberEmail(memberDto.getEmail())
                 .memberPassword(encoder.encode(memberDto.getPassword()))
                 .memberPhone(memberDto.getPhone())
+                .roles(Collections.singletonList("ROLE_USER"))
                 .build()).getMemberId();
     }
 

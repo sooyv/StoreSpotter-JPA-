@@ -32,13 +32,13 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         System.out.println("doFilterInternal authorizationHeader 확인: " + authorizationHeader);
         System.out.println("doFilterInternal token 확인: " + token);
 
-        // validToken()으로 가져온 토큰이 유효한지 확인
-        // 유효하다면 인증정보를 관리하는 시큐리티 컨텍스트에 인증 정보를 설정
-        // 인증 정보가 설정된 이후에 컨텍스트 홀더에서 getAuthentication() 메서드를 사용해 인증 정보를 가져오면 유저 객체가 반환
-        if (tokenProvider.validToken(token)) {
+        if (token != null && tokenProvider.validToken(token)) {
+            // 토큰이 null이 아니고, validToken()으로 가져온 토큰이 유효한지 확인. 유효하면 토큰으로부터 유저정보를 가져온다.
             Authentication authentication = tokenProvider.getAuthentication(token);
             System.out.println("doFilterInternal authentication 확인 : " + authentication);
+            // 인증정보를 관리하는 SecurityContext 에 Authentication 객체를 저장. (인증 정보를 설정)
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            // 인증 정보가 설정된 이후에 컨텍스트 홀더에서 getAuthentication() 메서드를 사용해 인증 정보를 가져오면 유저 객체가 반환
         }
 
         filterChain.doFilter(request, response);

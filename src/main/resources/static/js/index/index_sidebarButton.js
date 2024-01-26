@@ -85,17 +85,10 @@ $("#submit").click(function () {
                         map.setZoom(15);     // 줌 레벨 변경
                     })
                 var coordinates = response.map(function (item) {
-<<<<<<< HEAD
-                    console.log("아이템은" + item[0])
+
                     var stNm = item.stNm;
                     var comNm = item.comNm;
 
-=======
-                    var stNm = item.stNm;
-                    var comNm = item.comNm;
-
-
->>>>>>> 0ffc609f808c3114ee9584847f628cd49f20ef61
                     var stCoorString = item.stCoor.match(/\(([^)]+)\)/)[1];
                     var stCoorArray = stCoorString.split(' ');
 
