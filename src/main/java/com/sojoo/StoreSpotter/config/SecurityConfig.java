@@ -50,6 +50,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests()
                 // main, login 페이지, login 프로세스, 회원가입 페이지, 회원가입 프로세스, 이메일 중복체크 ajax, JWT token 발급, 평균 거리 검색 ajax
                 .antMatchers("/", "/login", "/signup","/member/login", "/member/signup", "/signup/checkid", "/avg-dist", "/api/token").permitAll()
+                .antMatchers("/user").hasRole("USER")
                 .antMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated();   // 그 외 인증 없이 차단 - 일시 수정
 //                .anyRequest().permitAll();   // 일시 허용

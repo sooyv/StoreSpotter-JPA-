@@ -24,7 +24,6 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -33,15 +32,17 @@ public class MemberService {
 
     // 로그인
     public String login(String email, String password) {
+        System.out.println("로그인 MemberService : " + email);
+        System.out.println("로그인 MemberService : " + password);
         // login email, password 기반으로 Authentication 객체 생성
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
+        System.out.println("로그인 MemberService authenticationToken : " + authenticationToken);
+
         // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        System.out.println("로그인 MemberService authentication : " + authentication);
 
 //        String token = jwtTokenProvider.generateToken(authentication);
-
-        System.out.println("MemberService login" + email);
-        System.out.println("MemberService login" + password);
         return null;
     }
 

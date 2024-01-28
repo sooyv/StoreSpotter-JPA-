@@ -3,13 +3,14 @@ package com.sojoo.StoreSpotter.service.member;
 import com.sojoo.StoreSpotter.entity.Member.Member;
 import com.sojoo.StoreSpotter.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class UserDetailService implements UserDetailsService {
@@ -28,12 +29,13 @@ public class UserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         System.out.println("userDetailService loadUserByUsername : " + email);
         return memberRepository.findByMemberEmail(email)
-                .map(this::creatMemberDetails)
+                .map(this::createMemberDetails)
                 .orElseThrow(() -> new UsernameNotFoundException(email + ": 사용자를 찾을 수 없습니다."));
     }
 
     // 해당하는 Member의 데이터가 존재한다면 UserDetails 객체로 만들어 리턴
-    private UserDetails creatMemberDetails(Member member) {
+    private UserDetails createMemberDetails(Member member) {
+        log.info("UserDetailService의 createMemberDetails");
         return Member.builder()
                 .memberName(member.getMemberName())
                 .memberEmail(member.getMemberEmail())

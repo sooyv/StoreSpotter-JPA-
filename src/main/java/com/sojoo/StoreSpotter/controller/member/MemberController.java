@@ -32,23 +32,11 @@ public class MemberController {
     private JwtTokenProvider jwtTokenProvider;
 
 
-    // 회원가입 page
-//    @GetMapping("/signup")
-//    public String signUpPage() {
-//        return "/loginSignUp/signUp";
-//    }
-
     @GetMapping("/signup")
     public ModelAndView signUpPage(Model model) {
         model.addAttribute("memberDto", new MemberDto());
         return new ModelAndView("/loginSignUp/signUp");
     }
-
-//    @GetMapping("/signup")
-//    public ModelAndView signUpPage(Model si) {
-//        memberForm.addAttribute("memberForm", new memberForm());
-//        return new ModelAndView("/loginSignUp/signUp");
-//    }
 
     // 회원가입 이메일 중복 검사
     @PostMapping("/signup/checkid")
@@ -110,8 +98,8 @@ public class MemberController {
         String email = loginRequest.getEmail();
         String password = loginRequest.getPassword();
 
-        System.out.println("로그인 post mapping" + loginRequest.getEmail());
-        System.out.println("로그인 post mapping" + loginRequest.getPassword());
+        System.out.println("로그인 컨트롤러 postMapping :" + loginRequest.getEmail());
+        System.out.println("로그인 컨트롤러 postMapping :" + loginRequest.getPassword());
 
         String token = memberService.login(email, password);
 
