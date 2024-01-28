@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -37,6 +38,8 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
                         .memberEmail(email)
                         .nickname(name)
                         .memberName(name)
+                        .roles(Collections.singletonList("ROLE_USER"))         // 기본 설정을 ROLE_USER
+//                        .socialType()         // 구글인지 네이버인지 구분해서 socialType을 넣어주는 로직 추가 필요
                         .build());
         return memberRepository.save(member);
     }

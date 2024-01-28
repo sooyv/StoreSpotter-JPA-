@@ -43,7 +43,6 @@ public class SecurityConfig {
 
         // token을 사용하는 방식이기 때문에 csrf를 disable
         http.csrf().disable()
-        .formLogin().disable()
         // 세션 사용 안함
         .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -56,6 +55,14 @@ public class SecurityConfig {
 //                .anyRequest().permitAll();   // 일시 허용
 
         http.addFilterBefore(new TokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+//
+//        http.formLogin()
+//                .loginPage("/login")               // 로그인 설정
+//                .loginProcessingUrl("/member/login")
+//                .defaultSuccessUrl("/")
+//                .and()
+//                .logout()   // 로그아웃 설정
+//                .logoutSuccessUrl("/login");
 
         http.oauth2Login()
                 .loginPage("/login")

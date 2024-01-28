@@ -1,8 +1,12 @@
 package com.sojoo.StoreSpotter.controller.member;
 
+import com.sojoo.StoreSpotter.dto.member.LoginRequest;
 import com.sojoo.StoreSpotter.dto.member.MemberDto;
+import com.sojoo.StoreSpotter.entity.Member.Member;
+import com.sojoo.StoreSpotter.jwt.config.JwtTokenProvider;
 import com.sojoo.StoreSpotter.service.member.MemberService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.Duration;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -23,6 +29,8 @@ public class MemberController {
 
     @Autowired
     private MemberService memberService;
+    private JwtTokenProvider jwtTokenProvider;
+
 
     // 회원가입 page
 //    @GetMapping("/signup")
@@ -95,6 +103,19 @@ public class MemberController {
     @GetMapping("/login")
     public ModelAndView login() {
         return new ModelAndView("loginSignUp/login");
+    }
+
+    @PostMapping("/member/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
+
+        System.out.println("로그인 post mapping" + loginRequest.getEmail());
+        System.out.println("로그인 post mapping" + loginRequest.getPassword());
+
+        String token = memberService.login(email, password);
+
+        return ResponseEntity.ok(token);
     }
 
     // 로그아웃

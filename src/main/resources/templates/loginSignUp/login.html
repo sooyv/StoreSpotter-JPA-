@@ -16,12 +16,12 @@
 <div th:replace="/header :: header"></div>
 <div class="container" id="container">
     <div class="sign-in-container">
-        <form th:action="@{/member/login}" method="POST">
+        <form id="loginForm" th:action="@{/member/login}" method="POST">
             <h1>Sign in</h1>
-            <input type="email" name="username" placeholder="Email" />
-            <input type="password" name="password" placeholder="Password" />
+            <input type="email" id="email" name="username" placeholder="Email" />
+            <input type="password" id="password" name="password" placeholder="Password" />
             <a href="/signInfo">Forgot your password?</a>
-            <button type="submit">Sign In</button>
+            <button type="submit" id="login">Sign In</button>
             <div id="signUpBtn">
                 <p>Don't have an account?<a href="/signup">Sign Up</a></p>
             </div>
@@ -40,6 +40,7 @@
 </div>
 
 <script src="../js/header.js"></script>
-<script src="../js/loginSignUP/token.js"></script>
+<script src="../js/loginSignUp/token.js"></script>
+<script src="../js/loginSignUp/login.js"></script>
 </body>
 </html>
