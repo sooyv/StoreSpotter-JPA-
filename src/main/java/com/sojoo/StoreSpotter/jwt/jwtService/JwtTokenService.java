@@ -17,6 +17,7 @@ public class JwtTokenService {
 
 
     public String createNewAccessToken(String refreshToken) {
+        System.out.println("JwtTokenService - createNewAccessToken 동작");
         // 토큰 유효성 검사에 실패하면 예외 발생
         if (!tokenProvider.validToken(refreshToken)) {
             throw new IllegalArgumentException("Unexpected token");

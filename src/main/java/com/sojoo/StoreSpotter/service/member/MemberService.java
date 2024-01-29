@@ -3,6 +3,7 @@ package com.sojoo.StoreSpotter.service.member;
 import com.sojoo.StoreSpotter.jwt.config.JwtTokenProvider;
 import com.sojoo.StoreSpotter.dto.member.MemberDto;
 import com.sojoo.StoreSpotter.entity.Member.Member;
+import com.sojoo.StoreSpotter.jwt.jwtService.JwtTokenService;
 import com.sojoo.StoreSpotter.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,14 +11,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.Duration;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Optional;
+
 
 @RequiredArgsConstructor
 @Service
@@ -30,7 +35,7 @@ public class MemberService {
 
     private final String pwRegExp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$";
 
-    // 로그인
+//     로그인
     public String login(String email, String password) {
         System.out.println("로그인 MemberService : " + email);
         System.out.println("로그인 MemberService : " + password);
@@ -38,13 +43,23 @@ public class MemberService {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
         System.out.println("로그인 MemberService authenticationToken : " + authenticationToken);
 
+        Member member = memberRepository.findByMemberEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email + "의 가입정보가 없습니다."));
+
+//        if (!.matches(password, member.getPassword())) {
+//            throw new HospitalReviewException(ErrorCode.INVALID_PASSWORD,"해당 userName의 password가 잘못됐습니다");
+//        }
+
         // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         System.out.println("로그인 MemberService authentication : " + authentication);
 
+        String token = jwtTokenProvider.generateToken(member, Duration.ofHours(2));
 //        String token = jwtTokenProvider.generateToken(authentication);
-        return null;
+
+        return token;
     }
+
 
     // 회원가입
     @Transactional
