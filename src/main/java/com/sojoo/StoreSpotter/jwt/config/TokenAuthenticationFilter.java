@@ -27,9 +27,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                                                                         throws ServletException, IOException {
         // 요청 헤더의 Authorization 키의 값 조회
         String authorizationHeader = request.getHeader(HEADER_AUTHORIZATION);
+        System.out.println("doFilterInternal authorizationHeader 확인: " + authorizationHeader);
         // 가져온 값에서 접두사 제거
         String token = getAccessToken(authorizationHeader);
-        System.out.println("doFilterInternal authorizationHeader 확인: " + authorizationHeader);
         System.out.println("doFilterInternal token 확인: " + token);
 
         if (token != null && tokenProvider.validToken(token)) {
@@ -45,6 +45,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getAccessToken(String authorizationHeader) {
+        System.out.println("getAccessToken 메서드 실행");
         if (authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
             System.out.println("getAccessToken : "+ authorizationHeader);
             return authorizationHeader.substring(TOKEN_PREFIX.length());
@@ -52,5 +53,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         // 만약 값이 null이거나 Bearer로 시작하지 않으면 null을 return
         return null;
     }
+
 }
 

@@ -1,12 +1,9 @@
 package com.sojoo.StoreSpotter.controller.member;
 
-import com.sojoo.StoreSpotter.dto.member.LoginRequest;
 import com.sojoo.StoreSpotter.dto.member.MemberDto;
-import com.sojoo.StoreSpotter.entity.Member.Member;
 import com.sojoo.StoreSpotter.jwt.config.JwtTokenProvider;
 import com.sojoo.StoreSpotter.service.member.MemberService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.Duration;
-import java.util.Map;
 
 @Slf4j
 @Controller

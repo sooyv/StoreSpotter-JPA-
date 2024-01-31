@@ -8,12 +8,8 @@ import com.sojoo.StoreSpotter.service.member.MemberService;
 import com.sojoo.StoreSpotter.util.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,13 +30,14 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        System.out.println("LoginSuccessHandler onAuthenticationSuccess ");
+        System.out.println("LoginSuccessHandler onAuthenticationSuccess 실행");
         // Principal을 통해 사용자 정보에 접근합니다.
         if (authentication != null && authentication.isAuthenticated()) {
             Object principal = authentication.getPrincipal();
-            System.out.println("principal : " + principal);
+            System.out.println("- onAuthenticationSuccess - principal : " + principal);
 
             if (principal instanceof UserDetails) {
+                // UserDetails로 캐스팅
                 UserDetails userDetails = (UserDetails) principal;
                 Member member = memberService.findByEmail(userDetails.getUsername());
                 System.out.println("principal instanceof UserDetails : " + member);
@@ -60,17 +57,13 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                 // 리다이렉트
                 getRedirectStrategy().sendRedirect(request, response, targetUrl);
 
-                // userDetails에서 필요한 정보 추출
-                String username = userDetails.getUsername();
-                System.out.println("getPrinciple : " + username);
-                // ... 다른 정보 추출
             }
         }
     }
 
     // 생성된 리프레시 토큰을 전달받아 데이터베이스에 저장
     private void saveRefreshToken(Long userId, String newRefreshToken) {
-        System.out.println("OAuth2SuccessHandler saveRefreshToken");
+        System.out.println("LoginSuccessHandler saveRefreshToken");
         RefreshToken refreshToken = refreshTokenRepository.findByUserId(userId)
                 .map(entity -> entity.update(newRefreshToken))
                 .orElse(new RefreshToken(userId, newRefreshToken));
@@ -80,7 +73,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     // 생성된 리프레시 토큰을 쿠키에 저장
     private void addRefreshTokenToCookie(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
-        System.out.println("OAuth2SuccessHandler addRefreshTokenToCookie ");
+        System.out.println("LoginSuccessHandler addRefreshTokenToCookie ");
         int cookieMaxAge = (int) REFRESH_TOKEN_DURATION.toSeconds();
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN_COOKIE_NAME);
         CookieUtil.addCookie(response, REFRESH_TOKEN_COOKIE_NAME, refreshToken, cookieMaxAge);
@@ -94,7 +87,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     // 액세스 토큰을 패스에 추가
     private String getTargetUrl(String token) {
-        System.out.println("OAuth2SuccessHandler getTargetUrl");
+        System.out.println("LoginSuccessHandler getTargetUrl");
         return UriComponentsBuilder.fromUriString(REDIRECH_PATH)
                 .queryParam("token", token)
                 .build()
