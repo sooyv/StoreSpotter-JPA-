@@ -1,5 +1,6 @@
 package com.sojoo.StoreSpotter.service.member;
 
+import com.nimbusds.jose.proc.SecurityContext;
 import com.sojoo.StoreSpotter.jwt.config.JwtTokenProvider;
 import com.sojoo.StoreSpotter.dto.member.MemberDto;
 import com.sojoo.StoreSpotter.entity.Member.Member;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,29 +38,30 @@ public class MemberService {
     private final String pwRegExp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$";
 
 //     로그인
-    public String login(String email, String password) {
-        System.out.println("로그인 MemberService : " + email);
-        System.out.println("로그인 MemberService : " + password);
-        // login email, password 기반으로 Authentication 객체 생성
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
-        System.out.println("로그인 MemberService authenticationToken : " + authenticationToken);
-
-        Member member = memberRepository.findByMemberEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(email + "의 가입정보가 없습니다."));
-
-//        if (!.matches(password, member.getPassword())) {
-//            throw new HospitalReviewException(ErrorCode.INVALID_PASSWORD,"해당 userName의 password가 잘못됐습니다");
+//    public String login(String email, String password) {
+//        System.out.println("로그인 MemberService : " + email);
+//        System.out.println("로그인 MemberService : " + password);
+//        // login email, password 기반으로 Authentication 객체 생성
+//        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
+//        System.out.println("로그인 MemberService authenticationToken : " + authenticationToken);
+//
+//        Member member = memberRepository.findByMemberEmail(email)
+//                .orElseThrow(() -> new UsernameNotFoundException(email + "의 가입정보가 없습니다."));
+//
+//        System.out.println("-------------");
+//        // authenticate 매서드가 실행될 때 UserDetailService 에서 만든 loadUserByUsername 메서드가 실행 - UserDetails 객체 리턴
+//        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+//        System.out.println("로그인 MemberService authentication : " + authentication);
+//
+//        // 사용자가 인증되었는지 확인
+//        if (authentication != null && authentication.isAuthenticated()) {
+//            // String token = jwtTokenProvider.generateToken(authentication);
+//            System.out.println("사용자 인증 확인 완료");
+//            String token = jwtTokenProvider.generateToken(member, Duration.ofHours(2));
+//            return token;
 //        }
-
-        // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        System.out.println("로그인 MemberService authentication : " + authentication);
-
-        String token = jwtTokenProvider.generateToken(member, Duration.ofHours(2));
-//        String token = jwtTokenProvider.generateToken(authentication);
-
-        return token;
-    }
+//        return null;
+//    }
 
 
     // 회원가입

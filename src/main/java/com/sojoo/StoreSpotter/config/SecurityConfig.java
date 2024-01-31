@@ -1,6 +1,7 @@
 package com.sojoo.StoreSpotter.config;
 
 import com.sojoo.StoreSpotter.jwt.config.JwtTokenProvider;
+import com.sojoo.StoreSpotter.jwt.config.LoginSuccessHandler;
 import com.sojoo.StoreSpotter.jwt.config.TokenAuthenticationFilter;
 import com.sojoo.StoreSpotter.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.sojoo.StoreSpotter.config.oauth.OAuth2SuccessHandler;
@@ -9,6 +10,7 @@ import com.sojoo.StoreSpotter.jwt.jwtRepository.RefreshTokenRepository;
 import com.sojoo.StoreSpotter.service.member.MemberService;
 import com.sojoo.StoreSpotter.service.member.UserDetailService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,17 +21,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig {
-    private final UserDetailService memberService;
-    private final MemberService memberServiceOauth;
+    private final UserDetailService userDetailService;
+//    private final MemberService memberServiceOauth;
+    private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
     private final OAuth2UserCustomService oAuth2UserCustomService;
     private final RefreshTokenRepository refreshTokenRepository;
+
 
     @Bean
     public WebSecurityCustomizer configure() {
@@ -43,6 +48,7 @@ public class SecurityConfig {
 
         // token을 사용하는 방식이기 때문에 csrf를 disable
         http.csrf().disable()
+        .formLogin().disable()
         // 세션 사용 안함
         .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -56,14 +62,15 @@ public class SecurityConfig {
 //                .anyRequest().permitAll();   // 일시 허용
 
         http.addFilterBefore(new TokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
-//
-//        http.formLogin()
-//                .loginPage("/login")               // 로그인 설정
-//                .loginProcessingUrl("/member/login")
-//                .defaultSuccessUrl("/")
-//                .and()
-//                .logout()   // 로그아웃 설정
-//                .logoutSuccessUrl("/login");
+
+        http.formLogin()
+                .loginPage("/login")               // 로그인 설정
+                .loginProcessingUrl("/member/login")
+                .defaultSuccessUrl("/")
+                .successHandler(loginSuccessHandler())
+                .and()
+                .logout()   // 로그아웃 설정
+                .logoutSuccessUrl("/login");
 
         http.oauth2Login()
                 .loginPage("/login")
@@ -83,7 +90,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder,
                                                        UserDetailService userDetailService) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(memberService)
+                .userDetailsService(userDetailService)
                 .passwordEncoder(bCryptPasswordEncoder)
                 .and()
                 .build();
@@ -91,7 +98,12 @@ public class SecurityConfig {
 
     @Bean
     public OAuth2SuccessHandler oAuth2SuccessHandler() {
-        return new OAuth2SuccessHandler(jwtTokenProvider, refreshTokenRepository, oAuth2AuthorizationRequestBasedOnCookieRepository(), memberServiceOauth);
+        return new OAuth2SuccessHandler(jwtTokenProvider, refreshTokenRepository, oAuth2AuthorizationRequestBasedOnCookieRepository(), memberService);
+    }
+
+    @Bean
+    public LoginSuccessHandler loginSuccessHandler() {
+        return new LoginSuccessHandler(jwtTokenProvider, refreshTokenRepository, memberService);
     }
 
     @Bean

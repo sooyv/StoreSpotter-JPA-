@@ -93,18 +93,18 @@ public class MemberController {
         return new ModelAndView("loginSignUp/login");
     }
 
-    @PostMapping("/member/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        String email = loginRequest.getEmail();
-        String password = loginRequest.getPassword();
-
-        System.out.println("로그인 컨트롤러 postMapping :" + loginRequest.getEmail());
-        System.out.println("로그인 컨트롤러 postMapping :" + loginRequest.getPassword());
-
-        String token = memberService.login(email, password);
-
-        return ResponseEntity.ok(token);
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+//        String email = loginRequest.getEmail();
+//        String password = loginRequest.getPassword();
+//
+//        System.out.println("로그인 컨트롤러 postMapping :" + loginRequest.getEmail());
+//        System.out.println("로그인 컨트롤러 postMapping :" + loginRequest.getPassword());
+//
+//        String token = memberService.login(email, password);
+//
+//        return ResponseEntity.ok(token);
+//    }
 
     // 로그아웃
     @GetMapping("/logout")

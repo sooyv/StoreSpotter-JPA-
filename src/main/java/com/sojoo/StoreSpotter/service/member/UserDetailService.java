@@ -17,42 +17,34 @@ public class UserDetailService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
+    // 해당하는 Member의 데이터가 존재한다면 UserDetails 객체로 만들어 리턴
     // 사용자 이메일로 사용자 정보 가져오는 메서드
-//    @Override
-//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//        System.out.println("userDetailService loadUserByUsername : " + email);
-//        return memberRepository.findByMemberEmail(email)
-//                .orElseThrow(() -> new UsernameNotFoundException(email + ": 사용자를 찾을 수 없습니다."));
-//    }
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         System.out.println("userDetailService loadUserByUsername : " + email);
         return memberRepository.findByMemberEmail(email)
-                .map(this::createMemberDetails)
                 .orElseThrow(() -> new UsernameNotFoundException(email + ": 사용자를 찾을 수 없습니다."));
-    }
-
-    // 해당하는 Member의 데이터가 존재한다면 UserDetails 객체로 만들어 리턴
-    private UserDetails createMemberDetails(Member member) {
-        log.info("UserDetailService의 createMemberDetails");
-        return Member.builder()
-                .memberName(member.getMemberName())
-                .memberEmail(member.getMemberEmail())
-                .memberPassword(member.getMemberPassword())
-                .memberPhone(member.getMemberPhone())
-                .roles(member.getRoles())
-                .build();
     }
 
 //    @Override
 //    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 //        System.out.println("userDetailService loadUserByUsername : " + email);
-//        Member member = memberRepository.findByMemberEmail(email).orElseThrow(
-//                () -> new IllegalArgumentException(email)
-//        );
-//
-//        return new CustomMemberDetails(member);
+//        return memberRepository.findByMemberEmail(email)
+//                .map(this::createMemberDetails)
+//                .orElseThrow(() -> new UsernameNotFoundException(email + ": 사용자를 찾을 수 없습니다."));
 //    }
+
+    // 해당하는 Member의 데이터가 존재한다면 UserDetails 객체로 만들어 리턴
+//    private UserDetails createMemberDetails(Member member) {
+//        System.out.println("UserDetailService의 createMemberDetails");
+//        return Member.builder()
+//                .memberName(member.getMemberName())
+//                .memberEmail(member.getMemberEmail())
+//                .memberPassword(member.getMemberPassword())
+//                .memberPhone(member.getMemberPhone())
+//                .roles(member.getRoles())
+//                .build();
+//    }
+
 
 }
