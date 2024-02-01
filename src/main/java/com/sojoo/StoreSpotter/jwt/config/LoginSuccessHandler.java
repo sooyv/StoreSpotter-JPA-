@@ -49,6 +49,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
                 // 액세스 토큰 생성 -> 패스에 액세스 토큰 추가
                 String accessToken = jwtTokenProvider.generateToken(member, ACCESS_TOKEN_DURATION);
+                // 헤더에 엑세스 토큰 추가
+                response.setHeader("Authorization", "Bearer " + accessToken);
                 String targetUrl = getTargetUrl(accessToken);
 
                 // 인증 관련 설정값, 쿠키 제거

@@ -37,32 +37,6 @@ public class MemberService {
 
     private final String pwRegExp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$";
 
-//     로그인
-//    public String login(String email, String password) {
-//        System.out.println("로그인 MemberService : " + email);
-//        System.out.println("로그인 MemberService : " + password);
-//        // login email, password 기반으로 Authentication 객체 생성
-//        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
-//        System.out.println("로그인 MemberService authenticationToken : " + authenticationToken);
-//
-//        Member member = memberRepository.findByMemberEmail(email)
-//                .orElseThrow(() -> new UsernameNotFoundException(email + "의 가입정보가 없습니다."));
-//
-//        System.out.println("-------------");
-//        // authenticate 매서드가 실행될 때 UserDetailService 에서 만든 loadUserByUsername 메서드가 실행 - UserDetails 객체 리턴
-//        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-//        System.out.println("로그인 MemberService authentication : " + authentication);
-//
-//        // 사용자가 인증되었는지 확인
-//        if (authentication != null && authentication.isAuthenticated()) {
-//            // String token = jwtTokenProvider.generateToken(authentication);
-//            System.out.println("사용자 인증 확인 완료");
-//            String token = jwtTokenProvider.generateToken(member, Duration.ofHours(2));
-//            return token;
-//        }
-//        return null;
-//    }
-
 
     // 회원가입
     @Transactional
