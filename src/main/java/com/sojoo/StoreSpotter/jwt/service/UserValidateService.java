@@ -49,8 +49,8 @@ public class UserValidateService {
 
     // 비밀번호 정규식 검사
     private final String pwRegExp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$";
-    public ResponseEntity<String> passwordRegExp(String password) {
-        if (!password.matches(pwRegExp)) {
+    public ResponseEntity<String> passwordRegExp(UserDto userDto) {
+        if (!userDto.getPassword().matches(pwRegExp)) {
             return new ResponseEntity<>("passwordRegExp", HttpStatus.BAD_REQUEST);
         }
         return null;

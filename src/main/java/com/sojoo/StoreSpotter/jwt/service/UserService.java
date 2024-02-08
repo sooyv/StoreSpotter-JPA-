@@ -7,8 +7,6 @@ import com.sojoo.StoreSpotter.jwt.dto.UserDto;
 import com.sojoo.StoreSpotter.jwt.exception.DuplicateMemberException;
 import com.sojoo.StoreSpotter.jwt.exception.NotFoundMemberException;
 import com.sojoo.StoreSpotter.jwt.securityUtil.SecurityUtil;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,17 +17,19 @@ import java.util.Collections;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserValidateService userValidateService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserValidateService userValidateService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userValidateService = userValidateService;
     }
 
     @Transactional
     public UserDto signup(UserDto userDto) {
-        if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) != null) {
-            throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
-        }
+//        if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) != null) {
+//            throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
+//        }
 
         Authority authority = Authority.builder()
                 .authorityName("ROLE_USER")

@@ -48,7 +48,7 @@ public class UserController {
         }
 
         // 비밀번호 정규식 검사
-        ResponseEntity<String> passwordRegExp = userValidateService.passwordRegExp(userDto.getPassword());
+        ResponseEntity<String> passwordRegExp = userValidateService.passwordRegExp(userDto);
         if (passwordRegExp != null) {
             return passwordRegExp;
         }

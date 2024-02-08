@@ -97,7 +97,7 @@ form.addEventListener("submit", event => {
             return;
         }
 
-        const userDto = {"username": name, "nickname": email, "password" : password, "checkPassword" : checkPassword};
+        const userDto = {"nickname": name, "username": email, "password" : password, "checkPassword" : checkPassword};
 
         $.ajax({
             type: 'POST',
