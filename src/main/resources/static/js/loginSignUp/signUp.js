@@ -25,7 +25,7 @@ let email = $("#email");
 //         idchk = true;
 //         $.ajax({
 //             type : "POST",
-//             url : "/signup/checkid",
+//             url : "/signup/check-email",
 //             data : {
 //                 "id" : email.val(),
 //                 "type" : "email"
@@ -79,6 +79,7 @@ $("#checkPassword").on("keyup", function(event) {
     }
 });
 
+
 form.addEventListener("submit", event => {
     event.preventDefault();
 
@@ -89,26 +90,22 @@ form.addEventListener("submit", event => {
 // const authNum = $("#emailAuthNum").val();
         const password = $("#password").val();
         const checkPassword = $("#checkPassword").val();
-        const phone = $("#phone").val();
 
         // 모든 항목 작성 검사
-        if (!name || !email || !password || !checkPassword || !phone) {
+        if (!name || !email || !password || !checkPassword) {
             alert("모든 항목을 작성해주세요.");
             return;
         }
 
+        const userDto = {"username": name, "nickname": email, "password" : password, "checkPassword" : checkPassword};
+
         $.ajax({
             type: 'POST',
             url: "/signup",
-            data: {
-                nickName: name,
-                userName: email,
-                // authNum : authNum,
-                password: password,
-                // checkPassword: checkPassword,
-                // phone : phone
+            headers: {
+                'content-type': 'application/json'
             },
-
+            data: JSON.stringify(userDto),
             success: function (response) {
                 console.log(response);
                 window.location.replace("/login");
@@ -131,10 +128,10 @@ form.addEventListener("submit", event => {
                     password.focus();
                 }
 
-                // if (error.responseText == "validateDuplicateMember") {
-                //     alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.")
-                //     email.focus();
-                // }
+                if (error.responseText == "duplicateEmail") {
+                    alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.");
+                    email.focus();
+                }
 
                 $("#signUpBtn").addClass('shake');
                 setTimeout(function() {

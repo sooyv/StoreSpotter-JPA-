@@ -37,7 +37,7 @@
 //    // 회원가입 이메일 중복 검사
 //    @PostMapping("/signup/checkid")
 //    @ResponseBody
-//    public int checkid(@RequestParam("id") String id, @RequestParam("type") String type) {
+//    public int checkEmail(@RequestParam("id") String id, @RequestParam("type") String type) {
 //        String result = memberService.checkId(id, type);
 //        if(result != null && result.equals("0")) {
 //            return 0;

@@ -7,6 +7,8 @@ import com.sojoo.StoreSpotter.jwt.dto.UserDto;
 import com.sojoo.StoreSpotter.jwt.exception.DuplicateMemberException;
 import com.sojoo.StoreSpotter.jwt.exception.NotFoundMemberException;
 import com.sojoo.StoreSpotter.jwt.securityUtil.SecurityUtil;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
