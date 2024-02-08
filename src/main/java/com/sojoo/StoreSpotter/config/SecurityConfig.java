@@ -1,7 +1,6 @@
 package com.sojoo.StoreSpotter.config;
 
 import com.sojoo.StoreSpotter.jwt.config.JwtTokenProvider;
-import com.sojoo.StoreSpotter.jwt.config.LoginSuccessHandler;
 import com.sojoo.StoreSpotter.jwt.config.TokenAuthenticationFilter;
 import com.sojoo.StoreSpotter.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.sojoo.StoreSpotter.config.oauth.OAuth2SuccessHandler;
@@ -12,11 +11,14 @@ import com.sojoo.StoreSpotter.service.member.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -44,7 +46,9 @@ public class SecurityConfig {
 
         // token을 사용하는 방식이기 때문에 csrf를 disable
         http.csrf().disable()
-        .formLogin().disable()
+                .cors(Customizer.withDefaults())
+                .formLogin().disable()      // formLogin 사용 안함
+
         // 세션 사용 안함
         .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -58,15 +62,15 @@ public class SecurityConfig {
 //                .anyRequest().permitAll();   // 일시 허용
 
         http.addFilterBefore(new TokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
-
-        http.formLogin()
-                .loginPage("/login")               // 로그인 설정
-                .loginProcessingUrl("/member/login")
-                .defaultSuccessUrl("/")
-                .successHandler(loginSuccessHandler())
-                .and()
-                .logout()   // 로그아웃 설정
-                .logoutSuccessUrl("/login");
+//
+//        http.formLogin()
+//                .loginPage("/login")               // 로그인 설정
+//                .loginProcessingUrl("/member/login")
+//                .defaultSuccessUrl("/")
+//                .successHandler(loginSuccessHandler())
+//                .and()
+//                .logout()   // 로그아웃 설정
+//                .logoutSuccessUrl("/login");
 
         http.oauth2Login()
                 .loginPage("/login")
@@ -97,10 +101,10 @@ public class SecurityConfig {
         return new OAuth2SuccessHandler(jwtTokenProvider, refreshTokenRepository, oAuth2AuthorizationRequestBasedOnCookieRepository(), memberService);
     }
 
-    @Bean
-    public LoginSuccessHandler loginSuccessHandler() {
-        return new LoginSuccessHandler(jwtTokenProvider, refreshTokenRepository, memberService);
-    }
+//    @Bean
+//    public LoginSuccessHandler loginSuccessHandler() {
+//        return new LoginSuccessHandler(jwtTokenProvider, refreshTokenRepository, memberService);
+//    }
 
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
@@ -116,5 +120,4 @@ public class SecurityConfig {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

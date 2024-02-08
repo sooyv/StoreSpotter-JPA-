@@ -3,6 +3,7 @@ package com.sojoo.StoreSpotter.controller.member;
 import com.sojoo.StoreSpotter.dto.member.MemberDto;
 import com.sojoo.StoreSpotter.jwt.config.JwtTokenProvider;
 import com.sojoo.StoreSpotter.service.member.MemberService;
+import com.sojoo.StoreSpotter.service.member.UserDetailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,11 +13,12 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-        import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -25,6 +27,8 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
     private JwtTokenProvider jwtTokenProvider;
+
+    private UserDetailService userDetailService;
 
 
     @GetMapping("/signup")
@@ -86,6 +90,17 @@ public class MemberController {
     @GetMapping("/login")
     public ModelAndView login() {
         return new ModelAndView("loginSignUp/login");
+    }
+
+
+    // 로그인 springsecurity + jwt
+    @PostMapping("/member/login")
+    public String login(@RequestBody Map<String, String> Member) {
+//        log.info("user email = {}", member.get("email"));
+        Member.
+                userDetailService.loadUserByUsername()
+
+        return jwtTokenProvider.generateToken(member.getUsername());
     }
 
 

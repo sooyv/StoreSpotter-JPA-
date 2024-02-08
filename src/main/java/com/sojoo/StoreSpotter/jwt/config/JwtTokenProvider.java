@@ -62,8 +62,9 @@ public class JwtTokenProvider {
 
     // 토큰 기반으로 인증 정보를 가져오는 메서드 - 인증정보 조회
     public Authentication getAuthentication(String token) {
-        System.out.println("JwtTokenProvider getAuthentication");
+        System.out.println("JwtTokenProvider getAuthentication" + token);
         Claims claims = getClaims(token);   // 토큰 복호화
+        System.out.println("JwtTokenProvider getAuthentication"  + claims);
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("USER"));
 
         return new UsernamePasswordAuthenticationToken(new org.springframework.security.core.userdetails.User(claims.getSubject(), "", authorities), token, authorities);
