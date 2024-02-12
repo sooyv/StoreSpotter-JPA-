@@ -59,16 +59,6 @@ public class TokenProvider implements InitializingBean {
                 .setExpiration(new Date(now.getTime() + accessTokenExpiration))
                 .signWith(SignatureAlgorithm.HS512, key)
                 .compact();
-
-//        long now = (new Date()).getTime();
-//        Date validity = new Date(now + this.accessTokenExpiration);
-//
-//        return Jwts.builder()
-//                .setSubject(authentication.getName())
-//                .claim(AUTHORITIES_KEY, authorities)
-//                .signWith(SignatureAlgorithm.HS512, key)
-//                .setExpiration(validity)
-//                .compact();
     }
 
     public String createRefreshToken(Authentication authentication) {

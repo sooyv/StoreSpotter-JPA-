@@ -1,13 +1,3 @@
-// const token = searchParam('token')
-//
-// if (token) {
-//     localStorage.setItem("access_token", token);
-//     console.log("토큰 확인 콘솔" + localStorage.getItem("access_token"), token)
-// }
-//
-// function searchParam(key) {
-//     return new URLSearchParams(location.search).get(key);
-// }
 
 // 엑세스 토큰을 로컬 스토리지에서 가져오기
 const accessToken = localStorage.getItem('access_token');

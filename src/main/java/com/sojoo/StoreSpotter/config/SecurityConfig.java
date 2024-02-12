@@ -63,11 +63,6 @@ public class SecurityConfig {
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 )
 
-//                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-//                        .requestMatchers("/api/hello", "/api/authenticate", "/api/signup").permitAll()
-//                        .requestMatchers(PathRequest.toH2Console()).permitAll()
-//                        .anyRequest().authenticated()
-//                )
                         .authorizeHttpRequests()
                 // main, login 페이지, login 프로세스, 회원가입 페이지, 회원가입 프로세스, 이메일 중복체크 ajax, JWT token 발급, 평균 거리 검색 ajax
                 .antMatchers("/", "/login", "/signup","/member/login", "/member/signup", "/signup/checkid", "/avg-dist", "/api/token").permitAll()
