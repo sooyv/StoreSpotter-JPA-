@@ -1,4 +1,4 @@
-package com.sojoo.StoreSpotter.jwt.dto;
+package com.sojoo.StoreSpotter.controller.user;
 
 import lombok.*;
 @Getter

@@ -1,4 +1,4 @@
-package com.sojoo.StoreSpotter.jwt.service;
+package com.sojoo.StoreSpotter.service.user;
 
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.dto.user.UserDto;

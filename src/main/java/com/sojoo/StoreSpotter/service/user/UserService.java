@@ -2,7 +2,6 @@ package com.sojoo.StoreSpotter.service.user;
 
 import com.sojoo.StoreSpotter.entity.Member.Authority;
 import com.sojoo.StoreSpotter.entity.Member.User;
-import com.sojoo.StoreSpotter.jwt.service.UserValidateService;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.jwt.exception.NotFoundMemberException;
@@ -17,20 +16,14 @@ import java.util.Collections;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserValidateService userValidateService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserValidateService userValidateService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.userValidateService = userValidateService;
     }
 
     @Transactional
     public UserDto signup(UserDto userDto) {
-//        if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) != null) {
-//            throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
-//        }
-
         Authority authority = Authority.builder()
                 .authorityName("ROLE_USER")
                 .build();

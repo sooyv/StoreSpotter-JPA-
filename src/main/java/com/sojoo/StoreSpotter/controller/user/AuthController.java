@@ -1,7 +1,7 @@
-package com.sojoo.StoreSpotter.jwt.controller;
+package com.sojoo.StoreSpotter.controller.user;
 
 
-import com.sojoo.StoreSpotter.jwt.dto.LoginDto;
+import com.sojoo.StoreSpotter.dto.user.LoginDto;
 import com.sojoo.StoreSpotter.jwt.dto.TokenDto;
 import com.sojoo.StoreSpotter.jwt.jwt.JwtFilter;
 import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
@@ -13,8 +13,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/")
