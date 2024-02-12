@@ -20,7 +20,6 @@
 //// 해당 클래스는 JwtTokenProvider가 검증을 끝낸 Jwt로부터 유저 정보를 조회해와서 UserPasswordAuthenticationFilter 로 전달합니다.
 //@Slf4j
 //@RequiredArgsConstructor
-//public class TokenAuthenticationFilter extends OncePerRequestFilter {
 //    private final JwtTokenProvider tokenProvider;
 //    private final static String HEADER_AUTHORIZATION = "Authorization";
 //    private final static String TOKEN_PREFIX = "Bearer ";

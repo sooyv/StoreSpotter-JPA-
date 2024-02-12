@@ -26,14 +26,16 @@ public class TokenProvider implements InitializingBean {
     private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
     private static final String AUTHORITIES_KEY = "auth";
     private final String secret;
-    private final long tokenValidityInMilliseconds;
+    private final long accessTokenExpiration;
+    private final long refreshTokenExpiration;
     private Key key;
 
     public TokenProvider(
             @Value("${jwt.secret}") String secret,
-            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
+            @Value("${jwt.accessTokenExpiration}") long accessTokenExpiration, @Value("${jwt.refreshTokenExpiration}") long refreshTokenExpiration) {
         this.secret = secret;
-        this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
+        this.accessTokenExpiration = accessTokenExpiration;
+        this.refreshTokenExpiration = refreshTokenExpiration;
     }
 
     @Override
@@ -42,23 +44,55 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createToken(Authentication authentication) {
+    public String createAccessToken(Authentication authentication) {
+        System.out.println("TokenProvider createAccessToken 실행");
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
+        Date now = new Date();
 
-        long now = (new Date()).getTime();
-        Date validity = new Date(now + this.tokenValidityInMilliseconds);
-
+        // Access Token
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + accessTokenExpiration))
                 .signWith(SignatureAlgorithm.HS512, key)
-                .setExpiration(validity)
                 .compact();
+
+//        long now = (new Date()).getTime();
+//        Date validity = new Date(now + this.accessTokenExpiration);
+//
+//        return Jwts.builder()
+//                .setSubject(authentication.getName())
+//                .claim(AUTHORITIES_KEY, authorities)
+//                .signWith(SignatureAlgorithm.HS512, key)
+//                .setExpiration(validity)
+//                .compact();
+    }
+
+    public String createRefreshToken(Authentication authentication) {
+        System.out.println("TokenProvider createRefreshToken 실행");
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        Date now = new Date();
+
+        String refreshToken = Jwts.builder()
+                .claim(AUTHORITIES_KEY, authorities)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + refreshTokenExpiration))
+                .signWith(SignatureAlgorithm.HS512, key)
+                .compact();
+
+        // redis에 저장 코드
+
+
+        return refreshToken;
     }
 
     public Authentication getAuthentication(String token) {
+        System.out.println("TokenProvider getAuthentication ");
         Claims claims = Jwts
                 .parser()
                 .setSigningKey(key)
@@ -71,11 +105,13 @@ public class TokenProvider implements InitializingBean {
                         .collect(Collectors.toList());
 
         User principal = new User(claims.getSubject(), "", authorities);
+        System.out.println("getAuthentication : " + principal);
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
     public boolean validateToken(String token) {
+        System.out.println("TokenProvider validateToken 실행");
         try {
             Jwts.parser().setSigningKey(key).parseClaimsJws(token);
             return true;

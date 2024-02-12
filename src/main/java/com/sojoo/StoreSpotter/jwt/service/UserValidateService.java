@@ -1,10 +1,9 @@
 package com.sojoo.StoreSpotter.jwt.service;
 
-import com.sojoo.StoreSpotter.jwt.Repository.UserRepository;
-import com.sojoo.StoreSpotter.jwt.dto.UserDto;
+import com.sojoo.StoreSpotter.repository.user.UserRepository;
+import com.sojoo.StoreSpotter.dto.user.UserDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service

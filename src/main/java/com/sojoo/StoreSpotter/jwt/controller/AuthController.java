@@ -28,24 +28,35 @@ public class AuthController {
     }
 
     @PostMapping("/member/login")
-    public ResponseEntity<TokenDto> authorize(LoginDto loginDto,
-                                              @RequestParam("username") String username,
-                                              @RequestParam("password") String password) {
+    public ResponseEntity<TokenDto> loginProcess(@RequestBody LoginDto loginDto) {
 
-        loginDto.setUsername(username);
-        loginDto.setPassword(password);
-        System.out.println(loginDto);
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = tokenProvider.createToken(authentication);
+//        String jwt = tokenProvider.createToken(authentication);
+        TokenDto tokenDto = new TokenDto(
+                tokenProvider.createAccessToken(authentication),
+                tokenProvider.createRefreshToken(authentication)
+        );
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + tokenDto.getAccessToken());
 
-        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/api/token")
+    public String getData(@RequestHeader("Authorization") String authorizationHeader) {
+        // Authorization 헤더에서 JWT 토큰 추출
+        String jwtToken = authorizationHeader.substring(7); // "Bearer " 이후의 토큰 추출
+        System.out.println("getData : " +jwtToken);
+
+        // JWT 토큰을 검증하고 유효성을 확인하는 로직 수행
+        // 여기서는 단순히 토큰을 반환하는 예시
+        return "Received JWT token: " + jwtToken;
     }
 }

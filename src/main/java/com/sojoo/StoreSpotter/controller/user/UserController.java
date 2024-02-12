@@ -1,7 +1,7 @@
-package com.sojoo.StoreSpotter.jwt.controller;
+package com.sojoo.StoreSpotter.controller.user;
 
-import com.sojoo.StoreSpotter.jwt.dto.UserDto;
-import com.sojoo.StoreSpotter.jwt.service.UserService;
+import com.sojoo.StoreSpotter.dto.user.UserDto;
+import com.sojoo.StoreSpotter.service.user.UserService;
 import com.sojoo.StoreSpotter.jwt.service.UserValidateService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

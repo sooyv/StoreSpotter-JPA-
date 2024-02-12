@@ -10,6 +10,7 @@ import java.io.IOException;
 
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+    // 유저 정보 없이 접근한 경우 : SC_UNAUTHORIZED (401) 응답
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,

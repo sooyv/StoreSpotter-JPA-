@@ -1,7 +1,7 @@
 package com.sojoo.StoreSpotter.jwt.service;
 
 import com.sojoo.StoreSpotter.entity.Member.User;
-import com.sojoo.StoreSpotter.jwt.Repository.UserRepository;
+import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String username) {
+        System.out.println("CustomUserDetailsService loadUserByUsername 실행");
         return userRepository.findOneWithAuthoritiesByUsername(username)
                 .map(user -> createUser(username, user))
                 .orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
@@ -39,7 +40,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .collect(Collectors.toList());
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(),
-                grantedAuthorities);
+                user.getPassword(), grantedAuthorities);
     }
 }

@@ -1,10 +1,10 @@
-package com.sojoo.StoreSpotter.jwt.service;
+package com.sojoo.StoreSpotter.service.user;
 
 import com.sojoo.StoreSpotter.entity.Member.Authority;
 import com.sojoo.StoreSpotter.entity.Member.User;
-import com.sojoo.StoreSpotter.jwt.Repository.UserRepository;
-import com.sojoo.StoreSpotter.jwt.dto.UserDto;
-import com.sojoo.StoreSpotter.jwt.exception.DuplicateMemberException;
+import com.sojoo.StoreSpotter.jwt.service.UserValidateService;
+import com.sojoo.StoreSpotter.repository.user.UserRepository;
+import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.jwt.exception.NotFoundMemberException;
 import com.sojoo.StoreSpotter.jwt.securityUtil.SecurityUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,5 +58,9 @@ public class UserService {
                         .flatMap(userRepository::findOneWithAuthoritiesByUsername)
                         .orElseThrow(() -> new NotFoundMemberException("Member not found"))
         );
+    }
+
+    public User findById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저정보를 찾을 수 없습니다."));
     }
 }
