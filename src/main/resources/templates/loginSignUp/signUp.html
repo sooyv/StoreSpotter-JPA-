@@ -55,7 +55,10 @@
             <h1>Create Account</h1>
             <!--            <span>use your email for registration</span>-->
             <input type="text" id="name" name="nickName" placeholder="Name" />
-            <input type="email" id="email" name="userName" placeholder="Email" />
+            <div class="email-box">
+                <input type="email" id="email" name="userName" placeholder="Email" />
+                <button type="button" id="send-mail">send</button>
+            </div>
             <small id="emailHelp"></small>
             <input type="password" id="password" name="password" placeholder="Password" />
             <small id="passwordHelp">비밀번호는 문자, 숫자, 특수문자가 포함된 8-20자로 작성해주세요</small>

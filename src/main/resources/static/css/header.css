@@ -1,5 +1,6 @@
 #header {
-    height: 10%;
+    /*height: 10%;*/
+    height: 75px;
     justify-content: space-between;
     display: flex;
     align-items: center;
@@ -8,17 +9,17 @@
     max-height: 76px;
 }
 
-img {
-    height: 40px;
-    width: 40px;
-    margin: 15px;
-}
-
-/*#StoreSpotter-icon {*/
+/*img {*/
 /*    height: 40px;*/
 /*    width: 40px;*/
 /*    margin: 15px;*/
 /*}*/
+
+#StoreSpotter-icon {
+    height: 40px;
+    width: 40px;
+    margin: 15px;
+}
 
 #title {
     font-family: 'Ubuntu', sans-serif;
@@ -61,6 +62,12 @@ img {
 
 #menu-bar-btn {
     display: none;
+}
+
+#menu-bar-icon {
+    height: 40px;
+    width: 40px;
+    margin: 15px;
 }
 
 /*태블릿 - 900px 이하의 화면*/
@@ -116,8 +123,17 @@ img {
 
 /*핸드폰*/
 @media screen and (max-width: 414px)  {
+    #header {
+        height: 50px;
+    }
+
     #title {
         font-size: large;
+    }
+
+    img {
+        height: 30px;
+        width: 30px;
     }
 
     /*.header-ele {*/

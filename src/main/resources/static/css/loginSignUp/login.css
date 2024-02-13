@@ -162,6 +162,7 @@ input {
 #findUserInfo:hover {
     color: #6bb4d0;
     transition: 0.2s ease;
+    text-decoration: underline;
 }
 
 
