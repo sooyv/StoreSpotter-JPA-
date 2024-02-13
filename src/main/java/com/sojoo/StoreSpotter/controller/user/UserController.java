@@ -81,4 +81,10 @@ public class UserController {
         return new ModelAndView("loginSignUp/login");
     }
 
+
+    // 회원정보 찾기
+    @GetMapping("/find-user")
+    public ModelAndView findUserInfo() {
+        return new ModelAndView("/loginSignUp/findUserInfo");
+    }
 }

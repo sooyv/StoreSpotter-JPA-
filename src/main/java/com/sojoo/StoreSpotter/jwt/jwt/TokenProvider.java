@@ -32,7 +32,8 @@ public class TokenProvider implements InitializingBean {
 
     public TokenProvider(
             @Value("${jwt.secret}") String secret,
-            @Value("${jwt.accessTokenExpiration}") long accessTokenExpiration, @Value("${jwt.refreshTokenExpiration}") long refreshTokenExpiration) {
+            @Value("${jwt.accessTokenExpiration}") long accessTokenExpiration,
+            @Value("${jwt.refreshTokenExpiration}") long refreshTokenExpiration) {
         this.secret = secret;
         this.accessTokenExpiration = accessTokenExpiration;
         this.refreshTokenExpiration = refreshTokenExpiration;

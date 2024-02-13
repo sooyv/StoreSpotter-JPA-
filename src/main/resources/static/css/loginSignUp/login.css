@@ -159,6 +159,11 @@ input {
     font-weight: bold;
 }
 
+#findUserInfo:hover {
+    color: #6bb4d0;
+    transition: 0.2s ease;
+}
+
 
 /*태블릿 - 900px 이하의 화면*/
 @media screen and (max-width: 900px) {
