@@ -90,6 +90,7 @@ form.addEventListener("submit", event => {
 // const authNum = $("#emailAuthNum").val();
         const password = $("#password").val();
         const checkPassword = $("#checkPassword").val();
+        const phone = $("#phone").val();
 
         // 모든 항목 작성 검사
         if (!name || !email || !password || !checkPassword) {
@@ -97,7 +98,8 @@ form.addEventListener("submit", event => {
             return;
         }
 
-        const userDto = {"nickname": name, "username": email, "password" : password, "checkPassword" : checkPassword};
+        const userDto = {"nickname": name, "username": email,
+            "password" : password, "checkPassword" : checkPassword, "phone" : phone};
 
         $.ajax({
             type: 'POST',

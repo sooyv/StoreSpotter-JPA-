@@ -1,12 +1,9 @@
 package com.sojoo.StoreSpotter.service.mail;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -41,24 +38,34 @@ public class MailService {
         return message;
     }
 
-    // 회원가입 메일 인증
-    public String sendMail(String email) throws MessagingException, UnsupportedEncodingException {
-        String code = createCode();
-        //메일전송에 필요한 정보 설정
-        MimeMessage emailMsg = createMailMessage(email, code);
-
+    // 회원가입 인증 코드 메일
+    public void sendMail(String email, String code) throws MessagingException, UnsupportedEncodingException {
         try {
-            // 메일 전송
+            MimeMessage emailMsg = createMailMessage(email, code);
             javaMailSender.send(emailMsg);
         } catch (MailException mailException) {
             mailException.printStackTrace();
             throw new IllegalStateException();
         }
-
-        return code;
     }
 
-    // 랜덤 인증 코드
+    // 회원가입 인증 코드 메일 전송, 인증 코드 redis 저장
+    public String sendCertificationMail(String email) {
+        try {
+            // 랜덤 인증 코드 생성
+            String code = createCode();
+            sendMail(code, email);
+            // redis에 인증 코드 저장
+//            redisUtil.setDataExpire(code, email, 60*5L); // {key,value} 5분동안 저장.
+            return code;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("sendCertificationMail - 메일 전송에 실패했습니다.");
+        }
+    }
+
+    // 랜덤 인증 코드 생성
     private String createCode() {
         StringBuffer key = new StringBuffer();
         Random rnd = new Random();

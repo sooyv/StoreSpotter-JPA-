@@ -11,15 +11,30 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;500&family=Ubuntu:wght@500&display=swap" rel="stylesheet"></head>
   <link rel="stylesheet" type="text/css" href="/css/header.css">
-  <link rel="stylesheet" type="text/css" href="/css/loginSignUp/login.css">
+  <link rel="stylesheet" type="text/css" href="/css/loginSignUp/findUserInfo.css">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <body>
 <div th:replace="/header :: header"></div>
 <div class="container">
   <h1>find account & password</h1>
-  <div>Email</div>
-  <div>Password</div>
+  <div class="select-findInfo">
+    <div class="findInfo-details" id="find-email">Email</div>
+    <div class="findInfo-details" id="find-password">Password</div>
+  </div>
+<!--  아이디 찾기-->
+  <form id="find-email-form">
+    <input type="text" id="name" name="nickName" placeholder="Name" />
+    <input type="text" id="phone" name="phone" placeholder="010-0000-0000" />
+    <button type="button" id="find-email-btn">find email</button>
+  </form>
+<!--  비밀번호 찾기-->
+  <form id="find-password-form">
+    <input type="email" id="email" placeholder="비밀번호를 발급할 이메일" />
+    <button type="button" id="reissue-password">reissue password</button>
+  </form>
 </div>
 
+<script src="../js/header.js"></script>
+<script src="../js/loginSignUp/findUserInfo.js"></script>
 </body>
 </html>

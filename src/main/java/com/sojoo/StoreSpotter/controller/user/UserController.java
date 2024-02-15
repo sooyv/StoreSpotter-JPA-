@@ -78,14 +78,20 @@ public class UserController {
     // 회원가입 메일 인증
     @PostMapping("/signup/mail-code")
     public ResponseEntity<String> sendEmailCode(@RequestParam String email) throws MessagingException, UnsupportedEncodingException {
-        String code = "";
+
+        if (email == null) {
+            return ResponseEntity.badRequest().body("인증 메일 null");
+        }
+
+        // 메일 정규화 확인 추가
+
         try {
-            code = mailService.sendMail(email);
+            String code = mailService.sendCertificationMail(email);
+            return ResponseEntity.ok(code);
         } catch (IllegalStateException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("인증메일 전송 실패");
         }
-        return ResponseEntity.ok(code);
     }
 
 
