@@ -1,8 +1,11 @@
 package com.sojoo.StoreSpotter.service.mail;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sojoo.StoreSpotter.entity.Member.User;
+import com.sojoo.StoreSpotter.repository.user.UserRepository;
+import com.sojoo.StoreSpotter.service.user.UserService;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
@@ -10,13 +13,24 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
 public class MailService {
+    private final JavaMailSender javaMailSender;
+    private final UserService userService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
 
-    @Autowired
-    JavaMailSender javaMailSender;
+    public MailService(JavaMailSender javaMailSender, UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository) {
+        this.javaMailSender = javaMailSender;
+        this.userService = userService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userRepository = userRepository;
+    }
+
 
     // 메일 메시지 작성
     private MimeMessage createMailMessage(String email, String code) throws MessagingException, UnsupportedEncodingException {
@@ -93,4 +107,55 @@ public class MailService {
         }
         return key.toString();
     }
+
+
+    // 비밀번호 재발급 메일 작성
+    private MimeMessage createPwMessage(String email, String code) throws MessagingException, UnsupportedEncodingException {
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+
+        message.addRecipients(Message.RecipientType.TO, email);         // 보내는 대상
+        message.setSubject("TECHSUPP 비밀번호 재발급");                     // 제목
+
+        // 비밀번호 재발급
+        String pwmsg = "";
+        pwmsg += "<h1>StoreSpotter 임시비밀번호 발급.</h1>";
+        pwmsg += "<div style='font-size:130%'>";
+        pwmsg += "임시비밀번호 : <strong>";
+        pwmsg += code + "</strong><div><br/>";
+        pwmsg += "</div>";
+        message.setText(pwmsg, "utf-8", "html");
+
+        message.setFrom(new InternetAddress("techsupp@naver.com"));
+
+        return message;
+    }
+
+    // 비밀번호 재발급 메일 발송
+    public String sendPwMail(String email) throws Exception {
+        String code = createCode();
+        MimeMessage message = createPwMessage(email, code);
+
+        try {
+            javaMailSender.send(message);
+        } catch (MailException mailException) {
+            mailException.printStackTrace();
+            throw new IllegalStateException();
+        }
+        return code;
+    }
+
+    // 비밀번호 재발급
+    public String updateUserPw(String email) throws Exception {
+        Optional<User> user = userService.findUser(email);
+        if (user.isPresent()) {
+            String code = sendPwMail(email);
+            user.get().setPassword(bCryptPasswordEncoder.encode(code));
+            userRepository.save(user.get());
+            return "Successfully reissuePassword";
+        } else {
+            throw new NoSuchElementException("존재하지 않는 이메일입니다");
+        }
+    }
+
 }

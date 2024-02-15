@@ -6,11 +6,14 @@ import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.jwt.exception.NotFoundMemberException;
 import com.sojoo.StoreSpotter.jwt.securityUtil.SecurityUtil;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -54,7 +57,9 @@ public class UserService {
         );
     }
 
-    public User findById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저정보를 찾을 수 없습니다."));
+    public Optional<User> findUser(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        return user;
     }
+
 }

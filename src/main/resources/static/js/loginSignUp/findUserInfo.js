@@ -121,6 +121,7 @@ findPassword.on("mouseleave", function() {
 // ------------------ 비밀번호 재발급 ------------------
 $("#reissue-password").on("click", function() {
     const email = $("#email").val();
+    console.log("비밀번호 재발급 클릭이벤트 발생");
     console.log("비밀번호 재발급 : " + email);
     if (email == "") {
         alert("이메일을 입력하세요");
@@ -129,7 +130,7 @@ $("#reissue-password").on("click", function() {
     }
     $.ajax({
         type: 'POST',
-        url: "",
+        url: "/user/password",
         data: {
             email : email
         },

@@ -92,6 +92,12 @@ input {
     font-family: 'IBM Plex Sans KR', sans-serif;
     color: #fff;
     margin: 1rem;
+    cursor: pointer;
+}
+
+#reissue-password:hover {
+    background: #6bb4d0;
+    transition: 0.2s ease;
 }
 
 
