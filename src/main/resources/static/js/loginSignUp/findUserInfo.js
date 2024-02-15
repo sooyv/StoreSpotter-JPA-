@@ -3,7 +3,7 @@ let findPassword = $("#find-password");
 let findEmailForm = $("#find-email-form");
 let findPasswordForm = $("#find-password-form");
 
-// 첫화면 password 찾기 hide(); 이메일 찾기만 보임
+// 첫화면 password 찾기 hide(); 이메일 찾기를 보여주기
 findPasswordForm.hide();
 findEmailForm.show();
 findEmail.addClass("clicked");
@@ -38,11 +38,13 @@ findEmail.on("click", function() {
     });
 });
 
-// find-email에 호버 효과 추가
+// find-email에 hover 효과 추가
 findEmail.on("mouseenter", function() {
     $(this).css({
-        background: "#6796b4",
-        transition: "0.2s ease"
+        background: "#c3e7ef",
+        transition: "0.2s ease",
+
+        color: "#fff"
     });
 });
 findEmail.on("mouseleave", function() {
@@ -53,11 +55,12 @@ findEmail.on("mouseleave", function() {
             background: "#23567d",
             color: "#fff"
         });
-    } else if (!findEmail.hasClass("clicked")) {
+    }
+    if (!findEmail.hasClass("clicked")) {
         // 클릭되어 있지 않으면 기본 스타일로 변경
         $(this).css({
             background: "#fff",
-            color: "#black"
+            color: "black"
         });
     }
 });
@@ -82,11 +85,13 @@ findPassword.on("click", function() {
     });
 });
 
-// find-password에 호버 효과 추가
+// find-password에 hover 효과 추가
 findPassword.on("mouseenter", function() {
     $(this).css({
-        background: "#6796b4",
-        transition: "0.2s ease"
+        background: "#c3e7ef",
+        transition: "0.2s ease",
+
+        color: "#fff"
     });
 });
 findPassword.on("mouseleave", function() {
@@ -97,11 +102,12 @@ findPassword.on("mouseleave", function() {
             background: "#23567d",
             color: "#fff"
         });
-    } else if (!findPassword.hasClass("clicked")) {
+    }
+    if (!findPassword.hasClass("clicked")) {
         // 클릭되어 있지 않으면 기본 스타일로 변경
         $(this).css({
             background: "#fff",
-            color: "#black"
+            color: "black"
         });
     }
 });
