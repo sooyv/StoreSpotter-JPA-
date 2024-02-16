@@ -64,8 +64,8 @@ public class SecurityConfig {
                 )
 
                         .authorizeHttpRequests()
-                // main, login 페이지, login 프로세스, 회원가입 페이지, 회원가입 프로세스, 이메일 중복체크 ajax, JWT token 발급, 평균 거리 검색 ajax, token, 메일 인증 ajax, 비밀번호 재발급 ajax
-                .antMatchers("/", "/login", "/signup","/member/login", "/find-user","/member/signup", "/signup/checkid", "/avg-dist", "search-recommend","/api/token", "/signup/mail-code", "/user/password").permitAll()
+                // main, login 페이지, login 프로세스, 회원가입 페이지, 회원가입 프로세스, 이메일 중복체크 ajax, JWT token 발급, 평균 거리 검색 ajax, token, 메일 인증 ajax, 비밀번호 재발급 ajax, 이메일 찾기 ajax
+                .antMatchers("/", "/login", "/signup","/member/login", "/find-user","/member/signup", "/signup/checkid", "/avg-dist", "search-recommend","/api/token", "/signup/mail-code", "/user/password", "/user/account").permitAll()
 //                .antMatchers("/user").hasRole("USER")
                 .antMatchers("/admin").hasRole("ADMIN")
 //                .antMatchers("/admin").permitAll()

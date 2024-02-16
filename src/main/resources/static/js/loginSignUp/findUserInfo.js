@@ -115,6 +115,42 @@ findPassword.on("mouseleave", function() {
 
 
 // ------------------ 이메일 찾기 ---------------------
+let findEmailBtn = $("#find-email-btn");
+findEmailBtn.on("click", function() {
+
+    const username = $("#name").val();
+    const userPhone = $("#phone").val();
+
+    if(!username || !userPhone) {
+        alert("모든 항목을 입력하세요");
+        return;
+    }
+
+    console.log("email 찾기 ajax 직전");
+    $.ajax({
+        type: 'POST',
+        url: "/user/account",
+        data: {
+            username: username,
+            phone : userPhone,
+        },
+        success: function (response) {
+            console.log(response);
+
+            if (response == "") {
+                console.log("find failed");
+            } else {
+                for(let i = 0; i < response.length; i++) {
+                    let userEmail = response[i];
+                    console.log(userEmail);
+
+                };
+
+                console.log("find success");
+            };
+        }
+    });
+});
 
 
 

@@ -1,14 +1,13 @@
 package com.sojoo.StoreSpotter.controller.user;
 
 import com.sojoo.StoreSpotter.dto.user.UserDto;
-import com.sojoo.StoreSpotter.entity.Member.User;
 import com.sojoo.StoreSpotter.service.mail.MailService;
+import com.sojoo.StoreSpotter.service.user.FindUserInfoService;
 import com.sojoo.StoreSpotter.service.user.UserService;
 import com.sojoo.StoreSpotter.service.user.UserValidateService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/")
@@ -26,11 +24,13 @@ public class UserController {
     private final UserService userService;
     private final MailService mailService;
     private final UserValidateService userValidateService;
+    private final FindUserInfoService findUserInfoService;
 
-    public UserController(UserService userService, MailService mailService, UserValidateService userValidateService) {
+    public UserController(UserService userService, MailService mailService, UserValidateService userValidateService, FindUserInfoService findUserInfoService) {
         this.userService = userService;
         this.mailService = mailService;
         this.userValidateService = userValidateService;
+        this.findUserInfoService = findUserInfoService;
     }
 
     // 로그인 페이지
@@ -82,6 +82,7 @@ public class UserController {
     // 회원가입 메일 인증
     @PostMapping("/signup/mail-code")
     public ResponseEntity<String> sendEmailCode(@RequestParam String email) throws MessagingException, IllegalStateException {
+        System.out.println("sendEmailCode 이메일 확인 : " + email);
 
         if (email == null) {
             return ResponseEntity.badRequest().body("인증 메일 null");
@@ -119,11 +120,21 @@ public class UserController {
         return new ModelAndView("/loginSignUp/findUserInfo");
     }
 
+    // 이메일 찾기
+
+    @PostMapping("/user/account")
+    public List<String> findUserId(@RequestParam("username") String username, @RequestParam("phone") String phone) {
+
+        List<String> userEmail = findUserInfoService.findUserEmail(username, phone);
+        return userEmail;
+    }
+
+
     // 비밀번호 재발급
     @PostMapping("/user/password")
     public ResponseEntity<String> reissuePassword(@RequestParam String email) throws NoSuchElementException {
         try {
-            String reissuePasswordSuccess = mailService.updateUserPw(email);
+            String reissuePasswordSuccess = findUserInfoService.updateUserPw(email);
             return ResponseEntity.ok(reissuePasswordSuccess);
 
         } catch (NoSuchElementException e) {
