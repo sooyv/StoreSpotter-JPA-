@@ -144,13 +144,14 @@ findEmailBtn.on("click", function() {
             console.log(response);
 
             if (response == "") {
-                emailModal.html('');
+                modalContent.html('');    // modal 초기화
                 let notFoundEmail = $("<p>").text("가입 정보가 없습니다.");
                 modalContent.append(notFoundEmail);
                 emailModal.show();
                 console.log("find failed");
             } else {
-                for(let i = 0; i < response.length; i++) {
+                modalContent.html('');    // modal 초기화
+                for (let i = 0; i < response.length; i++) {
                     const userEmail = response[i];
                     const userEmails = $("<p>").text(userEmail);
                     modalContent.append(userEmails);
@@ -163,6 +164,11 @@ findEmailBtn.on("click", function() {
     });
 });
 
+// 모달 close
+let modalClose = $("#modal-close");
+modalClose.on("click", function() {
+    emailModal.hide();
+});
 
 
 // ------------------ 비밀번호 재발급 ------------------
