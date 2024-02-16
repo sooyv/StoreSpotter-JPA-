@@ -2,10 +2,6 @@
     box-sizing: border-box;
 }
 
-* {
-    box-sizing: border-box;
-}
-
 html, body {
     font-family: 'IBM Plex Sans KR', sans-serif;
     margin: 0;
@@ -23,13 +19,6 @@ h1 {
 
 h2 {
     text-align: center;
-}
-
-span {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 12px;
 }
 
 a {
@@ -93,62 +82,6 @@ input {
     background: #fcfeff;
     height: 100%;
     width: 100%;
-}
-
-.social-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 0 100px 0;
-    width: 100%;
-}
-
-.social-container a {
-    border: 1px solid #DDDDDD;
-    border-radius: 50%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 5px;
-    height: 40px;
-    width: 40px;
-}
-
-.social-container a img {
-    width: 100%;
-    height: auto;
-}
-
-.separator {
-    font-family: 'Ubuntu', sans-serif;
-    display: block;
-    margin: 40px auto 40px;
-    text-align: center;
-    position: relative;
-    color: #8a8a8a;
-    font-size: 13px;
-    width: 90%;
-    max-width: 680px;
-}
-
-.separator:before {
-    content: "";
-    position: absolute;
-    top: 8px;
-    left: 0;
-    background: #969696;
-    height:1px;
-    width:45%;
-}
-
-.separator:after {
-    content: "";
-    position: absolute;
-    top: 8px;
-    right: 0;
-    background: #969696;
-    height: 1px;
-    width: 45%;
 }
 
 small {

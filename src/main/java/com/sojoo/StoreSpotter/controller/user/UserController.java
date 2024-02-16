@@ -135,12 +135,13 @@ public class UserController {
     public ResponseEntity<String> reissuePassword(@RequestParam String email) throws NoSuchElementException {
         try {
             String reissuePasswordSuccess = findUserInfoService.updateUserPw(email);
+            System.out.println("reissuePassword email  : " + email);
             return ResponseEntity.ok(reissuePasswordSuccess);
 
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<>("등록되지 않은 이메일 주소입니다. 다시 입력해주세요.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("notExistEmail", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            return new ResponseEntity<>("비밀번호 재설정에 실패했습니다. 다시 시도해주세요.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("FailedUpdatePassword", HttpStatus.BAD_REQUEST);
         }
     }
 

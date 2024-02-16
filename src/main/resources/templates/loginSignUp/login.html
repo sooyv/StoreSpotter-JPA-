@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;500&family=Ubuntu:wght@500&display=swap" rel="stylesheet"></head>
     <link rel="stylesheet" type="text/css" href="/css/header.css">
     <link rel="stylesheet" type="text/css" href="/css/loginSignUp/login.css">
+    <link rel="stylesheet" type="text/css" href="/css/loginSignUp/socialLogin.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <body>
 <div th:replace="/header :: header"></div>
@@ -27,15 +28,7 @@
             </div>
         </form>
 
-        <div class="separator"><p>OR</p></div>
-
-        <span>or use your account</span>
-        <div class="social-container">
-            <a href="#" class="social"><img src="/css/img/loginSignUp/naver-btnG_아이콘원형.png"></a>
-            <a href="/oauth2/authorization/google" class="social"><img src="/css/img/loginSignUp/google.png"></a>
-<!--            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>-->
-            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-        </div>
+        <div th:replace="/loginSignUp/socialLogin :: socialLogin"></div>
     </div>
 </div>
 

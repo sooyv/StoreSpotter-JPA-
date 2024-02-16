@@ -84,6 +84,9 @@ public class MailService {
         MimeMessage message = javaMailSender.createMimeMessage();
 
         message.addRecipients(Message.RecipientType.TO, email);         // 보내는 대상
+        System.out.println("createPwMessage email : " + email);
+        System.out.println("createPwMessage code : " + code);
+
         message.setSubject("TECHSUPP 비밀번호 재발급");                     // 제목
 
         // 비밀번호 재발급
@@ -104,6 +107,8 @@ public class MailService {
     public String sendPwMail(String email) throws Exception {
         String code = createCode();
         MimeMessage message = createPwMessage(email, code);
+        System.out.println("sendPwMail email : " +email);
+        System.out.println("sendPwMail code : " +code);
 
         try {
             javaMailSender.send(message);

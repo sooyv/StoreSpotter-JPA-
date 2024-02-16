@@ -12,6 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;500&family=Ubuntu:wght@500&display=swap" rel="stylesheet"></head>
   <link rel="stylesheet" type="text/css" href="/css/header.css">
   <link rel="stylesheet" type="text/css" href="/css/loginSignUp/findUserInfo.css">
+  <link rel="stylesheet" type="text/css" href="/css/loginSignUp/socialLogin.css">
+
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <body>
 <div th:replace="/header :: header"></div>
@@ -39,10 +41,13 @@
 
   </div>
 <!--  비밀번호 찾기-->
-  <form id="find-password-form" th:action="@{/user/passowrd}" method="post">
+  <form id="find-password-form">
     <input type="email" id="email" placeholder="비밀번호를 발급할 이메일" />
     <button type="button" id="reissue-password">reissue password</button>
   </form>
+
+  <div th:replace="/loginSignUp/socialLogin :: socialLogin"></div>
+
 </div>
 
 <script src="../js/header.js"></script>
