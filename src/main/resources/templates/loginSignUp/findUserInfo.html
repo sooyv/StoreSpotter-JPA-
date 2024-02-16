@@ -21,14 +21,25 @@
     <div class="findInfo-details" id="find-email">Email</div>
     <div class="findInfo-details" id="find-password">Password</div>
   </div>
-<!--  아이디 찾기-->
-  <form id="find-email-form">
+<!--  아이디 찾기 모달-->
+  <div class="email-modal">
+    <div id="modal-title">회원님의 정보와 일치하는 아이디 목록입니다.</div>
+      <div id="modal-content"></div>
+      <div id="modal-footer">
+        <button class="modal-btn">로그인하기</button>
+        <button class="modal-btn">닫기</button>
+      </div>
+  </div>
+  <form id="find-email-form" th:action="@{/user/account}" method="post">
     <input type="text" id="name" name="name" placeholder="name" />
     <input type="text" id="phone" name="phone" placeholder="010-0000-0000" />
     <button type="button" id="find-email-btn">find email</button>
   </form>
+  <div>
+
+  </div>
 <!--  비밀번호 찾기-->
-  <form id="find-password-form">
+  <form id="find-password-form" th:action="@{/user/passowrd}" method="post">>
     <input type="email" id="email" placeholder="비밀번호를 발급할 이메일" />
     <button type="button" id="reissue-password">reissue password</button>
   </form>

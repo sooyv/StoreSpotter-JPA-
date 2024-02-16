@@ -3,6 +3,12 @@ let findPassword = $("#find-password");
 let findEmailForm = $("#find-email-form");
 let findPasswordForm = $("#find-password-form");
 
+let emailModal = $(".email-modal");
+let modalContent = $("#modal-content");
+
+// 첫화면 modal 화면 표시 안함
+emailModal.hide();
+
 // 첫화면 password 찾기 hide(); 이메일 찾기를 보여주기
 findPasswordForm.hide();
 findEmailForm.show();
@@ -138,14 +144,19 @@ findEmailBtn.on("click", function() {
             console.log(response);
 
             if (response == "") {
+                emailModal.html('');
+                let notFoundEmail = $("<p>").text("가입 정보가 없습니다.");
+                modalContent.append(notFoundEmail);
+                emailModal.show();
                 console.log("find failed");
             } else {
                 for(let i = 0; i < response.length; i++) {
-                    let userEmail = response[i];
-                    console.log(userEmail);
+                    const userEmail = response[i];
+                    const userEmails = $("<p>").text(userEmail);
+                    modalContent.append(userEmails);
 
                 };
-
+                emailModal.show();
                 console.log("find success");
             };
         }
