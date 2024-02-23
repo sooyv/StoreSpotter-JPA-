@@ -1,8 +1,8 @@
 package com.sojoo.StoreSpotter.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sojoo.StoreSpotter.entity.Member.User;
-import com.sojoo.StoreSpotter.controller.user.AuthorityDto;
+import com.sojoo.StoreSpotter.entity.user.User;
+import com.sojoo.StoreSpotter.entity.user.AuthorityDto;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;

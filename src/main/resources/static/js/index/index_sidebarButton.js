@@ -185,9 +185,9 @@ $("#submit").click(function () {
                                 // 전체 html
                                 let contentString = [
                                     '<div class="iw_inner" style="border-radius: 15px">',
-                                    '<div style="display: flex; justify-content: space-between;">',
-                                    '<span style="font-size: 25px">주소</span>',
-                                    '<span id="favorite-icon" class="material-symbols-outlined favorite-icon" style="cursor: pointer; font-size: 30px; user-select: none;">favorite</span>',
+                                    '<div class = "mantine-Text-root mantine-dx3wmj" style="display: flex; justify-content: space-between; margin-bottom: 10px;">',
+                                    '<span class = "mantine-Text-root mantine-dx3wmj" style="display: flex; align-items: center; font-size: 23px;">주소</span>',
+                                    '<button id="add-liked" class="add-liked" style="cursor: pointer; user-select: none;">저장하기</button>',
                                     '</div>',
                                     '<div>', htmlAddresses.join('<br />'), '</div>',
                                     '<button id="near-button" type="button">근처 상권보기</button>',
@@ -230,11 +230,93 @@ $("#submit").click(function () {
                                     console.log(coordinates[i].st_nm, coordinates[i].com_nm)
                                 }
 
-                                // 찜 버튼 클릭 이벤트
-                                const favoriteIcon = document.getElementById('favorite-icon');
-                                favoriteIcon.addEventListener('click', function () {
-                                    this.classList.toggle('active'); // 'active' 클래스 추가/제거
-                                });
+                                ////// 찜버튼 기능 ///////
+
+                                let likedAddress = ""
+                                // 주소 추출 및 처리를 위한 함수
+                                function extractLikedAddress() {
+                                    let likedAddress1 = "", likedAddress2 = "";
+
+                                    try {likedAddress1 = extractTextFromHTML(htmlAddresses[0].replace(/\[지번 주소\]/g, '').trim()).replace('content_copy', '');
+                                    } catch (error) {likedAddress1 = "";}
+
+                                    try {likedAddress2 = extractTextFromHTML(htmlAddresses[1].replace(/\[도로명 주소\]/g, '').trim()).replace('content_copy', '');
+                                    } catch (error) {likedAddress2 = "";}
+
+                                    return likedAddress1 || likedAddress2; // 첫 번째 주소가 유효하면 반환, 그렇지 않으면 두 번째 주소 반환
+                                }
+
+                                // 'add-liked' 버튼 클릭 이벤트를 처리하는 함수
+                                function handleAddLikedClick() {
+                                    likedAddress = extractLikedAddress(); // 주소 추출
+
+                                    // 모달 표시 로직
+                                    var modal = document.getElementById("inputModal");
+                                    var span = document.getElementsByClassName("close")[0];
+
+                                    modal.style.display = "block";
+
+                                    span.onclick = function() {
+                                        modal.style.display = "none";
+                                    };
+
+                                    window.onclick = function(event) {
+                                        if (event.target == modal) {
+                                            modal.style.display = "none";
+                                        }
+                                    };
+
+                                    // '제출' 버튼 클릭 또는 엔터 키 입력 이벤트
+                                    document.getElementById("submitLiked").onclick = submitLikedName;
+                                    document.getElementById("likedName").addEventListener("keypress", function(event) {
+                                        if (event.keyCode === 13) {
+                                            submitLikedName();
+                                            event.preventDefault(); // 폼 제출에 의한 페이지 새로고침 방지
+                                        }
+                                    });
+
+                                }
+
+                                function submitLikedName() {
+                                    let likedName = document.getElementById("likedName").value;
+                                    console.log("제출된 찜 이름: ", likedName);
+                                    StoreLiked(likedName); // AJAX 요청
+                                    document.getElementById("inputModal").style.display = "none"; // 모달 닫기
+                                }
+
+                                // 찜버튼 클릭시 AJAX 요청을 처리하는 함수
+                                let ajax_chk_flg = false;
+
+                                function StoreLiked(likedName) {
+                                    if (!ajax_chk_flg) {
+                                        ajax_chk_flg = true;
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "mypage/liked/add",
+                                            data: {
+                                                indust: indust,
+                                                likedAddress: likedAddress,
+                                                dist: parseFloat(dist),
+                                                likedName: likedName
+                                            },
+                                            success: function (response) {
+                                                console.log("찜 저장 성공");
+                                            },
+                                            error: function (error) {
+                                                if (error.responseText === "DuplicateLikedName"){
+                                                    alert("중복된 이름이 존재합니다")
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+
+                                // 'add-liked' 버튼에 이벤트 리스너 추가
+                                const addLiked = document.getElementById('add-liked');
+                                addLiked.addEventListener('click', handleAddLikedClick);
+
+                                /////// 찜버튼 기능 끝 ///////
+
 
                                 // 클립보드 주소 복사
                                 function extractTextFromHTML(html) {
@@ -393,3 +475,41 @@ document.addEventListener("DOMContentLoaded", function () {
     distInfo.addEventListener("click", toggleDistExplain);
 });
 
+// 저장목록 바로가기 이벤트
+// $(document).ready(function() {
+//     // 로컬 스토리지에서 'industry'와 'address' 값을 읽기
+//     var industry = localStorage.getItem('industry');
+//     var address = localStorage.getItem('address');
+//     var dist = localStorage.getItem("dist")
+//
+//     if (dist && address && industry){
+//         // 읽어온 값을 사용하여 필요한 작업 수행
+//         console.log(industry, address, dist);
+//
+//         // main 페이지에서 industry(편의점 or 카페) industry 변수에 따라 클릭
+//         var industryDetails = document.querySelectorAll('#select-industry .select-industry-detail');
+//         // 찾은 div들을 순회하면서
+//         industryDetails.forEach(function(detail) {
+//             // 해당 div의 텍스트가 'industry' 변수의 값과 일치하는지 확인
+//             if (detail.textContent === industry) {
+//                 // 일치한다면 해당 div를 클릭합니다.
+//                 detail.click();
+//             }
+//         });
+//
+//         // 주소 값에 주소 입력
+//         document.getElementById('address').value = address;
+//         // 'address-search' 버튼을 찾아 클릭
+//         document.getElementById('address-search').click();
+//
+//         // dist 선택
+//         document.getElementById('dist-value').value = 50;
+//
+//         // 제출버튼 클릭
+//         document.getElementById('submit').click();
+//
+//         // 사용 후 로컬 스토리지에서 해당 항목 삭제
+//         localStorage.removeItem('industry');
+//         localStorage.removeItem('address');
+//     }
+// });

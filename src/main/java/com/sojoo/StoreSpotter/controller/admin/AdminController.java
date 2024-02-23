@@ -37,7 +37,7 @@ public class AdminController {
     }
 
     @PostMapping("/apiDataSave")
-    public List<Industry> Industrys() throws Exception {
+    public List<Industry> Industries() throws Exception {
         return storeInfoService.industrySave();
     }
 

@@ -17,6 +17,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;500&family=Ubuntu:wght@500&display=swap" rel="stylesheet"></head>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <body>
 <div th:replace="/header :: header"></div>
@@ -87,6 +88,20 @@
 
 </div>
 
+<!-- 입력 창 모달 -->
+<div id="inputModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-prime">
+            <span class="close">&times;</span>
+            <p class="modal-name">찜 이름 설정</p>
+        </div>
+        <div style="width: 100%">
+            <input type="text" id="likedName" placeholder="찜 이름을 입력하세요">
+            <button id="submitLiked">제출</button>
+        </div>
+    </div>
+</div>
+
 <script>
     var mapOptions = {
         center: new naver.maps.LatLng(37.3595704, 127.105399),
@@ -102,9 +117,9 @@
 </script>
 <script src="../js/index/index_naverMapSearchApi.js"></script>
 <script src="../js/index/index_sidebarButton.js"></script>
+<script src="../js/myPage/myStored.js"></script>
 
 <script src="../js/header.js"></script>
-<script src="../js/loginSignUP/token.js"></script>
 <!--<script src="../js/loginSignUP/login.js"></script>-->
 </body>
 </html>

@@ -5,15 +5,17 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 </head>
 <body>
     <div id="header" th:fragment="header">
         <div class="title-icon">
-            <img id="StoreSpotter-icon" src="/css/img/main/free-icon-pin.png" alt="store spotter 로고" ./>
+            <img class="img" id="StoreSpotter-icon" src="/css/img/main/free-icon-pin.png" alt="store spotter 로고" ./>
             <div><a id="title" href="/">Store Spotter</a></div>
         </div>
         <div id="menu-bar">
-            <div id="menu-bar-btn"><img src="/css/img/main/메뉴바.png"></div>
+            <div id="menu-bar-btn"><img class="img" src="/css/img/main/메뉴바.png"></div>
             <div id="header-content">
                 <div><a class="header-ele" href="login">로그인</a></div>
 <!--                <div><a class="header-ele" href="#">마이페이지</a></div>-->

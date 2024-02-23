@@ -1,3 +1,4 @@
+
 let form = document.getElementById("loginForm");
 
 form.addEventListener("submit", event => {
@@ -22,6 +23,13 @@ form.addEventListener("submit", event => {
                 // 요청이 성공적으로 완료되면 이 함수가 호출됩니다.
                 console.log('Login successful:', response);
                 localStorage.setItem('access_token', response.accessToken);
+
+                // 쿠키에 access_token 저장
+                var now = new Date();
+                now.setTime(now.getTime() + 1 * 3600 * 1000); // 1시간 후 만료
+                document.cookie = "access_token=" + response.accessToken + ";expires=" + now.toUTCString() + ";path=/";
+
+
                 window.location.replace("/");
             },
             error: function (error) {
@@ -30,5 +38,23 @@ form.addEventListener("submit", event => {
                 // 로그인 실패 시의 처리를 여기에 작성할 수 있습니다.
             }
         });
+
+        // axios.post('/member/login', JSON.stringify(loginDto), {
+        //     headers: {
+        //         'content-type': 'application/json'
+        //     }
+        // }).then(res => {
+        //         // 요청이 성공적으로 완료되면 이 함수가 호출됩니다.
+        //         console.log('Login successful:', res);
+        //         axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.accessToken;
+        //         localStorage.setItem('access_token', res.data.accessToken);
+        //         // props.loginCallBack(true);
+        //         // props.history.push("/");
+        //     }).catch(err => {
+        //         console.log(err)
+        //     // 로그인 실패 시의 처리를 여기에 작성할 수 있습니다.
+        // })
+
+
     });
 });

@@ -14,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/")
 public class AuthController {
@@ -26,7 +28,7 @@ public class AuthController {
     }
 
     @PostMapping("/member/login")
-    public ResponseEntity<TokenDto> loginProcess(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<TokenDto> loginProcess(@Valid @RequestBody LoginDto loginDto) {
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
@@ -47,14 +49,14 @@ public class AuthController {
     }
 
 
-    @GetMapping("/api/token")
-    public String getData(@RequestHeader("Authorization") String authorizationHeader) {
-        // Authorization 헤더에서 JWT 토큰 추출
-        String jwtToken = authorizationHeader.substring(7); // "Bearer " 이후의 토큰 추출
-        System.out.println("getData : " +jwtToken);
-
-        // JWT 토큰을 검증하고 유효성을 확인하는 로직 수행
-        // 여기서는 단순히 토큰을 반환하는 예시
-        return "Received JWT token: " + jwtToken;
-    }
+//    @GetMapping("/api/token")
+//    public String getData(@RequestHeader("Authorization") String authorizationHeader) {
+//        // Authorization 헤더에서 JWT 토큰 추출
+//        String jwtToken = authorizationHeader.substring(7); // "Bearer " 이후의 토큰 추출
+//        System.out.println("getData : " +jwtToken);
+//
+//        // JWT 토큰을 검증하고 유효성을 확인하는 로직 수행
+//        // 여기서는 단순히 토큰을 반환하는 예시
+//        return "Received JWT token: " + jwtToken;
+//    }
 }

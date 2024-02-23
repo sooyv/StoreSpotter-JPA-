@@ -1,6 +1,6 @@
 package com.sojoo.StoreSpotter.repository.user;
 
-import com.sojoo.StoreSpotter.entity.Member.User;
+import com.sojoo.StoreSpotter.entity.user.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

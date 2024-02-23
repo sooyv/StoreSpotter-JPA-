@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface IndustryRepository extends JpaRepository<Industry, Long> {
-    Industry findAllByIndustName(String indust_name);
+public interface IndustryRepository extends JpaRepository<Industry, String> {
+    Industry findAllByIndustName(String industName);
+
+    Industry findOneByIndustId(String industId);
     List<Industry> findAll();
 }
