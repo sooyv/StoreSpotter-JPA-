@@ -87,7 +87,6 @@ form.addEventListener("submit", event => {
 
         const name = $("#name").val();
         const email = $("#email").val();
-// const authNum = $("#emailAuthNum").val();
         const password = $("#password").val();
         const checkPassword = $("#checkPassword").val();
         const phone = $("#phone").val();

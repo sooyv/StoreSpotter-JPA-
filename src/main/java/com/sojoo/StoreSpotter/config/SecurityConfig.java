@@ -57,18 +57,25 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
 
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedHandler(jwtAccessDeniedHandler)
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 )
 
                         .authorizeHttpRequests()
-                // main, login 페이지, login 프로세스, 회원가입 페이지, 회원가입 프로세스, 이메일 중복체크 ajax, JWT token 발급, 평균 거리 검색 ajax, token, 메일 인증 ajax, 비밀번호 재발급 ajax, 이메일 찾기 ajax
-                .antMatchers("/", "/login", "/signup","/member/login", "/find-user","/member/signup", "/signup/checkid", "/avg-dist", "search-recommend","/api/token", "/signup/mail-code", "/user/password", "/user/account").permitAll()
-//                .antMatchers("/user").hasRole("USER")
-                .antMatchers("/admin").hasRole("USER")
-                .anyRequest().authenticated(); // 그 외 인증 없이 차단 - 일시 수정
+
+                // main, login 페이지, login 프로세스, 회원가입 페이지, 회원가입 프로세스, 이메일 중복체크 ajax, JWT token 발급, 평균 거리 검색 ajax
+                .antMatchers("/", "/login", "/signup","/member/login", "/member/signup", "/signup/checkid",
+                        "/avg-dist", "/api/token", "/search/recommend", "/mypage", "/favicon.ico", "user",
+                        "/mypage/liked/add", "/mypage/liked/edit", "/mypage/liked/redirect", "/mypage/liked/remove",
+                "/signup/mail-code", "/user/password", "/user/account").permitAll()
+
+                .antMatchers("/user", "/admin").hasRole("USER")
+                .antMatchers().hasRole("ADMIN")
+                .anyRequest().authenticated() // 그 외 인증 없이 차단 - 일시 수정);
+                .and()
+                .apply(new JwtSecurityConfig(tokenProvider));
 
                 // 세션을 사용하지 않기 때문에 STATELESS로 설정
         http.sessionManagement(sessionManagement ->

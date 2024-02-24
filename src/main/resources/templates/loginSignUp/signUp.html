@@ -21,11 +21,16 @@
         <form id="signUpForm" th:action="@{/signup}" method="POST">
             <h1>Create Account</h1>
             <!--            <span>use your email for registration</span>-->
+<!--<<<<<<< HEAD-->
             <input type="text" id="name" name="nickName" placeholder="Name" />
             <div class="email-box">
                 <input type="email" id="email" name="userName" placeholder="Email" />
                 <button type="button" id="send-mail">send</button>
             </div>
+<!--=======-->
+<!--            <input type="text" id="name" name="nickname" placeholder="Name" />-->
+<!--            <input type="email" id="email" name="username" placeholder="Email" />-->
+<!--&gt;>>>>>> 8d21aa2893f887c2d3bd61f0c27ffdb44a7b4e98-->
             <small id="emailHelp"></small>
             <input id="mail-code" placeholder="메일 인증 코드" />
 <!--            <small id="mail-code-help">인증 코드가 일치하지 않습니다</small>-->
@@ -42,5 +47,6 @@
 </div>
 
 <script src="../js/header.js"></script>
+<script src="../js/token.js"></script>
 <script src="../js/loginSignUp/signUp.js"></script>
 </body>

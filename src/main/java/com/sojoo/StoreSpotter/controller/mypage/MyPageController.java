@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,8 +52,6 @@ public class MyPageController {
         return new ModelAndView("/myPage/myStored");
     }
 
-
-
     // 찜 목록 추가(main 페이지)
     @PostMapping("/mypage/liked/add")
     public ResponseEntity<String> addLiked(@RequestParam String indust, @RequestParam String likedAddress,
@@ -63,7 +60,7 @@ public class MyPageController {
         String industId = industryService.industryNameToCode(indust);
 
         ////// 유저 예시 -> 토큰에서 user 받아오면 변경 필요
-        Optional<User> users = userRepository.findById(15L);
+        Optional<User> users = userRepository.findById(16L);
         User user = users.get();
         ////// user 예시 끝
 
@@ -84,7 +81,7 @@ public class MyPageController {
     public ResponseEntity<String> editLiked(@RequestParam String likedName, @RequestParam String editName){
 
         ////// 유저 예시 -> 토큰에서 user 받아오면 변경 필요
-        Optional<User> users = userRepository.findById(15L);
+        Optional<User> users = userRepository.findById(16L);
         User user = users.get();
         ////// user 예시 끝
 
@@ -98,14 +95,13 @@ public class MyPageController {
 
     }
 
-
     // 찜 삭제
     @PostMapping("/mypage/liked/remove")
     @Transactional
     public void removeLiked(@RequestParam String likedName){
 
         ////// 유저 예시 -> 토큰에서 user 받아오면 변경 필요
-        Optional<User> users = userRepository.findById(15L);
+        Optional<User> users = userRepository.findById(16L);
         User user = users.get();
         ////// user 예시 끝
 
