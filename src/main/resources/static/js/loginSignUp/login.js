@@ -9,8 +9,6 @@ form.addEventListener("submit", event => {
         const password = $('#password').val()
 
         const loginDto = {"username": username, "password": password};
-        console.log(username)
-        console.log(password)
 
         $.ajax({
             type: 'POST',
