@@ -1,8 +1,11 @@
-package com.sojoo.StoreSpotter.entity.Member;
+package com.sojoo.StoreSpotter.entity.user;
 
+import com.sojoo.StoreSpotter.entity.myPage.Liked;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -40,4 +43,10 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
+
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user")
+private List<Liked> likedList = new ArrayList<>();
+
+
 }

@@ -8,6 +8,8 @@ import java.util.List;
 
 @Repository
 public interface IndustryRepository extends JpaRepository<Industry, Long> {
-    Industry findAllByIndustName(String indust_name);
+    Industry findAllByIndustName(String industName);
+
+    Industry findOneByIndustId(String industId);
     List<Industry> findAll();
 }

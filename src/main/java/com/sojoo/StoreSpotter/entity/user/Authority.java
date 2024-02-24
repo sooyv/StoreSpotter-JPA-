@@ -1,4 +1,4 @@
-package com.sojoo.StoreSpotter.entity.Member;
+package com.sojoo.StoreSpotter.entity.user;
 
 import lombok.*;
 

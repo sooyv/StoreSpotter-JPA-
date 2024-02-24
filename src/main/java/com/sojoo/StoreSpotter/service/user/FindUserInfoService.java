@@ -1,6 +1,6 @@
 package com.sojoo.StoreSpotter.service.user;
 
-import com.sojoo.StoreSpotter.entity.Member.User;
+import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.service.mail.MailService;
 import lombok.extern.slf4j.Slf4j;

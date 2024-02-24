@@ -1,7 +1,7 @@
 package com.sojoo.StoreSpotter.service.user;
 
-import com.sojoo.StoreSpotter.entity.Member.Authority;
-import com.sojoo.StoreSpotter.entity.Member.User;
+import com.sojoo.StoreSpotter.entity.user.Authority;
+import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.jwt.exception.NotFoundMemberException;
@@ -45,6 +45,7 @@ public class UserService {
     public UserDto getUserWithAuthorities(String username) {
         return UserDto.from(userRepository.findOneWithAuthoritiesByUsername(username).orElse(null));
     }
+
 
     @Transactional(readOnly = true)
     public UserDto getMyUserWithAuthorities() {
