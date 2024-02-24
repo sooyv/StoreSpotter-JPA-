@@ -39,8 +39,9 @@ public class Liked {
     @JoinColumn(name = "region_id")
     private Region region;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+@ManyToOne(fetch = FetchType.LAZY)
+@JoinColumn(name = "user_id")
     private User user;
 
     @Builder

@@ -116,4 +116,15 @@ public class TokenProvider implements InitializingBean {
         }
         return false;
     }
+
+    public String getUsernameFromToken(String accessToken){
+        Claims claims = Jwts
+                .parser()
+                .setSigningKey(key)
+                .parseClaimsJws(accessToken)
+                .getBody();
+
+        return claims.getSubject();
+    }
+
 }
