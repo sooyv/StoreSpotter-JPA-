@@ -1,4 +1,5 @@
 let form = document.getElementById("signUpForm");
+console.log("회원가입 페이지 접근");
 $("#passwordCheckHelp").hide();
 $("#passwordHelp").hide();
 // $("#emailHelp").hide();

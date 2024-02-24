@@ -43,8 +43,8 @@ public class FindUserInfoService {
 
     // --------------- 이메일 찾기 -------------
     // user 이메일 찾기
-    public List<String> findUserEmail(String userName, String userPhone) throws IllegalStateException {
-        List<User> users = userRepository.findByNicknameAndPhone(userName, userPhone);
+    public List<String> findUserEmail(String username, String userPhone) throws IllegalStateException {
+        List<User> users = userRepository.findByNicknameAndPhone(username, userPhone);
         List<String> userEmail = new ArrayList<>();
         for (User user : users) {
             String email = user.getUsername();

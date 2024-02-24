@@ -43,6 +43,7 @@ let markers = [];
 // 지도에 원 그리기
 $("#submit").click(function () {
     let indust = $('#select-industry .select-industry-detail.selected').text();
+    console.log("indust 확인 : " +  indust);
     let region = $('#address').val();
     let dist = $('#dist-value').text();
     const addbox = document.getElementById('address');

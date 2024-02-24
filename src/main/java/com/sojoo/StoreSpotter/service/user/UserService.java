@@ -2,6 +2,7 @@ package com.sojoo.StoreSpotter.service.user;
 
 import com.sojoo.StoreSpotter.entity.user.Authority;
 import com.sojoo.StoreSpotter.entity.user.User;
+import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.jwt.exception.NotFoundMemberException;
@@ -10,6 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -17,10 +22,12 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenProvider tokenProvider;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TokenProvider tokenProvider) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.tokenProvider = tokenProvider;
     }
 
     @Transactional
@@ -60,5 +67,28 @@ public class UserService {
         Optional<User> user = userRepository.findByUsername(username);
         return user;
     }
+
+    public User getUserFromCookie(HttpServletRequest request){
+        String name = "access_token";
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null && cookies.length > 0) {
+            Optional<Cookie> tokens = Arrays.stream(cookies)
+                    .filter(cookie -> name.equals(cookie.getName()))
+                    .findFirst();
+            if (tokens.isPresent()) {
+                Cookie token = tokens.get();
+                String accessToken = String.valueOf(token.getValue());
+                boolean isToken = tokenProvider.validateToken(accessToken);
+
+                if (isToken){
+                    String username = tokenProvider.getUsernameFromToken(accessToken);
+                    Optional<User> users = userRepository.findByUsername(username);
+                    return users.orElse(null);
+                }
+            }
+        }
+        return null;
+    }
+
 
 }

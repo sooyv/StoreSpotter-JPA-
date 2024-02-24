@@ -1,6 +1,4 @@
-
 let form = document.getElementById("loginForm");
-
 form.addEventListener("submit", event => {
     event.preventDefault();
 
@@ -11,6 +9,8 @@ form.addEventListener("submit", event => {
         const password = $('#password').val()
 
         const loginDto = {"username": username, "password": password};
+        console.log(username)
+        console.log(password)
 
         $.ajax({
             type: 'POST',
@@ -20,7 +20,6 @@ form.addEventListener("submit", event => {
             },
             data: JSON.stringify(loginDto),
             success: function (response) {
-                // 요청이 성공적으로 완료되면 이 함수가 호출됩니다.
                 console.log('Login successful:', response);
                 // localStorage.setItem('access_token', response.accessToken);
 
@@ -32,27 +31,10 @@ form.addEventListener("submit", event => {
             },
             error: function (error) {
                 // 요청이 실패하면 이 함수가 호출됩니다.
-                console.error('Login failed:', xhr.responseText);
+                console.error('Login failed:', error.responseText);
+                alert("로그인에 실패하였습니다.")
                 // 로그인 실패 시의 처리를 여기에 작성할 수 있습니다.
             }
         });
-
-        // axios.post('/member/login', JSON.stringify(loginDto), {
-        //     headers: {
-        //         'content-type': 'application/json'
-        //     }
-        // }).then(res => {
-        //         // 요청이 성공적으로 완료되면 이 함수가 호출됩니다.
-        //         console.log('Login successful:', res);
-        //         axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.accessToken;
-        //         localStorage.setItem('access_token', res.data.accessToken);
-        //         // props.loginCallBack(true);
-        //         // props.history.push("/");
-        //     }).catch(err => {
-        //         console.log(err)
-        //     // 로그인 실패 시의 처리를 여기에 작성할 수 있습니다.
-        // })
-
-
     });
 });
