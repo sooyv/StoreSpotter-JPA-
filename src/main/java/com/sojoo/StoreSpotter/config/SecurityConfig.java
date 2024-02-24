@@ -72,11 +72,13 @@ public class SecurityConfig {
                         "/mypage/liked/add", "/mypage/liked/edit", "/mypage/liked/redirect", "/mypage/liked/remove",
                 "/signup/mail-code", "/user/password", "/user/account").permitAll()
 
-                .antMatchers("/user", "/admin").hasRole("USER")
-                .antMatchers().hasRole("ADMIN")
+                .antMatchers("/user").hasRole("USER")
+                .antMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated() // 그 외 인증 없이 차단 - 일시 수정);
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
+
+        http.exceptionHandling().accessDeniedPage("/");        // 403 발생시 main 페이지로 이동
 
                 // 세션을 사용하지 않기 때문에 STATELESS로 설정
         http.sessionManagement(sessionManagement ->
