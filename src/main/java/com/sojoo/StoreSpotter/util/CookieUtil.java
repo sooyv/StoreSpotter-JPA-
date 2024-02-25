@@ -1,6 +1,6 @@
 package com.sojoo.StoreSpotter.util;
 
-import org.springframework.security.web.authentication.rememberme.CookieTheftException;
+import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
 
 import javax.servlet.http.Cookie;
@@ -8,10 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Base64;
 
+@Component
 public class CookieUtil {
 
     // 요청 값(이름, 값, 만료기간)을 바탕으로 Http 응답에 쿠키 추가
-    public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
+    public static Cookie addCookie(HttpServletResponse response, String name, String value, int maxAge) {
+//    public Cookie addCookie(String name, String value, int maxAge) {
         Cookie cookie = new Cookie(name, value);
         // 쿠키 속성 설정 추가
         cookie.setHttpOnly(true);   //httpOnly 옵션 설정
@@ -19,6 +21,8 @@ public class CookieUtil {
         cookie.setPath("/");
         cookie.setMaxAge(maxAge);
         response.addCookie(cookie);
+//        return cookie;
+        return cookie;
     }
 
     // 쿠키의 이름을 입력받아 쿠키 삭제
