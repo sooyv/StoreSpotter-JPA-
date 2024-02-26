@@ -45,9 +45,18 @@ public class AuthController {
     @Transactional
     @PostMapping("/member/logout")
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("logout 실행");
-        cookieUtil.deleteCookie(request, response, "access_token");
-        return ResponseEntity.ok("logout");
+        log.info("logout 실행 - /member/logout");
+
+        try {
+            cookieUtil.deleteCookie(request, response, "access_token");
+            return ResponseEntity.ok("logout");
+        } catch (Exception e) {
+            log.error("로그아웃 중 오류 발생", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("로그아웃 중 오류 발생");
+        }
+
+//        cookieUtil.deleteCookie(request, response, "access_token");
+//        return ResponseEntity.ok("logout");
     }
 
     @PostMapping("/member/login")

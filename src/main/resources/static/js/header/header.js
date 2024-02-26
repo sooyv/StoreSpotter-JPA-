@@ -13,7 +13,7 @@ $(document).ready(function() {
             url: '/member/logout',
             success: function(response) {
                 console.log('로그아웃이 완료되었습니다.', response);
-                window.location.href = '/'; // 메인 페이지로 이동
+                window.location.replace("/");
             },
             error: function(xhr, status, error) {
                 console.error('로그아웃 요청이 실패했습니다.', error);
