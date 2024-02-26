@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -40,6 +41,15 @@ public class AuthController {
         this.cookieUtil = cookieUtil;
     }
 
+    // 로그아웃
+    @Transactional
+    @PostMapping("/member/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("logout 실행");
+        cookieUtil.deleteCookie(request, response, "access_token");
+        return ResponseEntity.ok("logout");
+    }
+
     @PostMapping("/member/login")
     public ResponseEntity<TokenDto> loginProcess(@Valid @RequestBody LoginDto loginDto, HttpServletResponse response) throws Exception {
 
@@ -52,12 +62,6 @@ public class AuthController {
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             log.info("loginProcess authentication : " + authentication);
-
-//        String jwt = tokenProvider.createToken(authentication);
-//            TokenDto tokenDto = new TokenDto(
-//                    tokenProvider.createAccessToken(authentication),
-//                    tokenProvider.createRefreshToken(authentication)
-//            );
 
             String accessToken = tokenProvider.createAccessToken(authentication);
             String refreshToken = tokenProvider.createRefreshToken(authentication);

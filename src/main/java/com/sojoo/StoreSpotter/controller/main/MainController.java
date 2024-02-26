@@ -40,7 +40,7 @@ public class MainController {
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response,
                               Authentication authentication, Principal principal) {
 //        System.out.println(authentication.getName());
-        return new ModelAndView("index/index");
+        return new ModelAndView("/index/index");
     }
 
 

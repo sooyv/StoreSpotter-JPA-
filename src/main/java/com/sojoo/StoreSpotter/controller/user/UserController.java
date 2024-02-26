@@ -46,7 +46,7 @@ public class UserController {
         return new ModelAndView("loginSignUp/login");
     }
 
-        // 회원가입 페이지
+    // 회원가입 페이지
     @GetMapping("/signup")
     public ModelAndView signUpPage(Model model) {
         model.addAttribute("userDto", new UserDto());
