@@ -5,16 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.servlet.http.Cookie;
+
 @Data
 @Builder
 //@AllArgsConstructor
 @NoArgsConstructor
 public class TokenDto {
 //    String token;
-    private String accessToken;
-    private String refreshToken;
+    private Cookie accessToken;
+    private Cookie refreshToken;
 
-    public TokenDto(String accessToken, String refreshToken) {
+    public TokenDto(Cookie accessToken, Cookie refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }

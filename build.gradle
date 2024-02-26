@@ -49,9 +49,6 @@ dependencies {
 
 	implementation 'javax.xml.bind:jaxb-api:2.3.1'
 
-	//jpa
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
 	// Hibernate ORM 의존성 추가
 	implementation 'org.hibernate:hibernate-core:5.6.15.Final'
 	// Hibernate Spatial 의존성 추가
@@ -61,6 +58,9 @@ dependencies {
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+
+	// naver smtp
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
 	//redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'

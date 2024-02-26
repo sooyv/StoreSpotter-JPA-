@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-    <link rel="StoreSpotter Icon" type="png" href="/css/img/main/free-icon-pin.png">
     <title>Store Spotter</title>
+    <link rel="StoreSpotter Icon" type="png" href="/css/img/main/free-icon-pin.png">
     <link href="/css/index.css" rel="stylesheet">
     <link href="/css/header.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=2n6hjq6jro&submodules=geocoder"></script>
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
     <link href="https://www.flaticon.com/kr/free-icons/" title="물음표 아이콘  제작자: Saepul Nahwan - Flaticon, 화살표 버튼 아이콘  제작자: Stasy - Flaticon, 위치 핀 아이콘  제작자: Smashicons - Flaticon, 더 아이콘  제작자: Amazona Adorada - Flaticon, 확대경 아이콘  제작자: Creative Stall Premium - Flaticon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;500&family=Ubuntu:wght@500&display=swap" rel="stylesheet"></head>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
+</head>
 <body>
 <div th:replace="/header :: header"></div>
 <div id="modal-overlay"></div>
@@ -115,11 +113,9 @@
         // ...
     }
 </script>
+<script src="../js/header.js"></script>
 <script src="../js/index/index_naverMapSearchApi.js"></script>
 <script src="../js/index/index_sidebarButton.js"></script>
 <script src="../js/myPage/myStored.js"></script>
-
-<script src="../js/header.js"></script>
-<!--<script src="../js/loginSignUP/login.js"></script>-->
 </body>
 </html>

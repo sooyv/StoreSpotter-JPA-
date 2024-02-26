@@ -7,10 +7,6 @@ import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.jwt.exception.NotFoundMemberException;
 import com.sojoo.StoreSpotter.jwt.securityUtil.SecurityUtil;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,15 +17,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
-import java.security.Key;
-
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
-
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TokenProvider tokenProvider) {
         this.userRepository = userRepository;
@@ -47,6 +40,7 @@ public class UserService {
                 .username(userDto.getUsername())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .nickname(userDto.getNickname())
+                .phone(userDto.getPhone())
                 .authorities(Collections.singleton(authority))
                 .activated(true)
                 .build();
@@ -59,6 +53,7 @@ public class UserService {
         return UserDto.from(userRepository.findOneWithAuthoritiesByUsername(username).orElse(null));
     }
 
+
     @Transactional(readOnly = true)
     public UserDto getMyUserWithAuthorities() {
         return UserDto.from(
@@ -66,6 +61,11 @@ public class UserService {
                         .flatMap(userRepository::findOneWithAuthoritiesByUsername)
                         .orElseThrow(() -> new NotFoundMemberException("Member not found"))
         );
+    }
+
+    public Optional<User> findUser(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        return user;
     }
 
     public User getUserFromCookie(HttpServletRequest request){
@@ -91,7 +91,4 @@ public class UserService {
     }
 
 
-    public User findById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저정보를 찾을 수 없습니다."));
-    }
 }

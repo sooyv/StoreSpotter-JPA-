@@ -1,58 +1,59 @@
 let form = document.getElementById("signUpForm");
+console.log("회원가입 페이지 접근");
 $("#passwordCheckHelp").hide();
 $("#passwordHelp").hide();
 // $("#emailHelp").hide();
-let idchk = false;
-let mailchk = false;
-
-let email = $("#email");
-// 이메일 중복 검사
-// $("#email").on("keyup", function (event) {
-//     console.log("email 검사")
+// let idchk = false;
+// let mailchk = false;
 //
-//     const emailRegExp = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/;
-//
-//     // 이메일 정규식 적용
-//     if (!emailRegExp.test($("#email").val())) {
-//         idchk = false;
-//         var emailHelp = document.getElementById("emailHelp");
-//         emailHelp.innerHTML = "이메일 형식에 맞게 작성해주세요"
-//         $("#emailHelp").css({
-//             "color": "#FA3E3E",
-//         })
-//
-//     } else {            // 중복체크
-//         idchk = true;
-//         $.ajax({
-//             type : "POST",
-//             url : "/signup/check-email",
-//             data : {
-//                 "id" : email.val(),
-//                 "type" : "email"
-//             },
-//             success : function(data) {
-//                 if (data === 1) {                // 1이면 이메일 중복
-//                     console.log(data);
-//                     mailchk = false;
-//                     var elements = document.getElementById("emailHelp");
-//                     elements.innerHTML = "이미 사용중인 이메일입니다"
-//                     $("#emailHelp").css({
-//                         "color": "#FA3E3E",
-//                     })
-//
-//                 } else if (data === 0) {                // 아니면 중복아님
-//                     console.log(data);
-//                     mailchk = true;
-//                     var emailHelp = document.getElementById("emailHelp");
-//                     emailHelp.innerHTML = "사용 가능한 이메일입니다"
-//                     $("#emailHelp").css({
-//                         "color": "green",
-//                     })
-//                 }
-//             }
-//         })
-//     }
-// });
+// let email = $("#email");
+// // 이메일 중복 검사
+// // $("#email").on("keyup", function (event) {
+// //     console.log("email 검사")
+// //
+// //     const emailRegExp = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/;
+// //
+// //     // 이메일 정규식 적용
+// //     if (!emailRegExp.test($("#email").val())) {
+// //         idchk = false;
+// //         var emailHelp = document.getElementById("emailHelp");
+// //         emailHelp.innerHTML = "이메일 형식에 맞게 작성해주세요"
+// //         $("#emailHelp").css({
+// //             "color": "#FA3E3E",
+// //         })
+// //
+// //     } else {            // 중복체크
+// //         idchk = true;
+// //         $.ajax({
+// //             type : "POST",
+// //             url : "/signup/check-email",
+// //             data : {
+// //                 "id" : email.val(),
+// //                 "type" : "email"
+// //             },
+// //             success : function(data) {
+// //                 if (data === 1) {                // 1이면 이메일 중복
+// //                     console.log(data);
+// //                     mailchk = false;
+// //                     var elements = document.getElementById("emailHelp");
+// //                     elements.innerHTML = "이미 사용중인 이메일입니다"
+// //                     $("#emailHelp").css({
+// //                         "color": "#FA3E3E",
+// //                     })
+// //
+// //                 } else if (data === 0) {                // 아니면 중복아님
+// //                     console.log(data);
+// //                     mailchk = true;
+// //                     var emailHelp = document.getElementById("emailHelp");
+// //                     emailHelp.innerHTML = "사용 가능한 이메일입니다"
+// //                     $("#emailHelp").css({
+// //                         "color": "green",
+// //                     })
+// //                 }
+// //             }
+// //         })
+// //     }
+// // });
 
 
 // 비밀번호 형식 정규화(최소 8자, 영문 숫자 특수문자)
@@ -79,7 +80,7 @@ $("#checkPassword").on("keyup", function(event) {
     }
 });
 
-
+// 회원가입
 form.addEventListener("submit", event => {
     event.preventDefault();
 
@@ -89,6 +90,7 @@ form.addEventListener("submit", event => {
         const email = $("#email").val();
         const password = $("#password").val();
         const checkPassword = $("#checkPassword").val();
+        const phone = $("#phone").val();
 
         // 모든 항목 작성 검사
         if (!name || !email || !password || !checkPassword) {
@@ -96,7 +98,8 @@ form.addEventListener("submit", event => {
             return;
         }
 
-        const userDto = {"nickname": name, "username": email, "password" : password, "checkPassword" : checkPassword};
+        const userDto = {"nickname": name, "username": email,
+            "password" : password, "checkPassword" : checkPassword, "phone" : phone};
 
         $.ajax({
             type: 'POST',
@@ -141,4 +144,45 @@ form.addEventListener("submit", event => {
         });
     });
 });
+
+// 메일 인증 smtp
+$("#send-mail").on("click", function() {
+    const email = $("#email").val();
+    console.log("메일 인증 전송 : " + email);
+    if (email == "") {
+        alert("이메일을 입력하세요");
+        console.log("이메일을 입력하세요")
+        email.focus();
+        return;
+    }
+
+    // if(!idchk) {
+    //     alert("이메일을 형식에 맞게 입력해주세요");
+    //     email.focus();
+    //     return;
+    // }
+    //
+    // if(!mailchk) {
+    //     alert("이미 존재하는 이메일입니다. 사용하실 수 없습니다.");
+    //     email.focus();
+    //     return;
+    // }
+
+    $.ajax({
+        type: 'POST',
+        url: "/signup/mail-code",
+        data: {
+            email : email
+        },
+        success: function(response) {
+            console.log(response)
+            alert("이메일로 인증번호가 발송되었습니다.");
+            console.log("이메일로 인증번호가 발송되었습니다.")
+        },
+        error: function(error) {
+            console.log(error)
+        }
+    });
+});
+
 
