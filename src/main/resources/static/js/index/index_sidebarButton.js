@@ -554,7 +554,7 @@ function clickAddressSearch() {
 
 function selectDist(dist) {
     return new Promise((resolve) => {
-        document.getElementById('dist-value').value = dist;
+        document.getElementById('dist-value').value = parseInt(dist);
         resolve(); // 비동기 작업이 아니므로 바로 resolve
     });
 }
@@ -595,4 +595,9 @@ $(document).ready(function() {
             }, 1000); // 주소 입력 후 'address-search' 클릭까지 대기 시간
         }, 1000); // industry 클릭 후 주소 입력까지 대기 시간
     }
+
+    // 사용 후 로컬 스토리지에서 해당 항목 삭제
+    localStorage.removeItem('industry');
+    localStorage.removeItem('address');
+    localStorage.removeItem('dist');
 });

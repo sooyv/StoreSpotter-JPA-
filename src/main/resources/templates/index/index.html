@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <title>Store Spotter</title>
     <link rel="StoreSpotter Icon" type="png" href="/css/img/main/free-icon-pin.png">
-    <link href="/css/index.css" rel="stylesheet">
-    <link href="/css/header.css" rel="stylesheet">
+    <link href="/css/index/index.css" rel="stylesheet">
+    <link href="/css/header/header.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=2n6hjq6jro&submodules=geocoder"></script>
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
-<div th:replace="/header :: header"></div>
+<div th:replace="header :: header"></div>
 <div id="modal-overlay"></div>
 <div id="modal">
     <div class="main">
@@ -113,9 +113,8 @@
         // ...
     }
 </script>
-<script src="../js/header.js"></script>
-<script src="../js/index/index_naverMapSearchApi.js"></script>
-<script src="../js/index/index_sidebarButton.js"></script>
-<script src="../js/myPage/myStored.js"></script>
+<script src="/js/index/index_naverMapSearchApi.js"></script>
+<script src="/js/index/index_sidebarButton.js"></script>
+<script src="/js/myPage/myStored.js"></script>
 </body>
 </html>

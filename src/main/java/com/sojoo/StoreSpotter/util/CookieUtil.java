@@ -27,7 +27,7 @@ public class CookieUtil {
 
     // 쿠키의 이름을 입력받아 쿠키 삭제
     // 파라미터로 넘어온 키의 쿠키를 빈값으로 바꾸고 만료 시간을 0으로 설정해 쿠키가 재생성 되자마자 만료처리
-    public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
+    public void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
         System.out.println("deleteCookie 실행");
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
