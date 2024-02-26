@@ -25,7 +25,7 @@ form.addEventListener("submit", event => {
                 // var now = new Date();
                 // now.setTime(now.getTime() + 1 * 3600 * 1000); // 1시간 후 만료
                 // document.cookie = "access_token=" + response.accessToken + ";expires=" + now.toUTCString() + ";path=/";
-                // window.location.replace("/");
+                window.location.replace("/");
             },
             error: function (error) {
                 // 요청이 실패하면 이 함수가 호출됩니다.

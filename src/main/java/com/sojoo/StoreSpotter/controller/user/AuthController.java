@@ -23,6 +23,8 @@ import javax.validation.Valid;
 import java.time.Duration;
 import java.util.Date;
 
+import static com.sojoo.StoreSpotter.util.CookieUtil.*;
+
 @Slf4j
 @RestController
 //@RequestMapping("/")
@@ -60,7 +62,7 @@ public class AuthController {
             String accessToken = tokenProvider.createAccessToken(authentication);
             String refreshToken = tokenProvider.createRefreshToken(authentication);
 
-            Cookie accessTokenCookie = cookieUtil.addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
+            Cookie accessTokenCookie = addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
 //            Cookie refreshTokenCookie = cookieUtil.addCookie("refresh_token", refreshToken);
 
             TokenDto tokenDto = TokenDto.builder()

@@ -1,10 +1,12 @@
 package com.sojoo.StoreSpotter.controller.user;
 
 import com.sojoo.StoreSpotter.dto.user.UserDto;
+import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
 import com.sojoo.StoreSpotter.service.mail.MailService;
 import com.sojoo.StoreSpotter.service.user.FindUserInfoService;
 import com.sojoo.StoreSpotter.service.user.UserService;
 import com.sojoo.StoreSpotter.service.user.UserValidateService;
+import com.sojoo.StoreSpotter.util.CookieUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -25,21 +29,24 @@ public class UserController {
     private final MailService mailService;
     private final UserValidateService userValidateService;
     private final FindUserInfoService findUserInfoService;
+    private final CookieUtil cookieUtil;
 
-    public UserController(UserService userService, MailService mailService, UserValidateService userValidateService, FindUserInfoService findUserInfoService) {
+    public UserController(UserService userService, MailService mailService, UserValidateService userValidateService, FindUserInfoService findUserInfoService, CookieUtil cookieUtil) {
         this.userService = userService;
         this.mailService = mailService;
         this.userValidateService = userValidateService;
         this.findUserInfoService = findUserInfoService;
+        this.cookieUtil = cookieUtil;
     }
 
     // 로그인 페이지
     @GetMapping("/login")
     public ModelAndView login() {
+        System.out.println("login 실행");
         return new ModelAndView("loginSignUp/login");
     }
 
-    // 회원가입 페이지
+        // 회원가입 페이지
     @GetMapping("/signup")
     public ModelAndView signUpPage(Model model) {
         model.addAttribute("userDto", new UserDto());

@@ -28,19 +28,33 @@ public class CookieUtil {
     // 쿠키의 이름을 입력받아 쿠키 삭제
     // 파라미터로 넘어온 키의 쿠키를 빈값으로 바꾸고 만료 시간을 0으로 설정해 쿠키가 재생성 되자마자 만료처리
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
+        System.out.println("deleteCookie 실행");
         Cookie[] cookies = request.getCookies();
-        if (cookies == null) {
-            return;
-        }
-
-        for (Cookie cookie : cookies) {
-            if (name.equals(cookie.getName())) {
-                cookie.setValue("");
-                cookie.setPath("/");
-                cookie.setMaxAge(0);
-                response.addCookie(cookie);
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(name)) {
+                    cookie.setValue("");
+                    cookie.setPath("/");
+                    cookie.setMaxAge(0); // 쿠키 만료시간을 0으로 설정하여 삭제합니다.
+                    cookie.setHttpOnly(true); // HttpOnly 속성 설정
+                    cookie.setSecure(true); // Secure 속성 설정
+                    response.addCookie(cookie); // 클라이언트에게 수정된 쿠키를 전달합니다.
+                }
             }
         }
+//        Cookie[] cookies = request.getCookies();
+//        if (cookies == null) {
+//            return;
+//        }
+//
+//        for (Cookie cookie : cookies) {
+//            if (name.equals(cookie.getName())) {
+//                cookie.setValue("");
+//                cookie.setPath("/");
+//                cookie.setMaxAge(0);
+//                response.addCookie(cookie);
+//            }
+//        }
     }
 
 
@@ -58,6 +72,4 @@ public class CookieUtil {
                 )
         );
     }
-
-
 }
