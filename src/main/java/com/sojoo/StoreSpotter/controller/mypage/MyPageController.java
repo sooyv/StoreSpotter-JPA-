@@ -113,12 +113,10 @@ public class MyPageController {
 
     // 찜 바로가기(지도검색)
 //    @GetMapping("mypage/liked/redirect")
-//    public void redirectLiked(@RequestParam String likedName){
+//    public void redirectLiked(HttpServletRequest request,
+//                  @RequestParam String likedName){
 //
-//        ////// 유저 예시 -> 토큰에서 user 받아오면 변경 필요
-//        Optional<User> users = userRepository.findById(3L);
-//        User user = users.get();
-//        ////// user 예시 끝
+//        User user = userService.getUserFromCookie(request);
 //
 //
 //    }

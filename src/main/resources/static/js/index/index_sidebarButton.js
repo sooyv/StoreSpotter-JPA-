@@ -399,6 +399,7 @@ $("#submit").click(function () {
 
 
 $(document).ready(function () {
+
     // 업종 선택을 위한 이벤트 리스너 추가
     $('#select-industry .select-industry-detail').click(function () {
         // 선택된 업종 초기화
@@ -511,5 +512,86 @@ document.addEventListener("DOMContentLoaded", function () {
 //         // 사용 후 로컬 스토리지에서 해당 항목 삭제
 //         localStorage.removeItem('industry');
 //         localStorage.removeItem('address');
+//         localStorage.removeItem('dist');
 //     }
 // });
+
+
+
+function clickIndustry(industry) {
+    return new Promise((resolve) => {
+        var industryDetails = document.querySelectorAll('#select-industry .select-industry-detail');
+        industryDetails.forEach(function(detail) {
+            if (detail.textContent === industry) {
+                detail.click();
+            }
+        });
+        resolve(); // 비동기 작업이 아니므로 바로 resolve
+    });
+}
+
+function enterAddress(address) {
+    return new Promise((resolve) => {
+        document.getElementById('address').value = address;
+        resolve(); // 비동기 작업이 아니므로 바로 resolve
+    });
+}
+
+function clickAddressSearch() {
+    return new Promise((resolve, reject) => {
+        // 'address-search' 버튼 클릭 처리
+        document.getElementById('address-search').click();
+
+        // 클릭 후 비동기 작업이 완료될 때까지 기다리는 로직 필요
+        // 예: AJAX 요청 완료, 특정 요소의 로딩 완료 등
+        // 이 예시에서는 setTimeout을 사용해 모의합니다
+        setTimeout(() => {
+            resolve(); // 비동기 작업 완료 시 resolve
+        }, 1000); // 실제 코드에서는 적절한 비동기 완료 조건을 사용해야 합니다.
+    });
+}
+
+function selectDist(dist) {
+    return new Promise((resolve) => {
+        document.getElementById('dist-value').value = dist;
+        resolve(); // 비동기 작업이 아니므로 바로 resolve
+    });
+}
+
+function clickSubmit() {
+    return new Promise((resolve) => {
+        document.getElementById('submit').click();
+        resolve(); // 비동기 작업이 아니므로 바로 resolve
+    });
+}
+
+$(document).ready(function() {
+    // 로컬 스토리지에서 'industry'와 'address' 값을 읽기
+    var industry = localStorage.getItem('industry');
+    var address = localStorage.getItem('address');
+    var dist = localStorage.getItem("dist")
+    if (dist && address && industry) {
+        // industry 클릭
+        clickIndustry(industry);
+
+        // 주소 값에 주소 입력 후 일정 시간 대기
+        setTimeout(function() {
+            enterAddress(address);
+
+            // 'address-search' 버튼 클릭 후 일정 시간 대기
+            setTimeout(function() {
+                clickAddressSearch();
+
+                // dist 선택 후 일정 시간 대기
+                setTimeout(function() {
+                    selectDist(dist);
+
+                    // 제출버튼 클릭
+                    setTimeout(function() {
+                        clickSubmit();
+                    }, 1000); // dist 선택 후 제출버튼 클릭까지 대기 시간
+                }, 1000); // 'address-search' 클릭 후 dist 선택까지 대기 시간
+            }, 1000); // 주소 입력 후 'address-search' 클릭까지 대기 시간
+        }, 1000); // industry 클릭 후 주소 입력까지 대기 시간
+    }
+});
