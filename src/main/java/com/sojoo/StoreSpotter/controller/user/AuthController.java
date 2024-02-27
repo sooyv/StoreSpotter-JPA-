@@ -54,9 +54,6 @@ public class AuthController {
             log.error("로그아웃 중 오류 발생", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("로그아웃 중 오류 발생");
         }
-
-//        cookieUtil.deleteCookie(request, response, "access_token");
-//        return ResponseEntity.ok("logout");
     }
 
     @PostMapping("/member/login")
@@ -94,7 +91,7 @@ public class AuthController {
     }
 
 
-    //    @GetMapping("/api/token")
+//        @GetMapping("/api/token")
 //    public String getData(@RequestHeader("Authorization") String authorizationHeader) {
 //        // Authorization 헤더에서 JWT 토큰 추출
 //        String jwtToken = authorizationHeader.substring(7); // "Bearer " 이후의 토큰 추출

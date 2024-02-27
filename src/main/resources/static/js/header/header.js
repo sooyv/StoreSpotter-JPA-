@@ -7,7 +7,7 @@ document.getElementById("menu-bar-btn").addEventListener("click", function () {
 // 로그아웃
 $(document).ready(function() {
     $('#logout').click(function(event) {
-        // POST 요청을 보냅니다.
+        event.preventDefault();
         $.ajax({
             type: 'POST',
             url: '/member/logout',

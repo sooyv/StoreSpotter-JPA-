@@ -41,7 +41,7 @@ public class UserController {
 
     // 로그인 페이지
     @GetMapping("/login")
-    public ModelAndView login() {
+    public ModelAndView login(Model model) {
         System.out.println("login 실행");
         return new ModelAndView("loginSignUp/login");
     }
@@ -85,6 +85,7 @@ public class UserController {
 
         userService.signup(userDto);
         return new ResponseEntity<>("Successfully sign-up", HttpStatus.OK);    }
+
 
     // 회원가입 메일 인증
     @PostMapping("/signup/mail-code")

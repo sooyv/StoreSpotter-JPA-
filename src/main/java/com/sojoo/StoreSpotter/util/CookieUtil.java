@@ -1,7 +1,6 @@
 package com.sojoo.StoreSpotter.util;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
 
@@ -9,10 +8,26 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Base64;
+import java.util.Optional;
 
 @Slf4j
 @Component
 public class CookieUtil {
+
+    public static Cookie getCookie(HttpServletRequest request, String name) {
+        log.info("getCookie");
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null && cookies.length > 0) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(name)) {
+                    return cookie;
+                }
+            }
+        }
+
+        return null;
+    }
 
     // 요청 값(이름, 값, 만료기간)을 바탕으로 Http 응답에 쿠키 추가
     public static Cookie addCookie(HttpServletResponse response, String name, String value, int maxAge) {

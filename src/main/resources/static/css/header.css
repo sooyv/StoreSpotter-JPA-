@@ -47,6 +47,7 @@
     text-decoration-line: none;
     padding: 15px;
     color: gray;
+    cursor: pointer;
 }
 
 .header-ele:hover {

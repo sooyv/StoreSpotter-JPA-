@@ -16,10 +16,10 @@
         <div id="menu-bar">
             <div id="menu-bar-btn"><img id="menu-bar-icon" src="/css/img/main/메뉴바.png"></div>
             <div id="header-content">
-                <div id="logout"><a class="header-ele">로그아웃</a></div>
-                <div><a class="header-ele" href="login">로그인</a></div>
-<!--                <div><a class="header-ele" href="#">마이페이지</a></div>-->
-                <div><a class="header-ele" href="signup">회원가입</a></div>
+                <div><a class="header-ele" th:text="${loginOrLogout}" th:if="${loginOrLogout == '로그인'}" th:href="@{/login}"></a>
+                    <span class="header-ele" id="logout" th:unless="${loginOrLogout == '로그인'}" th:text="${loginOrLogout}"></span>
+                </div>
+                <div><a class="header-ele" th:text="${signOrMypage}" th:href="${signOrMypage == '회원가입' ? '/signup' : '/mypage'}"></a></div>
             </div>
         </div>
     </div>

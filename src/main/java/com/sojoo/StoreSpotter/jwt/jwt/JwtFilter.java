@@ -34,8 +34,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String jwt = null;
 //        String jwt = resolveToken(request);
-        if (request.getCookies() != null){
-            for (Cookie cookie: request.getCookies()){
+        if (request.getCookies() != null) {
+            for (Cookie cookie: request.getCookies()) {
                 if (cookie.getName().equals("access_token")) {
                     jwt = cookie.getValue();
                 }
