@@ -1,7 +1,30 @@
-document.getElementById("menu-bar-btn").addEventListener("click", function () {
-    let header_content = document.getElementById("header-content");
-    header_content.classList.toggle("active");
+// 토글 클릭시 900px 이하의 화면에서는 "000님 반갑습니다" 나오지 않도록 수정
+window.addEventListener("load", function () {
+    let menuBarButton = document.getElementById("menu-bar-btn");
+    let headerContent = document.getElementById("header-content");
+    let userNicknameMsg = document.getElementById("userNickname-msg");
+
+    function toggleUserNicknameMsgDisplay() {
+        if (window.innerWidth <= 900) {
+            userNicknameMsg.style.display = "none";
+        } else {
+            userNicknameMsg.style.display = ""; // 기본값으로 설정하여 CSS에 따라 표시됩니다.
+        }
+    }
+
+    menuBarButton.addEventListener("click", function () {
+        headerContent.classList.toggle("active");
+        toggleUserNicknameMsgDisplay();
+    });
+
+    window.addEventListener("resize", function () {
+        toggleUserNicknameMsgDisplay();
+    });
+
+    // 페이지 로드 시 초기화
+    toggleUserNicknameMsgDisplay();
 });
+
 
 
 // 로그아웃
@@ -21,4 +44,5 @@ $(document).ready(function() {
         });
     });
 });
+
 

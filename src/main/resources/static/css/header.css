@@ -56,6 +56,16 @@
     border-radius: 25px;
 }
 
+
+#userNickname-msg {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    font-size: medium;
+    text-decoration-line: none;
+    padding: 15px;
+    color: gray;
+}
+
+
 #menu-bar {
     display: flex;
     justify-content: center;

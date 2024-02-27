@@ -5,6 +5,7 @@ import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.util.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.implementation.bytecode.ShiftRight;
 import org.springframework.security.config.annotation.web.configurers.UrlAuthorizationConfigurer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -53,14 +54,17 @@ public class MvcInterceptor implements HandlerInterceptor {
                 // 유저 존재 여부 확인
                 Optional<User> user = userRepository.findByUsername(username);
                 if (user.isPresent()) {
+                    String userNickname = user.get().getNickname();
                     String signOrMypage = "마이페이지";
                     String loginOrLogout = "로그아웃";
 
                     // 모델에 데이터 추가
+                    modelAndView.addObject("userNickname", userNickname);
                     modelAndView.addObject("signOrMypage", signOrMypage);
                     modelAndView.addObject("loginOrLogout", loginOrLogout);
                 } else {
                     log.info("user is null");
+
                     String signOrMypage = "회원가입";
                     String loginOrLogout = "로그인";
 
