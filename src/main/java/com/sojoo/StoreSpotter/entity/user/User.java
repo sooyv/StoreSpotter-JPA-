@@ -46,7 +46,7 @@ public class User {
 
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @OneToMany(mappedBy = "user")
-private List<Liked> likedList = new ArrayList<>();
+    private List<Liked> likedList = new ArrayList<>();
 
 
 }

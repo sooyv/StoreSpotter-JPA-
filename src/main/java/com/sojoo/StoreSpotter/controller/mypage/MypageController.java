@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.awt.*;
 import java.util.List;
 
 @RestController
@@ -132,9 +131,9 @@ public class MypageController {
     public ModelAndView myInfo(Model model, HttpServletRequest request) {
 
         User user = userService.getUserFromCookie(request);
-        String userNickname = user.getNickname();
+        String userPhone = user.getPhone();
 
-        model.addAttribute("userNickname", userNickname); // 모델에 username 추가
+        model.addAttribute("userPhone", userPhone); // 모델에 username 추가
 
 
 
