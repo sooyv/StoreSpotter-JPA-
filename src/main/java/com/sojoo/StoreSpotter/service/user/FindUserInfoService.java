@@ -33,7 +33,8 @@ public class FindUserInfoService {
         Optional<User> user = userService.findUser(email);
         if (user.isPresent()) {
             String code = mailService.sendPwMail(email);
-            user.get().setPassword(passwordEncoder.encode(code));
+
+            user.get().updatePassword(passwordEncoder.encode(code));
             userRepository.save(user.get());
             return "Successfully reissuePassword";
         } else {
