@@ -1,9 +1,8 @@
 package com.sojoo.StoreSpotter.controller.mypage;
 
+import com.sojoo.StoreSpotter.dto.mypage.LikedDto;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.entity.myPage.Liked;
-import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
-import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.service.apiToDb.IndustryService;
 import com.sojoo.StoreSpotter.service.myPage.LikedService;
 import com.sojoo.StoreSpotter.service.storePair.DataRecommendService;
@@ -16,45 +15,53 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.awt.*;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 //@RequestMapping("/mypage")
-public class MyPageController {
+public class MypageController {
 
     private final DataRecommendService dataRecommendService;
     private final LikedService likedService;
     private final IndustryService industryService;
-    private final UserRepository userRepository;
-    private final TokenProvider tokenProvider;
     private final UserService userService;
 
-    public MyPageController(DataRecommendService dataRecommendService, LikedService likedService, IndustryService industryService, UserRepository userRepository, TokenProvider tokenProvider, UserService userService) {
+    public MypageController(DataRecommendService dataRecommendService, LikedService likedService, IndustryService industryService, UserService userService) {
         this.dataRecommendService = dataRecommendService;
         this.likedService = likedService;
         this.industryService = industryService;
-        this.userRepository = userRepository;
-        this.tokenProvider = tokenProvider;
         this.userService = userService;
     }
 
-
+    /**
+     * 찜버튼 기능
+     */
     @GetMapping("/mypage")
-    @Transactional
-    public ModelAndView myPage(Model model, HttpServletRequest request) {
+    public ModelAndView myPage(Model model, @RequestParam(value = "keyword", required = false) String keyword,
+                               HttpServletRequest request) {
 
         User user = userService.getUserFromCookie(request);
 
+        /* 검색기능 */
+        List<LikedDto> likedList = null; // 사용자의 likedList 가져오기
         // model에 likedList 담기
-        List<Liked> likedList = user.getLikedList(); // 사용자의 likedList 가져오기
-        System.out.println("likedList = " + likedList);
+        // 검색어 유무 확인
+        if (keyword == null){
+            likedList = likedService.likedEntityToDto(user.getLikedList()); // 사용자의 likedList 가져오기
+        }else{
+            List<Liked> likedSearch = likedService.likedSearch(keyword);
+            likedList = likedService.likedEntityToDto(likedSearch);
+        }
 
         model.addAttribute("likedList", likedList); // 모델에 likedList 추가
+        model.addAttribute("keyword", keyword); // 모델에 keyword 추가
 
         // model에 likedList 개수 담기
-        model.addAttribute("likedCount", likedList.size());
+        Integer likedCount = user.getLikedList().size();
+        model.addAttribute("likedCount", likedCount);
 
+        System.out.println(likedList);
 
         return new ModelAndView("/myPage/myStored");
     }
@@ -63,7 +70,8 @@ public class MyPageController {
     @PostMapping("/mypage/liked/add")
     public ResponseEntity<String> addLiked(HttpServletRequest request,
                                             @RequestParam String indust, @RequestParam String likedAddress,
-                                           @RequestParam Double dist, @RequestParam String likedName){
+                                           @RequestParam Double dist, @RequestParam String likedName,
+                                           @RequestParam String center){
         String regionName = dataRecommendService.sido(likedAddress);
         String industId = industryService.industryNameToCode(indust);
 
@@ -74,9 +82,10 @@ public class MyPageController {
         if (isDuplicate != null){
             return isDuplicate;
         } else{
-            likedService.storeLiked(user, regionName, industId, dist, likedAddress, likedName);
+            likedService.storeLiked(user, regionName, industId, dist, likedAddress, likedName, center);
             return new ResponseEntity<>("Successfully StoreLiked", HttpStatus.OK);
         }
+
 
     }
 
@@ -111,13 +120,24 @@ public class MyPageController {
         likedService.removeLiked(user, likedName);
     }
 
-    // 찜 바로가기(지도검색)
-//    @GetMapping("mypage/liked/redirect")
-//    public void redirectLiked(HttpServletRequest request,
-//                  @RequestParam String likedName){
-//
-//        User user = userService.getUserFromCookie(request);
-//
-//
-//    }
+    /**
+     * 찜버튼 기능 끝
+     */
+
+    /**
+     * 내 계정 정보
+     */
+
+    @GetMapping("/mypage/info")
+    public ModelAndView myInfo(Model model, HttpServletRequest request) {
+
+        User user = userService.getUserFromCookie(request);
+        String userNickname = user.getNickname();
+
+        model.addAttribute("userNickname", userNickname); // 모델에 username 추가
+
+
+
+        return new ModelAndView("/myPage/info");
+    }
 }

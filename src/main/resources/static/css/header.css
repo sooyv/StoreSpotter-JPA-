@@ -68,6 +68,10 @@
     color: gray;
 }
 
+#userNickname-msg span {
+    color: #626665;
+}
+
 
 #menu-bar {
     display: flex;

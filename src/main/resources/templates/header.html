@@ -17,7 +17,9 @@
             <div id="menu-bar-btn"><img id="menu-bar-icon" src="/css/img/main/메뉴바.png"></div>
             <div id="header-content">
                 <div>
-                    <a id="userNickname-msg" th:text="${userNickname} ? ${userNickname + '님 반갑습니다!'} : ''"></a>
+                    <a id="userNickname-msg" th:if="${userNickname}">
+                        <span th:text="${userNickname}"></span>님 반갑습니다!
+                    </a>
                 </div>
                 <div><a class="header-ele" th:text="${loginOrLogout}" th:if="${loginOrLogout == '로그인'}" th:href="@{/login}"></a>
                     <span class="header-ele" id="logout" th:unless="${loginOrLogout == '로그인'}" th:text="${loginOrLogout}"></span>

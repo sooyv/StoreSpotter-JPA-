@@ -9,4 +9,6 @@ import java.util.List;
 public interface LikedRepository extends JpaRepository<Liked, Long> {
     List<Liked> findByUser(User user);
 
+    List<Liked> findByLikedNameContaining(String keyword);
+
 }
