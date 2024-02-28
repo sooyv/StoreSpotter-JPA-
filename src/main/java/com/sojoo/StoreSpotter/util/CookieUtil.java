@@ -18,14 +18,13 @@ public class CookieUtil {
         log.info("getCookie");
         Cookie[] cookies = request.getCookies();
 
-        if (cookies != null && cookies.length > 0) {
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(name)) {
                     return cookie;
                 }
             }
         }
-
         return null;
     }
 
@@ -39,7 +38,6 @@ public class CookieUtil {
         cookie.setPath("/");
         cookie.setMaxAge(maxAge);
         response.addCookie(cookie);
-//        return cookie;
         return cookie;
     }
 
