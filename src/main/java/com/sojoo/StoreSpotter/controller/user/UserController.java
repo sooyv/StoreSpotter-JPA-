@@ -82,6 +82,11 @@ public class UserController {
             return passwordRegExp;
         }
 
+        ResponseEntity<String> phoneRegExp = userValidateService.phoneRegExp(userDto);
+        if (phoneRegExp != null) {
+            return phoneRegExp;
+        }
+
         userService.signup(userDto);
         return new ResponseEntity<>("Successfully sign-up", HttpStatus.OK);    }
 

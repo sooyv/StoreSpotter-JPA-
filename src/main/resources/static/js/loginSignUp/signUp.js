@@ -2,6 +2,7 @@ let form = document.getElementById("signUpForm");
 console.log("회원가입 페이지 접근");
 $("#passwordCheckHelp").hide();
 $("#passwordHelp").hide();
+$("#phoneCheckHelp").hide();
 // $("#emailHelp").hide();
 // let idchk = false;
 // let mailchk = false;
@@ -60,7 +61,7 @@ $("#passwordHelp").hide();
 $("#password").on("keyup", function(event) {
     console.log("pw keyup 발생")
 
-    var pwRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+    const pwRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
 
     if (!pwRegExp.test($("#password").val())) {       // 비밀번호 정규화
         $("#passwordHelp").show();
@@ -77,6 +78,18 @@ $("#checkPassword").on("keyup", function(event) {
         $("#passwordCheckHelp").show();
     } else {
         $("#passwordCheckHelp").hide();
+    }
+});
+
+$("#phone").on("keyup", function(event) {
+    console.log("phone keyup 발생")
+
+    const phoneRegExp = /^d{11}/;
+
+    if (!phoneRegExp.test($("#phone").val())) {       // 비밀번호 정규화
+        $("#phoneCheckHelp").show();
+    } else {
+        $("#phoneCheckHelp").hide();
     }
 });
 
@@ -133,6 +146,10 @@ form.addEventListener("submit", event => {
                 if (error.responseText == "duplicateEmail") {
                     alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.");
                     email.focus();
+                }
+
+                if (error.responseText == "phoneRegExp") {
+                    alert("전화번호는 '-'를 제외한 숫자 11자리 입니다. ex) 01012340000");
                 }
 
                 $("#signUpBtn").addClass('shake');

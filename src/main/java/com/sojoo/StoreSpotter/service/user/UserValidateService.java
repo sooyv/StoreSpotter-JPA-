@@ -15,6 +15,9 @@ public class UserValidateService {
         this.userRepository = userRepository;
     }
 
+    private final String pwRegExp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$";
+    private final String phoneRegExp = "\\d{11}";
+
     // 이메일 중복검사
     public ResponseEntity<String> checkDuplicateEmail(UserDto userDto) {
         if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) != null) {
@@ -47,11 +50,20 @@ public class UserValidateService {
     }
 
     // 비밀번호 정규식 검사
-    private final String pwRegExp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$";
     public ResponseEntity<String> passwordRegExp(UserDto userDto) {
         if (!userDto.getPassword().matches(pwRegExp)) {
             return new ResponseEntity<>("passwordRegExp", HttpStatus.BAD_REQUEST);
         }
         return null;
     }
+
+
+    // 전화번호 형식 검사
+    public ResponseEntity<String> phoneRegExp(UserDto userDto) {
+        if (!userDto.getPhone().matches(phoneRegExp)) {
+            return new ResponseEntity<>("phoneRegExp", HttpStatus.BAD_REQUEST);
+        }
+        return null;
+    }
+
 }

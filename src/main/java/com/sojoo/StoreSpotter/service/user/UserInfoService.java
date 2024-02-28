@@ -6,6 +6,7 @@ import com.sojoo.StoreSpotter.service.mail.MailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +30,13 @@ public class UserInfoService {
 
 
     // --------------- 비밀번호 재발급 -------------
+    @Transactional
     public String updateUserPw(String email) throws Exception {
         Optional<User> user = userService.findUser(email);
         if (user.isPresent()) {
             String code = mailService.sendPwMail(email);
 
             user.get().updatePassword(passwordEncoder.encode(code));
-            userRepository.save(user.get());
             return "Successfully reissuePassword";
         } else {
             throw new NoSuchElementException("존재하지 않는 이메일입니다");
