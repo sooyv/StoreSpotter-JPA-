@@ -1,6 +1,6 @@
 package com.sojoo.StoreSpotter.config;
 
-import com.sojoo.StoreSpotter.config.intercepter.MvcInterceptor;
+import com.sojoo.StoreSpotter.interceptor.MvcInterceptor;
 import com.sojoo.StoreSpotter.jwt.jwt.JwtAccessDeniedHandler;
 import com.sojoo.StoreSpotter.jwt.jwt.JwtAuthenticationEntryPoint;
 import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
