@@ -1,5 +1,6 @@
 package com.sojoo.StoreSpotter.jwt.jwt;
 
+import antlr.Token;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -101,6 +102,7 @@ public class TokenProvider implements InitializingBean {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
+
     public boolean validateToken(String token) {
         System.out.println("TokenProvider validateToken 실행");
         try {
@@ -127,5 +129,4 @@ public class TokenProvider implements InitializingBean {
 
         return claims.getSubject();
     }
-
 }

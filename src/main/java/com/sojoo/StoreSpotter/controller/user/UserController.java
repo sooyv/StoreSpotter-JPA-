@@ -1,9 +1,8 @@
 package com.sojoo.StoreSpotter.controller.user;
 
 import com.sojoo.StoreSpotter.dto.user.UserDto;
-import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
 import com.sojoo.StoreSpotter.service.mail.MailService;
-import com.sojoo.StoreSpotter.service.user.FindUserInfoService;
+import com.sojoo.StoreSpotter.service.user.UserInfoService;
 import com.sojoo.StoreSpotter.service.user.UserService;
 import com.sojoo.StoreSpotter.service.user.UserValidateService;
 import com.sojoo.StoreSpotter.util.CookieUtil;
@@ -16,9 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -28,14 +25,14 @@ public class UserController {
     private final UserService userService;
     private final MailService mailService;
     private final UserValidateService userValidateService;
-    private final FindUserInfoService findUserInfoService;
+    private final UserInfoService userInfoService;
     private final CookieUtil cookieUtil;
 
-    public UserController(UserService userService, MailService mailService, UserValidateService userValidateService, FindUserInfoService findUserInfoService, CookieUtil cookieUtil) {
+    public UserController(UserService userService, MailService mailService, UserValidateService userValidateService, UserInfoService userInfoService, CookieUtil cookieUtil) {
         this.userService = userService;
         this.mailService = mailService;
         this.userValidateService = userValidateService;
-        this.findUserInfoService = findUserInfoService;
+        this.userInfoService = userInfoService;
         this.cookieUtil = cookieUtil;
     }
 
@@ -134,7 +131,7 @@ public class UserController {
     @PostMapping("/user/account")
     public List<String> findUserId(@RequestParam("username") String username, @RequestParam("phone") String phone) {
 
-        List<String> userEmail = findUserInfoService.findUserEmail(username, phone);
+        List<String> userEmail = userInfoService.findUserEmail(username, phone);
         return userEmail;
     }
 
@@ -143,7 +140,7 @@ public class UserController {
     @PostMapping("/user/password")
     public ResponseEntity<String> reissuePassword(@RequestParam String email) throws NoSuchElementException {
         try {
-            String reissuePasswordSuccess = findUserInfoService.updateUserPw(email);
+            String reissuePasswordSuccess = userInfoService.updateUserPw(email);
             System.out.println("reissuePassword email  : " + email);
             return ResponseEntity.ok(reissuePasswordSuccess);
 

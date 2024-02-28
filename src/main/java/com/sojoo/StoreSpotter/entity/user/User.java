@@ -11,7 +11,6 @@ import java.util.Set;
 @Entity
 @Table(name = "`user`")
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,6 +35,11 @@ public class User {
 
     @Column(name = "activated")
     private boolean activated;
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
 
     @ManyToMany
     @JoinTable(

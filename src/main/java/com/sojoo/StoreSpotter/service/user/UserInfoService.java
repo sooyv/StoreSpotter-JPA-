@@ -14,13 +14,13 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class FindUserInfoService {
+public class UserInfoService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserService userService;
     private final MailService mailService;
 
-    public FindUserInfoService(PasswordEncoder passwordEncoder, UserRepository userRepository, UserService userService, MailService mailService) {
+    public UserInfoService(PasswordEncoder passwordEncoder, UserRepository userRepository, UserService userService, MailService mailService) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userService = userService;
@@ -33,7 +33,8 @@ public class FindUserInfoService {
         Optional<User> user = userService.findUser(email);
         if (user.isPresent()) {
             String code = mailService.sendPwMail(email);
-            user.get().setPassword(passwordEncoder.encode(code));
+
+            user.get().updatePassword(passwordEncoder.encode(code));
             userRepository.save(user.get());
             return "Successfully reissuePassword";
         } else {
@@ -41,8 +42,9 @@ public class FindUserInfoService {
         }
     }
 
+
+
     // --------------- 이메일 찾기 -------------
-    // user 이메일 찾기
     public List<String> findUserEmail(String username, String userPhone) throws IllegalStateException {
         List<User> users = userRepository.findByNicknameAndPhone(username, userPhone);
         List<String> userEmail = new ArrayList<>();

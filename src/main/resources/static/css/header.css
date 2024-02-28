@@ -45,7 +45,8 @@
     font-family: 'IBM Plex Sans KR', sans-serif;
     font-size: medium;
     text-decoration-line: none;
-    padding: 15px;
+    padding: 10px;
+    margin: 5px;
     color: gray;
     cursor: pointer;
 }
@@ -53,7 +54,9 @@
 .header-ele:hover {
     background-color: lightgrey;
     transition: 0.1s;
-    border-radius: 25px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: gray;
 }
 
 
@@ -63,6 +66,10 @@
     text-decoration-line: none;
     padding: 15px;
     color: gray;
+}
+
+#userNickname-msg span {
+    color: #626665;
 }
 
 
