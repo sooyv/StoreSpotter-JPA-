@@ -1,8 +1,8 @@
 package com.sojoo.StoreSpotter.config;
 
+import com.sojoo.StoreSpotter.config.intercepter.MvcInterceptor;
 import com.sojoo.StoreSpotter.jwt.jwt.JwtAccessDeniedHandler;
 import com.sojoo.StoreSpotter.jwt.jwt.JwtAuthenticationEntryPoint;
-import com.sojoo.StoreSpotter.jwt.jwt.JwtFilter;
 import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,16 +17,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @EnableWebSecurity
 @EnableMethodSecurity
 @Configuration
-public class SecurityConfig {
+public class SecurityConfig implements WebMvcConfigurer {
     private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final TokenProvider tokenProvider;
+    private final MvcInterceptor mvcInterceptor;
 
 
     @Bean
@@ -38,17 +41,25 @@ public class SecurityConfig {
             TokenProvider tokenProvider,
             CorsFilter corsFilter,
             JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-            JwtAccessDeniedHandler jwtAccessDeniedHandler) {
+            JwtAccessDeniedHandler jwtAccessDeniedHandler, MvcInterceptor mvcInterceptor) {
         this.tokenProvider = tokenProvider;
         this.corsFilter = corsFilter;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+        this.mvcInterceptor = mvcInterceptor;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    // mvc intercepter 추가
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(mvcInterceptor);
+    }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -67,8 +78,8 @@ public class SecurityConfig {
                         .authorizeHttpRequests()
 
                 // main, login 페이지, login 프로세스, 회원가입 페이지, 회원가입 프로세스, 이메일 중복체크 ajax, JWT token 발급, 평균 거리 검색 ajax
-                .antMatchers("/", "/login", "/logout", "/signup","/member/login", "/member/signup", "/signup/checkid",
-                        "/avg-dist", "/search/recommend", "/mypage", "/favicon.ico", "user",
+                .antMatchers("/", "/login", "/member/logout", "/signup", "/member/login", "/member/signup", "/signup/checkid",
+                        "/find-user", "/user/account", "/user/password", "/avg-dist", "/search/recommend", "/mypage", "/favicon.ico", "user",
                         "/mypage/liked/add", "/mypage/liked/edit", "/mypage/liked/redirect", "/mypage/liked/remove",
                 "/signup/mail-code", "/user/password", "/user/account").permitAll()
 

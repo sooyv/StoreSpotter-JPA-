@@ -6,7 +6,6 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
 </head>
 <body>
     <div id="header" th:fragment="header">
@@ -17,16 +16,15 @@
         <div id="menu-bar">
             <div id="menu-bar-btn"><img id="menu-bar-icon" src="/css/img/main/메뉴바.png"></div>
             <div id="header-content">
-                <div id="logout"><a class="header-ele" href="/">로그아웃</a></div>
-                <div><a class="header-ele" href="login">로그인</a></div>
-<!--                <div><a class="header-ele" href="#">마이페이지</a></div>-->
-                <div><a class="header-ele" href="signup">회원가입</a></div>
+                <div>
+                    <a id="userNickname-msg" th:text="${userNickname} ? ${userNickname + '님 반갑습니다!'} : ''"></a>
+                </div>
+                <div><a class="header-ele" th:text="${loginOrLogout}" th:if="${loginOrLogout == '로그인'}" th:href="@{/login}"></a>
+                    <span class="header-ele" id="logout" th:unless="${loginOrLogout == '로그인'}" th:text="${loginOrLogout}"></span>
+                </div>
+                <div><a class="header-ele" th:text="${signOrMypage}" th:href="${signOrMypage == '회원가입' ? '/signup' : '/mypage'}"></a></div>
             </div>
         </div>
     </div>
-
-
-<script src="/js/header/header.js"></script>
-
 </body>
 </html>

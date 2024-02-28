@@ -19,12 +19,6 @@ form.addEventListener("submit", event => {
             data: JSON.stringify(loginDto),
             success: function (response) {
                 console.log('Login successful:', response);
-                // localStorage.setItem('access_token', response.accessToken);
-
-                // 쿠키에 access_token 저장
-                // var now = new Date();
-                // now.setTime(now.getTime() + 1 * 3600 * 1000); // 1시간 후 만료
-                // document.cookie = "access_token=" + response.accessToken + ";expires=" + now.toUTCString() + ";path=/";
                 window.location.replace("/");
             },
             error: function (error) {

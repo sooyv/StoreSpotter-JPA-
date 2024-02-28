@@ -7,9 +7,11 @@ import com.sojoo.StoreSpotter.service.apiToDb.RegionService;
 import com.sojoo.StoreSpotter.service.storePair.DataRecommendService;
 import com.sojoo.StoreSpotter.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -37,10 +39,8 @@ public class MainController {
 
     @GetMapping("/")
 //    @PreAuthorize("hasAnyRole('USER')")
-    public ModelAndView index(HttpServletRequest request, HttpServletResponse response,
-                              Authentication authentication, Principal principal) {
-//        System.out.println(authentication.getName());
-        return new ModelAndView("index/index");
+    public ModelAndView index(Model model) {
+        return new ModelAndView("/index/index");
     }
 
 

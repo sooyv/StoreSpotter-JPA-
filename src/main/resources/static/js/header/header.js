@@ -1,21 +1,42 @@
-document.getElementById("menu-bar-btn").addEventListener("click", function () {
-    let header_content = document.getElementById("header-content");
-    header_content.classList.toggle("active");
+// 토글 클릭시 900px 이하의 화면에서는 "000님 반갑습니다" 나오지 않도록 수정
+window.addEventListener("load", function () {
+    let menuBarButton = document.getElementById("menu-bar-btn");
+    let headerContent = document.getElementById("header-content");
+    let userNicknameMsg = document.getElementById("userNickname-msg");
+
+    function toggleUserNicknameMsgDisplay() {
+        if (window.innerWidth <= 900) {
+            userNicknameMsg.style.display = "none";
+        } else {
+            userNicknameMsg.style.display = ""; // 기본값으로 설정하여 CSS에 따라 표시됩니다.
+        }
+    }
+
+    menuBarButton.addEventListener("click", function () {
+        headerContent.classList.toggle("active");
+        toggleUserNicknameMsgDisplay();
+    });
+
+    window.addEventListener("resize", function () {
+        toggleUserNicknameMsgDisplay();
+    });
+
+    // 페이지 로드 시 초기화
+    toggleUserNicknameMsgDisplay();
 });
+
 
 
 // 로그아웃
 $(document).ready(function() {
     $('#logout').click(function(event) {
-        // event.preventDefault(); // 기본 동작을 막습니다.
-        console.log("logout 실행")
-        // POST 요청을 보냅니다.
+        event.preventDefault();
         $.ajax({
             type: 'POST',
             url: '/member/logout',
             success: function(response) {
                 console.log('로그아웃이 완료되었습니다.', response);
-
+                window.location.replace("/");
             },
             error: function(xhr, status, error) {
                 console.error('로그아웃 요청이 실패했습니다.', error);
@@ -23,3 +44,5 @@ $(document).ready(function() {
         });
     });
 });
+
+

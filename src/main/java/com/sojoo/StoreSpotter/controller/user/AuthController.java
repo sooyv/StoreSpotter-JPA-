@@ -41,6 +41,21 @@ public class AuthController {
         this.cookieUtil = cookieUtil;
     }
 
+    // 로그아웃
+    @Transactional
+    @PostMapping("/member/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        log.info("logout 실행 - /member/logout");
+
+        try {
+            cookieUtil.deleteCookie(request, response, "access_token");
+            return ResponseEntity.ok("logout");
+        } catch (Exception e) {
+            log.error("로그아웃 중 오류 발생", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("로그아웃 중 오류 발생");
+        }
+    }
+
     @PostMapping("/member/login")
     public ResponseEntity<TokenDto> loginProcess(@Valid @RequestBody LoginDto loginDto, HttpServletResponse response) throws Exception {
 
@@ -53,12 +68,6 @@ public class AuthController {
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             log.info("loginProcess authentication : " + authentication);
-
-//        String jwt = tokenProvider.createToken(authentication);
-//            TokenDto tokenDto = new TokenDto(
-//                    tokenProvider.createAccessToken(authentication),
-//                    tokenProvider.createRefreshToken(authentication)
-//            );
 
             String accessToken = tokenProvider.createAccessToken(authentication);
             String refreshToken = tokenProvider.createRefreshToken(authentication);
@@ -81,10 +90,15 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @Transactional
-    @PostMapping("/member/logout")
-    public void logout(HttpServletRequest request, HttpServletResponse response){
-        System.out.println("logout 실행 완.");
-        cookieUtil.deleteCookie(request, response, "access_token");
-    }
+
+//        @GetMapping("/api/token")
+//    public String getData(@RequestHeader("Authorization") String authorizationHeader) {
+//        // Authorization 헤더에서 JWT 토큰 추출
+//        String jwtToken = authorizationHeader.substring(7); // "Bearer " 이후의 토큰 추출
+//        System.out.println("getData : " +jwtToken);
+//
+//        // JWT 토큰을 검증하고 유효성을 확인하는 로직 수행
+//        // 여기서는 단순히 토큰을 반환하는 예시
+//        return "Received JWT token: " + jwtToken;
+//    }
 }

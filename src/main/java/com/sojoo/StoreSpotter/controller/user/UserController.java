@@ -41,12 +41,12 @@ public class UserController {
 
     // 로그인 페이지
     @GetMapping("/login")
-    public ModelAndView login() {
+    public ModelAndView login(Model model) {
         System.out.println("login 실행");
         return new ModelAndView("loginSignUp/login");
     }
 
-        // 회원가입 페이지
+    // 회원가입 페이지
     @GetMapping("/signup")
     public ModelAndView signUpPage(Model model) {
         model.addAttribute("userDto", new UserDto());
@@ -87,6 +87,7 @@ public class UserController {
 
         userService.signup(userDto);
         return new ResponseEntity<>("Successfully sign-up", HttpStatus.OK);    }
+
 
     // 회원가입 메일 인증
     @PostMapping("/signup/mail-code")
@@ -130,7 +131,6 @@ public class UserController {
     }
 
     // 이메일 찾기
-
     @PostMapping("/user/account")
     public List<String> findUserId(@RequestParam("username") String username, @RequestParam("phone") String phone) {
 

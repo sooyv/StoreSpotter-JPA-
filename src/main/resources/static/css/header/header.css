@@ -1,6 +1,6 @@
 #header {
     /*height: 10%;*/
-    height: 75px;
+    height: 65px;
     justify-content: space-between;
     display: flex;
     align-items: center;
@@ -47,6 +47,7 @@
     text-decoration-line: none;
     padding: 15px;
     color: gray;
+    cursor: pointer;
 }
 
 .header-ele:hover {
@@ -54,6 +55,16 @@
     transition: 0.1s;
     border-radius: 25px;
 }
+
+
+#userNickname-msg {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    font-size: medium;
+    text-decoration-line: none;
+    padding: 15px;
+    color: gray;
+}
+
 
 #menu-bar {
     display: flex;
