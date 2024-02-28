@@ -129,7 +129,6 @@ public class UserController {
     }
 
     // 이메일 찾기
-
     @PostMapping("/user/account")
     public List<String> findUserId(@RequestParam("username") String username, @RequestParam("phone") String phone) {
 
