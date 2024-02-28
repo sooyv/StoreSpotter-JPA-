@@ -289,12 +289,15 @@ $("#submit").click(function () {
                                 let ajax_chk_flg = false;
 
                                 function StoreLiked(likedName) {
+                                    var center = (circle.center.x +", "+ circle.center.y).toString();
+                                    console.log(center)
                                     if (!ajax_chk_flg) {
                                         ajax_chk_flg = true;
                                         $.ajax({
                                             type: "POST",
                                             url: "mypage/liked/add",
                                             data: {
+                                                center: center,
                                                 indust: indust,
                                                 likedAddress: likedAddress,
                                                 dist: parseFloat(dist),

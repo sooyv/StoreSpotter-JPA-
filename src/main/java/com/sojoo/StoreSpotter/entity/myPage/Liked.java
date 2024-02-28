@@ -31,24 +31,27 @@ public class Liked {
     @Column(name = "address")
     private String address;
 
-    @ManyToOne
+    @Column(name = "center")
+    private String center;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "indust_id")
     private Industry industry;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
 
 //    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-@ManyToOne(fetch = FetchType.LAZY)
-@JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Builder
-    private Liked(String likedName, Double dist, String address, Industry industry, Region region, User user){
+    private Liked(String likedName, Double dist, String address, String center, Industry industry, Region region, User user){
         this.likedName = likedName;
         this.dist = dist;
         this.address = address;
+        this.center = center;
         this.industry = industry;
         this.region = region;
         this.user = user;

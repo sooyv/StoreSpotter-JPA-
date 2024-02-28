@@ -1,6 +1,7 @@
 package com.sojoo.StoreSpotter.service.myPage;
 
 import com.sojoo.StoreSpotter.controller.main.MainController;
+import com.sojoo.StoreSpotter.dto.mypage.LikedDto;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
 import com.sojoo.StoreSpotter.entity.apiToDb.Region;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @NoArgsConstructor
@@ -25,16 +27,12 @@ public class LikedService {
     private LikedRepository likedRepository;
     private RegionRepository regionRepository;
     private IndustryRepository industryRepository;
-    private UserRepository userRepository;
-    private MainController mainController;
 
     @Autowired
-    public LikedService (LikedRepository likedRepository, RegionRepository regionRepository, IndustryRepository industryRepository, UserRepository userRepository, MainController mainController){
+    public LikedService (LikedRepository likedRepository, RegionRepository regionRepository, IndustryRepository industryRepository){
         this.likedRepository = likedRepository;
         this.regionRepository = regionRepository;
         this.industryRepository = industryRepository;
-        this.userRepository = userRepository;
-        this.mainController = mainController;
     }
 
     /**
@@ -42,7 +40,7 @@ public class LikedService {
     */
 
     // 찜목록 저장
-    public void storeLiked (User user, String regionName, String industId, Double dist, String address, String likedName){
+    public void storeLiked (User user, String regionName, String industId, Double dist, String address, String likedName, String center){
 
         Region region = regionRepository.findByRegionName(regionName);
         Industry industry = industryRepository.findOneByIndustId(industId);
@@ -54,6 +52,7 @@ public class LikedService {
                 .dist(dist)
                 .address(address)
                 .likedName(likedName)
+                .center(center)
                 .build();
 
         likedRepository.save(liked);
@@ -100,21 +99,25 @@ public class LikedService {
         }
     }
 
-    public void likedRedirect(User user, String likedName){
-        Optional<Liked> likedOptional = likedOptional(user, likedName);
-        if (likedOptional.isPresent()){
-            Liked liked = likedOptional.get();
-
-        }
-
-    }
-
 
     // user와 likedName으로 liked 객체 찾기
     public Optional<Liked> likedOptional(User user, String likedName){
         List<Liked> likedList = likedRepository.findByUser(user);
         return likedList.stream().filter(liked -> likedName.equals(liked.getLikedName()))
                 .findFirst();
-    };
+    }
+
+    /* search */
+    @Transactional
+    public List<Liked> likedSearch(String keyword) {
+        return likedRepository.findByLikedNameContaining(keyword);
+    }
+
+    // List<Liked> -> List<LikedDto>
+    public List<LikedDto> likedEntityToDto(List<Liked> likedList){
+        return likedList.stream()
+                .map(LikedDto::new)
+                .collect(Collectors.toList());
+    }
 
 }
