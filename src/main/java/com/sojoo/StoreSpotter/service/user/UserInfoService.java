@@ -4,7 +4,7 @@ import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.service.mail.MailService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,13 +16,13 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class UserInfoService {
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
     private final UserService userService;
     private final MailService mailService;
 
-    public UserInfoService(PasswordEncoder passwordEncoder, UserRepository userRepository, UserService userService, MailService mailService) {
-        this.passwordEncoder = passwordEncoder;
+    public UserInfoService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, UserService userService, MailService mailService) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
@@ -36,7 +36,7 @@ public class UserInfoService {
         if (user.isPresent()) {
             String code = mailService.sendPwMail(email);
 
-            user.get().updatePassword(passwordEncoder.encode(code));
+            user.get().updatePassword(bCryptPasswordEncoder.encode(code));
             return "Successfully reissuePassword";
         } else {
             throw new NoSuchElementException("존재하지 않는 이메일입니다");
