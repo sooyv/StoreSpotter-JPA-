@@ -58,7 +58,7 @@ public class Liked {
         user.getLikedList().add(this);
     }
 
-    public void EditLikedName(String likedName){
+    public void UpdateLikedName(String likedName){
         this.likedName = likedName;
     }
 

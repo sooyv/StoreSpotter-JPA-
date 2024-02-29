@@ -36,11 +36,6 @@ public class User {
     @Column(name = "activated")
     private boolean activated;
 
-    public void updatePassword(String password) {
-        this.password = password;
-    }
-
-
     @ManyToMany
     @JoinTable(
             name = "user_authority",
@@ -51,6 +46,19 @@ public class User {
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @OneToMany(mappedBy = "user")
     private List<Liked> likedList = new ArrayList<>();
+
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updatePhone(String phone){
+        this.phone = phone;
+    }
 
 
 }

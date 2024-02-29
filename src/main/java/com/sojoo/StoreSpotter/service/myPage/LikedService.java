@@ -1,6 +1,5 @@
 package com.sojoo.StoreSpotter.service.myPage;
 
-import com.sojoo.StoreSpotter.controller.main.MainController;
 import com.sojoo.StoreSpotter.dto.mypage.LikedDto;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
@@ -9,7 +8,6 @@ import com.sojoo.StoreSpotter.entity.myPage.Liked;
 import com.sojoo.StoreSpotter.repository.apiToDb.IndustryRepository;
 import com.sojoo.StoreSpotter.repository.apiToDb.RegionRepository;
 import com.sojoo.StoreSpotter.repository.myPage.LikedRepository;
-import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,7 +67,7 @@ public class LikedService {
         if (likedOptional.isPresent()){
             Liked liked = likedOptional.get();
             // 이름 수정
-            liked.EditLikedName(editName);
+            liked.UpdateLikedName(editName);
         }else {
             // Exception 생성 필요
             System.out.println("Liked 객체가 존재하지 않습니다.");
