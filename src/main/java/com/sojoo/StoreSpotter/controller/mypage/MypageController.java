@@ -1,6 +1,7 @@
 package com.sojoo.StoreSpotter.controller.mypage;
 
 import com.sojoo.StoreSpotter.dto.mypage.LikedDto;
+import com.sojoo.StoreSpotter.dto.user.UserPwdDto;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.entity.myPage.Liked;
 import com.sojoo.StoreSpotter.service.apiToDb.IndustryService;
@@ -153,19 +154,18 @@ public class MypageController {
 
     @PostMapping("/mypage/info/modify/phone")
     @Transactional
-    public void modifyPhone(HttpServletRequest request, @RequestParam String phone){
+    public ResponseEntity<String> modifyPhone(HttpServletRequest request, @RequestParam String phone){
         User user = userService.getUserFromCookie(request);
 
-        userInfoService.modifyPhone(user, phone);
+        return userInfoService.modifyPhone(user, phone);
     }
 
     @PostMapping("/mypage/info/modify/password")
     @Transactional
-    public ResponseEntity<String> modifyPwd(HttpServletRequest request,
-                          @RequestParam String currentPassword,@RequestParam String password){
+    public ResponseEntity<String> modifyPwd(HttpServletRequest request, @RequestBody UserPwdDto userPwdDto){
         User user = userService.getUserFromCookie(request);
 
-        return userInfoService.modifyPassword(user, currentPassword, password);
+        return userInfoService.modifyPassword(user, userPwdDto);
     }
 
 }

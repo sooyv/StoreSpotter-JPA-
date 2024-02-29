@@ -67,15 +67,17 @@ function updatePwd() {
             alert("최소 8자, 영문, 숫자, 특수문자를 사용하여 비밀번호를 생성하세요.");
             return;
         }
+        const userPwdDto = {"currentPwd" : current_pwd, "changePwd" : change_pwd, "changeChkPwd" : change_chk_pwd};
 
         $.ajax({
             type: 'POST',
             url: "/mypage/info/modify/password",
-            data: {
-                currentPassword: current_pwd,
-                password: change_pwd
+            headers: {
+                'content-type': 'application/json'
             },
+            data: JSON.stringify(userPwdDto),
             success: function (response) {
+                alert("비밀번호가 변경되었습니다.")
                 location.reload();
             }, error: function (error) {
                 if (error.responseText === "incorrect password") {
