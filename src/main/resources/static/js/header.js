@@ -4,14 +4,6 @@ window.addEventListener("load", function () {
     let headerContent = document.getElementById("header-content");
     let userNicknameMsg = document.getElementById("userNickname-msg");
 
-    function toggleUserNicknameMsgDisplay() {
-        if (window.innerWidth <= 900) {
-            userNicknameMsg.style.display = "none";
-        } else {
-            userNicknameMsg.style.display = ""; // 기본값으로 설정하여 CSS에 따라 표시됩니다.
-        }
-    }
-
     menuBarButton.addEventListener("click", function () {
         headerContent.classList.toggle("active");
         toggleUserNicknameMsgDisplay();
@@ -21,8 +13,13 @@ window.addEventListener("load", function () {
         toggleUserNicknameMsgDisplay();
     });
 
-    // 페이지 로드 시 초기화
-    toggleUserNicknameMsgDisplay();
+    function toggleUserNicknameMsgDisplay() {
+        if (window.innerWidth <= 900 && userNicknameMsg) {
+            userNicknameMsg.style.display = "none";
+        } else if (userNicknameMsg) {
+            userNicknameMsg.style.display = ""; // 기본값으로 설정하여 CSS에 따라 표시됩니다.
+        }
+    }
 });
 
 

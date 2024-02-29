@@ -7,7 +7,7 @@ import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.jwt.exception.NotFoundMemberException;
 import com.sojoo.StoreSpotter.jwt.securityUtil.SecurityUtil;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +21,12 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final TokenProvider tokenProvider;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TokenProvider tokenProvider) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, TokenProvider tokenProvider) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.tokenProvider = tokenProvider;
     }
 
@@ -38,7 +38,7 @@ public class UserService {
 
         User user = User.builder()
                 .username(userDto.getUsername())
-                .password(passwordEncoder.encode(userDto.getPassword()))
+                .password(bCryptPasswordEncoder.encode(userDto.getPassword()))
                 .nickname(userDto.getNickname())
                 .phone(userDto.getPhone())
                 .authorities(Collections.singleton(authority))

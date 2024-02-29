@@ -39,7 +39,7 @@ public class MainController {
 
     @GetMapping("/")
 //    @PreAuthorize("hasAnyRole('USER')")
-    public ModelAndView index(Model model) {
+    public ModelAndView index() {
         return new ModelAndView("/index/index");
     }
 

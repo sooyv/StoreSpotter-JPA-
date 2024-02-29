@@ -38,7 +38,7 @@ public class UserController {
 
     // 로그인 페이지
     @GetMapping("/login")
-    public ModelAndView login(Model model) {
+    public ModelAndView login() {
         System.out.println("login 실행");
         return new ModelAndView("loginSignUp/login");
     }
@@ -80,6 +80,11 @@ public class UserController {
         ResponseEntity<String> passwordRegExp = userValidateService.passwordRegExp(userDto);
         if (passwordRegExp != null) {
             return passwordRegExp;
+        }
+
+        ResponseEntity<String> phoneRegExp = userValidateService.phoneRegExp(userDto);
+        if (phoneRegExp != null) {
+            return phoneRegExp;
         }
 
         userService.signup(userDto);
