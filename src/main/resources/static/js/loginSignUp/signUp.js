@@ -81,6 +81,7 @@ $("#checkPassword").on("keyup", function(event) {
     }
 });
 
+// 전화번호 정규식 검사
 $("#phone").on("keyup", function(event) {
     console.log("phone keyup 발생")
 
