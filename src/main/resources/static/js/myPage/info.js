@@ -32,8 +32,13 @@ function updateNickname() {
 
 // ---------- 번호 수정 ----------
 function updatePhone() {
-    var phone_btn = document.getElementById('phone_btn');
-        var phone = document.getElementById('change_phone').value;
+    const phoneRegExp = /^d{11}/;
+
+    if (!phoneRegExp){
+        alert("전화번호는 '-'를 제외한 숫자 11자리 입니다. ex) 01012340000");
+        return null;
+    }
+    var phone = document.getElementById('change_phone').value;
         $.ajax({
             type: 'POST',
             url: "/mypage/info/modify/phone",
@@ -42,6 +47,10 @@ function updatePhone() {
             },
             success: function (response) {
                 location.reload();
+            }, error: function (error){
+                if(error.responseText === "phoneRegExp"){
+                    alert("전화번호는 '-'를 제외한 숫자 11자리 입니다. ex) 01012340000");
+                }
             }
         });
 }
@@ -83,6 +92,13 @@ function updatePwd() {
                 if (error.responseText === "incorrect password") {
                     alert("비밀번호가 일치하지 않습니다.")
                 }
+                if (error.responseText === "notEqualPassword") {
+                    alert("새 비밀번호를 확인해주세요.")
+                }
+                if (error.responseText === "passwordRegExp") {
+                    alert("최소 8자, 영문, 숫자, 특수문자를 사용하여 비밀번호를 생성하세요.")
+                }
+
             }
         });
 }

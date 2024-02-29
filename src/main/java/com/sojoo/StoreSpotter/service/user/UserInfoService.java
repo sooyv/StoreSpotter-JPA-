@@ -25,9 +25,6 @@ public class UserInfoService {
     private final UserService userService;
     private final MailService mailService;
 
-    private final String pwRegExp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$";
-    private final String phoneRegExp = "\\d{11}";
-
     public UserInfoService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, UserService userService, MailService mailService) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;
@@ -68,6 +65,10 @@ public class UserInfoService {
 
         return userEmail;
     }
+
+    /**
+     MyPage-> info modify
+     */
 
     // --------------- Nickname 변경 -------------
     @Transactional
@@ -112,12 +113,13 @@ public class UserInfoService {
 
     // 비밀번호 정규식 검사
     private boolean passwordRegExp(UserPwdDto userPwdDto) {
+        String pwRegExp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$";
         return userPwdDto.getChangePwd().matches(pwRegExp);
     }
 
-
     // 전화번호 형식 검사
     private boolean phoneRegExp(String phone) {
+        String phoneRegExp = "\\d{11}";
         return phone.matches(phoneRegExp);
     }
 
