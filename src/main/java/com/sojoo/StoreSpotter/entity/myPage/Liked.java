@@ -47,7 +47,7 @@ public class Liked {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private Liked(String likedName, Double dist, String address, String center, Industry industry, Region region, User user){
+    public Liked(String likedName, Double dist, String address, String center, Industry industry, Region region, User user){
         this.likedName = likedName;
         this.dist = dist;
         this.address = address;
