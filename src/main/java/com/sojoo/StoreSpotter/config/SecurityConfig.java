@@ -82,7 +82,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         "/mypage/liked/add", "/mypage/liked/edit", "/mypage/liked/redirect", "/mypage/liked/remove",
                 "/signup/mail-code", "/user/password", "/user/account").permitAll()
 
-                .antMatchers("/user").hasRole("USER")
+                .antMatchers("/user", "/admin").hasRole("USER")
                 .antMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated() // 그 외 인증 없이 차단 - 일시 수정);
                 .and()

@@ -1,11 +1,13 @@
 package com.sojoo.StoreSpotter.controller.mypage;
 
 import com.sojoo.StoreSpotter.dto.mypage.LikedDto;
+import com.sojoo.StoreSpotter.dto.user.UserPwdDto;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.entity.myPage.Liked;
 import com.sojoo.StoreSpotter.service.apiToDb.IndustryService;
 import com.sojoo.StoreSpotter.service.myPage.LikedService;
 import com.sojoo.StoreSpotter.service.storePair.DataRecommendService;
+import com.sojoo.StoreSpotter.service.user.UserInfoService;
 import com.sojoo.StoreSpotter.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +28,14 @@ public class MypageController {
     private final IndustryService industryService;
     private final UserService userService;
 
-    public MypageController(DataRecommendService dataRecommendService, LikedService likedService, IndustryService industryService, UserService userService) {
+    private final UserInfoService userInfoService;
+
+    public MypageController(DataRecommendService dataRecommendService, LikedService likedService, IndustryService industryService, UserService userService, UserInfoService userInfoService) {
         this.dataRecommendService = dataRecommendService;
         this.likedService = likedService;
         this.industryService = industryService;
         this.userService = userService;
+        this.userInfoService = userInfoService;
     }
 
     /**
@@ -131,12 +136,36 @@ public class MypageController {
     public ModelAndView myInfo(Model model, HttpServletRequest request) {
 
         User user = userService.getUserFromCookie(request);
-        String userNickname = user.getNickname();
+        String userPhone = user.getPhone();
 
-        model.addAttribute("userNickname", userNickname); // 모델에 username 추가
-
+        model.addAttribute("userPhone", userPhone); // 모델에 username 추가
 
 
         return new ModelAndView("/myPage/info");
     }
+
+    @PostMapping("/mypage/info/modify/nickname")
+    public void modifyNickname(HttpServletRequest request, @RequestParam String nickname){
+        User user = userService.getUserFromCookie(request);
+        System.out.println("nickname" + nickname);
+
+        userInfoService.modifyNickname(user, nickname);
+    }
+
+    @PostMapping("/mypage/info/modify/phone")
+    @Transactional
+    public ResponseEntity<String> modifyPhone(HttpServletRequest request, @RequestParam String phone){
+        User user = userService.getUserFromCookie(request);
+
+        return userInfoService.modifyPhone(user, phone);
+    }
+
+    @PostMapping("/mypage/info/modify/password")
+    @Transactional
+    public ResponseEntity<String> modifyPwd(HttpServletRequest request, @RequestBody UserPwdDto userPwdDto){
+        User user = userService.getUserFromCookie(request);
+
+        return userInfoService.modifyPassword(user, userPwdDto);
+    }
+
 }
