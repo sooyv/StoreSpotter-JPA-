@@ -32,7 +32,7 @@ public class StoreInfoService {
         this.regionRepository = regionRepository;
     }
 
-
+    @Transactional
 
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
     public List<Industry> industrySave() throws Exception {
@@ -61,7 +61,6 @@ public class StoreInfoService {
 
 
     // 공공데이터 api 연결 및 Document 전달
-    @Transactional
     public void connectToApi(Industry industry) throws Exception {
 
         try {
