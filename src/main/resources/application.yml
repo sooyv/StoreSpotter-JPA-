@@ -1,0 +1,47 @@
+server:
+  address: localhost
+  port: 8181
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER}
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: update
+      show_sql: true
+      format_sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    protocol: smtp
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+      mail.smtp.ssl.trust: smtp.naver.com
+      mail.smtp.starttls.enable: true
+
+# jwt 관련 설정
+jwt:
+  header: Authorization
+  #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
+  #echo 'silvernine-tech-spring-boot-jwt-tutorial-secret-silvernine-tech-spring-boot-jwt-tutorial-secret'|base64
+  secret: ${JWT_SECRET_KEY}
+  accessTokenExpiration: 1800000       # 30분
+  refreshTokenExpiration: 2592000000   # 1달
+
+
+
+logging.level:
+  org.hibernate.SQL: debug
