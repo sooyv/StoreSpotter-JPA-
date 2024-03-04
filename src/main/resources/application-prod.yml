@@ -8,11 +8,16 @@ spring:
   config:
     activate:
       on-profile: prod
+#  datasource:
+#    url: ${SPRING_DATASOURCE_URL}
+#    username: ${SPRING_DATASOURCE_USERNAME}
+#    password: ${SPRING_DATASOURCE_PASSWORD}
+#    driver-class-name: ${SPRING_DATASOURCE_DRIVER}
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
-    driver-class-name: ${SPRING_DATASOURCE_DRIVER}
+    url: jdbc:mysql://localhost:3306/StoreSpotter(JPA)
+    username: root
+    password: Dydgus9670!
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: none
@@ -37,7 +42,8 @@ jwt:
   header: Authorization
   #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
   #echo 'silvernine-tech-spring-boot-jwt-tutorial-secret-silvernine-tech-spring-boot-jwt-tutorial-secret'|base64
-  secret: ${JWT_SECRET_KEY}
+#  secret: ${JWT_SECRET_KEY}
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
   accessTokenExpiration: 1800000       # 30분
   refreshTokenExpiration: 2592000000   # 1달
 
