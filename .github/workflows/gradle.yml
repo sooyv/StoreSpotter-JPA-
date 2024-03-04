@@ -29,7 +29,6 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
 
-    # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
     - name: make application-prod.yml
       run: |
         cd ./src/main/resources
