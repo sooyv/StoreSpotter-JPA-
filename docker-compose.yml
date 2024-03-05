@@ -1,20 +1,18 @@
-version: "3.8"
+#version: "3.8"
+#
+#services:
+#  app:
+#    container_name: app
+#    build:
+#      context: ./
+#      dockerfile: Dockerfile
+#    ports:
+#      - 8080:8080
+#    command:
+#      - bash
+#      - -c
+#      - |
+#        ./wait-for-it.sh rds-docker-server-storespotter.c52km662eg07.ap-northeast-2.rds.amazonaws.com:3306 -s -t 100
+#        java -jar /app.jar
+#
 
-services:
-  app:
-    container_name: app
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    ports:
-      - 8080:8080
-    command:
-      - bash
-      - -c
-      - |
-        ./wait-for-it.sh rds-docker-server-storespotter.c52km662eg07.ap-northeast-2.rds.amazonaws.com:3306 -s -t 100
-        java -jar /app.jar
-
-
-## .env
-#MYSQL_HOST_ENDPOINT=rds-docker-server-storespotter.c52km662eg07.ap-northeast-2.rds.amazonaws.com
