@@ -39,13 +39,7 @@ jwt:
   accessTokenExpiration: 1800000       # 30분
   refreshTokenExpiration: 2592000000   # 1달
 
-logging.level:
-<<<<<<< HEAD
-  org.hibernate.SQL: debug
-=======
-  org.hibernate.SQL: debug
 
 logging:
   level:
     root: debug
->>>>>>> 6490ba29172c1dd8f25a19336760297f0c0709ad
