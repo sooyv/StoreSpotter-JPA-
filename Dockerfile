@@ -7,5 +7,6 @@ ARG JAR_FILE=build/libs/*.jar
 # jar 파일 복사.
 COPY ${JAR_FILE} app.jar
 
+ENV SPRING_PROFILE = "prod"
 # 실행 명령
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=${SPRING_PROFILE}", "-jar", "app.jar"]
