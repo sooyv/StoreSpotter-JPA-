@@ -32,6 +32,10 @@ spring:
       mail.smtp.ssl.trust: smtp.naver.com
       mail.smtp.starttls.enable: true
 
+logging:
+  level:
+    root: debug
+
 # jwt 관련 설정
 jwt:
   header: Authorization

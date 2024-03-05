@@ -13,6 +13,7 @@ spring:
     username: sojoo
     password: sojoo2024!
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: none
@@ -41,3 +42,7 @@ jwt:
 
 logging.level:
   org.hibernate.SQL: debug
+
+logging:
+  level:
+    root: debug
