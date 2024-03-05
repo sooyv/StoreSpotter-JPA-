@@ -3,7 +3,7 @@ server:
     encoding:
       charset: utf-8
       force: true
-  port: 8181
+  port: 8080
 spring:
   config:
     activate:
@@ -14,7 +14,7 @@ spring:
 #    password: ${SPRING_DATASOURCE_PASSWORD}
 #    driver-class-name: ${SPRING_DATASOURCE_DRIVER}
   datasource:
-    url: jdbc:mysql://rds-docker-server-storespotter.c52km662eg07.ap-northeast-2.rds.amazonaws.com:3306/StoreSpotter_jpa
+    url: jdbc:mysql://rds-docker-server-storespotter.c52km662eg07.ap-northeast-2.rds.amazonaws.com:3306/storespotter_jpa
     username: sojoo
     password: sojoo2024!
     driver-class-name: com.mysql.cj.jdbc.Driver
