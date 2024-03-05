@@ -5,11 +5,10 @@ server:
       force: true
   port: 8080
 spring:
-  config:
-    activate:
-      on-profile: prod
+  profiles:
+    active: prod
   datasource:
-    url: jdbc:mysql://rds-docker-server-storespotter.c52km662eg07.ap-northeast-2.rds.amazonaws.com:3306/storespotter_jpa?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://rds-docker-server-storespotter.c52km662eg07.ap-northeast-2.rds.amazonaws.com
     username: sojoo
     password: sojoo2024!
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -41,8 +40,12 @@ jwt:
   refreshTokenExpiration: 2592000000   # 1달
 
 logging.level:
+<<<<<<< HEAD
+  org.hibernate.SQL: debug
+=======
   org.hibernate.SQL: debug
 
 logging:
   level:
     root: debug
+>>>>>>> 6490ba29172c1dd8f25a19336760297f0c0709ad
