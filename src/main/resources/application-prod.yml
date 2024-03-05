@@ -8,13 +8,7 @@ spring:
   config:
     activate:
       on-profile: prod
-#  datasource:
-#    url: ${SPRING_DATASOURCE_URL}
-#    username: ${SPRING_DATASOURCE_USERNAME}
-#    password: ${SPRING_DATASOURCE_PASSWORD}
-#    driver-class-name: ${SPRING_DATASOURCE_DRIVER}
   datasource:
-#    url: jdbc:mysql://rds-docker-server-storespotter.c52km662eg07.ap-northeast-2.rds.amazonaws.com:3306/storespotter_jpa
     url: jdbc:mysql://rds-docker-server-storespotter.c52km662eg07.ap-northeast-2.rds.amazonaws.com:3306/storespotter_jpa?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: sojoo
     password: sojoo2024!
@@ -30,8 +24,6 @@ spring:
   mail:
     host: smtp.naver.com
     port: 465
-#    username: ${SMTP_USERNAME}
-#    password: ${SMTP_PASSWORD}
     username: techsupp@naver.com
     password: sojoo2024!
     protocol: smtp
