@@ -12,6 +12,7 @@ spring:
     username: sojoo
     password: sojoo2024!
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: none
@@ -39,4 +40,12 @@ jwt:
   refreshTokenExpiration: 2592000000   # 1달
 
 logging.level:
+<<<<<<< HEAD
   org.hibernate.SQL: debug
+=======
+  org.hibernate.SQL: debug
+
+logging:
+  level:
+    root: debug
+>>>>>>> 6490ba29172c1dd8f25a19336760297f0c0709ad
