@@ -67,7 +67,7 @@ public class MypageController {
 
         System.out.println(likedList);
 
-        return new ModelAndView("/myPage/myStored");
+        return new ModelAndView("myPage/myStored");
     }
 
     // 찜 목록 추가(main 페이지)
@@ -141,7 +141,7 @@ public class MypageController {
         model.addAttribute("userPhone", userPhone); // 모델에 username 추가
 
 
-        return new ModelAndView("/myPage/info");
+        return new ModelAndView("myPage/info");
     }
 
     @PostMapping("/mypage/info/modify/nickname")
