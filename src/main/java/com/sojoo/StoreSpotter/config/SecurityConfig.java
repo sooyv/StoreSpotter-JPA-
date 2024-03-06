@@ -77,7 +77,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .authorizeHttpRequests()
 
                 // main, login 페이지, login 프로세스, 회원가입 페이지, 회원가입 프로세스, 이메일 중복체크 ajax, JWT token 발급, 평균 거리 검색 ajax
-                .antMatchers("/", "/login", "member/logout", "/signup", "/member/login", "member/signup", "signup/checkid",
+                .antMatchers("/", "/login", "member/logout", "/signup", "/member/login", "/member/signup", "/signup/checkid",
                         "/find-user", "/user/account", "/user/password", "/avg-dist", "/search/recommend", "/mypage", "/favicon.ico", "user",
                         "/mypage/liked/add", "/mypage/liked/edit", "/mypage/liked/redirect", "/mypage/liked/remove",
                 "/signup/mail-code", "/user/password", "/user/account").permitAll()
