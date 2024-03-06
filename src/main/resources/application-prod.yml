@@ -3,10 +3,11 @@ server:
     encoding:
       charset: utf-8
       force: true
-  port: 8080
+  port: 8181
 spring:
-  profiles:
-    active: prod
+  config:
+    activate:
+      on-profile: prod
   datasource:
     url: jdbc:mysql://rds-docker-server-storespotter.c52km662eg07.ap-northeast-2.rds.amazonaws.com
     username: sojoo
