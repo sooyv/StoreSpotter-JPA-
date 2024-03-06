@@ -3,11 +3,8 @@ server:
     encoding:
       charset: utf-8
       force: true
-  port: 8181
+  port: 80
 spring:
-  config:
-    activate:
-      on-profile: prod
   datasource:
     url: jdbc:mysql://rds-docker-server-storespotter.c52km662eg07.ap-northeast-2.rds.amazonaws.com
     username: sojoo
@@ -40,7 +37,6 @@ jwt:
   accessTokenExpiration: 1800000       # 30분
   refreshTokenExpiration: 2592000000   # 1달
 
-  org.hibernate.SQL: debug
 
 logging:
   level:

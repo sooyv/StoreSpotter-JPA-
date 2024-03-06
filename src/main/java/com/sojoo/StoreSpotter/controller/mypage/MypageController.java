@@ -67,7 +67,7 @@ public class MypageController {
 
         System.out.println(likedList);
 
-        return new ModelAndView("/myPage/myStored");
+        return new ModelAndView("myPage/myStored");
     }
 
     // 찜 목록 추가(main 페이지)

@@ -47,7 +47,7 @@ public class UserController {
     @GetMapping("/signup")
     public ModelAndView signUpPage(Model model) {
         model.addAttribute("userDto", new UserDto());
-        return new ModelAndView("/loginSignUp/signUp");
+        return new ModelAndView("loginSignUp/signUp");
     }
 
 
@@ -129,7 +129,7 @@ public class UserController {
     // 회원정보 찾기
     @GetMapping("/find-user")
     public ModelAndView findUserInfo() {
-        return new ModelAndView("/loginSignUp/findUserInfo");
+        return new ModelAndView("loginSignUp/findUserInfo");
     }
 
     // 이메일 찾기
