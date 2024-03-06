@@ -15,8 +15,6 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: create
-      show_sql: true
-      format_sql: true
     properties:
       hibernate:
         dialect: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
