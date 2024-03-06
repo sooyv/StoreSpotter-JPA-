@@ -27,7 +27,7 @@ $("#phoneCheckHelp").hide();
 // //         idchk = true;
 // //         $.ajax({
 // //             type : "POST",
-// //             url : "/signup/check-email",
+// //             url : "signup/check-email",
 // //             data : {
 // //                 "id" : email.val(),
 // //                 "type" : "email"
@@ -117,7 +117,7 @@ form.addEventListener("submit", event => {
 
         $.ajax({
             type: 'POST',
-            url: "/signup",
+            url: "signup",
             headers: {
                 'content-type': 'application/json'
             },
@@ -188,7 +188,7 @@ $("#send-mail").on("click", function() {
 
     $.ajax({
         type: 'POST',
-        url: "/signup/mail-code",
+        url: "signup/mail-code",
         data: {
             email : email
         },
