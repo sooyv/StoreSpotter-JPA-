@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-//@RequestMapping("/mypage")
 public class MypageController {
 
     private final DataRecommendService dataRecommendService;
