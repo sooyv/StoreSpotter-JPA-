@@ -141,7 +141,7 @@ public class MypageController {
         model.addAttribute("userPhone", userPhone); // 모델에 username 추가
 
 
-        return new ModelAndView("/myPage/info");
+        return new ModelAndView("myPage/info");
     }
 
     @PostMapping("/mypage/info/modify/nickname")
