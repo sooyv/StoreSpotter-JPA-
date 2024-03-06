@@ -15,7 +15,7 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
-<div th:replace="/header :: header"></div>
+<div th:replace="header :: header"></div>
 <div class="container" id="container">
     <div class="sign-in-container">
         <form id="loginForm" th:action="@{/member/login}" method="POST">
@@ -29,7 +29,7 @@
             </div>
         </form>
 
-        <div th:replace="/loginSignUp/socialLogin :: socialLogin"></div>
+        <div th:replace="loginSignUp/socialLogin :: socialLogin"></div>
     </div>
 </div>
 
