@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>StoreSpotter MyPage</title>
+  <link rel="StoreSpotter Icon" type="png" href="/css/img/main/free-icon-pin.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;500&family=Ubuntu:wght@500&display=swap" rel="stylesheet"></head>
+<!-- Bootstrap -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/css/header.css">
+<link rel="stylesheet" type="text/css" href="/css/myPage/myStored.css">
+<link rel="stylesheet" type="text/css" href="/css/myPage/info.css">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<body>
+<div th:replace="header :: header"></div>
+<!--전체 div-->
+<div class="mypage-body">
+
+  <!--사이드 메뉴-->
+  <div class="menu-bar">
+    <p class="mantine-Text-root mantine-1mzkl4g" th:text = "${userNickname} + 님"></p>
+    <p class="mantine-1havar1"></p>
+    <p class="mantine-hm7bzg"></p>
+    <hr>
+
+    <ul class="mantine-1c3lrjn">
+      <li class="mantine-3wtmzi">
+        <a class="menu-link" style="text-decoration-line: none" href="/mypage">
+          <span class="mantine-Text-root mantine-wsjh2a">•</span>
+          <span class="mantine-Text-root mantine-y562cl">저장 목록</span>
+        </a>
+      </li>
+      <li class="mantine-3wtmzi">
+        <a class="menu-link" style="text-decoration-line: none" href="/">
+          <span class="mantine-Text-root mantine-t2zygb">•</span>
+          <span class="mantine-Text-root mantine-dx3wmj">계정 정보</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <!--사이드 메뉴 끝-->
+
+  <!-- 중앙 -->
+  <div class="center-items">
+
+    <!-- 이름 변경 -->
+    <div class="edit_box">
+        <span>이름</span>
+      <div class="edit_container">
+        <label for="change_name"></label><input id="change_name" type="text" class="input" th:value="${userNickname}" placeholder="변경할 이름을 입력해주세요">
+        <small class="invalid"></small>
+        <div class="button_container">
+          <button type="button" id="name_btn" class="store">저장하기</button>
+        </div>
+      </div>
+    </div>
+    <!-- 이름 변경 끝 -->
+
+    <!-- 폰 변경 -->
+    <div class="edit_box">
+      <label for="change_phone" class="label input_label">
+        <span>번호</span>
+      </label>
+      <div class="edit_container">
+        <input id="change_phone" type="text" class="input" th:value="${userPhone}" placeholder="변경할 이름을 입력해주세요">
+        <small class="invalid"></small>
+        <div class="button_container">
+          <button type="button" id="phone_btn" class="store">저장하기</button>
+        </div>
+      </div>
+    </div>
+    <!-- 폰 변경 끝 -->
+
+    <!-- 비밀번호 변경 -->
+    <div class="edit_box">
+      <label for="change_pwd" class="label input_label">
+        <span>비밀번호(최소 8자, 영문, 숫자, 특수문자 사용)</span>
+      </label>
+      <div class="edit_container">
+        <input id="current_pwd" type="password" class="input" placeholder="현재 비밀번호">
+        <input id="change_pwd" type="password" class="input" placeholder="새 비밀번호">
+        <input id="change_chk_pwd" type="password" class="input" placeholder="새 비밀번호 확인">
+        <small class="invalid"></small>
+        <div class="button_container">
+          <button type="button" id="pwd_btn" class="store">변경하기</button>
+        </div>
+      </div>
+    </div>
+    <!-- 비밀번호 변경 끝 -->
+
+
+
+
+  </div>
+  <!--중앙 끝-->
+
+</div>
+<!--전체 div 끝-->
+
+
+
+<script src="/js/header.js"></script>
+<script src="/js/myPage/myStored.js"></script>
+<script src="/js/myPage/info.js"></script>
+
+</body>
+</html>

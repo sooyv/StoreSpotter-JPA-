@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>Store Spotter</title>
+    <link rel="StoreSpotter Icon" type="png" href="/css/img/main/free-icon-pin.png">
+    <link href="/css/index/index.css" rel="stylesheet">
+    <link href="/css/header.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=2n6hjq6jro&submodules=geocoder"></script>
+    <link href="https://www.flaticon.com/kr/free-icons/" title="물음표 아이콘  제작자: Saepul Nahwan - Flaticon, 화살표 버튼 아이콘  제작자: Stasy - Flaticon, 위치 핀 아이콘  제작자: Smashicons - Flaticon, 더 아이콘  제작자: Amazona Adorada - Flaticon, 확대경 아이콘  제작자: Creative Stall Premium - Flaticon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;500&family=Ubuntu:wght@500&display=swap" rel="stylesheet"></head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<div id="modal-overlay"></div>
+<div id="modal">
+    <div class="main">
+        <div class="droplet_spinner">
+            <div class="droplet"></div>
+            <div class="droplet"></div>
+            <div class="droplet"></div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div id="side-bar">
+        <div class="side-elem">
+            <div class="side-elem-title">
+                업종 선택
+            </div>
+            <div id="select-industry">
+                <div class="select-industry-detail">편의점</div>
+                <div class="select-industry-detail">카페</div>
+            </div>
+        </div>
+        <div class="side-elem">
+            <div class="side-elem-title">
+                주소 선택
+            </div>
+            <div class="search-address">
+                <input id="address" type="text" placeholder="도로명 주소 검색">
+                <button id="address-search" type="button"><img src="/css/img/main/돋보기.png"></button>
+            </div>
+        </div>
+
+        <div class="side-elem">
+            <div id="show-avg-dist"></div>
+        </div>
+
+        <div id="select-dist">
+            <div class="side-elem">
+                <div class="side-elem-title">
+                    거리 선택
+                    <div id="dist-info"><img src="/css/img/main/물음표.png"></div>
+                    <div id="dist-explain">
+                        선택거리 이상 떨어진 업종의
+                        <br>
+                        추천 위치를 보여줍니다.
+                    </div>
+                </div>
+                <div id="distance">
+                    <input id="dist-slider" type="range" min="" max="" list="tickmarks"/>
+                    <datalist id="tickmarks">
+                    </datalist>
+                    <output id="dist-value"></output>
+                </div>
+            </div>
+        </div>
+
+        <div id="selectedValue"></div>
+        <div class="side-elem">
+            <button type="button" id="submit">검색하기</button>
+        </div>
+
+        <button type="button" id="side-bar-slide-btn"><img id="slide-btn" src="/css/img/main/free-icon-arrow.png" alt="side-bar 여닫기" ./></button>
+    </div>
+    <div id="map"></div>
+
+</div>
+
+<!-- 입력 창 모달 -->
+<div id="inputModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-prime">
+            <span class="close">&times;</span>
+            <p class="modal-name">찜 이름 설정</p>
+        </div>
+        <div style="width: 100%">
+            <input type="text" id="likedName" placeholder="찜 이름을 입력하세요">
+            <button id="submitLiked">제출</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    var mapOptions = {
+        center: new naver.maps.LatLng(37.3595704, 127.105399),
+        zoom: 10
+    };
+
+    var map = new naver.maps.Map('map', mapOptions);
+
+    window.navermap_authFailure = function () {
+        // 인증 실패 시 처리 코드 작성
+        // ...
+    }
+</script>
+<script src="/js/header.js"></script>
+<script src="/js/index/index_naverMapSearchApi.js"></script>
+<script src="/js/index/index_sidebarButton.js"></script>
+<script src="/js/myPage/myStored.js"></script>
+</body>
+</html>

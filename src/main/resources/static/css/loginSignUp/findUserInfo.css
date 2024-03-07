@@ -1,0 +1,170 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.container {
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 90%;
+}
+
+h1 {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 3em;
+    font-weight: bold;
+    color: #41637d;
+    padding: 2em 0 0;
+}
+
+input {
+    background-color: #eee;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 70%;
+    max-width: 500px;
+}
+
+
+
+
+
+.select-findInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 500px;
+    width: 70%;
+    border-bottom: solid 2px #aba4a4;
+}
+
+.findInfo-details {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    padding: 10px;
+    borderBottom: solid 1px #798e90;
+    cursor: pointer;
+}
+
+#find-email-form, #find-password-form {
+    margin: 2em;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/*----------------- 이메일 찾기 Modal -----------------*/
+.email-modal {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    border: solid 1px #cdcdcd;
+    background-color: #ffffff;
+    max-width: 400px;
+    width: 40%;
+    transform: translate(-50%, -50%);
+}
+
+#modal-title {
+    border-bottom: solid 1px #cdcdcd;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#modal-content p {
+    margin: 10px 0 10px 0;
+
+}
+
+#modal-footer {
+    width: 100%;
+    border-top: solid 1px #cdcdcd;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.modal-btn {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    background: #23567d;
+    border-radius: 3px;
+    border: none;
+    color: #fff;
+    margin: 7px 10px;
+    padding: 6px 10px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-btn:hover {
+    background: #6bb4d0;
+    transition: 0.2s ease;
+}
+
+/*----------------- 이메일 찾기 -----------------*/
+/*이메일 찾기, 비밀번호 재발급*/
+#store_button, #reissue-password {
+    width: 40%;
+    background: #23567d;
+    border: none;
+    border-radius: 3px;
+    height: 2.5rem;
+    max-width: 250px;
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    color: #fff;
+    margin: 1rem;
+    cursor: pointer;
+}
+
+#store_button:hover {
+    background: #6bb4d0;
+    transition: 0.2s ease;
+}
+
+/*----------------- 비밀번호 찾기 -----------------*/
+
+/*#reissue-password {*/
+/*    width: 40%;*/
+/*    background: #23567d;*/
+/*    border: none;*/
+/*    border-radius: 3px;*/
+/*    height: 2.5rem;*/
+/*    max-width: 250px;*/
+/*    font-family: 'IBM Plex Sans KR', sans-serif;*/
+/*    color: #fff;*/
+/*    margin: 1rem;*/
+/*    cursor: pointer;*/
+/*}*/
+
+#reissue-password:hover {
+    background: #6bb4d0;
+    transition: 0.2s ease;
+}

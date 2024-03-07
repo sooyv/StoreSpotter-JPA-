@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>StoreSpotter 회원정보 찾기</title>
+  <link rel="StoreSpotter Icon" type="png" href="/css/img/main/free-icon-pin.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;500&family=Ubuntu:wght@500&display=swap" rel="stylesheet"></head>
+  <link rel="stylesheet" type="text/css" href="/css/header.css">
+  <link rel="stylesheet" type="text/css" href="/css/loginSignUp/findUserInfo.css">
+  <link rel="stylesheet" type="text/css" href="/css/loginSignUp/socialLogin.css">
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<body>
+<div th:replace="header :: header"></div>
+<div class="container">
+  <h1>find account & password</h1>
+  <div class="select-findInfo">
+    <div class="findInfo-details" id="find-email">Email</div>
+    <div class="findInfo-details" id="find-password">Password</div>
+  </div>
+<!--  아이디 찾기 모달-->
+  <div class="email-modal">
+    <div id="modal-title">회원님의 정보와 일치하는 아이디 목록입니다.</div>
+      <div id="modal-content"></div>
+      <div id="modal-footer">
+        <button class="modal-btn"><a href="/login" class="modal-btn">로그인하기</a></button>
+        <button class="modal-btn" id="modal-close">닫기</button>
+      </div>
+  </div>
+  <form id="find-email-form" th:action="@{/user/account}" method="post">
+    <input type="text" id="name" name="name" placeholder="name" />
+    <input type="text" id="phone" name="phone" placeholder="010-0000-0000" />
+    <button type="button" id="find-email-btn">find email</button>
+  </form>
+  <div>
+
+  </div>
+<!--  비밀번호 찾기-->
+  <form id="find-password-form">
+    <input type="email" id="email" placeholder="비밀번호를 발급할 이메일" />
+    <button type="button" id="reissue-password">reissue password</button>
+  </form>
+
+  <div th:replace="loginSignUp/socialLogin :: socialLogin"></div>
+
+</div>
+
+<script src="/js/header.js"></script>
+<script src="/js/loginSignUp/findUserInfo.js"></script>
+</body>
+</html>
