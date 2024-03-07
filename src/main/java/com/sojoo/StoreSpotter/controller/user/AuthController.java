@@ -59,7 +59,7 @@ public class AuthController {
     @PostMapping("/member/login")
     public ResponseEntity<TokenDto> loginProcess(@Valid @RequestBody LoginDto loginDto, HttpServletResponse response) throws Exception {
 
-        System.out.println("loginProcess 동작");
+        log.info("loginProcess 동작");
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
         log.info("loginProcess authenticationToken : " + authenticationToken);
@@ -70,9 +70,11 @@ public class AuthController {
             log.info("loginProcess authentication : " + authentication);
 
             String accessToken = tokenProvider.createAccessToken(authentication);
+            log.info("accessToken create : " + accessToken);
             String refreshToken = tokenProvider.createRefreshToken(authentication);
 
             Cookie accessTokenCookie = addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
+            log.info("accessTokenCookie create : " + accessTokenCookie);
 //            Cookie refreshTokenCookie = cookieUtil.addCookie("refresh_token", refreshToken);
 
             TokenDto tokenDto = TokenDto.builder()

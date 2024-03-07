@@ -1,6 +1,7 @@
 package com.sojoo.StoreSpotter.jwt.jwt;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +23,7 @@ import java.security.Security;
 import java.util.Collection;
 
 //public class JwtFilter extends GenericFilterBean {
+@Slf4j
 public class JwtFilter extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
     public static final String AUTHORIZATION_HEADER = "Authorization";
@@ -74,6 +76,7 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private void addSameSite(HttpServletResponse response, String sameSite) {
+        log.info("addSameSite 동작");
         Collection<String> headers = response.getHeaders(HttpHeaders.SET_COOKIE);
         boolean firstHeader = true;
         for (String header : headers) { // there can be multiple Set-Cookie attributes
