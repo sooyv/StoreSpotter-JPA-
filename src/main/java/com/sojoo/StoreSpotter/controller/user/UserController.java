@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/")
 public class UserController {
     private final UserService userService;
     private final MailService mailService;
