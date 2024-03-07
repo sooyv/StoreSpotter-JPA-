@@ -7,10 +7,10 @@ spring:
     activate:
       on-profile: local
   datasource:
-    url: jdbc:mysql://localhost:3306/StoreSpotter(JPA)
-    username:
-    password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER}
   jpa:
     database: mysql
     hibernate:
@@ -47,6 +47,7 @@ jwt:
 
 api:
   naverSerivceKey: kXVB%2FzGPSXqZrn%2F1NuCYPZGJONAmxZfu%2BjQDCfDP%2F5uo8QZ%2B6iWdY%2FXrV%2B0gg2z%2BMKVEA%2BrVFLs9l0TVQE2Cug%3D%3D
+
 
 logging.level:
   org.hibernate.SQL: debug
