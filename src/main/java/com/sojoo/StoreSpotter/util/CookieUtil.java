@@ -33,7 +33,7 @@ public class CookieUtil {
 //    public Cookie addCookie(String name, String value, int maxAge) {
         Cookie cookie = new Cookie(name, value);
         // 쿠키 속성 설정 추가
-        cookie.setHttpOnly(false);   //httpOnly 옵션 설정
+        cookie.setHttpOnly(true);   //httpOnly 옵션 설정
         cookie.setSecure(false);     //https 옵션 설정
         cookie.setPath("/");
         cookie.setMaxAge(maxAge);
