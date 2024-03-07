@@ -3,6 +3,12 @@ server:
     encoding:
       charset: utf-8
       force: true
+    session:
+      cookie:
+        name: access_token
+        domain: http://13.124.182.216/
+        http-only: true
+        path: /
   port: 80
 spring:
   datasource:
