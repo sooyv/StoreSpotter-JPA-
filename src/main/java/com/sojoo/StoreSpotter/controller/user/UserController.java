@@ -53,7 +53,7 @@ public class UserController {
 
     // 회원가입
     @Transactional
-    @PostMapping("/member/signup")
+    @PostMapping("member/signup")
     public ResponseEntity<String> signup(@RequestBody UserDto userDto) {
         System.out.println(userDto);
 
