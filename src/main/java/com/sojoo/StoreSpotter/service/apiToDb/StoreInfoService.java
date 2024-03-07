@@ -7,6 +7,7 @@ import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class StoreInfoService {
@@ -23,13 +23,17 @@ public class StoreInfoService {
     private final CafeRepository cafeRepository;
     private final IndustryRepository industryRepository;
     private final RegionRepository regionRepository;
+    private final String naverSerivceKey;
 
     @Autowired
-    public StoreInfoService(ConvenienceStoreRepository convenienceStoreRepository, CafeRepository cafeRepository, IndustryRepository industryRepository, RegionRepository regionRepository) {
+    public StoreInfoService(ConvenienceStoreRepository convenienceStoreRepository, CafeRepository cafeRepository,
+                            IndustryRepository industryRepository, RegionRepository regionRepository,
+                            @Value("{api.naverSerivceKey}") String naverSerivceKey) {
         this.convenienceStoreRepository = convenienceStoreRepository;
         this.cafeRepository = cafeRepository;
         this.industryRepository = industryRepository;
         this.regionRepository = regionRepository;
+        this.naverSerivceKey = naverSerivceKey;
     }
 
     @Transactional
@@ -78,7 +82,7 @@ public class StoreInfoService {
 
                     // 해당 업종, 지역의 api 호출
                     String sb = "https://apis.data.go.kr/B553077/api/open/sdsc2/storeListInDong?" +
-                            "ServiceKey=kXVB%2FzGPSXqZrn%2F1NuCYPZGJONAmxZfu%2BjQDCfDP%2F5uo8QZ%2B6iWdY%2FXrV%2B0gg2z%2BMKVEA%2BrVFLs9l0TVQE2Cug%3D%3D" +
+                            "ServiceKey=" + naverSerivceKey +
                             "&pageNo=" + j +
                             "&numOfRows=" + 1000 +
                             "&divId=" + "ctprvnCd" +
