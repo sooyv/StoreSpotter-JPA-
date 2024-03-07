@@ -61,11 +61,10 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-        addSameSite(response, "None");
     }
 
     private String resolveToken(HttpServletRequest request) {
-        System.out.println("JwtFilter resolveToken 실행");
+        log.info("JwtFilter resolveToken 실행");
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
 
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
@@ -75,17 +74,4 @@ public class JwtFilter extends OncePerRequestFilter {
         return null;
     }
 
-    private void addSameSite(HttpServletResponse response, String sameSite) {
-        log.info("addSameSite 동작");
-        Collection<String> headers = response.getHeaders(HttpHeaders.SET_COOKIE);
-        boolean firstHeader = true;
-        for (String header : headers) { // there can be multiple Set-Cookie attributes
-            if (firstHeader) {
-                response.setHeader(HttpHeaders.SET_COOKIE, String.format("%s; Secure; %s", header, "SameSite=" + sameSite));
-                firstHeader = false;
-                continue;
-            }
-            response.addHeader(HttpHeaders.SET_COOKIE, String.format("%s; Secure; %s", header, "SameSite=" + sameSite));
-        }
-    }
 }
