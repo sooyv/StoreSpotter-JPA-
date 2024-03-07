@@ -3,6 +3,7 @@ package com.sojoo.StoreSpotter.jwt.jwt;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Security;
+import java.util.Collection;
 
 //public class JwtFilter extends GenericFilterBean {
 public class JwtFilter extends OncePerRequestFilter {
@@ -57,6 +59,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+        addSameSite(response, "None");
     }
 
     private String resolveToken(HttpServletRequest request) {
@@ -70,4 +73,16 @@ public class JwtFilter extends OncePerRequestFilter {
         return null;
     }
 
+    private void addSameSite(HttpServletResponse response, String sameSite) {
+        Collection<String> headers = response.getHeaders(HttpHeaders.SET_COOKIE);
+        boolean firstHeader = true;
+        for (String header : headers) { // there can be multiple Set-Cookie attributes
+            if (firstHeader) {
+                response.setHeader(HttpHeaders.SET_COOKIE, String.format("%s; Secure; %s", header, "SameSite=" + sameSite));
+                firstHeader = false;
+                continue;
+            }
+            response.addHeader(HttpHeaders.SET_COOKIE, String.format("%s; Secure; %s", header, "SameSite=" + sameSite));
+        }
+    }
 }
