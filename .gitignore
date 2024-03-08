@@ -38,4 +38,5 @@ out/
 
 application.yml
 application-prod.yml
+dockerfile-local
 
