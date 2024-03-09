@@ -26,7 +26,7 @@ public class RedisConfig {
     // lettuce
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(redisProperties.getHost(), redisProperties.getPort());
+        return new LettuceConnectionFactory("redis", 6379);
     }
 
     // Redis template
