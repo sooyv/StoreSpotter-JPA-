@@ -15,13 +15,13 @@ public class redisTestController {
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
-    @GetMapping("/redisTest")
-    public String addRedisKey() {
+    @PostMapping("/redisTest")
+    public ResponseEntity<?> addRedisKey() {
         ValueOperations<String, String> vop = redisTemplate.opsForValue();
         vop.set("yellow", "banana");
         vop.set("red", "apple");
         vop.set("green", "watermelon");
-        return "hello";
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @GetMapping("/redisTest/{key}")
     public ResponseEntity<?> getRedisKey(@PathVariable String key) {

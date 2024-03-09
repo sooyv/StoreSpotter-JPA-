@@ -9,6 +9,9 @@ import com.sojoo.StoreSpotter.service.myPage.LikedService;
 import com.sojoo.StoreSpotter.service.storePair.DataRecommendService;
 import com.sojoo.StoreSpotter.service.user.UserInfoService;
 import com.sojoo.StoreSpotter.service.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +24,8 @@ import java.util.List;
 
 @RestController
 public class MypageController {
-
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
     private final DataRecommendService dataRecommendService;
     private final LikedService likedService;
     private final IndustryService industryService;
@@ -81,6 +85,11 @@ public class MypageController {
         String industId = industryService.industryNameToCode(indust);
 
         User user = userService.getUserFromCookie(request);
+
+        ValueOperations<String, String> vop = redisTemplate.opsForValue();
+        vop.set("yellow", "banana");
+        vop.set("red", "apple");
+        vop.set("green", "watermelon");
 
         // 찜 이름 중복 확인 (likeName duplicate valid)
         ResponseEntity<String> isDuplicate = likedService.duplicateLikedName(user, likedName);
