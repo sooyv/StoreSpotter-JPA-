@@ -86,6 +86,7 @@ public class MypageController {
         String industId = industryService.industryNameToCode(indust);
 
         User user = userService.getUserFromCookie(request);
+
         ValueOperations<String, String> vop = redisTemplate.opsForValue();
         vop.set("yellow", "banana");
         vop.set("red", "apple");
