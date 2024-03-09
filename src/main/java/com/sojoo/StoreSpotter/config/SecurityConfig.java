@@ -80,7 +80,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .antMatchers("/", "/login", "member/logout", "/signup", "/member/login", "/member/signup", "/signup/checkid",
                         "/find-user", "/user/account", "/user/password", "/avg-dist", "/search/recommend", "/mypage", "/favicon.ico", "user",
                         "/mypage/liked/add", "/mypage/liked/edit", "/mypage/liked/redirect", "/mypage/liked/remove",
-                "/signup/mail-code", "/user/password", "/user/account").permitAll()
+                "/signup/mail-code", "/user/password", "/user/account", "/redisTest", "/redisTest/**").permitAll()
 
                 .antMatchers("/user", "/admin").hasRole("USER")
                 .antMatchers("/admin").hasRole("ADMIN")
