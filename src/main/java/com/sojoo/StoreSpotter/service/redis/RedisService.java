@@ -35,12 +35,12 @@ public class RedisService {
         return values.get(username);
     }
 
-    public void changeValues(String accessToken, String refreshToken) {
-        String username = tokenProvider.getUsernameFromToken(accessToken);
-        ValueOperations<String, String> values = redisTemplate.opsForValue();
-
-        values.set(username, refreshToken);
-    }
+//    public void changeValues(String accessToken, String refreshToken) {
+//        String username = tokenProvider.getUsernameFromToken(accessToken);
+//        ValueOperations<String, String> values = redisTemplate.opsForValue();
+//
+//        values.set(username, refreshToken);
+//    }
 
     // 키-벨류 삭제
     public void delValues(String accessToken) {

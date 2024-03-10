@@ -117,12 +117,12 @@ public class TokenProvider implements InitializingBean {
             logger.info("잘못된 JWT 서명입니다.");
         } catch (ExpiredJwtException e) {
             logger.info("만료된 JWT 토큰입니다.");
-            Authentication authentication = getAuthentication(token);
             String refreshToken = redisService.getValues(token);
             if (validRefreshToken(refreshToken)) {
+                Authentication authentication = getAuthentication(token);
                 String accessToken = createAccessToken(authentication);
                 addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
-                redisService.changeValues(accessToken, refreshToken);
+                redisService.setValues(accessToken, refreshToken);
             }
         } catch (UnsupportedJwtException e) {
             logger.info("지원되지 않는 JWT 토큰입니다.");
