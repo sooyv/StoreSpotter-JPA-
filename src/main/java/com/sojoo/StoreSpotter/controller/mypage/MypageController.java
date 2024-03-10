@@ -29,6 +29,8 @@ public class MypageController {
 
     private final UserInfoService userInfoService;
 
+
+
     public MypageController(DataRecommendService dataRecommendService, LikedService likedService, IndustryService industryService, UserService userService, UserInfoService userInfoService) {
         this.dataRecommendService = dataRecommendService;
         this.likedService = likedService;
@@ -79,6 +81,7 @@ public class MypageController {
         String industId = industryService.industryNameToCode(indust);
 
         User user = userService.getUserFromCookie(request);
+
 
         // 찜 이름 중복 확인 (likeName duplicate valid)
         ResponseEntity<String> isDuplicate = likedService.duplicateLikedName(user, likedName);
