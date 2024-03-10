@@ -84,7 +84,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 
                 .antMatchers("/user", "/admin", "/redisTest", "/redisTest/**").hasRole("USER")
                 .antMatchers("/admin").hasRole("ADMIN")
-                .anyRequest().authenticated() // 그 외 인증 없이 차단 - 일시 수정);
+                .anyRequest().authenticated()   // 그 외 인증 없이 차단 - 일시 수정);
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
 

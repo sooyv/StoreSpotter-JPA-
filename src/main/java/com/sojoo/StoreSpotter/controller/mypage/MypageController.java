@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -44,9 +45,9 @@ public class MypageController {
      */
     @GetMapping("/mypage")
     public ModelAndView myPage(Model model, @RequestParam(value = "keyword", required = false) String keyword,
-                               HttpServletRequest request) {
+                               HttpServletRequest request, HttpServletResponse response) {
 
-        User user = userService.getUserFromCookie(request);
+        User user = userService.getUserFromCookie(request, response);
 
         /* 검색기능 */
         List<LikedDto> likedList = null; // 사용자의 likedList 가져오기
@@ -74,13 +75,14 @@ public class MypageController {
     // 찜 목록 추가(main 페이지)
     @PostMapping("/mypage/liked/add")
     public ResponseEntity<String> addLiked(HttpServletRequest request,
+                                            HttpServletResponse response,
                                             @RequestParam String indust, @RequestParam String likedAddress,
                                            @RequestParam Double dist, @RequestParam String likedName,
                                            @RequestParam String center){
         String regionName = dataRecommendService.sido(likedAddress);
         String industId = industryService.industryNameToCode(indust);
 
-        User user = userService.getUserFromCookie(request);
+        User user = userService.getUserFromCookie(request, response);
 
 
         // 찜 이름 중복 확인 (likeName duplicate valid)
@@ -98,10 +100,10 @@ public class MypageController {
     // 찜 이름 수정
     @Transactional
     @PostMapping("/mypage/liked/edit")
-    public ResponseEntity<String> editLiked(HttpServletRequest request,
+    public ResponseEntity<String> editLiked(HttpServletRequest request, HttpServletResponse response,
             @RequestParam String likedName, @RequestParam String editName){
 
-        User user = userService.getUserFromCookie(request);
+        User user = userService.getUserFromCookie(request, response);
 
 
         // 찜 이름 중복 확인 (likeName duplicate valid)
@@ -117,10 +119,10 @@ public class MypageController {
     // 찜 삭제
     @PostMapping("/mypage/liked/remove")
     @Transactional
-    public void removeLiked(HttpServletRequest request,
+    public void removeLiked(HttpServletRequest request, HttpServletResponse response,
             @RequestParam String likedName){
 
-        User user = userService.getUserFromCookie(request);
+        User user = userService.getUserFromCookie(request, response);
 
 
         likedService.removeLiked(user, likedName);
@@ -135,9 +137,9 @@ public class MypageController {
      */
 
     @GetMapping("/mypage/info")
-    public ModelAndView myInfo(Model model, HttpServletRequest request) {
+    public ModelAndView myInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
 
-        User user = userService.getUserFromCookie(request);
+        User user = userService.getUserFromCookie(request, response);
         String userPhone = user.getPhone();
 
         model.addAttribute("userPhone", userPhone); // 모델에 username 추가
@@ -147,8 +149,8 @@ public class MypageController {
     }
 
     @PostMapping("/mypage/info/modify/nickname")
-    public void modifyNickname(HttpServletRequest request, @RequestParam String nickname){
-        User user = userService.getUserFromCookie(request);
+    public void modifyNickname(HttpServletRequest request, HttpServletResponse response, @RequestParam String nickname){
+        User user = userService.getUserFromCookie(request, response);
         System.out.println("nickname" + nickname);
 
         userInfoService.modifyNickname(user, nickname);
@@ -156,16 +158,16 @@ public class MypageController {
 
     @PostMapping("/mypage/info/modify/phone")
     @Transactional
-    public ResponseEntity<String> modifyPhone(HttpServletRequest request, @RequestParam String phone){
-        User user = userService.getUserFromCookie(request);
+    public ResponseEntity<String> modifyPhone(HttpServletRequest request, HttpServletResponse response, @RequestParam String phone){
+        User user = userService.getUserFromCookie(request, response);
 
         return userInfoService.modifyPhone(user, phone);
     }
 
     @PostMapping("/mypage/info/modify/password")
     @Transactional
-    public ResponseEntity<String> modifyPwd(HttpServletRequest request, @RequestBody UserPwdDto userPwdDto){
-        User user = userService.getUserFromCookie(request);
+    public ResponseEntity<String> modifyPwd(HttpServletRequest request, HttpServletResponse response, @RequestBody UserPwdDto userPwdDto){
+        User user = userService.getUserFromCookie(request, response);
 
         return userInfoService.modifyPassword(user, userPwdDto);
     }

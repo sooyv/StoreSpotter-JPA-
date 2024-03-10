@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
@@ -68,7 +69,7 @@ public class UserService {
         return user;
     }
 
-    public User getUserFromCookie(HttpServletRequest request){
+    public User getUserFromCookie(HttpServletRequest request, HttpServletResponse response) {
         String name = "access_token";
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {
@@ -78,7 +79,7 @@ public class UserService {
             if (tokens.isPresent()) {
                 Cookie token = tokens.get();
                 String accessToken = String.valueOf(token.getValue());
-                boolean isToken = tokenProvider.validateToken(accessToken);
+                boolean isToken = tokenProvider.validateToken(accessToken, response);
 
                 if (isToken){
                     String username = tokenProvider.getUsernameFromToken(accessToken);

@@ -51,7 +51,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         System.out.println("doFilter의 requestURI : "+ requestURI);
 
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt, response)) {
             Authentication authentication = tokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             System.out.println("컨텍스트홀더 테스트: " +SecurityContextHolder.getContext().getAuthentication());

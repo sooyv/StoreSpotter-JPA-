@@ -29,16 +29,15 @@ public class CookieUtil {
     }
 
     // 요청 값(이름, 값, 만료기간)을 바탕으로 Http 응답에 쿠키 추가
-    public static Cookie addCookie(HttpServletResponse response, String name, String value, int maxAge) {
+    public static void addCookie(HttpServletResponse response, String accessToken, String value, int maxAge) {
 //    public Cookie addCookie(String name, String value, int maxAge) {
-        Cookie cookie = new Cookie(name, value);
+        Cookie cookie = new Cookie(accessToken, value);
         // 쿠키 속성 설정 추가
         cookie.setHttpOnly(true);   //httpOnly 옵션 설정
         cookie.setSecure(false);     //https 옵션 설정
         cookie.setPath("/");
         cookie.setMaxAge(maxAge);
         response.addCookie(cookie);
-        return cookie;
     }
 
     // 쿠키의 이름을 입력받아 쿠키 삭제

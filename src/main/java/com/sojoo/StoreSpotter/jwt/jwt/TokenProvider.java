@@ -1,6 +1,7 @@
 package com.sojoo.StoreSpotter.jwt.jwt;
 
-import antlr.Token;
+import com.sojoo.StoreSpotter.service.redis.RedisService;
+import com.sojoo.StoreSpotter.util.CookieUtil;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -15,26 +16,33 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletResponse;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import static com.sojoo.StoreSpotter.util.CookieUtil.addCookie;
+
 @Component
 public class TokenProvider implements InitializingBean {
-
+    private final RedisService redisService;
+    private final CookieUtil cookieUtil;
     private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
     private static final String AUTHORITIES_KEY = "auth";
     private final String secret;
     private final long accessTokenExpiration;
     private final long refreshTokenExpiration;
     private Key key;
+    private final static int COOKIE_EXPIRE_SECONDS = 3600;      // 쿠키 존재 시간 1시간 설정
 
     public TokenProvider(
-            @Value("${jwt.secret}") String secret,
+            RedisService redisService, CookieUtil cookieUtil, @Value("${jwt.secret}") String secret,
             @Value("${jwt.accessTokenExpiration}") long accessTokenExpiration,
             @Value("${jwt.refreshTokenExpiration}") long refreshTokenExpiration) {
+        this.redisService = redisService;
+        this.cookieUtil = cookieUtil;
         this.secret = secret;
         this.accessTokenExpiration = accessTokenExpiration;
         this.refreshTokenExpiration = refreshTokenExpiration;
@@ -77,9 +85,6 @@ public class TokenProvider implements InitializingBean {
                 .signWith(SignatureAlgorithm.HS512, key)
                 .compact();
 
-        // redis에 저장 코드
-
-
         return refreshToken;
     }
 
@@ -103,10 +108,33 @@ public class TokenProvider implements InitializingBean {
     }
 
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token, HttpServletResponse response) {
         System.out.println("TokenProvider validateToken 실행");
         try {
             Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+            return true;
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            logger.info("잘못된 JWT 서명입니다.");
+        } catch (ExpiredJwtException e) {
+            logger.info("만료된 JWT 토큰입니다.");
+            Authentication authentication = getAuthentication(token);
+            String refreshToken = redisService.getValues(token);
+            if (validRefreshToken(refreshToken)) {
+                String accessToken = createAccessToken(authentication);
+                addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
+                redisService.changeValues(accessToken, refreshToken);
+            }
+        } catch (UnsupportedJwtException e) {
+            logger.info("지원되지 않는 JWT 토큰입니다.");
+        } catch (IllegalArgumentException e) {
+            logger.info("JWT 토큰이 잘못되었습니다.");
+        }
+        return false;
+    }
+
+    public boolean validRefreshToken(String refreshToken) {
+        try {
+            Jwts.parser().setSigningKey(key).parseClaimsJws(refreshToken);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             logger.info("잘못된 JWT 서명입니다.");

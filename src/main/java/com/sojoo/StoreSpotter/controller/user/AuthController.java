@@ -5,6 +5,7 @@ import com.sojoo.StoreSpotter.dto.user.LoginDto;
 import com.sojoo.StoreSpotter.jwt.dto.TokenDto;
 import com.sojoo.StoreSpotter.jwt.jwt.JwtFilter;
 import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
+import com.sojoo.StoreSpotter.service.redis.RedisService;
 import com.sojoo.StoreSpotter.util.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -21,8 +22,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.time.Duration;
-import java.util.Date;
 
 import static com.sojoo.StoreSpotter.util.CookieUtil.*;
 
@@ -33,12 +32,14 @@ public class AuthController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final CookieUtil cookieUtil;
+    private final RedisService redisService;
     private final static int COOKIE_EXPIRE_SECONDS = 3600;      // 쿠키 존재 시간 1시간 설정
 
-    public AuthController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, CookieUtil cookieUtil) {
+    public AuthController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, CookieUtil cookieUtil, RedisService redisService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.cookieUtil = cookieUtil;
+        this.redisService = redisService;
     }
 
     // 로그아웃
@@ -73,19 +74,19 @@ public class AuthController {
             log.info("accessToken create : " + accessToken);
             String refreshToken = tokenProvider.createRefreshToken(authentication);
 
-            Cookie accessTokenCookie = addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
-            log.info("accessTokenCookie create : " + accessTokenCookie);
-//            Cookie refreshTokenCookie = cookieUtil.addCookie("refresh_token", refreshToken);
+            addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
 
-            TokenDto tokenDto = TokenDto.builder()
-                    .accessToken(accessTokenCookie)
-//                    .refreshToken(refreshTokenCookie)
-                    .build();
+            // redis 저장
+            redisService.setValues(accessToken, refreshToken);
+//            TokenDto tokenDto = TokenDto.builder()
+//                    .accessToken(accessTokenCookie)
+//                    .build();
+//
+//            HttpHeaders httpHeaders = new HttpHeaders();
+//            httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + tokenDto.getAccessToken());
 
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + tokenDto.getAccessToken());
-
-            return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
+//            return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
