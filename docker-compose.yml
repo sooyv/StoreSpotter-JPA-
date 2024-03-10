@@ -1,18 +1,21 @@
-#version: "3.8"
-#
-#services:
-#  app:
-#    container_name: app
-#    build:
-#      context: ./
-#      dockerfile: Dockerfile
-#    ports:
-#      - 8080:8080
-#    command:
-#      - bash
-#      - -c
-#      - |
-#        ./wait-for-it.sh rds-docker-server-storespotter.c52km662eg07.ap-northeast-2.rds.amazonaws.com:3306 -s -t 100
-#        java -jar /app.jar
-#
-
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./dockerfile-local
+    image: myapp:local
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+  redis:
+    image: redis:latest
+    command: redis-server --port 6379
+    container_name: redis
+    hostname: redis
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    ports:
+      - "6379:6379"
