@@ -71,13 +71,14 @@ public class AuthController {
             log.info("loginProcess authentication : " + authentication);
 
             String accessToken = tokenProvider.createAccessToken(authentication);
+            String username = tokenProvider.getUsernameFromToken(accessToken);
             log.info("accessToken create : " + accessToken);
             String refreshToken = tokenProvider.createRefreshToken(authentication);
 
             addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
 
             // redis 저장
-            redisService.setValues(accessToken, refreshToken);
+            redisService.setValues(username, refreshToken);
 //            TokenDto tokenDto = TokenDto.builder()
 //                    .accessToken(accessTokenCookie)
 //                    .build();

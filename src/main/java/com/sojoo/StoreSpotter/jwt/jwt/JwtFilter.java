@@ -37,7 +37,6 @@ public class JwtFilter extends OncePerRequestFilter {
         System.out.println("JwtFilter doFilter 실행");
 
         String jwt = null;
-//        String jwt = resolveToken(request);
         if (request.getCookies() != null) {
             for (Cookie cookie: request.getCookies()) {
                 if (cookie.getName().equals("access_token")) {
@@ -48,16 +47,28 @@ public class JwtFilter extends OncePerRequestFilter {
 
         System.out.println("jwt 토큰 = " + jwt);
         String requestURI = request.getRequestURI();
-
         System.out.println("doFilter의 requestURI : "+ requestURI);
 
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt, response)) {
-            Authentication authentication = tokenProvider.getAuthentication(jwt);
+//        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt, response)) {
+//            Authentication authentication = tokenProvider.getAuthentication(jwt);
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//            System.out.println("컨텍스트홀더 테스트: " +SecurityContextHolder.getContext().getAuthentication());
+//            logger.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
+//        } else {
+//            logger.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI);
+//        }
+        if (StringUtils.hasText(jwt)) {
+            if (tokenProvider.validateToken(jwt, response)) {
+                log.info("validateToken if문 안으로 ");
+                Authentication authentication = tokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             System.out.println("컨텍스트홀더 테스트: " +SecurityContextHolder.getContext().getAuthentication());
             logger.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
+            } else {
+                logger.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI);
+            }
         } else {
-            logger.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI);
+            logger.debug("JWT 토큰이 null 또는 빈 문자열입니다, uri: {}", requestURI);
         }
 
         filterChain.doFilter(request, response);
