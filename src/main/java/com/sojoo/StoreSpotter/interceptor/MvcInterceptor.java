@@ -7,7 +7,6 @@ import com.sojoo.StoreSpotter.util.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,7 +44,7 @@ public class MvcInterceptor implements HandlerInterceptor {
             if (cookie != null) {
                 // 쿠키의 토큰 확인하여 user 정보 추출
                 String accessToken = cookie.getValue();
-                String username = tokenProvider.getUsernameFromExpiredToken(accessToken);
+                String username = tokenProvider.getUsernameFromToken(accessToken);
 
                 // 해당 username이 contextHolder에서 확인
                 if(!SecurityContextHolder.getContext().getAuthentication().getName().equals(username)) {

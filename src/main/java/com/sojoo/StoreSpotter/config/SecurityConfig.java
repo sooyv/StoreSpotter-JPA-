@@ -70,7 +70,6 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .formLogin().disable()
 
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-//                .addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedHandler(jwtAccessDeniedHandler)
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -89,9 +88,11 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
 
-        http.exceptionHandling().accessDeniedPage("/");        // 403 발생시 main 페이지로 이동
+        http.exceptionHandling().accessDeniedPage("/")        // 403 발생시 main 페이지로 이동
+                .authenticationEntryPoint(new JwtAuthenticationEntryPoint()); // 401 오류 발생 시 처리 클래스 지정
 
-                // 세션을 사용하지 않기 때문에 STATELESS로 설정
+
+        // 세션을 사용하지 않기 때문에 STATELESS로 설정
         http.sessionManagement(sessionManagement ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );

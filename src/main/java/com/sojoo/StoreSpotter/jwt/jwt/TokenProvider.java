@@ -96,7 +96,7 @@ public class TokenProvider implements InitializingBean {
 
     // AccessToken 이 만료되었을 때 newAccessToken 발급 및 Cookie 및 Redis 에 반영
     public String reissueAccessToken(String accessToken, HttpServletResponse response){
-        String username = getUsernameFromExpiredToken(accessToken);
+        String username = getUsernameFromToken(accessToken);
         String refreshToken = redisService.getValues(username);
 
         if (validRefreshToken(refreshToken)) {
@@ -170,16 +170,6 @@ public class TokenProvider implements InitializingBean {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
-    public String getUsernameFromToken(String accessToken){
-        Claims claims = Jwts
-                .parser()
-                .setSigningKey(key)
-                .parseClaimsJws(accessToken)
-                .getBody();
-
-        return claims.getSubject();
-    }
-
     public Date getExpiredFromToken(String accessToken) {
         try {
             Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(accessToken).getBody();
@@ -192,7 +182,7 @@ public class TokenProvider implements InitializingBean {
         }
     }
 
-    public String getUsernameFromExpiredToken(String accessToken) {
+    public String getUsernameFromToken(String accessToken) {
         try {
             Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(accessToken).getBody();
             return claims.getSubject();

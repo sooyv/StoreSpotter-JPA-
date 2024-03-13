@@ -94,7 +94,7 @@ form.addEventListener("submit", event => {
                 }
 
                 if (error.responseText == "notEqualMailCode") {
-                    alert("메일 코드가 일치하지 않습니다. 메일 인증을 재시도 해주세요");
+                    alert("메일 코드가 일치하지 않습니다.");
                     mailCode.focus();
                 }
 
