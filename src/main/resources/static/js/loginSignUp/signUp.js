@@ -211,6 +211,11 @@ $("#send-mail").on("click", function() {
         },
         error: function(error) {
             console.log(error)
+            // 메일 중복검사
+            if (error.responseText == "checkDuplicateEmail") {
+                alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.");
+                email.focus();
+            }
         }
     });
 });

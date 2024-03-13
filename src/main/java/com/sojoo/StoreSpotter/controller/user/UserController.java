@@ -55,10 +55,10 @@ public class UserController {
     @Transactional
     @PostMapping("/member/signup")
     public ResponseEntity<String> signup(@RequestBody UserDto userDto) {
-        System.out.println(userDto);
 
         // 이메일 중복 검사
-        ResponseEntity<String> checkDuplicateEmail = userValidateService.checkDuplicateEmail(userDto);
+        String username = userDto.getUsername();
+        ResponseEntity<String> checkDuplicateEmail = userValidateService.checkDuplicateEmail(username);
         if (checkDuplicateEmail != null) {
             return checkDuplicateEmail;
         }
@@ -91,6 +91,7 @@ public class UserController {
             return passwordRegExp;
         }
 
+        // 전화번호 정규식 검사
         ResponseEntity<String> phoneRegExp = userValidateService.phoneRegExp(userDto);
         if (phoneRegExp != null) {
             return phoneRegExp;
@@ -110,6 +111,13 @@ public class UserController {
         }
 
         // 메일 정규화 확인 추가
+
+
+        // 메일 중복확인
+        ResponseEntity<String> checkDuplicateEmail = userValidateService.checkDuplicateEmail(email);
+        if (checkDuplicateEmail != null) {
+            return checkDuplicateEmail;
+        }
 
         try {
 //            String code = mailService.sendCertificationMail(email);
