@@ -11,40 +11,34 @@ import java.time.Duration;
 @Service
 public class RedisService {
     private final RedisTemplate<String, String> redisTemplate;
-    private final TokenProvider tokenProvider;
 
-    public RedisService(RedisTemplate<String, String> redisTemplate, TokenProvider tokenProvider) {
+    public RedisService(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
-        this.tokenProvider = tokenProvider;
     }
 
 
     // 키-벨류 설정
-    public void setValues(String accessToken, String refreshToken) {
-        String username = tokenProvider.getUsernameFromToken(accessToken);
+    public void setValues(String username, String refreshToken) {
         ValueOperations<String, String> values = redisTemplate.opsForValue();
 
         values.set(username, refreshToken, Duration.ofDays(14));    // refresh token - 14일
     }
 
     // 키값으로 벨류 가져오기
-    public String getValues(String accessToken) {
-        String username = tokenProvider.getUsernameFromToken(accessToken);
+    public String getValues(String username) {
 
         ValueOperations<String, String> values = redisTemplate.opsForValue();
         return values.get(username);
     }
 
-//    public void changeValues(String accessToken, String refreshToken) {
-//        String username = tokenProvider.getUsernameFromToken(accessToken);
-//        ValueOperations<String, String> values = redisTemplate.opsForValue();
-//
-//        values.set(username, refreshToken);
-//    }
+    public void changeValues(String username, String refreshToken) {
+        ValueOperations<String, String> values = redisTemplate.opsForValue();
+
+        values.set(username, refreshToken);
+    }
 
     // 키-벨류 삭제
-    public void delValues(String accessToken) {
-        String username = tokenProvider.getUsernameFromToken(accessToken);
+    public void delValues(String username) {
 
         redisTemplate.delete(username.substring(7));
     }

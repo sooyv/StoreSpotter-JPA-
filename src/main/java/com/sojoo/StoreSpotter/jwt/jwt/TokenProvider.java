@@ -1,7 +1,7 @@
 package com.sojoo.StoreSpotter.jwt.jwt;
 
 import com.sojoo.StoreSpotter.service.redis.RedisService;
-import com.sojoo.StoreSpotter.util.CookieUtil;
+import com.sojoo.StoreSpotter.service.user.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
@@ -28,24 +29,26 @@ import static com.sojoo.StoreSpotter.util.CookieUtil.addCookie;
 @Component
 public class TokenProvider implements InitializingBean {
     private final RedisService redisService;
-    private final CookieUtil cookieUtil;
     private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
     private static final String AUTHORITIES_KEY = "auth";
     private final String secret;
     private final long accessTokenExpiration;
     private final long refreshTokenExpiration;
+
+    private final CustomUserDetailsService customUserDetailsService;
+
     private Key key;
     private final static int COOKIE_EXPIRE_SECONDS = 3600;      // 쿠키 존재 시간 1시간 설정
 
     public TokenProvider(
-            RedisService redisService, CookieUtil cookieUtil, @Value("${jwt.secret}") String secret,
+            RedisService redisService, @Value("${jwt.secret}") String secret,
             @Value("${jwt.accessTokenExpiration}") long accessTokenExpiration,
-            @Value("${jwt.refreshTokenExpiration}") long refreshTokenExpiration) {
+            @Value("${jwt.refreshTokenExpiration}") long refreshTokenExpiration, CustomUserDetailsService customUserDetailsService) {
         this.redisService = redisService;
-        this.cookieUtil = cookieUtil;
         this.secret = secret;
         this.accessTokenExpiration = accessTokenExpiration;
         this.refreshTokenExpiration = refreshTokenExpiration;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
@@ -54,6 +57,9 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
+    /**
+     * create AccessToken, RefreshToken
+     */
     public String createAccessToken(Authentication authentication) {
         System.out.println("TokenProvider createAccessToken 실행");
         String authorities = authentication.getAuthorities().stream()
@@ -88,27 +94,27 @@ public class TokenProvider implements InitializingBean {
         return refreshToken;
     }
 
-    public Authentication getAuthentication(String token) {
-        System.out.println("TokenProvider getAuthentication ");
-        Claims claims = Jwts
-                .parser()
-                .setSigningKey(key)
-                .parseClaimsJws(token)
-                .getBody();
+    // AccessToken 이 만료되었을 때 newAccessToken 발급 및 Cookie 및 Redis 에 반영
+    public String reissueAccessToken(String accessToken, HttpServletResponse response){
+        String username = getUsernameFromExpiredToken(accessToken);
+        String refreshToken = redisService.getValues(username);
 
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
+        if (validRefreshToken(refreshToken)) {
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+            Authentication authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+            String newAccessToken = createAccessToken(authenticationToken);
+            addCookie(response, "access_token", newAccessToken, COOKIE_EXPIRE_SECONDS);
+            redisService.changeValues(getUsernameFromToken(newAccessToken), refreshToken);
 
-        User principal = new User(claims.getSubject(), "", authorities);
-        System.out.println("getAuthentication : " + principal);
-
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+            return newAccessToken;
+        }
+        return null;
     }
 
-
-    public boolean validateToken(String token, HttpServletResponse response) {
+    /**
+     * validate AccessToken, RefreshToken
+     */
+    public boolean validateToken(String token) {
         System.out.println("TokenProvider validateToken 실행");
         try {
             Jwts.parser().setSigningKey(key).parseClaimsJws(token);
@@ -117,13 +123,6 @@ public class TokenProvider implements InitializingBean {
             logger.info("잘못된 JWT 서명입니다.");
         } catch (ExpiredJwtException e) {
             logger.info("만료된 JWT 토큰입니다.");
-            String refreshToken = redisService.getValues(token);
-            if (validRefreshToken(refreshToken)) {
-                Authentication authentication = getAuthentication(token);
-                String accessToken = createAccessToken(authentication);
-                addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
-                redisService.setValues(accessToken, refreshToken);
-            }
         } catch (UnsupportedJwtException e) {
             logger.info("지원되지 않는 JWT 토큰입니다.");
         } catch (IllegalArgumentException e) {
@@ -148,6 +147,29 @@ public class TokenProvider implements InitializingBean {
         return false;
     }
 
+
+    /**
+     * get info from accessToken
+     */
+    public Authentication getAuthentication(String token) {
+        System.out.println("TokenProvider getAuthentication ");
+        Claims claims = Jwts
+                .parser()
+                .setSigningKey(key)
+                .parseClaimsJws(token)
+                .getBody();
+
+        Collection<? extends GrantedAuthority> authorities =
+                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+
+        User principal = new User(claims.getSubject(), "", authorities);
+        System.out.println("getAuthentication : " + principal);
+
+        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+    }
+
     public String getUsernameFromToken(String accessToken){
         Claims claims = Jwts
                 .parser()
@@ -156,5 +178,29 @@ public class TokenProvider implements InitializingBean {
                 .getBody();
 
         return claims.getSubject();
+    }
+
+    public Date getExpiredFromToken(String accessToken) {
+        try {
+            Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(accessToken).getBody();
+            return claims.getExpiration();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims().getExpiration();
+        } catch (Exception e) {
+            // 다른 종류의 예외 처리
+            return null;
+        }
+    }
+
+    public String getUsernameFromExpiredToken(String accessToken) {
+        try {
+            Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(accessToken).getBody();
+            return claims.getSubject();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims().getSubject();
+        } catch (Exception e) {
+            // 다른 종류의 예외 처리
+            return null;
+        }
     }
 }

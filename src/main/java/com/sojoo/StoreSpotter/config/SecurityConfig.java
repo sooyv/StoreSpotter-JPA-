@@ -4,6 +4,8 @@ import com.sojoo.StoreSpotter.interceptor.MvcInterceptor;
 import com.sojoo.StoreSpotter.jwt.jwt.JwtAccessDeniedHandler;
 import com.sojoo.StoreSpotter.jwt.jwt.JwtAuthenticationEntryPoint;
 import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
+import com.sojoo.StoreSpotter.service.redis.RedisService;
+import com.sojoo.StoreSpotter.service.user.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -78,11 +80,10 @@ public class SecurityConfig implements WebMvcConfigurer {
 
                 // main, login 페이지, login 프로세스, 회원가입 페이지, 회원가입 프로세스, 이메일 중복체크 ajax, JWT token 발급, 평균 거리 검색 ajax
                 .antMatchers("/", "/login", "member/logout", "/signup", "/member/login", "/member/signup", "/signup/checkid",
-                        "/find-user", "/user/account", "/user/password", "/avg-dist", "/search/recommend", "/mypage", "/favicon.ico", "user",
-                        "/mypage/liked/add", "/mypage/liked/edit", "/mypage/liked/redirect", "/mypage/liked/remove",
+                        "/find-user", "/user/account", "/user/password", "/avg-dist", "/search/recommend", "/favicon.ico", "user",
                 "/signup/mail-code", "/user/password", "/user/account").permitAll()
 
-                .antMatchers("/user", "/admin", "/redisTest", "/redisTest/**").hasRole("USER")
+                .antMatchers("/user", "/admin", "/mypage", "/mypage/**").hasRole("USER")
                 .antMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated()   // 그 외 인증 없이 차단 - 일시 수정);
                 .and()

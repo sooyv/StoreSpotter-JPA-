@@ -69,7 +69,7 @@ public class UserService {
         return user;
     }
 
-    public User getUserFromCookie(HttpServletRequest request, HttpServletResponse response) {
+    public User getUserFromCookie(HttpServletRequest request) {
         String name = "access_token";
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {
@@ -79,7 +79,7 @@ public class UserService {
             if (tokens.isPresent()) {
                 Cookie token = tokens.get();
                 String accessToken = String.valueOf(token.getValue());
-                boolean isToken = tokenProvider.validateToken(accessToken, response);
+                boolean isToken = tokenProvider.validateToken(accessToken);
 
                 if (isToken){
                     String username = tokenProvider.getUsernameFromToken(accessToken);

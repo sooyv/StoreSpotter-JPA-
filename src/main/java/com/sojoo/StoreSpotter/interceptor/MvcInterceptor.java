@@ -5,6 +5,7 @@ import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.util.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -19,12 +20,10 @@ import java.util.Optional;
 @Component
 public class MvcInterceptor implements HandlerInterceptor {
 
-    private final CookieUtil cookieUtil;
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
 
-    public MvcInterceptor(CookieUtil cookieUtil, TokenProvider tokenProvider, UserRepository userRepository) {
-        this.cookieUtil = cookieUtil;
+    public MvcInterceptor(TokenProvider tokenProvider, UserRepository userRepository) {
         this.tokenProvider = tokenProvider;
         this.userRepository = userRepository;
     }
@@ -41,13 +40,18 @@ public class MvcInterceptor implements HandlerInterceptor {
 
         if (modelAndView != null) { // modelAndView 객체가 null이 아닌 경우에만 처리
             // 쿠키 받아오기
-            Cookie cookie = cookieUtil.getCookie(request, "access_token");
-            // System.out.println("postHandle 쿠키 확인 : " + cookie);
+            Cookie cookie = CookieUtil.getCookie(request, "access_token");
 
             if (cookie != null) {
                 // 쿠키의 토큰 확인하여 user 정보 추출
                 String accessToken = cookie.getValue();
-                String username = tokenProvider.getUsernameFromToken(accessToken);
+                String username = tokenProvider.getUsernameFromExpiredToken(accessToken);
+
+                // 해당 username이 contextHolder에서 확인
+                if(!SecurityContextHolder.getContext().getAuthentication().getName().equals(username)) {
+                    // 여기에 로그인 페이지 이동 핸들러 추가
+                    System.out.println("Handler add 해야함");
+                }
 
                 // 유저 존재 여부 확인
                 Optional<User> user = userRepository.findByUsername(username);
