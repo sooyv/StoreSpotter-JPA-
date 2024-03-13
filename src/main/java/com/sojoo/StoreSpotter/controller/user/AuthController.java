@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.sojoo.StoreSpotter.util.CookieUtil.*;
 
 @Slf4j
@@ -46,8 +48,6 @@ public class AuthController {
     @Transactional
     @PostMapping("/member/logout")
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        log.info("logout 실행 - /member/logout");
-
         try {
             cookieUtil.deleteCookie(request, response, "access_token");
             return ResponseEntity.ok("logout");
@@ -59,50 +59,25 @@ public class AuthController {
 
     @PostMapping("/member/login")
     public ResponseEntity<TokenDto> loginProcess(@Valid @RequestBody LoginDto loginDto, HttpServletResponse response) throws Exception {
-
-        log.info("loginProcess 동작");
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
-        log.info("loginProcess authenticationToken : " + authenticationToken);
 
         try {
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.info("loginProcess authentication : " + authentication);
 
             String accessToken = tokenProvider.createAccessToken(authentication);
-            log.info("accessToken create : " + accessToken);
+            String username = tokenProvider.getUsernameFromToken(accessToken);
             String refreshToken = tokenProvider.createRefreshToken(authentication);
 
             addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
-            String username = tokenProvider.getUsernameFromToken(accessToken);
-
             // redis 저장
-            redisService.setValues(username, refreshToken);
-//            TokenDto tokenDto = TokenDto.builder()
-//                    .accessToken(accessTokenCookie)
-//                    .build();
-//
-//            HttpHeaders httpHeaders = new HttpHeaders();
-//            httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + tokenDto.getAccessToken());
+            redisService.setValues(username, refreshToken, 14 , TimeUnit.DAYS);
 
-//            return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
-
-//        @GetMapping("/api/token")
-//    public String getData(@RequestHeader("Authorization") String authorizationHeader) {
-//        // Authorization 헤더에서 JWT 토큰 추출
-//        String jwtToken = authorizationHeader.substring(7); // "Bearer " 이후의 토큰 추출
-//        System.out.println("getData : " +jwtToken);
-//
-//        // JWT 토큰을 검증하고 유효성을 확인하는 로직 수행
-//        // 여기서는 단순히 토큰을 반환하는 예시
-//        return "Received JWT token: " + jwtToken;
-//    }
 }

@@ -1,6 +1,3 @@
-/**
- * sidebar
- */
 const sideBar = document.getElementById("side-bar");
 const slideBtn = document.getElementById("slide-btn");
 const sideElems = document.querySelectorAll(".side-elem");

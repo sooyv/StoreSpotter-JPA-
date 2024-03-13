@@ -3,58 +3,6 @@ console.log("회원가입 페이지 접근");
 $("#passwordCheckHelp").hide();
 $("#passwordHelp").hide();
 $("#phoneCheckHelp").hide();
-// $("#emailHelp").hide();
-// let idchk = false;
-// let mailchk = false;
-//
-// let email = $("#email");
-// // 이메일 중복 검사
-// // $("#email").on("keyup", function (event) {
-// //     console.log("email 검사")
-// //
-// //     const emailRegExp = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/;
-// //
-// //     // 이메일 정규식 적용
-// //     if (!emailRegExp.test($("#email").val())) {
-// //         idchk = false;
-// //         var emailHelp = document.getElementById("emailHelp");
-// //         emailHelp.innerHTML = "이메일 형식에 맞게 작성해주세요"
-// //         $("#emailHelp").css({
-// //             "color": "#FA3E3E",
-// //         })
-// //
-// //     } else {            // 중복체크
-// //         idchk = true;
-// //         $.ajax({
-// //             type : "POST",
-// //             url : "signup/check-email",
-// //             data : {
-// //                 "id" : email.val(),
-// //                 "type" : "email"
-// //             },
-// //             success : function(data) {
-// //                 if (data === 1) {                // 1이면 이메일 중복
-// //                     console.log(data);
-// //                     mailchk = false;
-// //                     var elements = document.getElementById("emailHelp");
-// //                     elements.innerHTML = "이미 사용중인 이메일입니다"
-// //                     $("#emailHelp").css({
-// //                         "color": "#FA3E3E",
-// //                     })
-// //
-// //                 } else if (data === 0) {                // 아니면 중복아님
-// //                     console.log(data);
-// //                     mailchk = true;
-// //                     var emailHelp = document.getElementById("emailHelp");
-// //                     emailHelp.innerHTML = "사용 가능한 이메일입니다"
-// //                     $("#emailHelp").css({
-// //                         "color": "green",
-// //                     })
-// //                 }
-// //             }
-// //         })
-// //     }
-// // });
 
 
 // 비밀번호 형식 정규화(최소 8자, 영문 숫자 특수문자)
@@ -85,7 +33,7 @@ $("#checkPassword").on("keyup", function(event) {
 $("#phone").on("keyup", function(event) {
     console.log("phone keyup 발생")
 
-    const phoneRegExp = /^d{11}/;
+    const phoneRegExp = /^\d{11}$/;
 
     if (!phoneRegExp.test($("#phone").val())) {       // 비밀번호 정규화
         $("#phoneCheckHelp").show();
@@ -102,17 +50,18 @@ form.addEventListener("submit", event => {
 
         const name = $("#name").val();
         const email = $("#email").val();
+        const mailCode = $("#mail-code").val();
         const password = $("#password").val();
         const checkPassword = $("#checkPassword").val();
         const phone = $("#phone").val();
 
         // 모든 항목 작성 검사
-        if (!name || !email || !password || !checkPassword) {
+        if (!name || !email || !password || !checkPassword || !mailCode) {
             alert("모든 항목을 작성해주세요.");
             return;
         }
 
-        const userDto = {"nickname": name, "username": email,
+        const userDto = {"nickname": name, "username": email, "mailCode" : mailCode,
             "password" : password, "checkPassword" : checkPassword, "phone" : phone};
 
         $.ajax({
@@ -134,6 +83,21 @@ form.addEventListener("submit", event => {
                     alert("모든 항목을 입력해주세요.");
                 }
 
+                if (error.responseText == "duplicateEmail") {
+                    alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.");
+                    email.focus();
+                }
+
+                if (error.responseText == "expirationMailCode") {
+                    alert("메일 인증을 재시도 해주세요.");
+                    mailCode.focus();
+                }
+
+                if (error.responseText == "notEqualMailCode") {
+                    alert("메일 코드가 일치하지 않습니다. 메일 인증을 재시도 해주세요");
+                    mailCode.focus();
+                }
+
                 if (error.responseText == "notEqualPassword") {
                     alert("비밀번호 확인을 체크해주세요.");
                     checkPassword.focus();
@@ -144,13 +108,9 @@ form.addEventListener("submit", event => {
                     password.focus();
                 }
 
-                if (error.responseText == "duplicateEmail") {
-                    alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.");
-                    email.focus();
-                }
-
                 if (error.responseText == "phoneRegExp") {
                     alert("전화번호는 '-'를 제외한 숫자 11자리 입니다. ex) 01012340000");
+                    phone.focus();
                 }
 
                 $("#signUpBtn").addClass('shake');
@@ -174,18 +134,6 @@ $("#send-mail").on("click", function() {
         return;
     }
 
-    // if(!idchk) {
-    //     alert("이메일을 형식에 맞게 입력해주세요");
-    //     email.focus();
-    //     return;
-    // }
-    //
-    // if(!mailchk) {
-    //     alert("이미 존재하는 이메일입니다. 사용하실 수 없습니다.");
-    //     email.focus();
-    //     return;
-    // }
-
     $.ajax({
         type: 'POST',
         url: "/signup/mail-code",
@@ -199,6 +147,11 @@ $("#send-mail").on("click", function() {
         },
         error: function(error) {
             console.log(error)
+            // 메일 중복검사
+            if (error.responseText == "duplicateEmail") {
+                alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.");
+                email.focus();
+            }
         }
     });
 });

@@ -1,11 +1,8 @@
 package com.sojoo.StoreSpotter.service.mail;
 
-import com.sojoo.StoreSpotter.entity.user.User;
-import com.sojoo.StoreSpotter.repository.user.UserRepository;
-import com.sojoo.StoreSpotter.service.user.UserService;
+import com.sojoo.StoreSpotter.service.redis.RedisService;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
@@ -13,16 +10,17 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class MailService {
     private final JavaMailSender javaMailSender;
+    private final RedisService redisService;
 
-    public MailService(JavaMailSender javaMailSender) {
+    public MailService(JavaMailSender javaMailSender, RedisService redisService) {
         this.javaMailSender = javaMailSender;
+        this.redisService = redisService;
     }
 
 
@@ -60,16 +58,16 @@ public class MailService {
     }
 
     // 회원가입 인증 코드 메일 전송, 인증 코드 redis 저장
-    public String sendCertificationMail(String email) {
+    public void sendCertificationMail(String email) {
         try {
             // 랜덤 인증 코드 생성
             String code = createCode();
+            System.out.println("sendCertificationMail code 확인 : " + code);
             // email, code 순서로
             sendMail(email, code);
 
             // redis에 인증 코드 저장
-//            redisUtil.setDataExpire(code, email, 60*5L); // {key,value} 5분동안 저장.
-            return code;
+            redisService.setValues(email, code, 3, TimeUnit.MINUTES);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,8 +105,6 @@ public class MailService {
     public String sendPwMail(String email) throws Exception {
         String code = createCode();
         MimeMessage message = createPwMessage(email, code);
-        System.out.println("sendPwMail email : " +email);
-        System.out.println("sendPwMail code : " +code);
 
         try {
             javaMailSender.send(message);

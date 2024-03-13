@@ -55,13 +55,23 @@ public class UserController {
     @Transactional
     @PostMapping("/member/signup")
     public ResponseEntity<String> signup(@RequestBody UserDto userDto) {
-        System.out.println(userDto);
 
         // 이메일 중복 검사
-        ResponseEntity<String> checkDuplicateEmail = userValidateService.checkDuplicateEmail(userDto);
+        String username = userDto.getUsername();
+        ResponseEntity<String> checkDuplicateEmail = userValidateService.checkDuplicateEmail(username);
         if (checkDuplicateEmail != null) {
             return checkDuplicateEmail;
         }
+
+        // 이메일 코드 검사
+        String checkMailCodeResult = userValidateService.checkMailCode(userDto);
+
+        if (checkMailCodeResult != null && "notEqualMailCode".equals(checkMailCodeResult)) {
+            return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
+        } else if (checkMailCodeResult != null && "expirationMailCode".equals(checkMailCodeResult)) {
+            return new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
+        }
+
 
         // 모든 항목 입력 검사
         ResponseEntity<String> notNullMemberInfo = userValidateService.notNullMemberInfo(userDto);
@@ -81,6 +91,7 @@ public class UserController {
             return passwordRegExp;
         }
 
+        // 전화번호 정규식 검사
         ResponseEntity<String> phoneRegExp = userValidateService.phoneRegExp(userDto);
         if (phoneRegExp != null) {
             return phoneRegExp;
@@ -99,11 +110,15 @@ public class UserController {
             return ResponseEntity.badRequest().body("인증 메일 null");
         }
 
-        // 메일 정규화 확인 추가
+        // 메일 중복확인
+        ResponseEntity<String> checkDuplicateEmail = userValidateService.checkDuplicateEmail(email);
+        if (checkDuplicateEmail != null) {
+            return checkDuplicateEmail;
+        }
 
         try {
-            String code = mailService.sendCertificationMail(email);
-            return ResponseEntity.ok(code);
+            mailService.sendCertificationMail(email);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalStateException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("인증메일 전송 실패");
