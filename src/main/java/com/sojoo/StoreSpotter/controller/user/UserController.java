@@ -110,9 +110,6 @@ public class UserController {
             return ResponseEntity.badRequest().body("인증 메일 null");
         }
 
-        // 메일 정규화 확인 추가
-
-
         // 메일 중복확인
         ResponseEntity<String> checkDuplicateEmail = userValidateService.checkDuplicateEmail(email);
         if (checkDuplicateEmail != null) {
@@ -120,8 +117,6 @@ public class UserController {
         }
 
         try {
-//            String code = mailService.sendCertificationMail(email);
-//            return ResponseEntity.ok();
             mailService.sendCertificationMail(email);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalStateException e) {
