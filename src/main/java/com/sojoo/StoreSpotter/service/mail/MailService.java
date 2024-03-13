@@ -67,9 +67,7 @@ public class MailService {
             sendMail(email, code);
 
             // redis에 인증 코드 저장
-//            redisUtil.setDataExpire(code, email, 60*5L); // {key,value} 5분동안 저장.
             redisService.setValues(email, code, 3, TimeUnit.MINUTES);
-//            return code;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,8 +105,6 @@ public class MailService {
     public String sendPwMail(String email) throws Exception {
         String code = createCode();
         MimeMessage message = createPwMessage(email, code);
-        System.out.println("sendPwMail email : " +email);
-        System.out.println("sendPwMail code : " +code);
 
         try {
             javaMailSender.send(message);
