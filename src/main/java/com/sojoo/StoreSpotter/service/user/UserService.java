@@ -7,6 +7,7 @@ import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.jwt.exception.NotFoundMemberException;
 import com.sojoo.StoreSpotter.jwt.securityUtil.SecurityUtil;
+import org.springframework.security.config.annotation.web.configurers.UrlAuthorizationConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -79,9 +80,10 @@ public class UserService {
             if (tokens.isPresent()) {
                 Cookie token = tokens.get();
                 String accessToken = String.valueOf(token.getValue());
-                boolean isToken = tokenProvider.validateToken(accessToken, response);
+//                boolean isToken = tokenProvider.validateToken(accessToken, response);
+                String isToken = tokenProvider.validateToken(accessToken, response);
 
-                if (isToken){
+                if (isToken != null) {
                     String username = tokenProvider.getUsernameFromToken(accessToken);
                     Optional<User> users = userRepository.findByUsername(username);
                     return users.orElse(null);

@@ -63,6 +63,16 @@ public class UserController {
             return checkDuplicateEmail;
         }
 
+        // 이메일 코드 검사
+        String checkMailCodeResult = userValidateService.checkMailCode(userDto);
+
+        if (checkMailCodeResult != null && "notEqualMailCode".equals(checkMailCodeResult)) {
+            return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
+        } else if (checkMailCodeResult != null && "expirationMailCode".equals(checkMailCodeResult)) {
+            return new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
+        }
+
+
         // 모든 항목 입력 검사
         ResponseEntity<String> notNullMemberInfo = userValidateService.notNullMemberInfo(userDto);
         if (notNullMemberInfo != null) {
@@ -102,8 +112,10 @@ public class UserController {
         // 메일 정규화 확인 추가
 
         try {
-            String code = mailService.sendCertificationMail(email);
-            return ResponseEntity.ok(code);
+//            String code = mailService.sendCertificationMail(email);
+//            return ResponseEntity.ok();
+            mailService.sendCertificationMail(email);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalStateException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("인증메일 전송 실패");

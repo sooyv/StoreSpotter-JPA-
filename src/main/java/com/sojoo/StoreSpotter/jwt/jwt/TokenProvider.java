@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Key;
@@ -115,11 +116,13 @@ public class TokenProvider implements InitializingBean {
     }
 
 
-    public boolean validateToken(String token, HttpServletResponse response) {
+//    public boolean validateToken(String token, HttpServletResponse response) {
+        public String validateToken(String token, HttpServletResponse response) {
         System.out.println("TokenProvider validateToken 실행");
         try {
             Jwts.parser().setSigningKey(key).parseClaimsJws(token);
-            return true;
+//            return true;
+            return token;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             logger.info("잘못된 JWT 서명입니다.");
         } catch (ExpiredJwtException e) {
@@ -133,11 +136,14 @@ public class TokenProvider implements InitializingBean {
                     String accessToken = createAccessToken(authentication);
                     addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
                     redisService.changeValues(username, refreshToken);      // 리프레시 토큰 업데이트 (필요한 경우)
+                    return accessToken;
                 }
             } catch (Exception exception) {
                 logger.error("토큰 재발급 중 오류 발생", exception);
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
-////            String username = getUsernameFromToken(token);
+
+//            String username = getUsernameFromToken(token);
 //            String username = e.getClaims().getSubject();
 //            logger.info("token으로 부터 username : " + username);
 //            String refreshToken = redisService.getValues(username);
@@ -154,7 +160,8 @@ public class TokenProvider implements InitializingBean {
 //                    // 새로운 액세스 토큰 생성
 //                    String newAccessToken = createAccessToken(authentication);
 //                    addCookie(response, "access_token", newAccessToken, COOKIE_EXPIRE_SECONDS);
-//                    redisService.changeValues(username, refreshToken); // 리프레시 토큰 업데이트 (필요한 경우)
+//                    redisService.changeValues(username, refreshToken);      // 리프레시 토큰 업데이트
+//                    return newAccessToken;
 //                }
 //            }
         } catch (UnsupportedJwtException e) {
@@ -162,7 +169,8 @@ public class TokenProvider implements InitializingBean {
         } catch (IllegalArgumentException e) {
             logger.info("JWT 토큰이 잘못되었습니다.");
         }
-        return false;
+//        return false;
+        return null;
     }
 
     public boolean validRefreshToken(String refreshToken) {

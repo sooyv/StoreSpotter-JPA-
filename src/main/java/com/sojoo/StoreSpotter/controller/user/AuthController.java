@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.sojoo.StoreSpotter.util.CookieUtil.*;
 
 @Slf4j
@@ -78,7 +80,7 @@ public class AuthController {
             addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
 
             // redis 저장
-            redisService.setValues(username, refreshToken);
+            redisService.setValues(username, refreshToken, 14 , TimeUnit.DAYS);
 //            TokenDto tokenDto = TokenDto.builder()
 //                    .accessToken(accessTokenCookie)
 //                    .build();

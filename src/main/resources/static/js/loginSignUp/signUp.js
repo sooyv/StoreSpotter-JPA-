@@ -85,7 +85,7 @@ $("#checkPassword").on("keyup", function(event) {
 $("#phone").on("keyup", function(event) {
     console.log("phone keyup 발생")
 
-    const phoneRegExp = /^d{11}/;
+    const phoneRegExp = /^\d{11}$/;
 
     if (!phoneRegExp.test($("#phone").val())) {       // 비밀번호 정규화
         $("#phoneCheckHelp").show();
@@ -102,17 +102,18 @@ form.addEventListener("submit", event => {
 
         const name = $("#name").val();
         const email = $("#email").val();
+        const mailCode = $("#mail-code").val();
         const password = $("#password").val();
         const checkPassword = $("#checkPassword").val();
         const phone = $("#phone").val();
 
         // 모든 항목 작성 검사
-        if (!name || !email || !password || !checkPassword) {
+        if (!name || !email || !password || !checkPassword || !mailCode) {
             alert("모든 항목을 작성해주세요.");
             return;
         }
 
-        const userDto = {"nickname": name, "username": email,
+        const userDto = {"nickname": name, "username": email, "mailCode" : mailCode,
             "password" : password, "checkPassword" : checkPassword, "phone" : phone};
 
         $.ajax({
@@ -134,6 +135,21 @@ form.addEventListener("submit", event => {
                     alert("모든 항목을 입력해주세요.");
                 }
 
+                if (error.responseText == "duplicateEmail") {
+                    alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.");
+                    email.focus();
+                }
+
+                if (error.responseText == "expirationMailCode") {
+                    alert("메일 인증을 재시도 해주세요.");
+                    mailCode.focus();
+                }
+
+                if (error.responseText == "notEqualMailCode") {
+                    alert("메일 코드가 일치하지 않습니다. 메일 인증을 재시도 해주세요");
+                    mailCode.focus();
+                }
+
                 if (error.responseText == "notEqualPassword") {
                     alert("비밀번호 확인을 체크해주세요.");
                     checkPassword.focus();
@@ -144,13 +160,9 @@ form.addEventListener("submit", event => {
                     password.focus();
                 }
 
-                if (error.responseText == "duplicateEmail") {
-                    alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.");
-                    email.focus();
-                }
-
                 if (error.responseText == "phoneRegExp") {
                     alert("전화번호는 '-'를 제외한 숫자 11자리 입니다. ex) 01012340000");
+                    phone.focus();
                 }
 
                 $("#signUpBtn").addClass('shake');
