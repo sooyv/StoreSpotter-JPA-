@@ -5,6 +5,7 @@ import com.sojoo.StoreSpotter.service.user.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Key;
 import java.util.Arrays;
@@ -96,7 +98,7 @@ public class TokenProvider implements InitializingBean {
 
     // AccessToken 이 만료되었을 때 newAccessToken 발급 및 Cookie 및 Redis 에 반영
     public String reissueAccessToken(String accessToken, HttpServletResponse response){
-        String username = getUsernameFromExpiredToken(accessToken);
+        String username = getUsernameFromToken(accessToken);
         String refreshToken = redisService.getValues(username);
 
         if (validRefreshToken(refreshToken)) {
@@ -108,7 +110,7 @@ public class TokenProvider implements InitializingBean {
 
             return newAccessToken;
         }
-        return null;
+        return accessToken;
     }
 
     /**
@@ -120,13 +122,13 @@ public class TokenProvider implements InitializingBean {
             Jwts.parser().setSigningKey(key).parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            logger.info("잘못된 JWT 서명입니다.");
+            logger.info("A잘못된 JWT 서명입니다.");
         } catch (ExpiredJwtException e) {
-            logger.info("만료된 JWT 토큰입니다.");
+            logger.info("A만료된 JWT 토큰입니다.");
         } catch (UnsupportedJwtException e) {
-            logger.info("지원되지 않는 JWT 토큰입니다.");
+            logger.info("A지원되지 않는 JWT 토큰입니다.");
         } catch (IllegalArgumentException e) {
-            logger.info("JWT 토큰이 잘못되었습니다.");
+            logger.info("AJWT 토큰이 잘못되었습니다.");
         }
         return false;
     }
@@ -136,13 +138,13 @@ public class TokenProvider implements InitializingBean {
             Jwts.parser().setSigningKey(key).parseClaimsJws(refreshToken);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            logger.info("잘못된 JWT 서명입니다.");
+            logger.info("R잘못된 JWT 서명입니다.");
         } catch (ExpiredJwtException e) {
-            logger.info("만료된 JWT 토큰입니다.");
+            logger.info("R만료된 JWT 토큰입니다.");
         } catch (UnsupportedJwtException e) {
-            logger.info("지원되지 않는 JWT 토큰입니다.");
+            logger.info("R지원되지 않는 JWT 토큰입니다.");
         } catch (IllegalArgumentException e) {
-            logger.info("JWT 토큰이 잘못되었습니다.");
+            logger.info("RJWT 토큰이 잘못되었습니다.");
         }
         return false;
     }
@@ -151,13 +153,18 @@ public class TokenProvider implements InitializingBean {
     /**
      * get info from accessToken
      */
-    public Authentication getAuthentication(String token) {
-        System.out.println("TokenProvider getAuthentication ");
-        Claims claims = Jwts
+
+    public Claims getClaims(String token){
+        return Jwts
                 .parser()
                 .setSigningKey(key)
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public Authentication getAuthentication(String token) {
+        System.out.println("TokenProvider getAuthentication ");
+        Claims claims = getClaims(token);
 
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
@@ -170,19 +177,9 @@ public class TokenProvider implements InitializingBean {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
-    public String getUsernameFromToken(String accessToken){
-        Claims claims = Jwts
-                .parser()
-                .setSigningKey(key)
-                .parseClaimsJws(accessToken)
-                .getBody();
-
-        return claims.getSubject();
-    }
-
     public Date getExpiredFromToken(String accessToken) {
         try {
-            Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(accessToken).getBody();
+            Claims claims = getClaims(accessToken);
             return claims.getExpiration();
         } catch (ExpiredJwtException e) {
             return e.getClaims().getExpiration();
@@ -192,15 +189,26 @@ public class TokenProvider implements InitializingBean {
         }
     }
 
-    public String getUsernameFromExpiredToken(String accessToken) {
+    public String getUsernameFromToken(String accessToken) {
         try {
-            Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(accessToken).getBody();
+            Claims claims = getClaims(accessToken);
             return claims.getSubject();
         } catch (ExpiredJwtException e) {
             return e.getClaims().getSubject();
         } catch (Exception e) {
             // 다른 종류의 예외 처리
             return null;
+        }
+    }
+
+    public boolean mvcIntercepterValid(String accessToken){
+        String username = getUsernameFromToken(accessToken);
+        String refreshToken = redisService.getValues(username);
+
+        if (refreshToken == null){
+            return false;
+        } else{
+            return validRefreshToken(refreshToken);
         }
     }
 }

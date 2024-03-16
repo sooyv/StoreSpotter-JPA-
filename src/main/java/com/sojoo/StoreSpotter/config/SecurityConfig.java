@@ -89,7 +89,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
 
-        http.exceptionHandling().accessDeniedPage("/");        // 403 발생시 main 페이지로 이동
+        http.exceptionHandling().accessDeniedPage("/")         // 403 발생시 main 페이지로 이동
+                .authenticationEntryPoint(new JwtAuthenticationEntryPoint());
 
                 // 세션을 사용하지 않기 때문에 STATELESS로 설정
         http.sessionManagement(sessionManagement ->

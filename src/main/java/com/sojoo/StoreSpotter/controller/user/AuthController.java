@@ -3,12 +3,10 @@ package com.sojoo.StoreSpotter.controller.user;
 
 import com.sojoo.StoreSpotter.dto.user.LoginDto;
 import com.sojoo.StoreSpotter.jwt.dto.TokenDto;
-import com.sojoo.StoreSpotter.jwt.jwt.JwtFilter;
 import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
 import com.sojoo.StoreSpotter.service.redis.RedisService;
 import com.sojoo.StoreSpotter.util.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -72,7 +69,7 @@ public class AuthController {
 
             addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
             // redis 저장
-            redisService.setValues(username, refreshToken, 14 , TimeUnit.DAYS);
+            redisService.setValues(username, refreshToken, 2 , TimeUnit.MINUTES);
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
