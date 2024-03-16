@@ -1,4 +1,4 @@
-package com.sojoo.StoreSpotter.entity.myPage;
+package com.sojoo.StoreSpotter.entity.mypage;
 
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.entity.apiToDb.Industry;

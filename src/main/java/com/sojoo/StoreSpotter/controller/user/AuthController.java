@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -44,9 +45,14 @@ public class AuthController {
     // 로그아웃
     @Transactional
     @PostMapping("/member/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<String> logout(HttpServletRequest request) {
         try {
-            cookieUtil.deleteCookie(request, response, "access_token");
+            Cookie cookie = getCookie(request, "access_token");
+            if (cookie != null){
+                String username = tokenProvider.getUsernameFromToken(cookie.getValue());
+                redisService.delValues(username);
+                System.out.println("redisDel : " + username);
+            }
             return ResponseEntity.ok("logout");
         } catch (Exception e) {
             log.error("로그아웃 중 오류 발생", e);

@@ -3,9 +3,9 @@ package com.sojoo.StoreSpotter.controller.mypage;
 import com.sojoo.StoreSpotter.dto.mypage.LikedDto;
 import com.sojoo.StoreSpotter.dto.user.UserPwdDto;
 import com.sojoo.StoreSpotter.entity.user.User;
-import com.sojoo.StoreSpotter.entity.myPage.Liked;
+import com.sojoo.StoreSpotter.entity.mypage.Liked;
 import com.sojoo.StoreSpotter.service.apiToDb.IndustryService;
-import com.sojoo.StoreSpotter.service.myPage.LikedService;
+import com.sojoo.StoreSpotter.service.mypage.LikedService;
 import com.sojoo.StoreSpotter.service.storePair.DataRecommendService;
 import com.sojoo.StoreSpotter.service.user.UserInfoService;
 import com.sojoo.StoreSpotter.service.user.UserService;
@@ -71,7 +71,7 @@ public class MypageController {
 
         System.out.println(likedList);
 
-        return new ModelAndView("myPage/myStored");
+        return new ModelAndView("mypage/myStored");
     }
 
     // 찜 목록 추가(main 페이지)
@@ -145,7 +145,7 @@ public class MypageController {
         model.addAttribute("userPhone", userPhone); // 모델에 username 추가
 
 
-        return new ModelAndView("myPage/info");
+        return new ModelAndView("mypage/info");
     }
 
     @PostMapping("/mypage/info/modify/nickname")

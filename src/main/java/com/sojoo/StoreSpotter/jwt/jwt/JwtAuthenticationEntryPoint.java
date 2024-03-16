@@ -47,6 +47,14 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
             errorCode = ErrorCode.INVALID_TOKEN;
             setResponse(response, errorCode);
         }
+
+        /**
+         * 인증이 없는 사용자일 경우
+         */
+        if(exception.equals(ErrorCode.ACESS_DENIED.getCode())) {
+            errorCode = ErrorCode.ACESS_DENIED;
+            setResponse(response, errorCode);
+        }
     }
 
     /**

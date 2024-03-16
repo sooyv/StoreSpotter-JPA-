@@ -5,7 +5,6 @@ import com.sojoo.StoreSpotter.service.user.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -18,7 +17,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Key;
 import java.util.Arrays;
@@ -113,13 +111,15 @@ public class TokenProvider implements InitializingBean {
         return accessToken;
     }
 
+
+
     /**
      * validate AccessToken, RefreshToken
      */
-    public boolean validateToken(String token) {
+    public boolean validateToken(String accessToken) {
         System.out.println("TokenProvider validateToken 실행");
         try {
-            Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(key).parseClaimsJws(accessToken);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             logger.info("A잘못된 JWT 서명입니다.");
@@ -149,6 +149,17 @@ public class TokenProvider implements InitializingBean {
         return false;
     }
 
+    public boolean validRefreshTokenFromAccessToken(String accessToken){
+        String username = getUsernameFromToken(accessToken);
+        String refreshToken = redisService.getValues(username);
+
+        if (refreshToken == null){
+            return false;
+        } else{
+            return validRefreshToken(refreshToken);
+        }
+    }
+
 
     /**
      * get info from accessToken
@@ -160,6 +171,11 @@ public class TokenProvider implements InitializingBean {
                 .setSigningKey(key)
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public String getRefreshTokenFromAccessToken(String accessToken){
+        String username = getUsernameFromToken(accessToken);
+        return redisService.getValues(username);
     }
 
     public Authentication getAuthentication(String token) {
@@ -177,9 +193,9 @@ public class TokenProvider implements InitializingBean {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
-    public Date getExpiredFromToken(String accessToken) {
+    public Date getExpiredFromToken(String token) {
         try {
-            Claims claims = getClaims(accessToken);
+            Claims claims = getClaims(token);
             return claims.getExpiration();
         } catch (ExpiredJwtException e) {
             return e.getClaims().getExpiration();
@@ -189,9 +205,9 @@ public class TokenProvider implements InitializingBean {
         }
     }
 
-    public String getUsernameFromToken(String accessToken) {
+    public String getUsernameFromToken(String token) {
         try {
-            Claims claims = getClaims(accessToken);
+            Claims claims = getClaims(token);
             return claims.getSubject();
         } catch (ExpiredJwtException e) {
             return e.getClaims().getSubject();
@@ -201,14 +217,14 @@ public class TokenProvider implements InitializingBean {
         }
     }
 
-    public boolean mvcIntercepterValid(String accessToken){
-        String username = getUsernameFromToken(accessToken);
-        String refreshToken = redisService.getValues(username);
+    /**
+     * Del redis from accessToken
+     */
 
-        if (refreshToken == null){
-            return false;
-        } else{
-            return validRefreshToken(refreshToken);
-        }
+    public void delRedisFromAccessToken(String accessToken){
+        String username = getUsernameFromToken(accessToken);
+        redisService.delValues(username);
     }
+
+
 }
