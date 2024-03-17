@@ -46,7 +46,7 @@ public class MvcInterceptor implements HandlerInterceptor {
                 String username = tokenProvider.getUsernameFromToken(accessToken);
 
                 // 해당 만료토큰의 리프레시 토큰이 유효한지 확인
-                if (tokenProvider.validateToken(accessToken) && tokenProvider.validRefreshTokenFromAccessToken(accessToken)){
+                if (tokenProvider.validRefreshTokenFromAccessToken(accessToken)){
 
                     // 유저 존재 여부 확인
                     Optional<User> user = userRepository.findByUsername(username);

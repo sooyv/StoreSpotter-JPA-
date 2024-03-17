@@ -43,8 +43,7 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
 
-//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Liked> likedList = new ArrayList<>();
 
 
