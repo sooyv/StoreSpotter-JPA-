@@ -44,9 +44,14 @@ public class AuthController {
     // 로그아웃
     @Transactional
     @PostMapping("/member/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<String> logout(HttpServletRequest request) {
         try {
-            cookieUtil.deleteCookie(request, response, "access_token");
+            Cookie cookie = getCookie(request, "access_token");
+            if (cookie != null){
+                String username = tokenProvider.getUsernameFromToken(cookie.getValue());
+                redisService.delValues(username);
+                System.out.println("redisDel : " + username);
+            }
             return ResponseEntity.ok("logout");
         } catch (Exception e) {
             log.error("로그아웃 중 오류 발생", e);
@@ -69,7 +74,7 @@ public class AuthController {
 
             addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
             // redis 저장
-            redisService.setValues(username, refreshToken, 14 , TimeUnit.DAYS);
+            redisService.setValues(username, refreshToken, 2 , TimeUnit.MINUTES);
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {

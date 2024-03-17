@@ -5,7 +5,6 @@ import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.util.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,32 +45,18 @@ public class MvcInterceptor implements HandlerInterceptor {
                 String accessToken = cookie.getValue();
                 String username = tokenProvider.getUsernameFromToken(accessToken);
 
-                // 해당 username이 contextHolder에서 확인
-                if(!SecurityContextHolder.getContext().getAuthentication().getName().equals(username)) {
-                    // 여기에 로그인 페이지 이동 핸들러 추가
-                    System.out.println("Handler add 해야함");
+                // 해당 만료토큰의 리프레시 토큰이 유효한지 확인
+                if (tokenProvider.validateToken(accessToken) && tokenProvider.validRefreshTokenFromAccessToken(accessToken)){
+
+                    // 유저 존재 여부 확인
+                    Optional<User> user = userRepository.findByUsername(username);
+                    if (user.isPresent()) {
+                        String userNickname = user.get().getNickname();
+
+                        // 모델에 데이터 추가
+                        modelAndView.addObject("userNickname", userNickname);
+                    }
                 }
-
-                // 유저 존재 여부 확인
-                Optional<User> user = userRepository.findByUsername(username);
-                if (user.isPresent()) {
-                    String userNickname = user.get().getNickname();
-                    String signOrMypage = "마이페이지";
-                    String loginOrLogout = "로그아웃";
-
-                    // 모델에 데이터 추가
-                    modelAndView.addObject("userNickname", userNickname);
-                    modelAndView.addObject("signOrMypage", signOrMypage);
-                    modelAndView.addObject("loginOrLogout", loginOrLogout);
-                }
-            } else {
-                log.info("cookie is null");
-
-                String signOrMypage = "회원가입";
-                String loginOrLogout = "로그인";
-
-                modelAndView.addObject("loginOrLogout", loginOrLogout);
-                modelAndView.addObject("signOrMypage", signOrMypage);
             }
         }
     }

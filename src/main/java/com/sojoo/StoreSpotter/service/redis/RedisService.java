@@ -34,7 +34,7 @@ public class RedisService {
 
     // 키-벨류 삭제
     public void delValues(String username) {
-        redisTemplate.delete(username.substring(7));
+        redisTemplate.delete(username);
     }
 
 

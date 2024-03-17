@@ -35,7 +35,7 @@
     align-items: center;
 }
 
-#header-content {
+.header-content {
     display: flex;
     flex-direction: row;
     padding: 10px;
@@ -96,7 +96,8 @@
     }
 
     /*로그인 회원가입 -> 메뉴 바*/
-    #header-content {
+
+    .header-content{
         display: none;
     }
     /*.header-ele {*/
@@ -114,7 +115,7 @@
         cursor: pointer;
     }
 
-    #header-content.active {
+    .header-content.active {
         /*display: block;*/
         position: absolute;
         /*margin-top: 200px;*/

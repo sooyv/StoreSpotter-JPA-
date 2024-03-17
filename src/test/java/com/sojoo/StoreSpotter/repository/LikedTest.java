@@ -1,8 +1,8 @@
 package com.sojoo.StoreSpotter.repository;
 
 import com.sojoo.StoreSpotter.entity.user.User;
-import com.sojoo.StoreSpotter.entity.myPage.Liked;
-import com.sojoo.StoreSpotter.repository.myPage.LikedRepository;
+import com.sojoo.StoreSpotter.entity.mypage.Liked;
+import com.sojoo.StoreSpotter.repository.mypage.LikedRepository;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.sojoo.StoreSpotter.entity.user;
 
-import com.sojoo.StoreSpotter.entity.myPage.Liked;
+import com.sojoo.StoreSpotter.entity.mypage.Liked;
 import lombok.*;
 
 import javax.persistence.*;

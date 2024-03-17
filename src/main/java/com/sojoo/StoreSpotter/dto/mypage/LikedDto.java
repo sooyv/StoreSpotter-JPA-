@@ -1,7 +1,7 @@
 package com.sojoo.StoreSpotter.dto.mypage;
 
 import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
-import com.sojoo.StoreSpotter.entity.myPage.Liked;
+import com.sojoo.StoreSpotter.entity.mypage.Liked;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

@@ -1,13 +1,13 @@
-package com.sojoo.StoreSpotter.service.myPage;
+package com.sojoo.StoreSpotter.service.mypage;
 
 import com.sojoo.StoreSpotter.dto.mypage.LikedDto;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
 import com.sojoo.StoreSpotter.entity.apiToDb.Region;
-import com.sojoo.StoreSpotter.entity.myPage.Liked;
+import com.sojoo.StoreSpotter.entity.mypage.Liked;
 import com.sojoo.StoreSpotter.repository.apiToDb.IndustryRepository;
 import com.sojoo.StoreSpotter.repository.apiToDb.RegionRepository;
-import com.sojoo.StoreSpotter.repository.myPage.LikedRepository;
+import com.sojoo.StoreSpotter.repository.mypage.LikedRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
