@@ -2,10 +2,9 @@ package com.sojoo.StoreSpotter.entity.user;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "authority")
@@ -17,6 +16,13 @@ import javax.persistence.Table;
 public class Authority {
 
     @Id
+    @Column(name = "authority_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long authorityId;
+
     @Column(name = "authority_name", length = 50)
     private String authorityName;
+
+//    @OneToMany
+//    private List<User> userList = new ArrayList<>();
 }
