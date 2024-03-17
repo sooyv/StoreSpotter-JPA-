@@ -1,11 +1,7 @@
 package com.sojoo.StoreSpotter.jwt.jwt;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.oauth2.sdk.Message;
 import com.sojoo.StoreSpotter.jwt.dto.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -51,8 +47,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         /**
          * 인증이 없는 사용자일 경우
          */
-        if(exception.equals(ErrorCode.ACESS_DENIED.getCode())) {
-            errorCode = ErrorCode.ACESS_DENIED;
+        if(exception.equals(ErrorCode.ACCESS_DENIED.getCode())) {
+            errorCode = ErrorCode.ACCESS_DENIED;
             setResponse(response, errorCode);
         }
     }

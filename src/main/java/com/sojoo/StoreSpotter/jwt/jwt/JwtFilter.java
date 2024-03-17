@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
-import java.util.Locale;
 
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
@@ -78,6 +77,8 @@ public class JwtFilter extends OncePerRequestFilter {
                     tokenProvider.getClaims(newAccessToken);
                     if (refreshToken != null){
                         tokenProvider.getClaims(refreshToken);
+                    } else{
+                        refreshToken.toUpperCase();
                     }
                 } catch (ExpiredJwtException e) {
                     System.out.println("진입함2");
@@ -87,6 +88,9 @@ public class JwtFilter extends OncePerRequestFilter {
                     System.out.println("진입함3");
                     e.printStackTrace();
                     request.setAttribute("exception", ErrorCode.INVALID_TOKEN.getCode());
+                } catch (NullPointerException e){
+                    e.printStackTrace();
+                    request.setAttribute("exception", ErrorCode.ACCESS_DENIED.getCode());
                 }
             }
         } else{
@@ -94,7 +98,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 newAccessToken.toUpperCase();
             } catch (NullPointerException e){
                 e.printStackTrace();
-                request.setAttribute("exception", ErrorCode.ACESS_DENIED.getCode());
+                request.setAttribute("exception", ErrorCode.ACCESS_DENIED.getCode());
             }
             System.out.println("여기까지");
         }

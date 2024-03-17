@@ -44,7 +44,7 @@ public class User {
     private Set<Authority> authorities;
 
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Liked> likedList = new ArrayList<>();
 
 

@@ -4,8 +4,6 @@ import com.sojoo.StoreSpotter.interceptor.MvcInterceptor;
 import com.sojoo.StoreSpotter.jwt.jwt.JwtAccessDeniedHandler;
 import com.sojoo.StoreSpotter.jwt.jwt.JwtAuthenticationEntryPoint;
 import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
-import com.sojoo.StoreSpotter.service.redis.RedisService;
-import com.sojoo.StoreSpotter.service.user.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
