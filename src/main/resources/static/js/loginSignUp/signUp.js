@@ -75,6 +75,7 @@ form.addEventListener("submit", event => {
                 window.location.replace("/login");
             },
             error: function (error) {
+                console.log("회원가입 에러 확인 : "+ error);
                 // back 모든 항목 검사
                 if (error.responseText == "memberInfoNull") {
                     alert("모든 항목을 입력해주세요.");

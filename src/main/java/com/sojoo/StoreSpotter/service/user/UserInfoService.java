@@ -36,7 +36,7 @@ public class UserInfoService {
     // --------------- 비밀번호 재발급 -------------
     @Transactional
     public String updateUserPw(String email) throws Exception {
-        Optional<User> user = userService.findUser(email);
+        Optional<User> user = userRepository.findByUsername(email);
         if (user.isPresent()) {
             String code = mailService.sendPwMail(email);
 

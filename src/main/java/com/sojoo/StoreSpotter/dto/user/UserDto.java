@@ -1,13 +1,12 @@
 package com.sojoo.StoreSpotter.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sojoo.StoreSpotter.entity.user.Authority;
 import com.sojoo.StoreSpotter.entity.user.User;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -42,7 +41,7 @@ public class UserDto {
     @Size(min = 3, max = 50)
     private String nickname;
 
-    private Set<AuthorityDto> authorityDtoSet;
+    private Authority authority;
 
     public static UserDto from(User user) {
         if(user == null) return null;
@@ -50,9 +49,7 @@ public class UserDto {
         return UserDto.builder()
                 .username(user.getUsername())
                 .nickname(user.getNickname())
-                .authorityDtoSet(user.getAuthorities().stream()
-                        .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
-                        .collect(Collectors.toSet()))
+                .authority(user.getAuthority())
                 .build();
     }
 }
