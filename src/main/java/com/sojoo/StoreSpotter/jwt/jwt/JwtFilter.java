@@ -1,7 +1,7 @@
 package com.sojoo.StoreSpotter.jwt.jwt;
 
 
-import com.sojoo.StoreSpotter.jwt.dto.ErrorCode;
+import com.sojoo.StoreSpotter.jwt.exception.JwtErrorCode;
 import com.sojoo.StoreSpotter.util.CookieUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -83,14 +83,14 @@ public class JwtFilter extends OncePerRequestFilter {
                 } catch (ExpiredJwtException e) {
                     System.out.println("진입함2");
                     e.printStackTrace();
-                    request.setAttribute("exception", ErrorCode.EXPIRED_TOKEN.getCode());
+                    request.setAttribute("exception", JwtErrorCode.EXPIRED_TOKEN.getCode());
                 } catch (JwtException e) {
                     System.out.println("진입함3");
                     e.printStackTrace();
-                    request.setAttribute("exception", ErrorCode.INVALID_TOKEN.getCode());
+                    request.setAttribute("exception", JwtErrorCode.INVALID_TOKEN.getCode());
                 } catch (NullPointerException e){
                     e.printStackTrace();
-                    request.setAttribute("exception", ErrorCode.ACCESS_DENIED.getCode());
+                    request.setAttribute("exception", JwtErrorCode.ACCESS_DENIED.getCode());
                 }
             }
         } else{
@@ -98,7 +98,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 newAccessToken.toUpperCase();
             } catch (NullPointerException e){
                 e.printStackTrace();
-                request.setAttribute("exception", ErrorCode.ACCESS_DENIED.getCode());
+                request.setAttribute("exception", JwtErrorCode.ACCESS_DENIED.getCode());
             }
             System.out.println("여기까지");
         }

@@ -1,8 +1,8 @@
 package com.sojoo.StoreSpotter.config;
 
 import com.sojoo.StoreSpotter.interceptor.MvcInterceptor;
-import com.sojoo.StoreSpotter.jwt.jwt.JwtAccessDeniedHandler;
-import com.sojoo.StoreSpotter.jwt.jwt.JwtAuthenticationEntryPoint;
+import com.sojoo.StoreSpotter.jwt.handler.JwtAccessDeniedHandler;
+import com.sojoo.StoreSpotter.jwt.handler.JwtAuthenticationEntryPoint;
 import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

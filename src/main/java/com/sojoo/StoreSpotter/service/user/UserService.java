@@ -1,11 +1,15 @@
 package com.sojoo.StoreSpotter.service.user;
 
+import com.sojoo.StoreSpotter.common.error.ErrorCode;
+import com.sojoo.StoreSpotter.common.exception.EmailDuplicateException;
+import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
 import com.sojoo.StoreSpotter.entity.user.Authority;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
 import com.sojoo.StoreSpotter.repository.user.AuthorityRepository;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,16 +26,30 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final TokenProvider tokenProvider;
     private final AuthorityRepository authorityRepository;
+    private final UserValidateService userValidateService;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, TokenProvider tokenProvider, AuthorityRepository authorityRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, TokenProvider tokenProvider, AuthorityRepository authorityRepository, UserValidateService userValidateService) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.tokenProvider = tokenProvider;
         this.authorityRepository = authorityRepository;
+        this.userValidateService = userValidateService;
+    }
+
+    public User getUserFromUsername(String username){
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()){
+            return userOptional.get();
+        } else {
+            throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
+        }
     }
 
     @Transactional
     public void signup(UserDto userDto) {
+        if (userValidateService.checkDuplicateEmail(userDto.getUsername()).getStatusCode().equals(HttpStatus.BAD_REQUEST)){
+            throw new EmailDuplicateException(ErrorCode.EMAIL_DUPLICATION);
+        }
         Optional<Authority> authorityOptional = authorityRepository.findByAuthorityName("ROLE_USER");
         Authority authority;
         authority = authorityOptional.orElseGet(() -> Authority.builder()
@@ -47,7 +65,7 @@ public class UserService {
                 .activated(true)
                 .build();
 
-        UserDto.from(userRepository.save(user));
+        userRepository.save(user);
     }
 
 
@@ -63,10 +81,11 @@ public class UserService {
                 String accessToken = String.valueOf(token.getValue());
 
                 String username = tokenProvider.getUsernameFromToken(accessToken);
-                Optional<User> users = userRepository.findByUsername(username);
-                return users.orElse(null);
+                return getUserFromUsername(username);
             }
         }
         return null;
     }
+
+
 }

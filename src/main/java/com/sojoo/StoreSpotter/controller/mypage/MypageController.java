@@ -169,7 +169,6 @@ public class MypageController {
     }
 
 
-
     @PostMapping("/user/withdraw")
     public ResponseEntity<String> withdrawFailed(HttpServletRequest request) {
         User user = userService.getUserFromCookie(request);

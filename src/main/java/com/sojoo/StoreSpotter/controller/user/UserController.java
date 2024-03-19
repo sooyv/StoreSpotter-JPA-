@@ -59,42 +59,17 @@ public class UserController {
         // 이메일 중복 검사
         String username = userDto.getUsername();
         ResponseEntity<String> checkDuplicateEmail = userValidateService.checkDuplicateEmail(username);
-        if (checkDuplicateEmail != null) {
+        if (userValidateService.checkDuplicateEmail(userDto.getUsername()).getStatusCode().equals(HttpStatus.BAD_REQUEST)) {
             return checkDuplicateEmail;
         }
 
         // 이메일 코드 검사
         String checkMailCodeResult = userValidateService.checkMailCode(userDto);
 
-        if (checkMailCodeResult != null && "notEqualMailCode".equals(checkMailCodeResult)) {
+        if ("notEqualMailCode".equals(checkMailCodeResult)) {
             return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
-        } else if (checkMailCodeResult != null && "expirationMailCode".equals(checkMailCodeResult)) {
+        } else if ("expirationMailCode".equals(checkMailCodeResult)) {
             return new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
-        }
-
-
-        // 모든 항목 입력 검사
-        ResponseEntity<String> notNullMemberInfo = userValidateService.notNullMemberInfo(userDto);
-        if (notNullMemberInfo != null) {
-            return notNullMemberInfo;
-        }
-
-        // 비밀번호 일치 검사
-        ResponseEntity<String> checkEqualPassword = userValidateService.checkEqualPassword(userDto);
-        if (checkEqualPassword != null) {
-            return checkEqualPassword;
-        }
-
-        // 비밀번호 정규식 검사
-        ResponseEntity<String> passwordRegExp = userValidateService.passwordRegExp(userDto);
-        if (passwordRegExp != null) {
-            return passwordRegExp;
-        }
-
-        // 전화번호 정규식 검사
-        ResponseEntity<String> phoneRegExp = userValidateService.phoneRegExp(userDto);
-        if (phoneRegExp != null) {
-            return phoneRegExp;
         }
 
         userService.signup(userDto);

@@ -1,11 +1,11 @@
-package com.sojoo.StoreSpotter.jwt.dto;
+package com.sojoo.StoreSpotter.jwt.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ErrorCode {
+public enum JwtErrorCode {
 
     // 401
     INVALID_TOKEN("101_INVALID_TOKEN", "유효하지 않은 토큰입니다."),
