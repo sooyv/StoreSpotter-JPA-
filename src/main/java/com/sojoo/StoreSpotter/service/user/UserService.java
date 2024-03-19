@@ -3,6 +3,7 @@ package com.sojoo.StoreSpotter.service.user;
 import com.sojoo.StoreSpotter.entity.user.Authority;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
+import com.sojoo.StoreSpotter.repository.user.AuthorityRepository;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,18 +21,22 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final TokenProvider tokenProvider;
+    private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, TokenProvider tokenProvider) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, TokenProvider tokenProvider, AuthorityRepository authorityRepository) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.tokenProvider = tokenProvider;
+        this.authorityRepository = authorityRepository;
     }
 
     @Transactional
     public void signup(UserDto userDto) {
-        Authority authority = Authority.builder()
+        Optional<Authority> authorityOptional = authorityRepository.findByAuthorityName("ROLE_USER");
+        Authority authority;
+        authority = authorityOptional.orElseGet(() -> Authority.builder()
                 .authorityName("ROLE_USER")
-                .build();
+                .build());
 
         User user = User.builder()
                 .username(userDto.getUsername())
@@ -45,11 +50,6 @@ public class UserService {
         UserDto.from(userRepository.save(user));
     }
 
-
-    public Optional<User> findUser(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
-        return user;
-    }
 
     public User getUserFromCookie(HttpServletRequest request) {
         String name = "access_token";

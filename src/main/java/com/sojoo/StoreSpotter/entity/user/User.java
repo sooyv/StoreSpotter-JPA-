@@ -39,14 +39,8 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "authority_id")
     private Authority authority;
-//    @ManyToMany
-//    @JoinTable(
-//            name = "user_authority",
-//            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
-//    private Set<Authority> authorities;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Liked> likedList = new ArrayList<>();
 
 

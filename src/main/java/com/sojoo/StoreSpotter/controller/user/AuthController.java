@@ -75,7 +75,7 @@ public class AuthController {
 
             addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
             // redis 저장
-            redisService.setValues(username, refreshToken, 2 , TimeUnit.MINUTES);
+            redisService.setValues(username, refreshToken, 30 , TimeUnit.DAYS);
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {

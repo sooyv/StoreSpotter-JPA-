@@ -23,7 +23,7 @@ public class UserValidateService {
 
     // 이메일 중복검사
     public ResponseEntity<String> checkDuplicateEmail(String username) {
-        if (userRepository.findOneWithAuthoritiesByUsername(username).orElse(null) != null) {
+        if (userRepository.findByUsername(username).orElse(null) != null) {
             return new ResponseEntity<>("duplicateEmail", HttpStatus.BAD_REQUEST);
         }
         return null;

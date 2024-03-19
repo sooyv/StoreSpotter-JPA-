@@ -8,6 +8,7 @@ import com.sojoo.StoreSpotter.repository.apiToDb.IndustryRepository;
 import com.sojoo.StoreSpotter.repository.apiToDb.RegionRepository;
 import com.sojoo.StoreSpotter.repository.mypage.LikedRepository;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,10 +31,10 @@ public class dbRollbackTest {
 
     @Test
     @Transactional
-    @Rollback(false)
-    public void rollbackTest() throws Exception{
+    public void rollbackTest(){
 
-        Optional<User> userOptional = userRepository.findOneWithAuthoritiesByUsername("jo");
+        // given
+        Optional<User> userOptional = userRepository.findByUsername("say06151@naver.com");
         User user = userOptional.get();
         Optional<Region> regionOptional = regionRepository.findById(11);
         Optional<Industry> industryOptional = industryRepository.findById("G20405");
@@ -49,15 +50,19 @@ public class dbRollbackTest {
         likedList.add(liked3);
 
 
+        // When
         for (int i = 0; i < 3; i++) {
             Liked liked = likedList.get(i);
             likedRepository.save(liked);
         }
-        
-        List<Liked>likedList1 = likedRepository.findAll();
-        for(Liked liked : likedList1){
-            System.out.println("liked.getAddress() = " + liked.getAddress());
+        userRepository.deleteById(1L);
+
+        // Then
+        List<Liked> likedLists = likedRepository.findAll();
+        for (Liked liked : likedLists){
+            System.out.println(liked.getLikedName());
         }
+
 
     }
 }

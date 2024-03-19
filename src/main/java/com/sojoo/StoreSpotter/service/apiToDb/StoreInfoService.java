@@ -28,7 +28,7 @@ public class StoreInfoService {
     @Autowired
     public StoreInfoService(ConvenienceStoreRepository convenienceStoreRepository, CafeRepository cafeRepository,
                             IndustryRepository industryRepository, RegionRepository regionRepository,
-                            @Value("{api.naverSerivceKey}") String naverSerivceKey) {
+                            @Value("${api.naverSerivceKey}") String naverSerivceKey) {
         this.convenienceStoreRepository = convenienceStoreRepository;
         this.cafeRepository = cafeRepository;
         this.industryRepository = industryRepository;
@@ -36,7 +36,7 @@ public class StoreInfoService {
         this.naverSerivceKey = naverSerivceKey;
     }
 
-    @Transactional
+//    @Transactional
 
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
     public List<Industry> industrySave() throws Exception {
