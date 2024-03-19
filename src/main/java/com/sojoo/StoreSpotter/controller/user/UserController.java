@@ -125,21 +125,6 @@ public class UserController {
         }
     }
 
-
-    @GetMapping("/user")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<UserDto> getMyUserInfo(HttpServletRequest request) {
-        return ResponseEntity.ok(userService.getMyUserWithAuthorities());
-    }
-
-    @GetMapping("/user/{username}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<UserDto> getUserInfo(@PathVariable String username) {
-        return ResponseEntity.ok(userService.getUserWithAuthorities(username));
-    }
-
-
-
     // 회원정보 찾기
     @GetMapping("/find-user")
     public ModelAndView findUserInfo() {
