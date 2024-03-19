@@ -21,16 +21,12 @@ import java.util.List;
 
 @RestController
 public class MypageController {
-
-
     private final DataRecommendService dataRecommendService;
     private final LikedService likedService;
     private final IndustryService industryService;
     private final UserService userService;
 
     private final UserInfoService userInfoService;
-
-
 
     public MypageController(DataRecommendService dataRecommendService, LikedService likedService,
                             IndustryService industryService, UserService userService,
@@ -170,6 +166,15 @@ public class MypageController {
         User user = userService.getUserFromCookie(request);
 
         return userInfoService.modifyPassword(user, userPwdDto);
+    }
+
+
+
+    @PostMapping("/user/withdraw")
+    public ResponseEntity<String> withdrawFailed(HttpServletRequest request) {
+        User user = userService.getUserFromCookie(request);
+
+        return userInfoService.withdrawFailed(user);
     }
 
 }

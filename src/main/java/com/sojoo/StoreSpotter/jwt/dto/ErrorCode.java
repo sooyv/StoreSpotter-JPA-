@@ -1,11 +1,7 @@
 package com.sojoo.StoreSpotter.jwt.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.validation.FieldError;
 
 @Getter
 @AllArgsConstructor

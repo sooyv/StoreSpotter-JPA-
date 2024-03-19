@@ -3,8 +3,6 @@ package com.sojoo.StoreSpotter.entity.user;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "authority")
@@ -22,7 +20,4 @@ public class Authority {
 
     @Column(name = "authority_name", length = 50)
     private String authorityName;
-
-//    @OneToMany
-//    private List<User> userList = new ArrayList<>();
 }

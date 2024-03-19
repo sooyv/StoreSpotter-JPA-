@@ -72,12 +72,10 @@ form.addEventListener("submit", event => {
             },
             data: JSON.stringify(userDto),
             success: function (response) {
-                console.log(response);
                 window.location.replace("/login");
             },
             error: function (error) {
-                console.log(error);
-
+                console.log("회원가입 에러 확인 : "+ error);
                 // back 모든 항목 검사
                 if (error.responseText == "memberInfoNull") {
                     alert("모든 항목을 입력해주세요.");
@@ -89,7 +87,7 @@ form.addEventListener("submit", event => {
                 }
 
                 if (error.responseText == "expirationMailCode") {
-                    alert("메일 인증을 재시도 해주세요.");
+                    alert("메일 인증을 재시도 해주세요. 만료된 메일 코드입니다.");
                     mailCode.focus();
                 }
 
@@ -117,7 +115,7 @@ form.addEventListener("submit", event => {
                 setTimeout(function() {
                     $("#signUpBtn").removeClass('shake'); // 0.8초 후 shake 클래스 제거
                 }, 800);
-                console.log(error.responseText);
+                // console.log(error.responseText);
             }
         });
     });

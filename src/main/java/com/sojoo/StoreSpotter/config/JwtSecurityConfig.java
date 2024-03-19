@@ -2,6 +2,7 @@ package com.sojoo.StoreSpotter.config;
 
 import com.sojoo.StoreSpotter.jwt.jwt.JwtFilter;
 import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
+import com.sojoo.StoreSpotter.service.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

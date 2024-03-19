@@ -4,12 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sojoo.StoreSpotter.entity.user.Authority;
 import com.sojoo.StoreSpotter.entity.user.User;
 import lombok.*;
-import reactor.util.annotation.Nullable;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -44,8 +41,6 @@ public class UserDto {
     @Size(min = 3, max = 50)
     private String nickname;
 
-//    private Set<AuthorityDto> authorityDtoSet;
-    @Nullable
     private Authority authority;
 
     public static UserDto from(User user) {
