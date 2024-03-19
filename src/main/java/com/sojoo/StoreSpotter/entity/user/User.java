@@ -35,22 +35,12 @@ public class User {
     @Column(name = "activated")
     private boolean activated;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "authority_id")
-//    private Authority authority;
     private Authority authority;
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "user_authority",
-//            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
-//    private Set<Authority> authorities;
-
-//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Liked> likedList = new ArrayList<>();
-
 
     public void updatePassword(String password) {
         this.password = password;

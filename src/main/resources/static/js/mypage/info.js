@@ -8,7 +8,15 @@ $(document).ready(function (){
     $("#pwd_btn").on("click", function () {
         updatePwd();
     });
-
+    $("#accountClosing").on("click", function () {
+        const result = confirm("정말로 계정을 탈퇴하시겠습니까?");
+        if (result) {
+            // 확인 버튼
+            withdrawAccount();
+        } else {
+            // 취소 버튼
+        }
+    });
 })
 
 // ---------- 이름 수정 ----------
@@ -101,4 +109,24 @@ function updatePwd() {
 
             }
         });
+}
+
+
+// ---------- 계정 탈퇴 ----------
+function withdrawAccount() {
+    console.log("회원 삭제 진행");
+
+    $.ajax({
+        type: 'POST',
+        url: "/user/withdraw",
+
+        success: function (response) {
+            alert("탈퇴 되었습니다.");
+            window.location.replace("/");
+        }, error: function (error) {
+            if (error.responseText = "withdrawFailed") {
+                alert("회원 탈퇴가 실패하였습니다.");
+            }
+        }
+    });
 }

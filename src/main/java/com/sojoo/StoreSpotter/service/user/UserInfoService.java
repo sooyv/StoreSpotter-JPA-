@@ -1,10 +1,11 @@
 package com.sojoo.StoreSpotter.service.user;
 
-import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.dto.user.UserPwdDto;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.service.mail.MailService;
+import com.sojoo.StoreSpotter.service.redis.RedisService;
+import com.sojoo.StoreSpotter.util.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,24 +13,29 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static com.sojoo.StoreSpotter.util.CookieUtil.getCookie;
 
 @Slf4j
 @Service
 public class UserInfoService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
-    private final UserService userService;
     private final MailService mailService;
+    private final CookieUtil cookieUtil;
+    private final RedisService redisService;
 
-    public UserInfoService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, UserService userService, MailService mailService) {
+    public UserInfoService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, MailService mailService, CookieUtil cookieUtil, RedisService redisService) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;
-        this.userService = userService;
         this.mailService = mailService;
+        this.cookieUtil = cookieUtil;
+        this.redisService = redisService;
     }
 
 
@@ -90,14 +96,14 @@ public class UserInfoService {
     // --------------- 비밀번호 변경 -------------
     @Transactional
     public ResponseEntity<String> modifyPassword(User user, UserPwdDto userPwdDto){
-        if(checkCurrentPassword(user, userPwdDto.getCurrentPwd())){
+        if (checkCurrentPassword(user, userPwdDto.getCurrentPwd())){
             user.updatePassword(bCryptPasswordEncoder.encode(userPwdDto.getChangePwd()));
             return new ResponseEntity<>("success", HttpStatus.OK);
         } else if (!checkEqualPassword(userPwdDto)) {
             return new ResponseEntity<>("notEqualPassword", HttpStatus.BAD_REQUEST);
         } else if (!passwordRegExp(userPwdDto)) {
             return new ResponseEntity<>("passwordRegExp", HttpStatus.BAD_REQUEST);
-        }else {
+        } else {
             return new ResponseEntity<>("incorrect password", HttpStatus.BAD_REQUEST);
         }
     }
@@ -124,5 +130,23 @@ public class UserInfoService {
     }
 
 
+    // 계정 탈퇴
+    @Transactional
+    public ResponseEntity<String> withdrawFailed(User user) {
+        // username으로 해당 user 찾기
+        String username = user.getUsername();
+        System.out.println("accountClosing username : " + username);
 
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()){
+            // 해당 유저 삭제
+            userRepository.delete(user);
+            // redis 삭제
+            redisService.delValues(username);
+            return new ResponseEntity<>("success", HttpStatus.OK);
+        } else {
+            // user 못참음 exception
+            return new ResponseEntity<>("withdrawFailed", HttpStatus.BAD_REQUEST);
+        }
+    }
 }

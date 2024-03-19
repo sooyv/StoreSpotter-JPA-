@@ -35,6 +35,7 @@ public class StoreInfoService {
         this.regionRepository = regionRepository;
         this.naverSerivceKey = naverSerivceKey;
     }
+
 //    @Transactional
 
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
