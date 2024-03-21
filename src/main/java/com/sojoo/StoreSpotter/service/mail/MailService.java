@@ -1,6 +1,10 @@
 package com.sojoo.StoreSpotter.service.mail;
 
+import com.sojoo.StoreSpotter.common.error.ErrorCode;
+import com.sojoo.StoreSpotter.common.exception.SmtpSendFailedException;
 import com.sojoo.StoreSpotter.service.redis.RedisService;
+import com.sun.mail.smtp.SMTPSendFailedException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Service
 public class MailService {
     private final JavaMailSender javaMailSender;
@@ -53,7 +58,7 @@ public class MailService {
             javaMailSender.send(mailMsg);
         } catch (MailException mailException) {
             mailException.printStackTrace();
-            throw new IllegalStateException();
+            throw new SmtpSendFailedException(ErrorCode.SMTP_SEND_FAILED);
         }
     }
 
@@ -62,7 +67,6 @@ public class MailService {
         try {
             // 랜덤 인증 코드 생성
             String code = createCode();
-            System.out.println("sendCertificationMail code 확인 : " + code);
             // email, code 순서로
             sendMail(email, code);
 
@@ -70,8 +74,9 @@ public class MailService {
             redisService.setValues(email, code, 3, TimeUnit.MINUTES);
 
         } catch (Exception e) {
+            log.info(e.getMessage());
             e.printStackTrace();
-            throw new RuntimeException("sendCertificationMail - 메일 전송에 실패했습니다.");
+            throw new SmtpSendFailedException(ErrorCode.SMTP_SEND_FAILED);
         }
     }
 

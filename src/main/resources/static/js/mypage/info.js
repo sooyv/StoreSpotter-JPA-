@@ -118,13 +118,13 @@ function withdrawAccount() {
 
     $.ajax({
         type: 'POST',
-        url: "/user/withdraw",
+        url: "/mypage/info/modify/withdraw",
 
         success: function (response) {
             alert("탈퇴 되었습니다.");
             window.location.replace("/");
         }, error: function (error) {
-            if (error.responseText = "withdrawFailed") {
+            if (error.responseText === "withdrawFailed") {
                 alert("회원 탈퇴가 실패하였습니다.");
             }
         }

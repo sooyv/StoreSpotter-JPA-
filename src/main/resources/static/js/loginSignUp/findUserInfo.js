@@ -196,7 +196,8 @@ $("#reissue-password").on("click", function() {
             console.log(error)
             if (error.responseText == "notExistEmail") {
                 alert("등록되지 않은 이메일 주소입니다. 다시 입력해주세요.");
-            } else if (error.responseText == "FailedUpdatePassword") {
+            }
+            if (error.responseText == "FailedUpdatePassword") {
                 alert("비밀번호 재설정에 실패했습니다. 다시 시도해주세요.");
             }
         }

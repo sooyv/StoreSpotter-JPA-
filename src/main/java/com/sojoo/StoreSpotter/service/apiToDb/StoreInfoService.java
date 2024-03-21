@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -103,7 +102,7 @@ public class StoreInfoService {
                     Element root = document.getRootElement();
                     Element body = root.getChild("body");
 
-                    Element totalCount = null;
+                    Element totalCount;
                     if (body != null){
                         totalCount = body.getChild("totalCount");
                     } else {
@@ -112,6 +111,9 @@ public class StoreInfoService {
                     }
 
                     assert totalCount != null;
+//                    if (totalCount == null) {
+//                        throw new ApiDataNotFoundException(ErrorCode.API_DATA_NOT_FOUND);
+//                    }
                     int totalCountValue = Integer.parseInt(totalCount.getText());
 
                     // 재할당한 totalPageCount
@@ -120,7 +122,6 @@ public class StoreInfoService {
 
                     // for문으로 각페이지 데이터 저장하기
                     publicApiDataSave(document, industId, region_id);
-
                 }
             }
 

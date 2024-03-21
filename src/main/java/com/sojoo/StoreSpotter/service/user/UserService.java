@@ -36,9 +36,9 @@ public class UserService {
         this.userValidateService = userValidateService;
     }
 
-    public User getUserFromUsername(String username){
+    public User getUserFromUsername(String username) {
         Optional<User> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isPresent()){
+        if (userOptional.isPresent()) {
             return userOptional.get();
         } else {
             throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);

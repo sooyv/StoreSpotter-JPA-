@@ -144,6 +144,9 @@ $("#send-mail").on("click", function() {
                 alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.");
                 email.focus();
             }
+            if (error.responseText === "SMTP SEND FAILED"); {
+                alert("인증번호 전송을 실패하였습니다.");
+            }
         }
     });
 });

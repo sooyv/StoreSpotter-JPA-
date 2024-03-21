@@ -95,17 +95,17 @@ $('.select-industry-detail').on('click', function() {
 
 
 // 주소 선택 시 지역 - 업종 평균 거리 나타내기
-function addressToServer(address, indust) {
+function addressToServer(address, industry) {
     // let indust = $('#select-industry .select-industry-detail.selected').text();
     let distSlider = document.getElementById('dist-slider');
 
     $.ajax ({
         type: "GET",
-        url: "/avg-dist",
+        url: "/search/avg-dist",
         data:
             {
                 address: address,
-                indust : indust
+                industry : industry
             },
         success: function(avgDist) {
             const findsido = address.indexOf(" ");

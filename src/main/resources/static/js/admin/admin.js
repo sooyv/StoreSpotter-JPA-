@@ -4,10 +4,13 @@ $("#indust-reset").click(function() {
     } else {
         $.ajax({
             type: "POST",
-            url: "/apiDataSave",
+            url: "/admin/apiDataSave",
             success: function (response) {
                 console.log("서버 응답: " + "success");
             }, error: function (error) {
+                if (error.message == "API_DATA_NOT_FOUND") {
+                    alert("데이터를 가져오기 실패했습니다.")
+                }
                 console.error("에러 발생: " + JSON.stringify(error));
             }
         })
@@ -20,7 +23,7 @@ $("#datapair-reset").click(function() {
     } else {
         $.ajax({
             type: "POST",
-            url: "/DataPair",
+            url: "/admin/DataPair",
             success: function (response) {
                 console.log("서버 응답: " + "success");
             }, error: function (error) {
@@ -31,33 +34,34 @@ $("#datapair-reset").click(function() {
 })
 
 // Wait for the DOM to be ready
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
 // Get the tabs and content elements
-const tabs = document.querySelectorAll(".nav-link");
-const tabContents = document.querySelectorAll(".tab-pane");
+    const tabs = document.querySelectorAll(".nav-link");
+    const tabContents = document.querySelectorAll(".tab-pane");
 
-// Add click event listeners to each tab
-tabs.forEach(function(tab, index) {
-tab.addEventListener("click", function(event) {
-// Prevent the default link behavior
-event.preventDefault();
+    // Add click event listeners to each tab
+    tabs.forEach(function (tab, index) {
+        tab.addEventListener("click", function (event) {
+            // Prevent the default link behavior
+            event.preventDefault();
 
-// Remove the 'show' class from all tab contents
-tabContents.forEach(function(content) {
-content.classList.remove("show", "active");
+            // Remove the 'show' class from all tab contents
+            tabContents.forEach(function (content) {
+                content.classList.remove("show", "active");
+            });
+
+            // Add the 'show' class to the clicked tab content
+            tabContents[index].classList.add("show", "active");
+
+            // Remove the 'active' class from all tabs
+            tabs.forEach(function (t) {
+                t.classList.remove("active");
+            });
+
+            tab.classList.add("active");
+        });
+    });
 });
 
-// Add the 'show' class to the clicked tab content
-tabContents[index].classList.add("show", "active");
-
-// Remove the 'active' class from all tabs
-tabs.forEach(function(t) {
-t.classList.remove("active");
-});
-
-tab.classList.add("active");
-});
-});
-});
 
 

@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -16,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 @RestController
+@RequestMapping("/admin")
 public class AdminController {
     private final DataPairService dataPairService;
     private final StoreInfoService storeInfoService;
@@ -26,7 +28,7 @@ public class AdminController {
         this.storeInfoService = storeInfoService;
     }
 
-    @GetMapping("/admin")
+    @GetMapping("/")
     public ModelAndView index() {
         return new ModelAndView("admin/admin");
     }
