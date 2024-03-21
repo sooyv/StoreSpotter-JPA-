@@ -39,14 +39,14 @@ function loading() {
 let markers = [];
 // 지도에 원 그리기
 $("#submit").click(function () {
-    let indust = $('#select-industry .select-industry-detail.selected').text();
-    console.log("indust 확인 : " +  indust);
+    let industry = $('#select-industry .select-industry-detail.selected').text();
+    console.log("industry 확인 : " +  industry);
     let region = $('#address').val();
     let dist = $('#dist-value').text();
     const addbox = document.getElementById('address');
 
     // 선택된 업종이 없을 경우 알림 또는 다른 동작 수행
-    if (!indust) {
+    if (!industry) {
         return alert('업종을 선택해주세요.');
     }
     if (!region) {
@@ -64,7 +64,7 @@ $("#submit").click(function () {
             type: "GET",
             url: "/search/recommend",
             data: {
-                indust: indust,
+                industry: industry,
                 region: region,
                 dist: dist
             },
@@ -295,7 +295,7 @@ $("#submit").click(function () {
                                             url: "mypage/liked/add",
                                             data: {
                                                 center: center,
-                                                indust: indust,
+                                                industry: industry,
                                                 likedAddress: likedAddress,
                                                 dist: parseFloat(dist),
                                                 likedName: likedName

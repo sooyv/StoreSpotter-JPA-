@@ -14,8 +14,14 @@ public class RegionService {
         this.regionRepository = regionRepository;
     }
 
-    public String regionNameToCode(String region_name) {
-        Region region = regionRepository.findAllByRegionName(region_name);
+    public String getRegionIdFromName(String regionName) {
+        Region region = regionRepository.findAllByRegionName(regionName);
         return String.valueOf(region.getRegionId());
+    }
+
+    // 주소 시도만 자르기
+    public String getCityFromAddress(String address) {
+        int cityIndex = address.indexOf(" ");
+        return (cityIndex != -1) ? address.substring(0, cityIndex) : address;
     }
 }

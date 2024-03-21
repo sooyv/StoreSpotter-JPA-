@@ -121,7 +121,6 @@ $("#send-mail").on("click", function() {
     console.log("메일 인증 전송 : " + email);
     if (email === "") {
         alert("이메일을 입력하세요");
-        console.log("이메일을 입력하세요")
         email.focus();
         return;
     }
@@ -133,16 +132,16 @@ $("#send-mail").on("click", function() {
             email : email
         },
         success: function(response) {
-            console.log(response)
             alert("이메일로 인증번호가 발송되었습니다.");
-            console.log("이메일로 인증번호가 발송되었습니다.")
         },
         error: function(error) {
-            console.log(error)
             // 메일 중복검사
             if (error.responseText === "duplicateEmail") {
                 alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.");
                 email.focus();
+            }
+            if (error.responseText === "SMTP SEND FAILED"){
+                alert("인증번호 전송을 실패했습니다.");
             }
         }
     });

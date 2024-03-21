@@ -103,7 +103,7 @@ public class StoreInfoService {
                     Element root = document.getRootElement();
                     Element body = root.getChild("body");
 
-                    Element totalCount = null;
+                    Element totalCount;
                     if (body != null){
                         totalCount = body.getChild("totalCount");
                     } else {

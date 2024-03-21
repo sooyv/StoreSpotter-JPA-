@@ -68,11 +68,5 @@ public class DataRecommendService {
         return result;
     }
 
-    // 주소 시도만 자르기
-    public String sido (String address) {
-        int findsido = address.indexOf(" ");
-
-        return (findsido != -1) ? address.substring(0, findsido) : address;
-    }
 
 }

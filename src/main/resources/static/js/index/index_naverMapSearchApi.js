@@ -95,27 +95,27 @@ $('.select-industry-detail').on('click', function() {
 
 
 // 주소 선택 시 지역 - 업종 평균 거리 나타내기
-function addressToServer(address, indust) {
-    // let indust = $('#select-industry .select-industry-detail.selected').text();
+function addressToServer(address, industry) {
+    // let industry = $('#select-industry .select-industry-detail.selected').text();
     let distSlider = document.getElementById('dist-slider');
 
     $.ajax ({
         type: "GET",
-        url: "/avg-dist",
+        url: "/search/avg-dist",
         data:
             {
                 address: address,
-                indust : indust
+                industry : industry
             },
         success: function(avgDist) {
             const findsido = address.indexOf(" ");
             const region = (findsido != -1) ? address.substring(0, findsido) : address;
             let avgDistance = Math.round(avgDist, 0);
 
-            console.log("ajax 성공 메서드 : ", address, region, indust);
+            console.log("ajax 성공 메서드 : ", address, region, industry);
 
             $('#show-avg-dist').html(
-                '<p><b style="color: #e14242;">' + region + '</b>에 위치한 <b style="color: #e14242;">' + indust + '</b>의</p>' +
+                '<p><b style="color: #e14242;">' + region + '</b>에 위치한 <b style="color: #e14242;">' + industry + '</b>의</p>' +
                 '<p>평균거리는 <b style="color: #e14242;">' + avgDistance + 'm' + '</b> 입니다.</p>'
             );
 

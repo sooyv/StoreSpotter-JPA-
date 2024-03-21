@@ -1,5 +1,6 @@
 package com.sojoo.StoreSpotter.controller.user;
 
+import com.sojoo.StoreSpotter.common.exception.SmtpSendFailedException;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.service.mail.MailService;
 import com.sojoo.StoreSpotter.service.user.UserInfoService;
@@ -21,87 +22,52 @@ import java.util.NoSuchElementException;
 
 @RestController
 public class UserController {
-    private final UserService userService;
     private final MailService mailService;
     private final UserValidateService userValidateService;
     private final UserInfoService userInfoService;
-    private final CookieUtil cookieUtil;
 
-    public UserController(UserService userService, MailService mailService, UserValidateService userValidateService, UserInfoService userInfoService, CookieUtil cookieUtil) {
-        this.userService = userService;
+    public UserController(MailService mailService, UserValidateService userValidateService, UserInfoService userInfoService) {
         this.mailService = mailService;
         this.userValidateService = userValidateService;
         this.userInfoService = userInfoService;
-        this.cookieUtil = cookieUtil;
     }
 
     // 로그인 페이지
     @GetMapping("/login")
     public ModelAndView login() {
-        System.out.println("login 실행");
         return new ModelAndView("loginSignUp/login");
     }
 
     // 회원가입 페이지
     @GetMapping("/signup")
-    public ModelAndView signUpPage(Model model) {
+    public ModelAndView signup(Model model) {
         model.addAttribute("userDto", new UserDto());
         return new ModelAndView("loginSignUp/signUp");
     }
 
 
-
-    // 회원가입
-    @Transactional
-    @PostMapping("/member/signup")
-    public ResponseEntity<String> signup(@RequestBody UserDto userDto) {
-
-        // 이메일 중복 검사
-        String username = userDto.getUsername();
-        ResponseEntity<String> checkDuplicateEmail = userValidateService.checkDuplicateEmail(username);
-        if (userValidateService.checkDuplicateEmail(userDto.getUsername()).getStatusCode().equals(HttpStatus.BAD_REQUEST)) {
-            return checkDuplicateEmail;
-        }
-
-        // 이메일 코드 검사
-        String checkMailCodeResult = userValidateService.checkMailCode(userDto);
-
-        if ("notEqualMailCode".equals(checkMailCodeResult)) {
-            return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
-        } else if ("expirationMailCode".equals(checkMailCodeResult)) {
-            return new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
-        }
-
-        userService.signup(userDto);
-        return new ResponseEntity<>("Successfully sign-up", HttpStatus.OK);    }
-
-
     // 회원가입 메일 인증
     @PostMapping("/signup/mail-code")
-    public ResponseEntity<String> sendEmailCode(@RequestParam String email) throws MessagingException, IllegalStateException {
-        System.out.println("sendEmailCode 이메일 확인 : " + email);
+    public ResponseEntity<String> sendEmailCode(@RequestParam String email) {
 
-        if (email == null) {
-            return ResponseEntity.badRequest().body("인증 메일 null");
-        }
+        try{
+            // 메일 중복확인
+            ResponseEntity<String> checkDuplicateEmail = userValidateService.checkDuplicateEmail(email);
+            if (checkDuplicateEmail.getStatusCode().equals(HttpStatus.BAD_REQUEST)) {
+                return checkDuplicateEmail;
+            }
 
-        // 메일 중복확인
-        ResponseEntity<String> checkDuplicateEmail = userValidateService.checkDuplicateEmail(email);
-        if (checkDuplicateEmail != null) {
-            return checkDuplicateEmail;
-        }
-
-        try {
             mailService.sendCertificationMail(email);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body("인증메일 전송 실패");
+        } catch (SmtpSendFailedException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+
+
     }
 
-    // 회원정보 찾기
-    @GetMapping("/find-user")
+    // 회원정보 찾기 페이지
+    @GetMapping("/user/find-account")
     public ModelAndView findUserInfo() {
         return new ModelAndView("loginSignUp/findUserInfo");
     }
@@ -120,7 +86,6 @@ public class UserController {
     public ResponseEntity<String> reissuePassword(@RequestParam String email) throws NoSuchElementException {
         try {
             String reissuePasswordSuccess = userInfoService.updateUserPw(email);
-            System.out.println("reissuePassword email  : " + email);
             return ResponseEntity.ok(reissuePasswordSuccess);
 
         } catch (NoSuchElementException e) {

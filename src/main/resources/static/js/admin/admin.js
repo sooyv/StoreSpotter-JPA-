@@ -4,11 +4,12 @@ $("#indust-reset").click(function() {
     } else {
         $.ajax({
             type: "POST",
-            url: "/apiDataSave",
+            url: "/admin/apiDataSave",
             success: function (response) {
                 console.log("서버 응답: " + "success");
             }, error: function (error) {
                 console.error("에러 발생: " + JSON.stringify(error));
+                alert("error : " + error.message)
             }
         })
     }
@@ -20,7 +21,7 @@ $("#datapair-reset").click(function() {
     } else {
         $.ajax({
             type: "POST",
-            url: "/DataPair",
+            url: "/admin/DataPair",
             success: function (response) {
                 console.log("서버 응답: " + "success");
             }, error: function (error) {

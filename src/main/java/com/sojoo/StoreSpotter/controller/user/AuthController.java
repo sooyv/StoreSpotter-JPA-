@@ -2,9 +2,12 @@ package com.sojoo.StoreSpotter.controller.user;
 
 
 import com.sojoo.StoreSpotter.dto.user.LoginDto;
+import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.jwt.dto.TokenDto;
 import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
 import com.sojoo.StoreSpotter.service.redis.RedisService;
+import com.sojoo.StoreSpotter.service.user.UserService;
+import com.sojoo.StoreSpotter.service.user.UserValidateService;
 import com.sojoo.StoreSpotter.util.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,24 +30,25 @@ import static com.sojoo.StoreSpotter.util.CookieUtil.*;
 
 @Slf4j
 @RestController
-//@RequestMapping("/")
+@RequestMapping("/user/auth")
 public class AuthController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final CookieUtil cookieUtil;
     private final RedisService redisService;
-    private final static int COOKIE_EXPIRE_SECONDS = 3600;      // 쿠키 존재 시간 1시간 설정
+    private final UserService userService;
+    private final UserValidateService userValidateService;
+    private final static int COOKIE_EXPIRE_SECONDS = 3600;
 
-    public AuthController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, CookieUtil cookieUtil, RedisService redisService) {
+    public AuthController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, CookieUtil cookieUtil, RedisService redisService, UserService userService, UserValidateService userValidateService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
-        this.cookieUtil = cookieUtil;
+        this.userService = userService;
+        this.userValidateService = userValidateService;
         this.redisService = redisService;
     }
 
     // 로그아웃
-    @Transactional
-    @PostMapping("/member/logout")
+    @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
         try {
             Cookie cookie = getCookie(request, "access_token");
@@ -60,7 +64,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/member/login")
+    @PostMapping("/login")
     public ResponseEntity<TokenDto> loginProcess(@Valid @RequestBody LoginDto loginDto, HttpServletResponse response) throws Exception {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
@@ -83,4 +87,28 @@ public class AuthController {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    // 회원가입
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@RequestBody UserDto userDto) {
+
+        // 이메일 중복 검사
+        String username = userDto.getUsername();
+        ResponseEntity<String> checkDuplicateEmail = userValidateService.checkDuplicateEmail(username);
+        if (userValidateService.checkDuplicateEmail(userDto.getUsername()).getStatusCode().equals(HttpStatus.BAD_REQUEST)) {
+            return checkDuplicateEmail;
+        }
+
+        // 이메일 코드 검사
+        String checkMailCodeResult = userValidateService.checkMailCode(userDto);
+
+        if ("notEqualMailCode".equals(checkMailCodeResult)) {
+            return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
+        } else if ("expirationMailCode".equals(checkMailCodeResult)) {
+            return new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
+        }
+
+        userService.signup(userDto);
+        return new ResponseEntity<>("Successfully sign-up", HttpStatus.OK);    }
+
 }

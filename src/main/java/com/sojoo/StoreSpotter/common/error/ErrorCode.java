@@ -9,8 +9,9 @@ public enum ErrorCode {
     // 400
     EMAIL_DUPLICATION(400,"USER-DUPLICATE-400","EMAIL DUPLICATED"),
 
-    // 401
-    USER_NOT_FOUND(401, "USER-NOT-FOUND-401", "USER NOT FOUND");
+    // 500
+    USER_NOT_FOUND(500, "USER-NOT-FOUND-500", "USER NOT FOUND"),
+    SMTP_SEND_FAILED(431, "SMTP-SEND-FAILED-431", "SMTP SEND FAILED");
 
     private final int status;
     private final String errorCode;

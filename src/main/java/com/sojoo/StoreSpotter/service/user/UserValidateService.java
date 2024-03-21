@@ -26,7 +26,7 @@ public class UserValidateService {
         if (userRepository.findByUsername(username).isPresent()) {
             return new ResponseEntity<>("duplicateEmail", HttpStatus.BAD_REQUEST);
         }else {
-            return null;
+            return new ResponseEntity<>("NonDuplicateEmail", HttpStatus.OK);
         }
     }
 
