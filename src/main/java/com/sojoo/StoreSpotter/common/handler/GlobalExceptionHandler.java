@@ -15,23 +15,35 @@ import org.springframework.web.servlet.ModelAndView;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+//    @ExceptionHandler(EmailDuplicateException.class)
+//    public ResponseEntity<ErrorResponse> handleEmailDuplicateException(EmailDuplicateException ex) {
+//        log.error("handleEmailDuplicateException", ex);
+//        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
+//        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+//    }
     @ExceptionHandler(EmailDuplicateException.class)
-    public ModelAndView handleEmailDuplicateException(EmailDuplicateException ex){
-        log.error("handleEmailDuplicateException",ex);
-        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
-        return new ModelAndView("redirect:/signup");
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public ModelAndView handleUserNotFoundException(UserNotFoundException ex){
-        log.error("handleUserNotFoundException",ex);
+    public ModelAndView handleEmailDuplicateException(EmailDuplicateException ex) {
+        log.error("handleEmailDuplicateException", ex);
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
         return new ModelAndView("redirect:/");
     }
 
+//    @ExceptionHandler(UserNotFoundException.class)
+//    public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException ex) {
+//        log.error("handleUserNotFoundException", ex);
+//        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
+//        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+//    }
+    @ExceptionHandler(UserNotFoundException.class)
+    public ModelAndView handleUserNotFoundException(UserNotFoundException ex) {
+        log.error("handleUserNotFoundException", ex);
+        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
+        return new ModelAndView("redirect:/signup");
+    }
+
     @ExceptionHandler(SmtpSendFailedException.class)
-    public ResponseEntity<ErrorResponse> handleApiDataNotFoundException(SmtpSendFailedException ex){
-        log.error("handleApiDataNotFoundException",ex);
+    public ResponseEntity<ErrorResponse> handleSmtpSendFailedException(SmtpSendFailedException ex) {
+        log.error("handleApiDataNotFoundException", ex);
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }

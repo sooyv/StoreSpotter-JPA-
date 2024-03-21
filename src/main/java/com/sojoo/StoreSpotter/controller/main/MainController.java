@@ -34,11 +34,11 @@ public class MainController {
 
     // 사이드바 전체검색
     @GetMapping("/search/recommend")
-    public List<DataRecommandProjection> searchRecommend (@RequestParam("industry") String industry,
+    public List<DataRecommandProjection> searchRecommend (@RequestParam("industry") String indust,
                                                        @RequestParam("region") String region,
                                                        @RequestParam("dist") String dist) {
 
-        String industryId = industryService.getIndustryIdFromName(industry);
+        String industryId = industryService.getIndustryIdFromName(indust);
         String regionName = regionService.getCityFromAddress(region);
         String regionFk = regionService.getRegionIdFromName(regionName);
 
@@ -56,8 +56,4 @@ public class MainController {
         return String.valueOf(dataRecommendService.avgDistance(industryId, regionFk));
 
     }
-
-
-
-
 }

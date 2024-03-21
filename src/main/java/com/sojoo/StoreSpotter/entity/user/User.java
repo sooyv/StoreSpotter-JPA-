@@ -39,7 +39,7 @@ public class User {
     @JoinColumn(name = "authority_id")
     private Authority authority;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Liked> likedList = new ArrayList<>();
 
     public void updatePassword(String password) {

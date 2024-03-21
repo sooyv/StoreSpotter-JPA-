@@ -24,18 +24,18 @@ import java.util.List;
 public class MypageController {
     private final LikedService likedService;
     private final IndustryService industryService;
+    private final RegionService regionService;
     private final UserService userService;
     private final UserInfoService userInfoService;
-    private final RegionService regionService;
 
     public MypageController(LikedService likedService,
-                            IndustryService industryService, UserService userService,
-                            UserInfoService userInfoService, RegionService regionService) {
+                            IndustryService industryService, RegionService regionService, UserService userService,
+                            UserInfoService userInfoService) {
         this.likedService = likedService;
         this.industryService = industryService;
+        this.regionService = regionService;
         this.userService = userService;
         this.userInfoService = userInfoService;
-        this.regionService = regionService;
     }
 
     @GetMapping("/")
@@ -49,7 +49,7 @@ public class MypageController {
 
         // 검색어 유무 확인
         if (keyword == null){
-            likedList = likedService.likedEntityToDto(user.getLikedList());
+            likedList = likedService.likedEntityToDto(user.getLikedList()); // 사용자의 likedList 가져오기
         }else{
             List<Liked> likedSearch = likedService.likedSearch(keyword);
             likedList = likedService.likedEntityToDto(likedSearch);
@@ -103,9 +103,9 @@ public class MypageController {
     }
 
     // 찜 삭제
-    @PostMapping("/liked/remove")
+    @PostMapping("/mypage/liked/remove")
     public void removeLiked(HttpServletRequest request,
-            @RequestParam String likedName){
+                            @RequestParam String likedName){
 
         User user = userService.getUserFromCookie(request);
 
@@ -113,15 +113,14 @@ public class MypageController {
     }
 
 
-    // 계정정보
+    // 계정 정보
     @GetMapping("/info")
     public ModelAndView myInfo(Model model, HttpServletRequest request) {
 
         User user = userService.getUserFromCookie(request);
         String userPhone = user.getPhone();
 
-        model.addAttribute("userPhone", userPhone); // 모델에 username 추가
-
+        model.addAttribute("userPhone", userPhone);
 
         return new ModelAndView("mypage/info");
     }
@@ -130,7 +129,6 @@ public class MypageController {
     @PostMapping("/info/modify/nickname")
     public void modifyNickname(HttpServletRequest request, @RequestParam String nickname){
         User user = userService.getUserFromCookie(request);
-        System.out.println("nickname" + nickname);
 
         userInfoService.modifyNickname(user, nickname);
     }

@@ -25,8 +25,8 @@ public class UserValidateService {
     public ResponseEntity<String> checkDuplicateEmail(String username) {
         if (userRepository.findByUsername(username).isPresent()) {
             return new ResponseEntity<>("duplicateEmail", HttpStatus.BAD_REQUEST);
-        }else {
-            return new ResponseEntity<>("NonDuplicateEmail", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
@@ -46,7 +46,7 @@ public class UserValidateService {
             return "notEqualMailCode";
 
         // 저장된 메일 코드가 없으면, 만료된 것으로 간주
-        } else{
+        } else {
             return "expirationMailCode";
         }
     }

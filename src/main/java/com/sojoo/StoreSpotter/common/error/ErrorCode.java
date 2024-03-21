@@ -11,7 +11,9 @@ public enum ErrorCode {
 
     // 500
     USER_NOT_FOUND(500, "USER-NOT-FOUND-500", "USER NOT FOUND"),
-    SMTP_SEND_FAILED(431, "SMTP-SEND-FAILED-431", "SMTP SEND FAILED");
+
+    //500
+    SMTP_SEND_FAILED(421, "SMTP-SEND-FAILED-421", "SMTP_SEND_FAILED");
 
     private final int status;
     private final String errorCode;

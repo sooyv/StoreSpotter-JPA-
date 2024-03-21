@@ -4,7 +4,7 @@ import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class UserNotFoundException extends RuntimeException{
+public class UserNotFoundException extends RuntimeException {
 
     private final ErrorCode errorCode;
 

@@ -5,7 +5,6 @@ import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.service.mail.MailService;
 import com.sojoo.StoreSpotter.service.redis.RedisService;
-import com.sojoo.StoreSpotter.util.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,14 +23,12 @@ public class UserInfoService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
     private final MailService mailService;
-    private final CookieUtil cookieUtil;
     private final RedisService redisService;
 
-    public UserInfoService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, MailService mailService, CookieUtil cookieUtil, RedisService redisService) {
+    public UserInfoService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, MailService mailService, RedisService redisService) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;
         this.mailService = mailService;
-        this.cookieUtil = cookieUtil;
         this.redisService = redisService;
     }
 
@@ -132,7 +129,6 @@ public class UserInfoService {
     public ResponseEntity<String> userWithdraw(User user) {
         // username으로 해당 user 찾기
         String username = user.getUsername();
-        System.out.println("accountClosing username : " + username);
 
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (userOptional.isPresent()){

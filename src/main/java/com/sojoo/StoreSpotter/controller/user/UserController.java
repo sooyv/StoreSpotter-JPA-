@@ -1,22 +1,19 @@
 package com.sojoo.StoreSpotter.controller.user;
 
+import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.common.exception.SmtpSendFailedException;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.service.mail.MailService;
 import com.sojoo.StoreSpotter.service.user.UserInfoService;
-import com.sojoo.StoreSpotter.service.user.UserService;
 import com.sojoo.StoreSpotter.service.user.UserValidateService;
-import com.sojoo.StoreSpotter.util.CookieUtil;
+import com.sun.mail.smtp.SMTPSendFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -35,6 +32,7 @@ public class UserController {
     // 로그인 페이지
     @GetMapping("/login")
     public ModelAndView login() {
+        System.out.println("login 실행");
         return new ModelAndView("loginSignUp/login");
     }
 
@@ -48,9 +46,9 @@ public class UserController {
 
     // 회원가입 메일 인증
     @PostMapping("/signup/mail-code")
-    public ResponseEntity<String> sendEmailCode(@RequestParam String email) {
+    public ResponseEntity<String> sendEmailCode(@RequestParam String email) throws IllegalStateException {
 
-        try{
+        try {
             // 메일 중복확인
             ResponseEntity<String> checkDuplicateEmail = userValidateService.checkDuplicateEmail(email);
             if (checkDuplicateEmail.getStatusCode().equals(HttpStatus.BAD_REQUEST)) {
@@ -59,11 +57,10 @@ public class UserController {
 
             mailService.sendCertificationMail(email);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (SmtpSendFailedException e){
+
+        } catch (SmtpSendFailedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
-
     }
 
     // 회원정보 찾기 페이지
@@ -79,7 +76,6 @@ public class UserController {
         List<String> userEmail = userInfoService.findUserEmail(username, phone);
         return userEmail;
     }
-
 
     // 비밀번호 재발급
     @PostMapping("/user/password")
