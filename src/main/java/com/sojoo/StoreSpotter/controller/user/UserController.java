@@ -1,21 +1,18 @@
 package com.sojoo.StoreSpotter.controller.user;
 
-import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.common.exception.SmtpSendFailedException;
+import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.service.mail.MailService;
 import com.sojoo.StoreSpotter.service.user.UserInfoService;
 import com.sojoo.StoreSpotter.service.user.UserValidateService;
-import com.sun.mail.smtp.SMTPSendFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.mail.MessagingException;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 public class UserController {
@@ -39,7 +36,7 @@ public class UserController {
     // 회원가입 페이지
     @GetMapping("/signup")
     public ModelAndView signup(Model model) {
-        model.addAttribute("userDto", new UserDto());
+//        model.addAttribute("userDto", new UserDto());
         return new ModelAndView("loginSignUp/signUp");
     }
 
@@ -71,7 +68,7 @@ public class UserController {
 
     // 이메일 찾기
     @PostMapping("/user/account")
-    public List<String> findUserId(@RequestParam("username") String username, @RequestParam("phone") String phone) {
+    public List<String> findUserAccount(@RequestParam("username") String username, @RequestParam("phone") String phone) {
 
         List<String> userEmail = userInfoService.findUserEmail(username, phone);
         return userEmail;
@@ -79,13 +76,13 @@ public class UserController {
 
     // 비밀번호 재발급
     @PostMapping("/user/password")
-    public ResponseEntity<String> reissuePassword(@RequestParam String email) throws NoSuchElementException {
+    public ResponseEntity<String> reissuePassword(@RequestParam String email) throws UserNotFoundException {
         try {
-            String reissuePasswordSuccess = userInfoService.updateUserPw(email);
-            return ResponseEntity.ok(reissuePasswordSuccess);
+            userInfoService.updateUserPw(email);
+            return new ResponseEntity<>(HttpStatus.OK);
 
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>("notExistEmail", HttpStatus.BAD_REQUEST);
+        } catch (UserNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("FailedUpdatePassword", HttpStatus.BAD_REQUEST);
         }

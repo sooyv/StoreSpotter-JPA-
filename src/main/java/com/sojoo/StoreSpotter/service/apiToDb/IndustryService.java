@@ -15,7 +15,8 @@ public class IndustryService {
     }
 
     public String getIndustryIdFromName(String industryName) {
-        Industry industry = industryRepository.findAllByIndustName(industryName);
+        Industry industry = industryRepository.findByIndustName(industryName);
+
         return industry.getIndustId();
     }
 }

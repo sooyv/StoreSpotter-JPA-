@@ -4,12 +4,10 @@ import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IndustryRepository extends JpaRepository<Industry, String> {
-    Industry findAllByIndustName(String industName);
 
-    Industry findOneByIndustId(String industId);
-    List<Industry> findAll();
+    Industry findByIndustName(String industName);
 }

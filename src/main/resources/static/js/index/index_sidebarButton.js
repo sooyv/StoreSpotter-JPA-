@@ -4,7 +4,7 @@ const sideElems = document.querySelectorAll(".side-elem");
 
 // distExplain.hide();
 
-let indust = ""
+let industry = ""
 const addbox = document.getElementById('address');
 const originalBorderStyle = addbox.style.border;
 
@@ -392,7 +392,9 @@ $("#submit").click(function () {
 
             },
             error: function (error) {
-                console.error("에러 발생: " + JSON.stringify(error));
+                if (error.status === 500){
+                    alert("검색에 실패했습니다. 잠시 후 다시 시도해주세요");
+                }
             }
         });
     }

@@ -25,13 +25,13 @@ public class Liked {
     @Column(name = "liked_name", unique = true)
     private String likedName;
 
-    @Column(name = "dist")
+    @Column(name = "dist", nullable = false)
     private Double dist;
 
-    @Column(name = "address")
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "center")
+    @Column(name = "center", nullable = false)
     private String center;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -38,23 +38,24 @@ public class LikedService {
     */
 
     // 찜목록 저장
-    public void storeLiked (User user, String regionName, String industId, Double dist, String address, String likedName, String center){
+    public void storeLiked (User user, String regionName, String industryId, Double dist, String address, String likedName, String center){
 
         Region region = regionRepository.findByRegionName(regionName);
-        Industry industry = industryRepository.findOneByIndustId(industId);
+        Optional<Industry> industryOptional = industryRepository.findById(industryId);
+        if(industryOptional.isPresent()){
+            Liked liked = Liked.builder()
+                    .user(user)
+                    .region(region)
+                    .industry(industryOptional.get())
+                    .dist(dist)
+                    .address(address)
+                    .likedName(likedName)
+                    .center(center)
+                    .build();
 
-        Liked liked = Liked.builder()
-                .user(user)
-                .region(region)
-                .industry(industry)
-                .dist(dist)
-                .address(address)
-                .likedName(likedName)
-                .center(center)
-                .build();
-
-        likedRepository.save(liked);
-
+            likedRepository.save(liked);
+        }
+        // 여기에 새로운 exception
     }
 
     // 찜목록 수정

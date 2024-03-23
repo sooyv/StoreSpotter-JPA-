@@ -35,18 +35,15 @@ public class UserInfoService {
 
     // --------------- 비밀번호 재발급 -------------
     @Transactional
-    public String updateUserPw(String email) throws Exception {
+    public void updateUserPw(String email) throws Exception {
         Optional<User> user = userRepository.findByUsername(email);
         if (user.isPresent()) {
             String code = mailService.sendPwMail(email);
-
             user.get().updatePassword(bCryptPasswordEncoder.encode(code));
-            return "Successfully reissuePassword";
         } else {
-            throw new NoSuchElementException("존재하지 않는 이메일입니다");
+            throw new NoSuchElementException("notExistEmail");
         }
     }
-
 
 
     // --------------- 이메일 찾기 -------------
@@ -93,13 +90,14 @@ public class UserInfoService {
         if (checkCurrentPassword(user, userPwdDto.getCurrentPwd())){
             user.updatePassword(bCryptPasswordEncoder.encode(userPwdDto.getChangePwd()));
             return new ResponseEntity<>("success", HttpStatus.OK);
-        } else if (!checkEqualPassword(userPwdDto)) {
-            return new ResponseEntity<>("notEqualPassword", HttpStatus.BAD_REQUEST);
-        } else if (!passwordRegExp(userPwdDto)) {
-            return new ResponseEntity<>("passwordRegExp", HttpStatus.BAD_REQUEST);
-        } else {
-            return new ResponseEntity<>("incorrect password", HttpStatus.BAD_REQUEST);
         }
+        if (!checkEqualPassword(userPwdDto)) {
+            return new ResponseEntity<>("notEqualPassword", HttpStatus.BAD_REQUEST);
+        }
+        if (!passwordRegExp(userPwdDto)) {
+            return new ResponseEntity<>("passwordRegExp", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("incorrect password", HttpStatus.BAD_REQUEST);
     }
 
     private boolean checkCurrentPassword(User user, String currentPassword){

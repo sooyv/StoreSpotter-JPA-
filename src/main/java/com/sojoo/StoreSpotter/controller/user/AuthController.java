@@ -50,18 +50,12 @@ public class AuthController {
     @Transactional
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
-        try {
-            Cookie cookie = getCookie(request, "access_token");
-            if (cookie != null){
-                String username = tokenProvider.getUsernameFromToken(cookie.getValue());
-                redisService.delValues(username);
-                System.out.println("redisDel : " + username);
-            }
-            return ResponseEntity.ok("logout");
-        } catch (Exception e) {
-            log.error("로그아웃 중 오류 발생", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("로그아웃 중 오류 발생");
+        Cookie cookie = getCookie(request, "access_token");
+        if (cookie != null){
+            String username = tokenProvider.getUsernameFromToken(cookie.getValue());
+            redisService.delValues(username);
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/login")
@@ -84,8 +78,8 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     // 회원가입
@@ -104,7 +98,8 @@ public class AuthController {
 
         if ("notEqualMailCode".equals(checkMailCodeResult)) {
             return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
-        } else if ("expirationMailCode".equals(checkMailCodeResult)) {
+        }
+        if ("expirationMailCode".equals(checkMailCodeResult)) {
             return new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
         }
 

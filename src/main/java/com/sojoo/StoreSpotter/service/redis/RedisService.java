@@ -1,5 +1,7 @@
 package com.sojoo.StoreSpotter.service.redis;
 
+import com.sojoo.StoreSpotter.common.error.ErrorCode;
+import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -34,7 +36,11 @@ public class RedisService {
 
     // 키-벨류 삭제
     public void delValues(String username) {
-        redisTemplate.delete(username);
+        try{
+            redisTemplate.delete(username);
+        } catch (Exception e){
+            throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
+        }
     }
 
 

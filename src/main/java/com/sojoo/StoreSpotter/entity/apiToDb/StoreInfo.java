@@ -21,7 +21,7 @@ public abstract class StoreInfo {
 
     @Column(name="coordinates", columnDefinition = "point", nullable = false)
     private Point coordinates;
-//  private Geometry coordinates;
+
     @Column(name = "rdnm_adr", nullable = false)
     private String rdnmAdr;
 

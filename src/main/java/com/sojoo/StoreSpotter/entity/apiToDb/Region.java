@@ -1,5 +1,6 @@
 package com.sojoo.StoreSpotter.entity.apiToDb;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,14 +10,14 @@ import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Region {
     @Id
     @Column(name="region_id")
-    private Integer regionId;      // 지역 코드
+    private Integer regionId;
 
-    @Column(name="region_name")
-    private String regionName;     // 지역명
+    @Column(name="region_name", nullable = false)
+    private String regionName;
 
 
 }

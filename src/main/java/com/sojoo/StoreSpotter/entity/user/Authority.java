@@ -7,10 +7,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "authority")
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Authority {
 
     @Id

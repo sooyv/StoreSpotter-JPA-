@@ -1,5 +1,6 @@
 package com.sojoo.StoreSpotter.entity.apiToDb;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,13 +10,13 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Industry {
 
     @Id
     @Column(name="indust_id")
-    private String industId;       // 업종 코드
+    private String industId;
 
-    @Column(name = "indust_name")
-    private String industName;     // 업종명
+    @Column(name = "indust_name", nullable = false)
+    private String industName;
 }

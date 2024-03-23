@@ -10,6 +10,9 @@ import java.awt.image.LookupOp;
 import java.sql.Ref;
 import java.util.logging.LoggingPermission;
 
+/**
+ * 사용 여부 확인 후 삭제
+ */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
