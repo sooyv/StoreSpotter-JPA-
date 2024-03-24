@@ -12,7 +12,7 @@ form.addEventListener("submit", event => {
 
         $.ajax({
             type: 'POST',
-            url: '/member/login',
+            url: '/user/auth/login',
             headers: {
                 'content-type': 'application/json'
             },
@@ -23,9 +23,8 @@ form.addEventListener("submit", event => {
             },
             error: function (error) {
                 // 요청이 실패하면 이 함수가 호출됩니다.
-                console.error('Login failed:', error.responseText);
+                console.error('Login failed:', error);
                 alert("로그인에 실패하였습니다.")
-                // 로그인 실패 시의 처리를 여기에 작성할 수 있습니다.
             }
         });
     });

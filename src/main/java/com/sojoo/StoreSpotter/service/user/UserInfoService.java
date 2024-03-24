@@ -35,15 +35,15 @@ public class UserInfoService {
 
     // --------------- 비밀번호 재발급 -------------
     @Transactional
-    public String updateUserPw(String email) throws Exception {
+    public void updateUserPw(String email) throws Exception {
         Optional<User> user = userRepository.findByUsername(email);
         if (user.isPresent()) {
             String code = mailService.sendPwMail(email);
 
             user.get().updatePassword(bCryptPasswordEncoder.encode(code));
-            return "Successfully reissuePassword";
+
         } else {
-            throw new NoSuchElementException("존재하지 않는 이메일입니다");
+            throw new NoSuchElementException("notExistEmail");
         }
     }
 

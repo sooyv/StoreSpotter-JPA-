@@ -2,6 +2,7 @@ package com.sojoo.StoreSpotter.controller.user;
 
 import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.common.exception.SmtpSendFailedException;
+import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.service.mail.MailService;
 import com.sojoo.StoreSpotter.service.user.UserInfoService;
@@ -13,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.mail.MessagingException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -32,7 +32,6 @@ public class UserController {
     // 로그인 페이지
     @GetMapping("/login")
     public ModelAndView login() {
-        System.out.println("login 실행");
         return new ModelAndView("loginSignUp/login");
     }
 
@@ -71,7 +70,7 @@ public class UserController {
 
     // 이메일 찾기
     @PostMapping("/user/account")
-    public List<String> findUserId(@RequestParam("username") String username, @RequestParam("phone") String phone) {
+    public List<String> findUserAccount(@RequestParam("username") String username, @RequestParam("phone") String phone) {
 
         List<String> userEmail = userInfoService.findUserEmail(username, phone);
         return userEmail;
@@ -81,11 +80,11 @@ public class UserController {
     @PostMapping("/user/password")
     public ResponseEntity<String> reissuePassword(@RequestParam String email) throws NoSuchElementException {
         try {
-            String reissuePasswordSuccess = userInfoService.updateUserPw(email);
-            return ResponseEntity.ok(reissuePasswordSuccess);
+            userInfoService.updateUserPw(email);
+            return new ResponseEntity<>(HttpStatus.OK);
 
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<>("notExistEmail", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("FailedUpdatePassword", HttpStatus.BAD_REQUEST);
         }

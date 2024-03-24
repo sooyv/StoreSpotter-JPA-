@@ -121,7 +121,7 @@ findPassword.on("mouseleave", function() {
 
 
 // ------------------ 이메일 찾기 ---------------------
-let findEmailBtn = $("#store_button");
+let findEmailBtn = $("#find-email-btn");
 findEmailBtn.on("click", function() {
 
     const username = $("#name").val();

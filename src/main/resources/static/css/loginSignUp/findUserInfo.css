@@ -131,7 +131,7 @@ input {
 
 /*----------------- 이메일 찾기 -----------------*/
 /*이메일 찾기, 비밀번호 재발급*/
-#store_button, #reissue-password {
+#find-email-btn, #reissue-password {
     width: 40%;
     background: #23567d;
     border: none;
@@ -144,7 +144,7 @@ input {
     cursor: pointer;
 }
 
-#store_button:hover {
+#find-email-btn:hover {
     background: #6bb4d0;
     transition: 0.2s ease;
 }

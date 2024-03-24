@@ -50,26 +50,24 @@ public class AuthController {
     @Transactional
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
-        try {
-            Cookie cookie = getCookie(request, "access_token");
-            if (cookie != null){
-                String username = tokenProvider.getUsernameFromToken(cookie.getValue());
-                redisService.delValues(username);
-                System.out.println("redisDel : " + username);
-            }
-            return ResponseEntity.ok("logout");
-        } catch (Exception e) {
-            log.error("로그아웃 중 오류 발생", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("로그아웃 중 오류 발생");
+        Cookie cookie = getCookie(request, "access_token");
+        if (cookie != null) {
+            String username = tokenProvider.getUsernameFromToken(cookie.getValue());
+            redisService.delValues(username);
+            System.out.println("redisDel : " + username);
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/login")
     public ResponseEntity<TokenDto> loginProcess(@Valid @RequestBody LoginDto loginDto, HttpServletResponse response) throws Exception {
+        System.out.println("AuthController login 실행 1");
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 
+        System.out.println("AuthController login 실행 2");
         try {
+            System.out.println("AuthController login 실행 3");
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -83,9 +81,10 @@ public class AuthController {
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println("AuthController login 실행 4");
             e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     // 회원가입
