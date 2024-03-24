@@ -51,10 +51,10 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
         Cookie cookie = getCookie(request, "access_token");
+
         if (cookie != null) {
             String username = tokenProvider.getUsernameFromToken(cookie.getValue());
             redisService.delValues(username);
-            System.out.println("redisDel : " + username);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -103,7 +103,8 @@ public class AuthController {
 
         if ("notEqualMailCode".equals(checkMailCodeResult)) {
             return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
-        } else if ("expirationMailCode".equals(checkMailCodeResult)) {
+        }
+        if ("expirationMailCode".equals(checkMailCodeResult)) {
             return new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
         }
 

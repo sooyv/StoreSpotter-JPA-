@@ -3,7 +3,6 @@ package com.sojoo.StoreSpotter.service.mail;
 import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.common.exception.SmtpSendFailedException;
 import com.sojoo.StoreSpotter.service.redis.RedisService;
-import com.sun.mail.smtp.SMTPSendFailedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -127,7 +126,7 @@ public class MailService {
         Random rnd = new Random();
 
         for (int i = 0; i < 8; i++) {           // 인증코드 8자리
-            int index = rnd.nextInt(4); // 0~2 까지 랜덤
+            int index = rnd.nextInt(4);  // 0~2 까지 랜덤
 
             switch (index) {
                 case 0:

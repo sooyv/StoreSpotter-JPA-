@@ -131,8 +131,6 @@ findEmailBtn.on("click", function() {
         alert("모든 항목을 입력하세요");
         return;
     }
-
-    console.log("email 찾기 ajax 직전");
     $.ajax({
         type: 'POST',
         url: "/user/account",
@@ -143,7 +141,7 @@ findEmailBtn.on("click", function() {
         success: function (response) {
             console.log(response);
 
-            if (response == "") {
+            if (response === "") {
                 modalContent.html('');    // modal 초기화
                 let notFoundEmail = $("<p>").text("가입 정보가 없습니다.");
                 modalContent.append(notFoundEmail);
@@ -156,10 +154,10 @@ findEmailBtn.on("click", function() {
                     const userEmails = $("<p>").text(userEmail);
                     modalContent.append(userEmails);
 
-                };
+                }
                 emailModal.show();
                 console.log("find success");
-            };
+            }
         }
     });
 });
@@ -176,7 +174,7 @@ $("#reissue-password").on("click", function() {
     const email = $("#email").val();
     console.log("비밀번호 재발급 클릭이벤트 발생");
     console.log("비밀번호 재발급 : " + email);
-    if (email == "") {
+    if (email === "") {
         alert("이메일을 입력하세요");
         email.focus();
         return;
@@ -188,16 +186,14 @@ $("#reissue-password").on("click", function() {
             email : email
         },
         success: function(response) {
-            console.log(response)
             alert("이메일로 새로운 비밀번호가 발송되었습니다. " +
                 "다시 로그인해주세요.");
         },
         error: function(error) {
-            console.log(error)
-            if (error.responseText == "notExistEmail") {
+            if (error.responseText === "notExistEmail") {
                 alert("등록되지 않은 이메일 주소입니다. 다시 입력해주세요.");
             }
-            if (error.responseText == "FailedUpdatePassword") {
+            if (error.responseText === "FailedUpdatePassword") {
                 alert("비밀번호 재설정에 실패했습니다. 다시 시도해주세요.");
             }
         }

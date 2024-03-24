@@ -1,5 +1,7 @@
 package com.sojoo.StoreSpotter.service.storePair;
 
+import com.sojoo.StoreSpotter.common.error.ErrorCode;
+import com.sojoo.StoreSpotter.common.exception.DataRecommendNotFoundException;
 import com.sojoo.StoreSpotter.repository.storePair.CafePairRepository;
 import com.sojoo.StoreSpotter.repository.storePair.ConveniencePairRepository;
 import com.sojoo.StoreSpotter.repository.storePair.DataRecommandProjection;
@@ -24,10 +26,10 @@ public class DataRecommendService {
     }
 
 
-    public List<DataRecommandProjection> selectPairByDist(String industId, String regionFk, String dist) {
+    public List<DataRecommandProjection> selectPairByDist(String industryId, String regionFk, String dist) {
         List<DataRecommandProjection> result = null;
         try{
-            switch (industId) {
+            switch (industryId) {
                 case "G20405":
                     result = conveniencePairRepository.selectByDist(regionFk, dist);
                     break;
@@ -38,20 +40,20 @@ public class DataRecommendService {
             }
         }
         catch (Exception e){
-            e.printStackTrace();
+            throw new DataRecommendNotFoundException(ErrorCode.DATA_RECOMMEND_NOT_FOUND);
         }
 
         return result;
     }
 
     // 지역별 평균거리
-    public Double avgDistance(String industId, String regionFk) {
+    public Double avgDistance(String industryId, String regionFk) {
+        System.out.println("여기까지는 이거임" + industryId);
 
-        System.out.println("받아오는값" + industId + regionFk);
         Double result = null;
         Integer region = Integer.parseInt(regionFk);
         try{
-            switch (industId) {
+            switch (industryId) {
                 case "G20405":
                     result = conveniencePairRepository.avgDist(region);
                     break;
@@ -62,9 +64,9 @@ public class DataRecommendService {
             }
         }
         catch (Exception e){
-            e.printStackTrace();
+            System.out.println("여기서 잘터짐");
+            throw new DataRecommendNotFoundException(ErrorCode.DATA_RECOMMEND_NOT_FOUND);
         }
-        System.out.println("Dist : " + result);
         return result;
     }
 

@@ -1,9 +1,10 @@
 package com.sojoo.StoreSpotter.dto.user;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @NoArgsConstructor
 public class UserPwdDto {
 

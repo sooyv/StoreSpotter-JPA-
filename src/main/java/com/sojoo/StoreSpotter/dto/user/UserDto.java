@@ -9,9 +9,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
-@Setter
-@Builder
-@AllArgsConstructor
+//@AllArgsConstructor
+//@Builder
 @NoArgsConstructor
 public class UserDto {
 
@@ -42,14 +41,4 @@ public class UserDto {
     private String nickname;
 
     private Authority authority;
-
-    public static UserDto from(User user) {
-        if(user == null) return null;
-
-        return UserDto.builder()
-                .username(user.getUsername())
-                .nickname(user.getNickname())
-                .authority(user.getAuthority())
-                .build();
-    }
 }

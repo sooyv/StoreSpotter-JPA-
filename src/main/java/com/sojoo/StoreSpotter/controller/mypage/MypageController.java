@@ -37,7 +37,7 @@ public class MypageController {
         this.userInfoService = userInfoService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ModelAndView mypage(Model model, @RequestParam(value = "keyword", required = false) String keyword,
                                HttpServletRequest request) {
 
@@ -102,7 +102,7 @@ public class MypageController {
     }
 
     // 찜 삭제
-    @PostMapping("/mypage/liked/remove")
+    @PostMapping("/liked/remove")
     public void removeLiked(HttpServletRequest request,
                             @RequestParam String likedName){
 
