@@ -22,13 +22,12 @@
                         <span th:text="${userNickname}"></span>님
                     </a>
                 </div>
-                <div><a class="header-ele" id="logout" th:text="로그아웃" th:href="@{/}"></a></div>
+                <div><a class="header-ele" id="logout" th:text="로그아웃" th:href="@{/logout}"></a></div>
                 <div><a class="header-ele" th:text="마이페이지" th:href="@{/mypage}"></a></div>
             </div>
 
             <div id="header-content" class="header-content" th:unless="${userNickname}">
-                <div><a class="header-ele" th:text="로그인" th:href="@{/login}"></a>
-                </div>
+                <div><a class="header-ele" th:text="로그인" th:href="@{/login}"></a></div>
                 <div><a class="header-ele" th:text="회원가입" th:href="@{/signup}"></a></div>
             </div>
         </div>

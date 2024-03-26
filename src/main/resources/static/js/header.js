@@ -31,7 +31,7 @@ $(document).ready(function() {
         event.preventDefault();
         $.ajax({
             type: 'POST',
-            url: '/member/logout',
+            url: '/user/auth/logout',
             success: function(response) {
                 console.log('로그아웃이 완료되었습니다.', response);
                 window.location.replace("/");
