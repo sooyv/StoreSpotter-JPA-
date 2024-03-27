@@ -8,11 +8,9 @@ $("#indust-reset").click(function() {
             success: function (response) {
                 console.log("서버 응답: " + "success");
             }, error: function (error) {
-                if (error.message == "API_DATA_NOT_FOUND") {
-                    alert("데이터를 가져오기 실패했습니다.")
+                if (error.responseText === "API DATA NOT FOUND"){
+                    alert("데이터 초기화를 실패했습니다.")
                 }
-                console.error("에러 발생: " + JSON.stringify(error));
-                alert("error : " + error.message)
             }
         })
     }

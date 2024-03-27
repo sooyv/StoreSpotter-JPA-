@@ -3,19 +3,14 @@ package com.sojoo.StoreSpotter.entity.mypage;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
 import com.sojoo.StoreSpotter.entity.apiToDb.Region;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "liked")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@AllArgsConstructor
-@Builder
 public class Liked {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +41,7 @@ public class Liked {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Builder
     public Liked(String likedName, Double dist, String address, String center, Industry industry, Region region, User user){
         this.likedName = likedName;
         this.dist = dist;
@@ -60,6 +56,5 @@ public class Liked {
     public void UpdateLikedName(String likedName){
         this.likedName = likedName;
     }
-
 
 }

@@ -79,7 +79,7 @@ form.addEventListener("submit", event => {
 
         $.ajax({
             type: 'POST',
-            url: "/member/signup",
+            url: "/user/auth/signup",
             headers: {
                 'content-type': 'application/json'
             },

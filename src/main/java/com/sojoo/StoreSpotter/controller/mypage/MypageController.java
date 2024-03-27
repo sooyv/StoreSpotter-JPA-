@@ -38,7 +38,7 @@ public class MypageController {
         this.userInfoService = userInfoService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ModelAndView mypage(Model model, @RequestParam(value = "keyword", required = false) String keyword,
                                HttpServletRequest request) {
 

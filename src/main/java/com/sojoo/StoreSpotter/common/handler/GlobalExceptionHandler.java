@@ -1,10 +1,7 @@
 package com.sojoo.StoreSpotter.common.handler;
 
 import com.sojoo.StoreSpotter.common.error.ErrorResponse;
-import com.sojoo.StoreSpotter.common.exception.DataRecommendNotFoundException;
-import com.sojoo.StoreSpotter.common.exception.EmailDuplicateException;
-import com.sojoo.StoreSpotter.common.exception.SmtpSendFailedException;
-import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
+import com.sojoo.StoreSpotter.common.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,11 +35,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
 
-    // 추가 처리 작성 필요
     @ExceptionHandler(DataRecommendNotFoundException.class)
     @ResponseBody
     public ResponseEntity<ErrorResponse> handleDataRecommendNotFoundException(DataRecommendNotFoundException ex) {
         log.error("handleDataRecommendNotFoundException", ex);
+        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
+        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+    }
+
+    @ExceptionHandler(ApiDataNotFoundException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorResponse> handleApiDataNotFoundException(ApiDataNotFoundException ex) {
+        log.info("handleApiDataNotFoundException", ex);
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }

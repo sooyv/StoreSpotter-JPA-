@@ -43,7 +43,7 @@ public class UserController {
 
     // 회원가입 메일 인증
     @PostMapping("/signup/mail-code")
-    public ResponseEntity<String> sendEmailCode(@RequestParam String email) throws IllegalStateException {
+    public ResponseEntity<String> sendEmailCode(@RequestParam String email) {
 
         try {
             // 메일 중복확인

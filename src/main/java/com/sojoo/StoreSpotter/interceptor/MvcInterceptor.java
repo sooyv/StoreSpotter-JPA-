@@ -26,39 +26,8 @@ public class MvcInterceptor implements HandlerInterceptor {
         this.userRepository = userRepository;
     }
 
-//    @Override
-//    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//        System.out.println("preHandle 실행");
-//        return true;
-//    }
-
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-//        // 컨트롤러 실행 후, View 렌더링 전에 수행되는 코드
-//
-//        if (modelAndView != null) { // modelAndView 객체가 null이 아닌 경우에만 처리
-//            // 쿠키 받아오기
-//            Cookie cookie = CookieUtil.getCookie(request, "access_token");
-//
-//            if (cookie != null) {
-//                // 쿠키의 토큰 확인하여 user 정보 추출
-//                String accessToken = cookie.getValue();
-//                String username = tokenProvider.getUsernameFromToken(accessToken);
-//
-//                // 해당 만료토큰의 리프레시 토큰이 유효한지 확인
-//                if (tokenProvider.validRefreshTokenFromAccessToken(accessToken)){
-//
-//                    // 유저 존재 여부 확인
-//                    Optional<User> user = userRepository.findByUsername(username);
-//                    if (user.isPresent()) {
-//                        String userNickname = user.get().getNickname();
-//
-//                        // 모델에 데이터 추가
-//                        modelAndView.addObject("userNickname", userNickname);
-//                    }
-//                }
-//            }
-//        }
 
         if (modelAndView == null) {
             return;

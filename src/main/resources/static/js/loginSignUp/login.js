@@ -12,7 +12,7 @@ form.addEventListener("submit", event => {
 
         $.ajax({
             type: 'POST',
-            url: '/member/login',
+            url: '/user/auth/login',
             headers: {
                 'content-type': 'application/json'
             },

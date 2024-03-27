@@ -3,7 +3,6 @@ package com.sojoo.StoreSpotter.service.mail;
 import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.common.exception.SmtpSendFailedException;
 import com.sojoo.StoreSpotter.service.redis.RedisService;
-import com.sun.mail.smtp.SMTPSendFailedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
