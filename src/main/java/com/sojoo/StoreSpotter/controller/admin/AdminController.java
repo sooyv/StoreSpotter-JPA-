@@ -35,12 +35,11 @@ public class AdminController {
     }
 
     @PostMapping("/apiDataSave")
-    public ResponseEntity<String> Industries() {
-        try {
+    public ResponseEntity<String> Industries(){
+        try{
             storeInfoService.apiToDb();
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (ApiDataNotFoundException e) {
-            System.out.println("여기 4");
+        } catch(ApiDataNotFoundException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

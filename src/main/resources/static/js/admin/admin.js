@@ -6,10 +6,10 @@ $("#indust-reset").click(function() {
             type: "POST",
             url: "/admin/apiDataSave",
             success: function (response) {
-                console.log("서버 응답 success: " + response);
+                console.log("서버 응답: " + "success");
             }, error: function (error) {
-                if (error.responseText === "API DATA NOT FOUND") {
-                    alert("데이터 초기화를 실패하였습니다.");
+                if (error.responseText === "API DATA NOT FOUND"){
+                    alert("데이터 초기화를 실패했습니다.")
                 }
             }
         })

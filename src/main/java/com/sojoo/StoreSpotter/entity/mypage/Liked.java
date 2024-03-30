@@ -57,5 +57,4 @@ public class Liked {
         this.likedName = likedName;
     }
 
-
 }

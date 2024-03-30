@@ -48,7 +48,6 @@ public class DataRecommendService {
 
     // 지역별 평균거리
     public Double avgDistance(String industryId, String regionFk) {
-        System.out.println("여기까지는 이거임" + industryId);
 
         Double result = null;
         Integer region = Integer.parseInt(regionFk);
@@ -64,7 +63,6 @@ public class DataRecommendService {
             }
         }
         catch (Exception e){
-            System.out.println("여기서 잘터짐");
             throw new DataRecommendNotFoundException(ErrorCode.DATA_RECOMMEND_NOT_FOUND);
         }
         return result;

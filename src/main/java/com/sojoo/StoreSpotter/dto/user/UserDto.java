@@ -9,8 +9,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
-//@AllArgsConstructor
-//@Builder
 @NoArgsConstructor
 public class UserDto {
 
@@ -41,4 +39,5 @@ public class UserDto {
     private String nickname;
 
     private Authority authority;
+
 }

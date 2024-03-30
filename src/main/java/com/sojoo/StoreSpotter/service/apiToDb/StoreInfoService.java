@@ -2,6 +2,7 @@ package com.sojoo.StoreSpotter.service.apiToDb;
 
 import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.common.exception.ApiDataNotFoundException;
+import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
 import com.sojoo.StoreSpotter.repository.apiToDb.*;
 import com.sojoo.StoreSpotter.entity.apiToDb.*;
 import org.jdom2.Document;
@@ -10,6 +11,7 @@ import org.jdom2.input.SAXBuilder;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -39,7 +41,7 @@ public class StoreInfoService {
     @Transactional
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
     public void apiToDb() throws ApiDataNotFoundException {
-        long beforeTime = System.currentTimeMillis();
+        long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
         try {
             convenienceStoreRepository.deleteAll();
@@ -49,7 +51,6 @@ public class StoreInfoService {
             for (Industry industry : industryList) {
                 connectToApi(industry);
             }
-
         } catch (Exception e) {
             throw new ApiDataNotFoundException(ErrorCode.API_DATA_NOT_FOUND);
         }
@@ -76,7 +77,7 @@ public class StoreInfoService {
                 for (int j = 1; j <= totalPageCount; j++) {
 
                     String sb = "https://apis.data.go.kr/B553077/api/open/sdsc2/storeListInDong?" +
-                            "ServiceKey=" +
+                            "ServiceKey=" + apiServiceKey +
                             "&pageNo=" + j +
                             "&numOfRows=" + 1000 +
                             "&divId=" + "ctprvnCd" +
@@ -98,11 +99,10 @@ public class StoreInfoService {
 
                     Element totalCount;
 
-                    if (body == null && totalPageCount == 1) {
+                    if (body == null & totalPageCount == 1){
                         throw new Exception();
                     }
-
-                    if (body == null) {
+                    if (body == null){
                         continue;
                     }
 
@@ -112,58 +112,56 @@ public class StoreInfoService {
                     totalPageCount = (totalCountValue / 1000) + 1;
 
                     publicApiDataSave(document, industId, regionId);
-
                 }
             }
 
         } catch (Exception e) {
-            System.out.println("여기 3");
             throw new Exception();
         }
     }
 
     // api 데이터 저장 로직
     public void publicApiDataSave(Document document, String industId, Integer regionId) throws DuplicateKeyException {
-        Element root = document.getRootElement();
-        Element body = root.getChild("body");
-        Element items = body.getChild("items");
-        List<Element> itemList = items.getChildren("item");
+            Element root = document.getRootElement();
+            Element body = root.getChild("body");
+            Element items = body.getChild("items");
+            List<Element> itemList = items.getChildren("item");
 
-        for (Element item : itemList) {
-            String bizesId = item.getChildText("bizesId");
-            String bizesNm = item.getChildText("bizesNm");
-            String rdnmAdr = item.getChildText("rdnmAdr");
-            Double lon = Double.valueOf(item.getChildText("lon"));
-            Double lat = Double.valueOf(item.getChildText("lat"));
-            try {
-                switch (industId) {
-                    case "G20405":
-                        Point convPoint = StoreInfo.setCoordinates(lon, lat);
-                        ConvenienceStore convenienceStore = ConvenienceStore.builder()
-                                .bizesId(bizesId)
-                                .bizesNm(bizesNm)
-                                .rdnmAdr(rdnmAdr)
-                                .coordinates(convPoint)
-                                .regionFk(regionId)
-                                .build();
-                        convenienceStoreRepository.save(convenienceStore);
-                        break;
+            for (Element item : itemList) {
+                String bizesId = item.getChildText("bizesId");
+                String bizesNm = item.getChildText("bizesNm");
+                String rdnmAdr = item.getChildText("rdnmAdr");
+                Double lon = Double.valueOf(item.getChildText("lon"));
+                Double lat = Double.valueOf(item.getChildText("lat"));
+                try {
+                    switch (industId){
+                        case "G20405":
+                                Point convPoint = StoreInfo.setCoordinates(lon, lat);
+                                ConvenienceStore convenienceStore = ConvenienceStore.builder()
+                                        .bizesId(bizesId)
+                                        .bizesNm(bizesNm)
+                                        .rdnmAdr(rdnmAdr)
+                                        .coordinates(convPoint)
+                                        .regionFk(regionId)
+                                        .build();
+                                convenienceStoreRepository.save(convenienceStore);
+                            break;
 
-                    case "I21201":
-                        Point cafePoint = StoreInfo.setCoordinates(lon, lat);
-                        Cafe cafe = Cafe.builder()
-                                .bizesId(bizesId)
-                                .bizesNm(bizesNm)
-                                .rdnmAdr(rdnmAdr)
-                                .coordinates(cafePoint)
-                                .regionFk(regionId)
-                                .build();
-                        cafeRepository.save(cafe);
-                        break;
+                        case "I21201":
+                            Point cafePoint = StoreInfo.setCoordinates(lon, lat);
+                            Cafe cafe = Cafe.builder()
+                                    .bizesId(bizesId)
+                                    .bizesNm(bizesNm)
+                                    .rdnmAdr(rdnmAdr)
+                                    .coordinates(cafePoint)
+                                    .regionFk(regionId)
+                                    .build();
+                            cafeRepository.save(cafe);
+                            break;
+                    }
+                } catch (DuplicateKeyException e){
+                    continue;
                 }
-            } catch (DuplicateKeyException e) {
-                continue;
-            }
         }
     }
 }

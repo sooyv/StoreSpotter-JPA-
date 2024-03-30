@@ -1,9 +1,6 @@
 package com.sojoo.StoreSpotter.entity.apiToDb;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,4 +17,10 @@ public class Industry {
 
     @Column(name = "indust_name", nullable = false)
     private String industName;
+
+    public Industry (String industId, String industName){
+        this.industId = industId;
+        this.industName = industName;
+    }
+
 }
