@@ -32,26 +32,7 @@ public class UserValidateService {
         }
     }
 
-    // 메일 인증 코드 검사
-    public String checkMailCode(UserDto userDto) {
-        String inputMailCode = userDto.getMailCode();
-        String username = userDto.getUsername();
 
-        String storedMailCode = redisService.getValues(username);
-
-        // 입력메일코드와 저장 메일 코드가 같다면 success
-        if (inputMailCode.equals(storedMailCode)) {
-            return "success";
-
-        // 입력메일코드와 저장메일코드가 같지 않다면
-        } else if (storedMailCode != null) {
-            return "notEqualMailCode";
-
-        // 저장된 메일 코드가 없으면, 만료된 것으로 간주
-        } else {
-            return "expirationMailCode";
-        }
-    }
 
 
 

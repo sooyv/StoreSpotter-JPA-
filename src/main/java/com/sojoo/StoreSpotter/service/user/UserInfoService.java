@@ -1,5 +1,7 @@
 package com.sojoo.StoreSpotter.service.user;
 
+import com.sojoo.StoreSpotter.common.error.ErrorCode;
+import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
 import com.sojoo.StoreSpotter.dto.user.UserPwdDto;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
@@ -37,13 +39,12 @@ public class UserInfoService {
 
     // --------------- 비밀번호 재발급 -------------
     @Transactional
-    public void updateUserPw(String email) throws Exception {
+    public void updateUserPwd(String email, String newPwd) throws UserNotFoundException {
         Optional<User> user = userRepository.findByUsername(email);
         if (user.isPresent()) {
-            String code = mailService.sendPwMail(email);
-            user.get().updatePassword(bCryptPasswordEncoder.encode(code));
+            user.get().updatePassword(bCryptPasswordEncoder.encode(newPwd));
         } else {
-            throw new NoSuchElementException("notExistEmail");
+            throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
         }
     }
 

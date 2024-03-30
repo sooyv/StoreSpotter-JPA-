@@ -5,6 +5,7 @@ import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.util.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,6 +22,7 @@ public class MvcInterceptor implements HandlerInterceptor {
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
 
+    @Autowired
     public MvcInterceptor(TokenProvider tokenProvider, UserRepository userRepository) {
         this.tokenProvider = tokenProvider;
         this.userRepository = userRepository;

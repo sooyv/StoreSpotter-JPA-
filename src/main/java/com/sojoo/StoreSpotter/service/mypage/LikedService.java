@@ -20,11 +20,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@NoArgsConstructor
 public class LikedService {
-    private LikedRepository likedRepository;
-    private RegionRepository regionRepository;
-    private IndustryRepository industryRepository;
+    private final LikedRepository likedRepository;
+    private final RegionRepository regionRepository;
+    private final IndustryRepository industryRepository;
 
     @Autowired
     public LikedService (LikedRepository likedRepository, RegionRepository regionRepository, IndustryRepository industryRepository){

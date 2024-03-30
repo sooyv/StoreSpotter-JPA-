@@ -43,6 +43,10 @@
 <!--  비밀번호 찾기-->
   <form id="find-password-form">
     <input type="email" id="email" placeholder="비밀번호를 발급할 이메일" />
+    <div class="pwd-mail-confirm">
+      <input type="email" id="mail-code" class="pwd-mail-code" placeholder="인증코드" />
+      <button type="button" id="pwd-send-mail" class="mail-confirm-btn">인증메일 전송</button>
+    </div>
     <button type="button" id="reissue-password">reissue password</button>
   </form>
 

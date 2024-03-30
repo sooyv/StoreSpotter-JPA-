@@ -2,7 +2,6 @@ package com.sojoo.StoreSpotter.controller.user;
 
 import com.sojoo.StoreSpotter.common.exception.SmtpSendFailedException;
 import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
-import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.service.mail.MailService;
 import com.sojoo.StoreSpotter.service.user.UserInfoService;
 import com.sojoo.StoreSpotter.service.user.UserValidateService;
@@ -75,11 +74,35 @@ public class UserController {
         return userEmail;
     }
 
-    // 비밀번호 재발급
-    @PostMapping("/user/password")
-    public ResponseEntity<String> reissuePassword(@RequestParam String email) throws UserNotFoundException {
+    // 비밀번호 재발급 인증메일 전송
+    @PostMapping("/user/password/mail-send")
+    public ResponseEntity<String> issuePasswordMailCode(@RequestParam String email) throws UserNotFoundException {
         try {
-            userInfoService.updateUserPw(email);
+            mailService.sendChkPwdCodeMail(email);
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } catch (UserNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("FailedUpdatePassword", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // 비밀번호 재발급
+    @PostMapping("/user/password/reissue")
+    public ResponseEntity<String> reissuePassword(@RequestParam String email, @RequestParam String mailCode) throws UserNotFoundException {
+        try {
+            String checkMailCode = mailService.checkMailCode(email, mailCode);
+            String newPwd = mailService.sendNewPwdMail(email);
+            userInfoService.updateUserPwd(email, newPwd);
+
+            if (checkMailCode.equals("notEqualMailCode")){
+                return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
+            }
+            if (checkMailCode.equals("expirationMailCode")){
+                return  new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
+            }
+
             return new ResponseEntity<>(HttpStatus.OK);
 
         } catch (UserNotFoundException e) {

@@ -169,11 +169,10 @@ modalClose.on("click", function() {
 });
 
 
-// ------------------ 비밀번호 재발급 ------------------
-$("#reissue-password").on("click", function() {
+
+// ------------------ 비밀번호 인증메일 전송 ------------------
+$("#pwd-send-mail").on("click", function() {
     const email = $("#email").val();
-    console.log("비밀번호 재발급 클릭이벤트 발생");
-    console.log("비밀번호 재발급 : " + email);
     if (email === "") {
         alert("이메일을 입력하세요");
         email.focus();
@@ -181,17 +180,57 @@ $("#reissue-password").on("click", function() {
     }
     $.ajax({
         type: 'POST',
-        url: "/user/password",
+        url: "/user/password/mail-send",
         data: {
             email : email
+        },
+        success: function(response) {
+            alert("이메일로 인증번호가 발송되었습니다. ");
+        },
+        error: function(error) {
+            if (error.responseText === "USER NOT FOUND") {
+                alert("등록되지 않은 이메일 주소입니다. 다시 입력해주세요.");
+            }
+        }
+    });
+});
+
+// ------------------ 비밀번호 재발급 ------------------
+$("#reissue-password").on("click", function() {
+    const email = $("#email").val();
+    const mailCode = $("#mail-code").val();
+    console.log("비밀번호 재발급 클릭이벤트 발생");
+    console.log("비밀번호 재발급 : " + email);
+    if (email === "") {
+        alert("이메일을 입력하세요");
+        email.focus();
+        return;
+    }
+    if (mailCode === ""){
+        alert("인증코드를 입력하세요.")
+        mailCode.focus();
+        return;
+    }
+    $.ajax({
+        type: 'POST',
+        url: "/user/password/reissue",
+        data: {
+            email : email,
+            mailCode : mailCode
         },
         success: function(response) {
             alert("이메일로 새로운 비밀번호가 발송되었습니다. " +
                 "다시 로그인해주세요.");
         },
         error: function(error) {
-            if (error.responseText === "notExistEmail") {
+            if (error.responseText === "USER NOT FOUND") {
                 alert("등록되지 않은 이메일 주소입니다. 다시 입력해주세요.");
+            }
+            if (error.responseText === "notEqualMailCode") {
+                alert("메일코드가 일치하지 않습니다.")
+            }
+            if (error.responseText === "expirationMailCode"){
+                alert("만료된 인증코드입니다.")
             }
             if (error.responseText === "FailedUpdatePassword") {
                 alert("비밀번호 재설정에 실패했습니다. 다시 시도해주세요.");

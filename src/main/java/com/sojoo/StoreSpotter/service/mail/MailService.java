@@ -2,11 +2,12 @@ package com.sojoo.StoreSpotter.service.mail;
 
 import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.common.exception.SmtpSendFailedException;
+import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
+import com.sojoo.StoreSpotter.entity.user.User;
+import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.service.redis.RedisService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.UnsupportedEncodingException;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -23,23 +24,36 @@ import java.util.concurrent.TimeUnit;
 public class MailService {
     private final JavaMailSender javaMailSender;
     private final RedisService redisService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public MailService(JavaMailSender javaMailSender, RedisService redisService) {
+    public MailService(JavaMailSender javaMailSender, RedisService redisService, UserRepository userRepository) {
         this.javaMailSender = javaMailSender;
         this.redisService = redisService;
+        this.userRepository = userRepository;
     }
 
 
-    // --------------------- 메일 인증코드 ---------------------
-    // 메일 메시지 작성
-    private MimeMessage createMailMessage(String email, String code) throws MessagingException, UnsupportedEncodingException {
+    // --------------------- 회원가입 메일 인증코드 ---------------------
+    public void sendCertificationMail(String email) {
+        try {
+            String randomCode = createRandomCode();
+            MimeMessage mailMsg = createMailMessage(email, randomCode);
+            javaMailSender.send(mailMsg);
+
+            redisService.setValues(email, randomCode, 3, TimeUnit.MINUTES);
+
+        } catch (Exception e) {
+            throw new SmtpSendFailedException(ErrorCode.SMTP_SEND_FAILED);
+        }
+    }
+
+    private MimeMessage createMailMessage(String email, String code) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
 
-        message.addRecipients(Message.RecipientType.TO, email);         // 보내는 대상
-        System.out.println("createMailMessage email 대상 확인 : " + email);
-
+        message.addRecipients(Message.RecipientType.TO, email);
         message.setSubject("StoreSpotter 인증메일 발송");
+
         String msg = "";
         msg += "<h1>StoreSpotter 이메일 인증번호입니다.</h1>";
         msg += "<div style='font-size:130%'>";
@@ -53,53 +67,56 @@ public class MailService {
         return message;
     }
 
-    // 회원가입 인증 코드 메일
-    public void sendMail(String email, String code) throws MessagingException, UnsupportedEncodingException {
-        try {
-            MimeMessage mailMsg = createMailMessage(email, code);
-            javaMailSender.send(mailMsg);
-        } catch (MailException mailException) {
-            mailException.printStackTrace();
-            throw new SmtpSendFailedException(ErrorCode.SMTP_SEND_FAILED);
-        }
-    }
 
-    // 회원가입 인증 코드 메일 전송, 인증 코드 redis 저장
-    public void sendCertificationMail(String email) {
-        try {
-            // 랜덤 인증 코드 생성
-            String code = createCode();
-            // email, code 순서로
-            sendMail(email, code);
-
-            // redis에 인증 코드 저장
-            redisService.setValues(email, code, 3, TimeUnit.MINUTES);
-
-        } catch (Exception e) {
-            log.info(e.getMessage());
-            e.printStackTrace();
-            throw new SmtpSendFailedException(ErrorCode.SMTP_SEND_FAILED);
-        }
-    }
 
     // --------------------- 비밀번호 재발급 ---------------------
-    // 비밀번호 재발급 메일 작성
-    private MimeMessage createPwMessage(String email, String code) throws MessagingException, UnsupportedEncodingException {
+    public void sendChkPwdCodeMail(String email) throws UserNotFoundException{
+
+        try {
+            Optional<User> userOptional = userRepository.findByUsername(email);
+            if (userOptional.isPresent()) {
+                String newPwd = createRandomCode();
+                MimeMessage message = createPwdMessage(email, newPwd);
+                javaMailSender.send(message);
+                redisService.setValues(email, newPwd, 3, TimeUnit.MINUTES);
+            } else {
+                throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
+            }
+        } catch (Exception e) {
+            throw new SmtpSendFailedException(ErrorCode.SMTP_SEND_FAILED);
+        }
+    }
+
+    public String sendNewPwdMail(String email) {
+        try {
+            Optional<User> userOptional = userRepository.findByUsername(email);
+            if (userOptional.isPresent()) {
+                String newPwd = createRandomCode();
+                MimeMessage message = createPwdMessage(email, newPwd);
+                javaMailSender.send(message);
+
+                return newPwd;
+            } else {
+                throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
+            }
+        } catch (Exception e) {
+            throw new SmtpSendFailedException(ErrorCode.SMTP_SEND_FAILED);
+        }
+    }
+
+
+    private MimeMessage createPwdMessage(String email, String randomCode) throws MessagingException {
 
         MimeMessage message = javaMailSender.createMimeMessage();
 
-        message.addRecipients(Message.RecipientType.TO, email);         // 보내는 대상
-        System.out.println("createPwMessage email : " + email);
-        System.out.println("createPwMessage code : " + code);
+        message.addRecipients(Message.RecipientType.TO, email);
+        message.setSubject("StoreSpotter 비밀번호 재발급");
 
-        message.setSubject("TECHSUPP 비밀번호 재발급");                     // 제목
-
-        // 비밀번호 재발급
         String pwmsg = "";
         pwmsg += "<h1>StoreSpotter 임시비밀번호 발급.</h1>";
         pwmsg += "<div style='font-size:130%'>";
         pwmsg += "임시비밀번호 : <strong>";
-        pwmsg += code + "</strong><div><br/>";
+        pwmsg += randomCode + "</strong><div><br/>";
         pwmsg += "</div>";
         message.setText(pwmsg, "utf-8", "html");
 
@@ -108,23 +125,8 @@ public class MailService {
         return message;
     }
 
-    // 비밀번호 재발급 메일 발송
-    public String sendPwMail(String email) throws Exception {
-        String code = createCode();
-        MimeMessage message = createPwMessage(email, code);
-
-        try {
-            javaMailSender.send(message);
-        } catch (MailException mailException) {
-            mailException.printStackTrace();
-            throw new IllegalStateException();
-        }
-        return code;
-    }
-
-
     //-------------------- 랜덤 인증 코드 생성 --------------------
-    private String createCode() {
+    private String createRandomCode() {
         StringBuffer key = new StringBuffer();
         Random rnd = new Random();
 
@@ -151,4 +153,21 @@ public class MailService {
         }
         return key.toString();
     }
+
+    // 메일 인증 코드 검사
+    public String checkMailCode(String email, String mailCode) {
+
+        String storedMailCode = redisService.getValues(email);
+
+        if (storedMailCode != null && !storedMailCode.equals(mailCode)) {
+            return "notEqualMailCode";
+        }
+        if (storedMailCode == null) {
+            return "expirationMailCode";
+        }
+
+        return "success";
+    }
 }
+
+

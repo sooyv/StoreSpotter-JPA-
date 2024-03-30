@@ -5,6 +5,7 @@ import com.sojoo.StoreSpotter.dto.user.LoginDto;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.jwt.dto.TokenDto;
 import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
+import com.sojoo.StoreSpotter.service.mail.MailService;
 import com.sojoo.StoreSpotter.service.redis.RedisService;
 import com.sojoo.StoreSpotter.service.user.UserService;
 import com.sojoo.StoreSpotter.service.user.UserValidateService;
@@ -37,15 +38,17 @@ public class AuthController {
     private final RedisService redisService;
     private final UserService userService;
     private final UserValidateService userValidateService;
+    private final MailService mailService;
     private final static int COOKIE_EXPIRE_SECONDS = 3600;
 
     @Autowired
-    public AuthController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, RedisService redisService, UserService userService, UserValidateService userValidateService) {
+    public AuthController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, RedisService redisService, UserService userService, UserValidateService userValidateService, MailService mailService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.redisService = redisService;
         this.userService = userService;
         this.userValidateService = userValidateService;
+        this.mailService = mailService;
     }
 
     // 로그아웃
@@ -101,16 +104,18 @@ public class AuthController {
         }
 
         // 이메일 코드 검사
-        String checkMailCodeResult = userValidateService.checkMailCode(userDto);
+        String checkMailCodeResult = mailService.checkMailCode(userDto.getUsername(), userDto.getMailCode());
 
-        if ("notEqualMailCode".equals(checkMailCodeResult)) {
+        if (checkMailCodeResult.equals("notEqualMailCode")){
             return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
         }
-        if ("expirationMailCode".equals(checkMailCodeResult)) {
-            return new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
+        if (checkMailCodeResult.equals("expirationMailCode")){
+            return  new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
         }
 
         userService.signup(userDto);
-        return new ResponseEntity<>("Successfully sign-up", HttpStatus.OK);    }
+
+        return new ResponseEntity<>("Successfully sign-up", HttpStatus.OK);
+    }
 
 }
