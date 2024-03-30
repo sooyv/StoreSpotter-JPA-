@@ -6,6 +6,7 @@ import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.service.mail.MailService;
 import com.sojoo.StoreSpotter.service.redis.RedisService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,6 +26,7 @@ public class UserInfoService {
     private final MailService mailService;
     private final RedisService redisService;
 
+    @Autowired
     public UserInfoService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, MailService mailService, RedisService redisService) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;

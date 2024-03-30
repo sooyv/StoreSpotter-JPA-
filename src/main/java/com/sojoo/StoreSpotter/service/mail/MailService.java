@@ -3,7 +3,9 @@ package com.sojoo.StoreSpotter.service.mail;
 import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.common.exception.SmtpSendFailedException;
 import com.sojoo.StoreSpotter.service.redis.RedisService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ public class MailService {
     private final JavaMailSender javaMailSender;
     private final RedisService redisService;
 
+    @Autowired
     public MailService(JavaMailSender javaMailSender, RedisService redisService) {
         this.javaMailSender = javaMailSender;
         this.redisService = redisService;

@@ -9,6 +9,7 @@ import com.sojoo.StoreSpotter.service.redis.RedisService;
 import com.sojoo.StoreSpotter.service.user.UserService;
 import com.sojoo.StoreSpotter.service.user.UserValidateService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,6 +39,7 @@ public class AuthController {
     private final UserValidateService userValidateService;
     private final static int COOKIE_EXPIRE_SECONDS = 3600;
 
+    @Autowired
     public AuthController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, RedisService redisService, UserService userService, UserValidateService userValidateService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;

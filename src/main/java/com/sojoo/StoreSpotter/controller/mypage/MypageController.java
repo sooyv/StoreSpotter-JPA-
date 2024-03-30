@@ -9,6 +9,7 @@ import com.sojoo.StoreSpotter.service.apiToDb.RegionService;
 import com.sojoo.StoreSpotter.service.mypage.LikedService;
 import com.sojoo.StoreSpotter.service.user.UserInfoService;
 import com.sojoo.StoreSpotter.service.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -27,6 +28,7 @@ public class MypageController {
     private final UserService userService;
     private final UserInfoService userInfoService;
 
+    @Autowired
     public MypageController(LikedService likedService,
                             IndustryService industryService, RegionService regionService, UserService userService,
                             UserInfoService userInfoService) {

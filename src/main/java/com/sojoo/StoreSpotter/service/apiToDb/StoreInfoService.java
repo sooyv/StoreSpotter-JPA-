@@ -9,6 +9,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import org.locationtech.jts.geom.Point;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -28,6 +29,7 @@ public class StoreInfoService {
     private final RegionRepository regionRepository;
     private final String apiServiceKey;
 
+    @Autowired
     public StoreInfoService(ConvenienceStoreRepository convenienceStoreRepository, CafeRepository cafeRepository,
                             IndustryRepository industryRepository, RegionRepository regionRepository,
                             @Value("${api.apiServiceKey}") String apiServiceKey) {

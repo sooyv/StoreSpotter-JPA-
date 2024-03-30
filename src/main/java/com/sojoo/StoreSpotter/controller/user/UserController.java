@@ -6,6 +6,7 @@ import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.service.mail.MailService;
 import com.sojoo.StoreSpotter.service.user.UserInfoService;
 import com.sojoo.StoreSpotter.service.user.UserValidateService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ public class UserController {
     private final UserValidateService userValidateService;
     private final UserInfoService userInfoService;
 
+    @Autowired
     public UserController(MailService mailService, UserValidateService userValidateService, UserInfoService userInfoService) {
         this.mailService = mailService;
         this.userValidateService = userValidateService;

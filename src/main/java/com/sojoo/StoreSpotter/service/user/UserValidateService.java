@@ -3,6 +3,7 @@ package com.sojoo.StoreSpotter.service.user;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.service.redis.RedisService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ public class UserValidateService {
     private final UserRepository userRepository;
     private final RedisService redisService;
 
+    @Autowired
     public UserValidateService(UserRepository userRepository, RedisService redisService) {
         this.userRepository = userRepository;
         this.redisService = redisService;
