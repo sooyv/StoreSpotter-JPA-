@@ -1,7 +1,6 @@
 package com.sojoo.StoreSpotter.controller.user;
 
 import com.sojoo.StoreSpotter.common.exception.SmtpSendFailedException;
-import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
 import com.sojoo.StoreSpotter.service.mail.MailService;
 import com.sojoo.StoreSpotter.service.user.UserInfoService;
 import com.sojoo.StoreSpotter.service.user.UserValidateService;
@@ -52,7 +51,7 @@ public class UserController {
                 return checkDuplicateEmail;
             }
 
-            mailService.sendCertificationMail(email);
+            mailService.signupCertificateMail(email);
             return new ResponseEntity<>(HttpStatus.OK);
 
         } catch (SmtpSendFailedException e) {
@@ -76,37 +75,43 @@ public class UserController {
 
     // 비밀번호 재발급 인증메일 전송
     @PostMapping("/user/password/mail-send")
-    public ResponseEntity<String> issuePasswordMailCode(@RequestParam String email) throws UserNotFoundException {
+    public ResponseEntity<String> issuePwdCertificateMail(@RequestParam String email) {
         try {
-            mailService.sendChkPwdCodeMail(email);
+            String chkSendCode = mailService.sendPwdCertificateMail(email).getBody();
+            if ("UserNotFound".equals(chkSendCode)){
+                System.out.println("확인용3");
+                return new ResponseEntity<>("UserNotFound", HttpStatus.BAD_REQUEST);
+            }
             return new ResponseEntity<>(HttpStatus.OK);
 
-        } catch (UserNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
+            System.out.println("확인용2");
             return new ResponseEntity<>("FailedUpdatePassword", HttpStatus.BAD_REQUEST);
         }
     }
 
     // 비밀번호 재발급
     @PostMapping("/user/password/reissue")
-    public ResponseEntity<String> reissuePassword(@RequestParam String email, @RequestParam String mailCode) throws UserNotFoundException {
+    public ResponseEntity<String> reissuePassword(@RequestParam String email, @RequestParam String mailCode) {
         try {
-            String checkMailCode = mailService.checkMailCode(email, mailCode);
-            String newPwd = mailService.sendNewPwdMail(email);
-            userInfoService.updateUserPwd(email, newPwd);
 
-            if (checkMailCode.equals("notEqualMailCode")){
+            String newPwd = mailService.sendNewPwdMail(email);
+            String updatePwd = userInfoService.updateUserPwd(email, newPwd).getBody();
+            if (("UserNotFound").equals(updatePwd)){
+                return new ResponseEntity<>("UserNotFound", HttpStatus.BAD_REQUEST);
+            }
+
+            String checkMailCode = mailService.checkMailCode(email, mailCode).getBody();
+
+            if ("notEqualMailCode".equals(checkMailCode)){
                 return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
             }
-            if (checkMailCode.equals("expirationMailCode")){
+            if ("expirationMailCode".equals(checkMailCode)){
                 return  new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
             }
 
             return new ResponseEntity<>(HttpStatus.OK);
 
-        } catch (UserNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("FailedUpdatePassword", HttpStatus.BAD_REQUEST);
         }

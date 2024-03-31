@@ -185,7 +185,7 @@ input {
 }
 
 .mail-confirm-btn{
-    width: 15%;
+    width: 17%;
     background: #43759c;
     border: none;
     border-radius: 3px;
@@ -200,6 +200,6 @@ input {
     transition: 0.2s ease;
 }
 
-.pwd-mail-code{
-    width: 80%;
+.pwd-mail{
+    width: 100%;
 }
