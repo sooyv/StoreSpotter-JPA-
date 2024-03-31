@@ -78,6 +78,7 @@ public class UserController {
     @PostMapping("/user/password/mail-send")
     public ResponseEntity<String> issuePasswordMailCode(@RequestParam String email) throws UserNotFoundException {
         try {
+            System.out.println("try 문");
             mailService.sendChkPwdCodeMail(email);
             return new ResponseEntity<>(HttpStatus.OK);
 

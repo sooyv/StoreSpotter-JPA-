@@ -66,8 +66,10 @@ input {
     align-items: center;
 }
 #find-password-form {
-    margin: 1em;
-    width: 30%;
+    /*margin: 1em;*/
+    /*width: 30%;*/
+    margin: 2em;
+    width: 70%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -181,7 +183,9 @@ input {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    /*width: 100%;*/
+    width: 80%;
+    max-width: 500px;
 }
 
 .mail-confirm-btn{
@@ -194,7 +198,10 @@ input {
     font-family: 'IBM Plex Sans KR', sans-serif;
     color: #fff;
     cursor: pointer;
+
+    margin-left: 10px;
 }
+
 .mail-confirm-btn:hover{
     background: #6bb4d0;
     transition: 0.2s ease;

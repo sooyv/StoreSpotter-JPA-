@@ -70,8 +70,7 @@ public class MailService {
 
 
     // --------------------- 비밀번호 재발급 ---------------------
-    public void sendChkPwdCodeMail(String email) throws UserNotFoundException{
-
+    public void sendChkPwdCodeMail(String email) throws UserNotFoundException {
         try {
             Optional<User> userOptional = userRepository.findByUsername(email);
             if (userOptional.isPresent()) {
@@ -124,6 +123,7 @@ public class MailService {
 
         return message;
     }
+
 
     //-------------------- 랜덤 인증 코드 생성 --------------------
     private String createRandomCode() {
