@@ -51,7 +51,6 @@ public class AuthController {
         this.mailService = mailService;
     }
 
-    // 로그아웃
     @Transactional
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
@@ -104,12 +103,12 @@ public class AuthController {
         }
 
         // 이메일 코드 검사
-        String checkMailCodeResult = mailService.checkMailCode(userDto.getUsername(), userDto.getMailCode());
+        String checkMailCodeResult = mailService.checkMailCode(userDto.getUsername(), userDto.getMailCode()).getBody();
 
-        if (checkMailCodeResult.equals("notEqualMailCode")){
+        if ("notEqualMailCode".equals(checkMailCodeResult)){
             return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
         }
-        if (checkMailCodeResult.equals("expirationMailCode")){
+        if ("expirationMailCode".equals(checkMailCodeResult)){
             return  new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
         }
 

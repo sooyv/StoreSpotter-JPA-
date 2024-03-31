@@ -39,12 +39,13 @@ public class UserInfoService {
 
     // --------------- 비밀번호 재발급 -------------
     @Transactional
-    public void updateUserPwd(String email, String newPwd) throws UserNotFoundException {
+    public ResponseEntity<String> updateUserPwd(String email, String newPwd) {
         Optional<User> user = userRepository.findByUsername(email);
         if (user.isPresent()) {
             user.get().updatePassword(bCryptPasswordEncoder.encode(newPwd));
+            return new ResponseEntity<>("success", HttpStatus.OK);
         } else {
-            throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
+            return new ResponseEntity<>("UserNotFound", HttpStatus.BAD_REQUEST);
         }
     }
 

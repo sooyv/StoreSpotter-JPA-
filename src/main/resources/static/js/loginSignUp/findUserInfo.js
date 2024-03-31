@@ -188,9 +188,11 @@ $("#pwd-send-mail").on("click", function() {
             alert("이메일로 인증번호가 발송되었습니다. ");
         },
         error: function(error) {
-            console.log(error)
-            if (error.responseText === "USER NOT FOUND") {
+            if (error.responseText === "UserNotFound") {
                 alert("등록되지 않은 이메일 주소입니다. 다시 입력해주세요.");
+            }
+            if (error.responseText === "FailedUpdatePassword") {
+                alert("메일전송에 실패했습니다. 다시 시도해주세요.");
             }
         }
     });
@@ -224,7 +226,7 @@ $("#reissue-password").on("click", function() {
                 "다시 로그인해주세요.");
         },
         error: function(error) {
-            if (error.responseText === "USER NOT FOUND") {
+            if (error.responseText === "UserNotFound") {
                 alert("등록되지 않은 이메일 주소입니다. 다시 입력해주세요.");
             }
             if (error.responseText === "notEqualMailCode") {

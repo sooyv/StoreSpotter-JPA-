@@ -8,6 +8,8 @@ import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.service.redis.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +37,7 @@ public class MailService {
 
 
     // --------------------- 회원가입 메일 인증코드 ---------------------
-    public void sendCertificationMail(String email) {
+    public void signupCertificateMail(String email) {
         try {
             String randomCode = createRandomCode();
             MimeMessage mailMsg = createMailMessage(email, randomCode);
@@ -46,6 +48,65 @@ public class MailService {
         } catch (Exception e) {
             throw new SmtpSendFailedException(ErrorCode.SMTP_SEND_FAILED);
         }
+    }
+
+    // --------------------- 비밀번호 재발급 ---------------------
+    public ResponseEntity<String> sendPwdCertificateMail(String email) {
+
+        try {
+            Optional<User> userOptional = userRepository.findByUsername(email);
+            if (userOptional.isPresent()) {
+                String mailCode = createRandomCode();
+                MimeMessage message = createMailMessage(email, mailCode);
+                javaMailSender.send(message);
+                redisService.setValues(email, mailCode, 3, TimeUnit.MINUTES);
+                return new ResponseEntity<>("success", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("UserNotFound", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            System.out.println("확인용1");
+            throw new SmtpSendFailedException(ErrorCode.SMTP_SEND_FAILED);
+        }
+    }
+
+    public String sendNewPwdMail(String email) {
+        try {
+            Optional<User> userOptional = userRepository.findByUsername(email);
+            if (userOptional.isPresent()) {
+                String newPwd = createRandomCode();
+                MimeMessage message = createReissuePwdMessage(email, newPwd);
+                javaMailSender.send(message);
+
+                return newPwd;
+            } else {
+                throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
+            }
+        } catch (Exception e) {
+            throw new SmtpSendFailedException(ErrorCode.SMTP_SEND_FAILED);
+        }
+    }
+
+    // 메일 메서지 생성
+
+    private MimeMessage createReissuePwdMessage(String email, String randomCode) throws MessagingException {
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+
+        message.addRecipients(Message.RecipientType.TO, email);
+        message.setSubject("StoreSpotter 비밀번호 재발급");
+
+        String pwmsg = "";
+        pwmsg += "<h1>StoreSpotter 임시비밀번호 발급.</h1>";
+        pwmsg += "<div style='font-size:130%'>";
+        pwmsg += "임시비밀번호 : <strong>";
+        pwmsg += randomCode + "</strong><div><br/>";
+        pwmsg += "</div>";
+        message.setText(pwmsg, "utf-8", "html");
+
+        message.setFrom(new InternetAddress("techsupp@naver.com"));
+
+        return message;
     }
 
     private MimeMessage createMailMessage(String email, String code) throws MessagingException {
@@ -66,64 +127,6 @@ public class MailService {
 
         return message;
     }
-
-
-
-    // --------------------- 비밀번호 재발급 ---------------------
-    public void sendChkPwdCodeMail(String email) throws UserNotFoundException {
-        try {
-            Optional<User> userOptional = userRepository.findByUsername(email);
-            if (userOptional.isPresent()) {
-                String newPwd = createRandomCode();
-                MimeMessage message = createPwdMessage(email, newPwd);
-                javaMailSender.send(message);
-                redisService.setValues(email, newPwd, 3, TimeUnit.MINUTES);
-            } else {
-                throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
-            }
-        } catch (Exception e) {
-            throw new SmtpSendFailedException(ErrorCode.SMTP_SEND_FAILED);
-        }
-    }
-
-    public String sendNewPwdMail(String email) {
-        try {
-            Optional<User> userOptional = userRepository.findByUsername(email);
-            if (userOptional.isPresent()) {
-                String newPwd = createRandomCode();
-                MimeMessage message = createPwdMessage(email, newPwd);
-                javaMailSender.send(message);
-
-                return newPwd;
-            } else {
-                throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
-            }
-        } catch (Exception e) {
-            throw new SmtpSendFailedException(ErrorCode.SMTP_SEND_FAILED);
-        }
-    }
-
-
-    private MimeMessage createPwdMessage(String email, String randomCode) throws MessagingException {
-
-        MimeMessage message = javaMailSender.createMimeMessage();
-
-        message.addRecipients(Message.RecipientType.TO, email);
-        message.setSubject("StoreSpotter 비밀번호 재발급");
-
-        String pwmsg = "";
-        pwmsg += "<h1>StoreSpotter 임시비밀번호 발급.</h1>";
-        pwmsg += "<div style='font-size:130%'>";
-        pwmsg += "임시비밀번호 : <strong>";
-        pwmsg += randomCode + "</strong><div><br/>";
-        pwmsg += "</div>";
-        message.setText(pwmsg, "utf-8", "html");
-
-        message.setFrom(new InternetAddress("techsupp@naver.com"));
-
-        return message;
-    }
-
 
     //-------------------- 랜덤 인증 코드 생성 --------------------
     private String createRandomCode() {
@@ -155,18 +158,17 @@ public class MailService {
     }
 
     // 메일 인증 코드 검사
-    public String checkMailCode(String email, String mailCode) {
+    public ResponseEntity<String> checkMailCode(String email, String mailCode) {
 
         String storedMailCode = redisService.getValues(email);
 
         if (storedMailCode != null && !storedMailCode.equals(mailCode)) {
-            return "notEqualMailCode";
+            return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
         }
         if (storedMailCode == null) {
-            return "expirationMailCode";
+            return new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
         }
-
-        return "success";
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 }
 
