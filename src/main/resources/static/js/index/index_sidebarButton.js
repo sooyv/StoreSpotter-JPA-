@@ -285,6 +285,9 @@ $("#submit").click(function () {
                                 // 찜버튼 클릭시 AJAX 요청을 처리하는 함수
                                 let ajax_chk_flg = false;
 
+                                const likedDto = {"likedName": likedName, "dist": parseFloat(dist),
+                                    "address": likedAddress, "center": center}
+
                                 function StoreLiked(likedName) {
                                     var center = (circle.center.x +", "+ circle.center.y).toString();
                                     console.log(center)
@@ -293,13 +296,10 @@ $("#submit").click(function () {
                                         $.ajax({
                                             type: "POST",
                                             url: "mypage/liked/add",
-                                            data: {
-                                                center: center,
-                                                industry: industry,
-                                                likedAddress: likedAddress,
-                                                dist: parseFloat(dist),
-                                                likedName: likedName
-                                            },
+                                            data: [
+                                                JSON.stringify(likedDto),
+                                                {industry: industry}
+                                            ],
                                             success: function (response) {
                                                 console.log("찜 저장 성공");
                                             },

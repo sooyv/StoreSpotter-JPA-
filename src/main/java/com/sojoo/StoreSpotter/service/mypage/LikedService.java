@@ -8,7 +8,6 @@ import com.sojoo.StoreSpotter.entity.mypage.Liked;
 import com.sojoo.StoreSpotter.repository.apiToDb.IndustryRepository;
 import com.sojoo.StoreSpotter.repository.apiToDb.RegionRepository;
 import com.sojoo.StoreSpotter.repository.mypage.LikedRepository;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +36,7 @@ public class LikedService {
     */
 
     // 찜목록 저장
-    public void storeLiked (User user, String regionName, String industryId, Double dist, String address, String likedName, String center){
+    public void storeLiked (User user, String regionName, String industryId, LikedDto likedDto){
 
         Region region = regionRepository.findByRegionName(regionName);
         Optional<Industry> industryOptional = industryRepository.findById(industryId);
@@ -46,10 +45,10 @@ public class LikedService {
                     .user(user)
                     .region(region)
                     .industry(industryOptional.get())
-                    .dist(dist)
-                    .address(address)
-                    .likedName(likedName)
-                    .center(center)
+                    .dist(likedDto.getDist())
+                    .address(likedDto.getAddress())
+                    .likedName(likedDto.getLikedName())
+                    .center(likedDto.getCenter())
                     .build();
 
             likedRepository.save(liked);

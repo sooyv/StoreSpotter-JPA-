@@ -66,8 +66,6 @@ input {
     align-items: center;
 }
 #find-password-form {
-    /*margin: 1em;*/
-    /*width: 30%;*/
     margin: 2em;
     width: 70%;
     display: flex;
@@ -179,7 +177,7 @@ input {
     transition: 0.2s ease;
 }
 
-.pwd-mail-confirm{
+.pwd-mail-confirm {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -188,8 +186,8 @@ input {
     max-width: 500px;
 }
 
-.mail-confirm-btn{
-    width: 17%;
+.mail-confirm-btn {
+    width: 15%;
     background: #43759c;
     border: none;
     border-radius: 3px;
@@ -202,11 +200,11 @@ input {
     margin-left: 10px;
 }
 
-.mail-confirm-btn:hover{
+.mail-confirm-btn:hover {
     background: #6bb4d0;
     transition: 0.2s ease;
 }
 
-.pwd-mail{
-    width: 100%;
+.pwd-mail-code{
+    width: 80%;
 }

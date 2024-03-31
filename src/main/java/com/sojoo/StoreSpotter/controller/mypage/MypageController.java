@@ -68,20 +68,18 @@ public class MypageController {
     // 찜 목록 추가(main 페이지)
     @PostMapping("/liked/add")
     public ResponseEntity<String> addLiked(HttpServletRequest request,
-                                            @RequestParam String industry, @RequestParam String likedAddress,
-                                           @RequestParam Double dist, @RequestParam String likedName,
-                                           @RequestParam String center){
-        String regionName = regionService.getCityFromAddress(likedAddress);
+                                            @RequestParam String industry, @RequestBody LikedDto likedDto) {
+        String regionName = regionService.getCityFromAddress(likedDto.getLikedName());
         String industryId = industryService.getIndustryIdFromName(industry);
 
         User user = userService.getUserFromCookie(request);
 
         // 찜 이름 중복 확인 (likeName duplicate valid)
-        ResponseEntity<String> isDuplicate = likedService.duplicateLikedName(user, likedName);
+        ResponseEntity<String> isDuplicate = likedService.duplicateLikedName(user, likedDto.getLikedName());
         if (isDuplicate != null){
             return isDuplicate;
         } else {
-            likedService.storeLiked(user, regionName, industryId, dist, likedAddress, likedName, center);
+            likedService.storeLiked(user, regionName, industryId, likedDto);
             return new ResponseEntity<>("Successfully StoreLiked", HttpStatus.OK);
         }
     }
