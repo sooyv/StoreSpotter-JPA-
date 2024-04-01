@@ -9,6 +9,8 @@ import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
 import com.sojoo.StoreSpotter.repository.user.AuthorityRepository;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
+import com.sojoo.StoreSpotter.service.redis.RedisService;
+import com.sojoo.StoreSpotter.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -73,24 +74,34 @@ public class UserService {
 
     public User getUserFromCookie(HttpServletRequest request) {
         String name = "access_token";
-        Cookie[] cookies = request.getCookies();
+//        Cookie[] cookies = request.getCookies();
+        Cookie cookie = CookieUtil.getCookie(request, name);
+        String accessToken = cookie.getValue();
 
-        if (cookies == null || cookies.length == 0){
+//        if (cookie == null || cookie.length == 0) {
+        if (cookie == null) {
             throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
         }
 
-        Optional<Cookie> tokens = Arrays.stream(cookies)
-                .filter(cookie -> name.equals(cookie.getName()))
-                .findFirst();
+//        Optional<Cookie> tokens = Arrays.stream(cookies)
+//                .filter(cookie -> name.equals(cookie.getName()))
+//                .findFirst();
 
-        if (tokens.isEmpty()){
+//        if (token.isEmpty()){
+        if (accessToken.isEmpty()){
             throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
         }
-        Cookie token = tokens.get();
-        String accessToken = String.valueOf(token.getValue());
-        String username = tokenProvider.getClaims(accessToken).getSubject();
 
-        if (username == null){
+//        Cookie token = tokens.get();
+//        String accessToken = String.valueOf(token.getValue());
+        String username = tokenProvider.getUsernameFromToken(accessToken);
+
+        if (username == null) {
+            throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        /*String refreshToken = redisService.getValues(username);*/
+        if (tokenProvider.getRefreshTokenFromAccessToken(accessToken) == null) {
             throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
         }
 

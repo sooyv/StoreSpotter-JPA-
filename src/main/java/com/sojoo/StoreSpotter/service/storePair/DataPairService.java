@@ -1,5 +1,7 @@
 package com.sojoo.StoreSpotter.service.storePair;
 
+import com.sojoo.StoreSpotter.common.error.ErrorCode;
+import com.sojoo.StoreSpotter.common.exception.DataPairCreateFailedException;
 import com.sojoo.StoreSpotter.repository.apiToDb.CafeRepository;
 import com.sojoo.StoreSpotter.repository.apiToDb.ConvenienceStoreRepository;
 import com.sojoo.StoreSpotter.repository.apiToDb.IndustryRepository;
@@ -40,17 +42,17 @@ public class DataPairService {
     }
 
 //    @Transactional
-    public void save_industryPairData() throws Exception{
-        try{
+    public void saveIndustryPairData() {
+        try {
             long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
             conveniencePairRepository.deleteAll();
             cafePairRepository.deleteAll();
 
             List<Industry> industryList = industryRepository.findAll();
-            for (Industry industry : industryList){
+            for (Industry industry : industryList) {
                 String industId = industry.getIndustId();
-                switch (industId){
+                switch (industId) {
                     case "G20405":
                         List<ConvenienceStore> convenienceStoreList = convenienceStoreRepository.findAll();
                         selectDataPair(convenienceStoreList, industId);
@@ -66,23 +68,18 @@ public class DataPairService {
                 long secDiffTime = (afterTime - beforeTime) / 1000; //두 시간에 차 계산
                 System.out.println(industry.getIndustName() + "Pair 생성 소요시간 : " + secDiffTime/60 +"분 " + secDiffTime%60+"초");
             }
-        }catch (Exception e){
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new DataPairCreateFailedException(ErrorCode.DATA_PAIR_CRATE_FILED);
         }
     }
 
 
-    public <T extends StoreInfo> void selectDataPair(List<T> storeDataList, String industId) throws Exception {
-        try {
-            for (StoreInfo storeData : storeDataList) {
-                String name = storeData.getBizesNm();
-                Point point = storeData.getCoordinates();
-                Integer region = storeData.getRegionFk();
-                distanceSphere(name, point, region, industId);
-            }
-
-        } catch(Exception e) {
-            e.printStackTrace();
+    public <T extends StoreInfo> void selectDataPair(List<T> storeDataList, String industId) {
+        for (StoreInfo storeData : storeDataList) {
+            String name = storeData.getBizesNm();
+            Point point = storeData.getCoordinates();
+            Integer region = storeData.getRegionFk();
+            distanceSphere(name, point, region, industId);
         }
     }
 
@@ -92,7 +89,7 @@ public class DataPairService {
         switch (industId){
             case "G20405":
                 List<StoreInfoProjection> conveniencePairList = conveniencePairRepository.convenience_distanceSphere(name, point, region);
-                for (StoreInfoProjection convenienceProjection : conveniencePairList){
+                for (StoreInfoProjection convenienceProjection : conveniencePairList) {
 
                     Point stCoor = StoreInfo.createPointFromWkt(convenienceProjection.getStCoor());
                     Point comCoor = StoreInfo.createPointFromWkt(convenienceProjection.getComCoor());

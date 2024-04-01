@@ -29,13 +29,13 @@ public class AdminController {
         return new ModelAndView("admin/admin");
     }
 
-    @PostMapping("/DataPair")
+    @PostMapping("/dataPair")
     public void DataPairs() throws Exception {
-        dataPairService.save_industryPairData();
+        dataPairService.saveIndustryPairData();
     }
 
     @PostMapping("/apiDataSave")
-    public ResponseEntity<String> Industries(){
+    public ResponseEntity<String> Industries() {
         try{
             storeInfoService.apiToDb();
             return new ResponseEntity<>(HttpStatus.OK);

@@ -79,7 +79,7 @@ public class MypageController {
 
         // 찜 이름 중복 확인 (likeName duplicate valid)
         ResponseEntity<String> isDuplicate = likedService.duplicateLikedName(user, likedDto.getLikedName());
-        if (isDuplicate != null){
+        if (isDuplicate.getStatusCode().equals(HttpStatus.BAD_REQUEST)){
             return isDuplicate;
         } else {
             likedService.storeLiked(user, regionName, industryId, likedDto);
@@ -96,7 +96,7 @@ public class MypageController {
 
         // 찜 이름 중복 확인 (likeName duplicate valid)
         ResponseEntity<String> isDuplicate = likedService.duplicateLikedName(user, editName);
-        if (isDuplicate != null){
+        if (isDuplicate.getStatusCode().equals(HttpStatus.BAD_REQUEST)){
             return isDuplicate;
         }
         likedService.editLiked(user, likedName, editName);

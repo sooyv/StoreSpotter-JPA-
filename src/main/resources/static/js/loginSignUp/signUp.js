@@ -1,5 +1,4 @@
 let form = document.getElementById("signUpForm");
-console.log("회원가입 페이지 접근");
 $("#passwordCheckHelp").hide();
 $("#passwordHelp").hide();
 $("#phoneCheckHelp").hide();
@@ -7,8 +6,6 @@ $("#phoneCheckHelp").hide();
 
 // 비밀번호 형식 정규화(최소 8자, 영문 숫자 특수문자)
 $("#password").on("keyup", function(event) {
-    console.log("pw keyup 발생")
-
     const pwRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
 
     if (!pwRegExp.test($("#password").val())) {       // 비밀번호 정규화
@@ -20,8 +17,6 @@ $("#password").on("keyup", function(event) {
 
 // 비밀번호 일치 검사
 $("#checkPassword").on("keyup", function(event) {
-    console.log("pw 일치 검사");
-
     if ($("#password").val() !== $("#checkPassword").val()) {
         $("#passwordCheckHelp").show();
     } else {
@@ -31,8 +26,6 @@ $("#checkPassword").on("keyup", function(event) {
 
 // 전화번호 정규식 검사
 $("#phone").on("keyup", function(event) {
-    console.log("phone keyup 발생")
-
     const phoneRegExp = /^\d{11}$/;
 
     if (!phoneRegExp.test($("#phone").val())) {       // 비밀번호 정규화
@@ -88,8 +81,6 @@ form.addEventListener("submit", event => {
                 window.location.replace("/login");
             },
             error: function (error) {
-                console.log("회원가입 에러 확인 : "+ error);
-
                 if (error.responseText === "duplicateEmail") {
                     alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.");
                     email.focus();
@@ -109,7 +100,6 @@ form.addEventListener("submit", event => {
                 setTimeout(function() {
                     $("#signUpBtn").removeClass('shake'); // 0.8초 후 shake 클래스 제거
                 }, 800);
-                // console.log(error.responseText);
             }
         });
     });
@@ -121,7 +111,6 @@ $("#send-mail").on("click", function() {
     console.log("메일 인증 전송 : " + email);
     if (email === "") {
         alert("이메일을 입력하세요");
-        console.log("이메일을 입력하세요")
         email.focus();
         return;
     }
@@ -134,7 +123,6 @@ $("#send-mail").on("click", function() {
         },
         success: function(response) {
             alert("이메일로 인증번호가 발송되었습니다.");
-            console.log("이메일로 인증번호가 발송되었습니다.")
         },
         error: function(error) {
             // 메일 중복검사

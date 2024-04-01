@@ -65,13 +65,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<TokenDto> loginProcess(@Valid @RequestBody LoginDto loginDto, HttpServletResponse response) throws Exception {
-        System.out.println("AuthController login 실행 1");
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 
-        System.out.println("AuthController login 실행 2");
         try {
-            System.out.println("AuthController login 실행 3");
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -80,12 +77,10 @@ public class AuthController {
             String refreshToken = tokenProvider.createRefreshToken(authentication);
 
             addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
-            // redis 저장
-            redisService.setValues(username, refreshToken, 30 , TimeUnit.DAYS);
+            redisService.setValues(username, refreshToken, 30, TimeUnit.DAYS);
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            System.out.println("AuthController login 실행 4");
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -102,7 +97,6 @@ public class AuthController {
             return checkDuplicateEmail;
         }
 
-        // 이메일 코드 검사
         String checkMailCodeResult = mailService.checkMailCode(userDto.getUsername(), userDto.getMailCode()).getBody();
 
         if ("notEqualMailCode".equals(checkMailCodeResult)){

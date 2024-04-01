@@ -31,7 +31,6 @@ findEmail.on("click", function() {
     findEmail.addClass("clicked");
     findPassword.removeClass("clicked");
 
-
     $(this).css({
         background: "#23567d",
         color: "#fff"
@@ -78,7 +77,6 @@ findPassword.on("click", function() {
     findEmailForm.hide();
     findPassword.addClass("clicked");
     findEmail.removeClass("clicked");
-
 
     $(this).css({
         background: "#23567d",
@@ -139,14 +137,11 @@ findEmailBtn.on("click", function() {
             phone : userPhone,
         },
         success: function (response) {
-            console.log(response);
-
             if (response === "") {
                 modalContent.html('');    // modal 초기화
                 let notFoundEmail = $("<p>").text("가입 정보가 없습니다.");
                 modalContent.append(notFoundEmail);
                 emailModal.show();
-                console.log("find failed");
             } else {
                 modalContent.html('');    // modal 초기화
                 for (let i = 0; i < response.length; i++) {
@@ -156,7 +151,6 @@ findEmailBtn.on("click", function() {
 
                 }
                 emailModal.show();
-                console.log("find success");
             }
         }
     });
@@ -202,8 +196,7 @@ $("#pwd-send-mail").on("click", function() {
 $("#reissue-password").on("click", function() {
     const email = $("#email").val();
     const mailCode = $("#mail-code").val();
-    console.log("비밀번호 재발급 클릭이벤트 발생");
-    console.log("비밀번호 재발급 : " + email);
+
     if (email === "") {
         alert("이메일을 입력하세요");
         email.focus();
