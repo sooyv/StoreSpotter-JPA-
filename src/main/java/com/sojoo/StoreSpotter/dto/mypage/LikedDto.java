@@ -1,16 +1,16 @@
 package com.sojoo.StoreSpotter.dto.mypage;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
 import com.sojoo.StoreSpotter.entity.mypage.Liked;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import reactor.util.annotation.Nullable;
 
 @NoArgsConstructor
 @Getter
 public class LikedDto {
 
+    @JsonProperty("likedName")
     private String likedName;
     private Double dist;
     private String address;

@@ -40,7 +40,6 @@ let markers = [];
 // 지도에 원 그리기
 $("#submit").click(function () {
     let industry = $('#select-industry .select-industry-detail.selected').text();
-    console.log("industry 확인 : " +  industry);
     let region = $('#address').val();
     let dist = $('#dist-value').text();
     const addbox = document.getElementById('address');
@@ -70,13 +69,11 @@ $("#submit").click(function () {
             },
 
                 success: function (response) {
-                    console.log("서버 응답: " + "success");
                     // 지도 초기화에 움직이는 지도 좌표 검색된 좌표로 재설정
                     naver.maps.Service.geocode({
                         query: region
                     }, function (status, response) {
                         item = response.v2.addresses[0];
-                        console.log(item)
                         point = new naver.maps.Point(item.x, item.y);
 
                         map.setCenter(point); // 중심 좌표 이동
@@ -96,17 +93,15 @@ $("#submit").click(function () {
                     var centerCoorString = item.centerCoor.match(/\(([^)]+)\)/)[1];
                     var centerCoorArray = centerCoorString.split(' ');
 
-                    console.log(Object.entries(item))
 
-
-                    console.log("st_nm"+ stNm);
-                    console.log("st_x" + parseFloat(stCoorArray[0])) // 기준경도
-                    console.log("st_y" + parseFloat(stCoorArray[1])) // 기준위도
-                    console.log("com_nm" + comNm)
-                    console.log("com_x" + parseFloat(comCoorArray[0])) // 대상경도
-                    console.log("com_y" + parseFloat(comCoorArray[1])) // 대상위도
-                    console.log("center_x" + parseFloat(centerCoorArray[0]))  // 중점경도
-                    console.log("center_y" + parseFloat(centerCoorArray[1]))   // 중점위도
+                    // console.log("st_nm"+ stNm);
+                    // console.log("st_x" + parseFloat(stCoorArray[0])) // 기준경도
+                    // console.log("st_y" + parseFloat(stCoorArray[1])) // 기준위도
+                    // console.log("com_nm" + comNm)
+                    // console.log("com_x" + parseFloat(comCoorArray[0])) // 대상경도
+                    // console.log("com_y" + parseFloat(comCoorArray[1])) // 대상위도
+                    // console.log("center_x" + parseFloat(centerCoorArray[0]))  // 중점경도
+                    // console.log("center_y" + parseFloat(centerCoorArray[1]))   // 중점위도
 
 
                     return {
@@ -285,27 +280,32 @@ $("#submit").click(function () {
                                 // 찜버튼 클릭시 AJAX 요청을 처리하는 함수
                                 let ajax_chk_flg = false;
 
-                                const likedDto = {"likedName": likedName, "dist": parseFloat(dist),
-                                    "address": likedAddress, "center": center}
-
                                 function StoreLiked(likedName) {
-                                    var center = (circle.center.x +", "+ circle.center.y).toString();
-                                    console.log(center)
+                                    const center = (circle.center.x +", "+ circle.center.y).toString();
+                                    const likedDto = {"likedName": likedName, "dist": parseFloat(dist),
+                                        "address": likedAddress, "center": center}
+
                                     if (!ajax_chk_flg) {
                                         ajax_chk_flg = true;
                                         $.ajax({
                                             type: "POST",
                                             url: "mypage/liked/add",
-                                            data: [
-                                                JSON.stringify(likedDto),
-                                                {industry: industry}
-                                            ],
+                                            dataType : "json",
+                                            contentType: 'application/json; charset=utf-8',
+                                            data: JSON.stringify({
+                                                likedDto: likedDto,
+                                                industryName: industry
+                                            }),
                                             success: function (response) {
                                                 console.log("찜 저장 성공");
                                             },
                                             error: function (error) {
                                                 if (error.responseText === "DuplicateLikedName"){
                                                     alert("중복된 이름이 존재합니다")
+                                                }
+                                                if (error.responseText === "UserNotFound"){
+                                                    alert("로그인이 필요한 페이지입니다.")
+                                                    window.location.replace("/login")
                                                 }
                                             }
                                         });

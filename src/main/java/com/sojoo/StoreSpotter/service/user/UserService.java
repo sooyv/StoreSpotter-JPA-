@@ -74,19 +74,27 @@ public class UserService {
     public User getUserFromCookie(HttpServletRequest request) {
         String name = "access_token";
         Cookie[] cookies = request.getCookies();
-        if (cookies != null && cookies.length > 0) {
-            Optional<Cookie> tokens = Arrays.stream(cookies)
-                    .filter(cookie -> name.equals(cookie.getName()))
-                    .findFirst();
-            if (tokens.isPresent()) {
-                Cookie token = tokens.get();
-                String accessToken = String.valueOf(token.getValue());
 
-                String username = tokenProvider.getUsernameFromToken(accessToken);
-                return getUserFromUsername(username);
-            }
+        if (cookies == null || cookies.length == 0){
+            throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
         }
-        return null;
+
+        Optional<Cookie> tokens = Arrays.stream(cookies)
+                .filter(cookie -> name.equals(cookie.getName()))
+                .findFirst();
+
+        if (tokens.isEmpty()){
+            throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
+        }
+        Cookie token = tokens.get();
+        String accessToken = String.valueOf(token.getValue());
+        String username = tokenProvider.getClaims(accessToken).getSubject();
+
+        if (username == null){
+            throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        return getUserFromUsername(username);
     }
 
 

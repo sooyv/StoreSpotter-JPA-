@@ -1,6 +1,7 @@
 package com.sojoo.StoreSpotter.controller.mypage;
 
 import com.sojoo.StoreSpotter.dto.mypage.LikedDto;
+import com.sojoo.StoreSpotter.dto.mypage.LikedRequestDto;
 import com.sojoo.StoreSpotter.dto.user.UserPwdDto;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.entity.mypage.Liked;
@@ -67,10 +68,12 @@ public class MypageController {
 
     // 찜 목록 추가(main 페이지)
     @PostMapping("/liked/add")
-    public ResponseEntity<String> addLiked(HttpServletRequest request,
-                                            @RequestParam String industry, @RequestBody LikedDto likedDto) {
-        String regionName = regionService.getCityFromAddress(likedDto.getLikedName());
-        String industryId = industryService.getIndustryIdFromName(industry);
+    public ResponseEntity<String> addLiked(HttpServletRequest request, @RequestBody LikedRequestDto likedRequest) {
+
+        LikedDto likedDto = likedRequest.getLikedDto();
+
+        String regionName = regionService.getCityFromAddress(likedDto.getAddress());
+        String industryId = industryService.getIndustryIdFromName(likedRequest.getIndustryName());
 
         User user = userService.getUserFromCookie(request);
 

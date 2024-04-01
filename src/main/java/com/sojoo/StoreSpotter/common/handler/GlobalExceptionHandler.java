@@ -22,10 +22,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ModelAndView handleUserNotFoundException(UserNotFoundException ex) {
+    public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException ex) {
         log.error("handleUserNotFoundException", ex);
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
-        return new ModelAndView("redirect:/signup");
+        return new ResponseEntity<>("UserNotFound", HttpStatus.UNAUTHORIZED); // 401 상태 코드 반환
     }
 
     @ExceptionHandler(SmtpSendFailedException.class)

@@ -224,6 +224,7 @@ $("#reissue-password").on("click", function() {
         success: function(response) {
             alert("이메일로 새로운 비밀번호가 발송되었습니다. " +
                 "다시 로그인해주세요.");
+            window.location.replace("/login");
         },
         error: function(error) {
             if (error.responseText === "UserNotFound") {

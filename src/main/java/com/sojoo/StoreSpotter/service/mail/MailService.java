@@ -65,7 +65,6 @@ public class MailService {
                 return new ResponseEntity<>("UserNotFound", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception e) {
-            System.out.println("확인용1");
             throw new SmtpSendFailedException(ErrorCode.SMTP_SEND_FAILED);
         }
     }
@@ -87,8 +86,7 @@ public class MailService {
         }
     }
 
-    // 메일 메서지 생성
-
+    //-------------------- 메일 메세지 생성 --------------------
     private MimeMessage createReissuePwdMessage(String email, String randomCode) throws MessagingException {
 
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -128,13 +126,13 @@ public class MailService {
         return message;
     }
 
-    //-------------------- 랜덤 인증 코드 생성 --------------------
+    //-------------------- 랜덤 인증 코드 생성 (영문 대소문자, 특수문자, 숫자 포함 8자리) --------------------
     private String createRandomCode() {
         StringBuffer key = new StringBuffer();
         Random rnd = new Random();
 
-        for (int i = 0; i < 8; i++) {           // 인증코드 8자리
-            int index = rnd.nextInt(4);  // 0~2 까지 랜덤
+        for (int i = 0; i < 8; i++) {
+            int index = rnd.nextInt(4);
 
             switch (index) {
                 case 0:
@@ -142,15 +140,12 @@ public class MailService {
                     break;
                 case 1:
                     key.append((char) ((int) (rnd.nextInt(26)) + 65));
-                    //  A~Z
                     break;
                 case 2:
                     key.append((rnd.nextInt(10)));
-                    // 0~9
                     break;
                 case 3:
                     key.append((char) ((int) (rnd.nextInt(15)) + 33));
-                    // 특수문자
                     break;
             }
         }
