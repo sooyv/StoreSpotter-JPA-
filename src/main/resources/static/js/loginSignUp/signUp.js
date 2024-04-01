@@ -3,10 +3,12 @@ $("#passwordCheckHelp").hide();
 $("#passwordHelp").hide();
 $("#phoneCheckHelp").hide();
 
+let pwRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+let phoneRegExp = /^\d{11}$/;
 
 // 비밀번호 형식 정규화(최소 8자, 영문 숫자 특수문자)
 $("#password").on("keyup", function(event) {
-    const pwRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+    // const pwRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
 
     if (!pwRegExp.test($("#password").val())) {       // 비밀번호 정규화
         $("#passwordHelp").show();
@@ -26,8 +28,6 @@ $("#checkPassword").on("keyup", function(event) {
 
 // 전화번호 정규식 검사
 $("#phone").on("keyup", function(event) {
-    const phoneRegExp = /^\d{11}$/;
-
     if (!phoneRegExp.test($("#phone").val())) {       // 비밀번호 정규화
         $("#phoneCheckHelp").show();
     } else {
@@ -59,7 +59,7 @@ form.addEventListener("submit", event => {
             return;
         }
 
-        if (!phoneRegExp.test($("#phone").val())) {       // 비밀번호 정규화
+        if (!phoneRegExp.test($("#phone").val())) {       // 전화번호 정규화
             alert("전화번호는 '-'를 제외한 숫자 11자리 입니다. ex) 01012340000");
             return;
         }
@@ -108,7 +108,6 @@ form.addEventListener("submit", event => {
 // 메일 인증 smtp
 $("#send-mail").on("click", function() {
     const email = $("#email").val();
-    console.log("메일 인증 전송 : " + email);
     if (email === "") {
         alert("이메일을 입력하세요");
         email.focus();
