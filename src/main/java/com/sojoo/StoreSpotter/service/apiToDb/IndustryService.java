@@ -16,6 +16,7 @@ public class IndustryService {
 
     public String getIndustryIdFromName(String industryName) {
         Industry industry = industryRepository.findByIndustName(industryName);
+        System.out.println("industryService의 인더스트리 : " + industry.getIndustId());
 
         return industry.getIndustId();
     }

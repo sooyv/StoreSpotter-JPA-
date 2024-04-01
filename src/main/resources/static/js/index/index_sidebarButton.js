@@ -40,7 +40,6 @@ let markers = [];
 // 지도에 원 그리기
 $("#submit").click(function () {
     let industry = $('#select-industry .select-industry-detail.selected').text();
-    console.log("industry 확인 : " +  industry);
     let region = $('#address').val();
     let dist = $('#dist-value').text();
     const addbox = document.getElementById('address');
@@ -278,28 +277,36 @@ $("#submit").click(function () {
                                 function submitLikedName() {
                                     let likedName = document.getElementById("likedName").value;
                                     console.log("제출된 찜 이름: ", likedName);
-                                    StoreLiked(likedName); // AJAX 요청
+                                    const center = (circle.center.x +", "+ circle.center.y).toString();
+                                    // const likedDto = {"likedName": likedName, "dist": parseFloat(dist),
+                                    // "address": likedAddress, "center": center, "industry": industry}
+                                    var likedRequest = {
+                                        "likedDto": {
+                                            "likedName": likedName,
+                                            "dist": parseFloat(dist),
+                                            "address": likedAddress,
+                                            "center": center
+                                        },
+                                        "industry": industry
+                                    };
+                                    // StoreLiked(likedName); // AJAX 요청
+                                    StoreLiked(likedRequest);
                                     document.getElementById("inputModal").style.display = "none"; // 모달 닫기
                                 }
 
                                 // 찜버튼 클릭시 AJAX 요청을 처리하는 함수
                                 let ajax_chk_flg = false;
 
-                                const likedDto = {"likedName": likedName, "dist": parseFloat(dist),
-                                    "address": likedAddress, "center": center}
+                                console.log("industry 확인 : " +  industry);
 
-                                function StoreLiked(likedName) {
-                                    var center = (circle.center.x +", "+ circle.center.y).toString();
-                                    console.log(center)
+                                function StoreLiked(likedRequest) {
                                     if (!ajax_chk_flg) {
                                         ajax_chk_flg = true;
                                         $.ajax({
                                             type: "POST",
                                             url: "mypage/liked/add",
-                                            data: [
-                                                JSON.stringify(likedDto),
-                                                {industry: industry}
-                                            ],
+                                            contentType: 'application/json',
+                                            data: JSON.stringify(likedRequest),
                                             success: function (response) {
                                                 console.log("찜 저장 성공");
                                             },

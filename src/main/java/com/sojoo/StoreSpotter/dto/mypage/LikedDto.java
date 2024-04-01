@@ -1,20 +1,20 @@
 package com.sojoo.StoreSpotter.dto.mypage;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
 import com.sojoo.StoreSpotter.entity.mypage.Liked;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@NoArgsConstructor
 @Getter
+@Setter
+@NoArgsConstructor
 public class LikedDto {
 
     private String likedName;
     private Double dist;
     private String address;
     private String center;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Industry industry;
 
     public LikedDto(Liked liked) {

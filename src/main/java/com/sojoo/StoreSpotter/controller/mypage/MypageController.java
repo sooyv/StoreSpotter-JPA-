@@ -2,6 +2,7 @@ package com.sojoo.StoreSpotter.controller.mypage;
 
 import com.sojoo.StoreSpotter.dto.mypage.LikedDto;
 import com.sojoo.StoreSpotter.dto.user.UserPwdDto;
+import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.entity.mypage.Liked;
 import com.sojoo.StoreSpotter.service.apiToDb.IndustryService;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/mypage")
@@ -49,9 +51,9 @@ public class MypageController {
         List<LikedDto> likedList;
 
         // 검색어 유무 확인
-        if (keyword == null){
+        if (keyword == null) {
             likedList = likedService.likedEntityToDto(user.getLikedList()); // 사용자의 likedList 가져오기
-        }else{
+        } else {
             List<Liked> likedSearch = likedService.likedSearch(keyword);
             likedList = likedService.likedEntityToDto(likedSearch);
         }
@@ -67,19 +69,30 @@ public class MypageController {
 
     // 찜 목록 추가(main 페이지)
     @PostMapping("/liked/add")
-    public ResponseEntity<String> addLiked(HttpServletRequest request,
-                                            @RequestParam String industry, @RequestBody LikedDto likedDto) {
-        String regionName = regionService.getCityFromAddress(likedDto.getLikedName());
+    public ResponseEntity<String> addLiked(HttpServletRequest request, @RequestBody Map<String, Object> likedRequest) {
+        System.out.println("여기 타긴 타는건가 1");
+
+        // likedDto 부분 추출
+        Map<String, Object> likedDtoMap = (Map<String, Object>) likedRequest.get("likedDto");
+        String likedName = (String) likedDtoMap.get("likedName");
+        Double dist = ((Number) likedDtoMap.get("dist")).doubleValue();
+        String address = (String) likedDtoMap.get("address");
+        String center = (String) likedDtoMap.get("center");
+
+        // industry 부분 추출
+         String industry = (String) likedRequest.get("industry");
+
+        String regionName = regionService.getCityFromAddress(address);
         String industryId = industryService.getIndustryIdFromName(industry);
 
         User user = userService.getUserFromCookie(request);
 
         // 찜 이름 중복 확인 (likeName duplicate valid)
-        ResponseEntity<String> isDuplicate = likedService.duplicateLikedName(user, likedDto.getLikedName());
-        if (isDuplicate != null){
+        ResponseEntity<String> isDuplicate = likedService.duplicateLikedName(user, likedName);
+        if (isDuplicate != null) {
             return isDuplicate;
         } else {
-            likedService.storeLiked(user, regionName, industryId, likedDto);
+            likedService.storeLiked(user, regionName, industryId, dist, address, likedName, center);
             return new ResponseEntity<>("Successfully StoreLiked", HttpStatus.OK);
         }
     }

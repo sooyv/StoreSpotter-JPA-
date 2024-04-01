@@ -36,7 +36,7 @@ public class LikedService {
     */
 
     // 찜목록 저장
-    public void storeLiked (User user, String regionName, String industryId, LikedDto likedDto){
+    public void storeLiked (User user, String regionName, String industryId, Double dist, String address, String likedName, String center){
 
         Region region = regionRepository.findByRegionName(regionName);
         Optional<Industry> industryOptional = industryRepository.findById(industryId);
@@ -45,10 +45,10 @@ public class LikedService {
                     .user(user)
                     .region(region)
                     .industry(industryOptional.get())
-                    .dist(likedDto.getDist())
-                    .address(likedDto.getAddress())
-                    .likedName(likedDto.getLikedName())
-                    .center(likedDto.getCenter())
+                    .dist(dist)
+                    .address(address)
+                    .likedName(likedName)
+                    .center(center)
                     .build();
 
             likedRepository.save(liked);
