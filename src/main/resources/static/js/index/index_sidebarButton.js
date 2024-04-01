@@ -68,19 +68,19 @@ $("#submit").click(function () {
                 dist: dist
             },
 
-                success: function (response) {
-                    console.log("서버 응답: " + "success");
-                    // 지도 초기화에 움직이는 지도 좌표 검색된 좌표로 재설정
-                    naver.maps.Service.geocode({
-                        query: region
-                    }, function (status, response) {
-                        item = response.v2.addresses[0];
-                        console.log(item)
-                        point = new naver.maps.Point(item.x, item.y);
+            success: function (response) {
+                console.log("서버 응답: " + "success");
+                // 지도 초기화에 움직이는 지도 좌표 검색된 좌표로 재설정
+                naver.maps.Service.geocode({
+                    query: region
+                }, function (status, response) {
+                    item = response.v2.addresses[0];
+                    console.log(item)
+                    point = new naver.maps.Point(item.x, item.y);
 
-                        map.setCenter(point); // 중심 좌표 이동
-                        map.setZoom(15);     // 줌 레벨 변경
-                    })
+                    map.setCenter(point); // 중심 좌표 이동
+                    map.setZoom(15);     // 줌 레벨 변경
+                })
                 var coordinates = response.map(function (item) {
 
                     var stNm = item.stNm;
@@ -278,18 +278,8 @@ $("#submit").click(function () {
                                     let likedName = document.getElementById("likedName").value;
                                     console.log("제출된 찜 이름: ", likedName);
                                     const center = (circle.center.x +", "+ circle.center.y).toString();
-                                    // const likedDto = {"likedName": likedName, "dist": parseFloat(dist),
-                                    // "address": likedAddress, "center": center, "industry": industry}
-                                    var likedRequest = {
-                                        "likedDto": {
-                                            "likedName": likedName,
-                                            "dist": parseFloat(dist),
-                                            "address": likedAddress,
-                                            "center": center
-                                        },
-                                        "industry": industry
-                                    };
-                                    // StoreLiked(likedName); // AJAX 요청
+                                    const likedRequest = {"likedName": likedName, "dist": parseFloat(dist),
+                                    "address": likedAddress, "center": center, "industry": industry}
                                     StoreLiked(likedRequest);
                                     document.getElementById("inputModal").style.display = "none"; // 모달 닫기
                                 }
@@ -308,9 +298,10 @@ $("#submit").click(function () {
                                             contentType: 'application/json',
                                             data: JSON.stringify(likedRequest),
                                             success: function (response) {
-                                                console.log("찜 저장 성공");
+                                                console.log(response + "찜 저장 성공");
                                             },
                                             error: function (error) {
+                                                console.log(error);
                                                 if (error.responseText === "DuplicateLikedName"){
                                                     alert("중복된 이름이 존재합니다")
                                                 }

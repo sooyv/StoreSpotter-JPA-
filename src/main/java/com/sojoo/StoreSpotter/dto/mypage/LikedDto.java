@@ -6,7 +6,6 @@ import com.sojoo.StoreSpotter.entity.mypage.Liked;
 import lombok.*;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class LikedDto {
 
@@ -14,7 +13,6 @@ public class LikedDto {
     private Double dist;
     private String address;
     private String center;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Industry industry;
 
     public LikedDto(Liked liked) {

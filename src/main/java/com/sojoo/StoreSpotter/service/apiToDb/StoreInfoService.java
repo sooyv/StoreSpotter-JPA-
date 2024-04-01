@@ -2,7 +2,6 @@ package com.sojoo.StoreSpotter.service.apiToDb;
 
 import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.common.exception.ApiDataNotFoundException;
-import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
 import com.sojoo.StoreSpotter.repository.apiToDb.*;
 import com.sojoo.StoreSpotter.entity.apiToDb.*;
 import org.jdom2.Document;

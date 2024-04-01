@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
     public ModelAndView handleUserNotFoundException(UserNotFoundException ex) {
         log.error("handleUserNotFoundException", ex);
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
-        return new ModelAndView("redirect:/signup");
+        return new ModelAndView("redirect:/login");
     }
 
     @ExceptionHandler(SmtpSendFailedException.class)

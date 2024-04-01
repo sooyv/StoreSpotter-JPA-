@@ -1,6 +1,7 @@
 package com.sojoo.StoreSpotter.controller.mypage;
 
 import com.sojoo.StoreSpotter.dto.mypage.LikedDto;
+import com.sojoo.StoreSpotter.dto.mypage.LikedRequest;
 import com.sojoo.StoreSpotter.dto.user.UserPwdDto;
 import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
 import com.sojoo.StoreSpotter.entity.user.User;
@@ -11,6 +12,7 @@ import com.sojoo.StoreSpotter.service.mypage.LikedService;
 import com.sojoo.StoreSpotter.service.user.UserInfoService;
 import com.sojoo.StoreSpotter.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.Like;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -69,33 +71,25 @@ public class MypageController {
 
     // 찜 목록 추가(main 페이지)
     @PostMapping("/liked/add")
-    public ResponseEntity<String> addLiked(HttpServletRequest request, @RequestBody Map<String, Object> likedRequest) {
-        System.out.println("여기 타긴 타는건가 1");
+    public ResponseEntity<String> addLiked(HttpServletRequest request, @RequestBody LikedRequest likedRequest) {
 
-        // likedDto 부분 추출
-        Map<String, Object> likedDtoMap = (Map<String, Object>) likedRequest.get("likedDto");
-        String likedName = (String) likedDtoMap.get("likedName");
-        Double dist = ((Number) likedDtoMap.get("dist")).doubleValue();
-        String address = (String) likedDtoMap.get("address");
-        String center = (String) likedDtoMap.get("center");
+        String industry = likedRequest.getIndustry();
 
-        // industry 부분 추출
-         String industry = (String) likedRequest.get("industry");
-
-        String regionName = regionService.getCityFromAddress(address);
+        String regionName = regionService.getCityFromAddress(likedRequest.getAddress());
         String industryId = industryService.getIndustryIdFromName(industry);
 
         User user = userService.getUserFromCookie(request);
 
         // 찜 이름 중복 확인 (likeName duplicate valid)
-        ResponseEntity<String> isDuplicate = likedService.duplicateLikedName(user, likedName);
+        ResponseEntity<String> isDuplicate = likedService.duplicateLikedName(user, likedRequest.getLikedName());
         if (isDuplicate != null) {
             return isDuplicate;
         } else {
-            likedService.storeLiked(user, regionName, industryId, dist, address, likedName, center);
+            likedService.storeLiked(user, regionName, industryId, likedRequest);
             return new ResponseEntity<>("Successfully StoreLiked", HttpStatus.OK);
         }
     }
+
 
     // 찜 이름 수정
     @PostMapping("/liked/edit")

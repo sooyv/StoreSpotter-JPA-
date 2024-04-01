@@ -1,6 +1,7 @@
 package com.sojoo.StoreSpotter.service.mypage;
 
 import com.sojoo.StoreSpotter.dto.mypage.LikedDto;
+import com.sojoo.StoreSpotter.dto.mypage.LikedRequest;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
 import com.sojoo.StoreSpotter.entity.apiToDb.Region;
@@ -9,6 +10,7 @@ import com.sojoo.StoreSpotter.repository.apiToDb.IndustryRepository;
 import com.sojoo.StoreSpotter.repository.apiToDb.RegionRepository;
 import com.sojoo.StoreSpotter.repository.mypage.LikedRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.Like;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -36,8 +38,8 @@ public class LikedService {
     */
 
     // 찜목록 저장
-    public void storeLiked (User user, String regionName, String industryId, Double dist, String address, String likedName, String center){
-
+//    public void storeLiked (User user, String regionName, String industryId, Double dist, String address, String likedName, String center){
+    public void storeLiked (User user, String regionName, String industryId, LikedRequest likedRequest) {
         Region region = regionRepository.findByRegionName(regionName);
         Optional<Industry> industryOptional = industryRepository.findById(industryId);
         if (industryOptional.isPresent()) {
@@ -45,10 +47,10 @@ public class LikedService {
                     .user(user)
                     .region(region)
                     .industry(industryOptional.get())
-                    .dist(dist)
-                    .address(address)
-                    .likedName(likedName)
-                    .center(center)
+                    .dist(likedRequest.getDist())
+                    .address(likedRequest.getAddress())
+                    .likedName(likedRequest.getLikedName())
+                    .center(likedRequest.getCenter())
                     .build();
 
             likedRepository.save(liked);

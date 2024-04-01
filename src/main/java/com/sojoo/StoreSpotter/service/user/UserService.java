@@ -72,30 +72,24 @@ public class UserService {
 
 
     public User getUserFromCookie(HttpServletRequest request) {
-        System.out.println("UserService getUserFromCookie 확인");
-
         String name = "access_token";
         Cookie[] cookies = request.getCookies();
 
         if (cookies == null || cookies.length == 0) {
-            System.out.println("getUserFromCookie cookies null");
             throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
         }
 
         Optional<Cookie> tokens = Arrays.stream(cookies)
                 .filter(cookie -> name.equals(cookie.getName()))
                 .findFirst();
-        System.out.println("getUserFromCookie : "+ tokens);
 
         if (tokens.isEmpty()) {
             throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
         }
         Cookie token = tokens.get();
-        System.out.println("token : "+ token);
         String accessToken = String.valueOf(token.getValue());
 
         String username = tokenProvider.getUsernameFromToken(accessToken);
-        System.out.println("getUserFromCookie: "+ username);
 
         return getUserFromUsername(username);
     }
