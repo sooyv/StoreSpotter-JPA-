@@ -50,12 +50,13 @@ jobs:
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
             docker stop $(docker ps -a -q)
-            docker run -d --log-driver=syslog -p 80:80 ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
+            docker-compose up -d
+#                        docker run -d --log-driver=syslog -p 80:80 ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
             docker rm $(docker ps --filter 'status=exited' -a -q)
             docker image prune -a -f
-           docker-compose 작업
+#           docker-compose 작업
 #          script: |
-#            cd docker-compose.yml
+#            cd docker-compose-local.yml
 #            docker-compose -f docker-compose.prod.yml pull
 #            docker-compose -f docker-compose.prod.yml down # 기존 서비스 종료
 #            docker-compose -f docker-compose.prod.yml up -d # 서비스 시작
