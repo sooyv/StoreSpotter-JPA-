@@ -56,9 +56,4 @@ jobs:
             docker-compose.yml up -d
             docker rm $(docker ps --filter 'status=exited' -a -q)
             docker image prune -a -f
-#           docker-compose 작업
-#          script: |
-#            cd docker-compose-local.yml
-#            docker-compose -f docker-compose.prod.yml pull
-#            docker-compose -f docker-compose.prod.yml down # 기존 서비스 종료
-#            docker-compose -f docker-compose.prod.yml up -d # 서비스 시작
+
