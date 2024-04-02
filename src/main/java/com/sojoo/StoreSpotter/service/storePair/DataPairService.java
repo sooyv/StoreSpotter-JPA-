@@ -1,5 +1,7 @@
 package com.sojoo.StoreSpotter.service.storePair;
 
+import com.sojoo.StoreSpotter.common.error.ErrorCode;
+import com.sojoo.StoreSpotter.common.exception.DataPairCreateFailedException;
 import com.sojoo.StoreSpotter.repository.apiToDb.CafeRepository;
 import com.sojoo.StoreSpotter.repository.apiToDb.ConvenienceStoreRepository;
 import com.sojoo.StoreSpotter.repository.apiToDb.IndustryRepository;
@@ -40,7 +42,7 @@ public class DataPairService {
     }
 
 //    @Transactional
-    public void save_industryPairData() throws Exception{
+    public void saveIndustryPairData() {
         try{
             long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
@@ -67,28 +69,22 @@ public class DataPairService {
                 System.out.println(industry.getIndustName() + "Pair 생성 소요시간 : " + secDiffTime/60 +"분 " + secDiffTime%60+"초");
             }
         }catch (Exception e){
-            e.printStackTrace();
+            throw new DataPairCreateFailedException(ErrorCode.DATA_PAIR_CREATE_FAILED);
         }
     }
 
 
-    public <T extends StoreInfo> void selectDataPair(List<T> storeDataList, String industId) throws Exception {
-        try {
-            for (StoreInfo storeData : storeDataList) {
-                String name = storeData.getBizesNm();
-                Point point = storeData.getCoordinates();
-                Integer region = storeData.getRegionFk();
-                distanceSphere(name, point, region, industId);
-            }
-
-        } catch(Exception e) {
-            e.printStackTrace();
+    public <T extends StoreInfo> void selectDataPair(List<T> storeDataList, String industId) {
+        for (StoreInfo storeData : storeDataList) {
+            String name = storeData.getBizesNm();
+            Point point = storeData.getCoordinates();
+            Integer region = storeData.getRegionFk();
+            distanceSphere(name, point, region, industId);
         }
     }
 
 
     public void distanceSphere(String name, Point point, Integer region, String industId) {
-
         switch (industId){
             case "G20405":
                 List<StoreInfoProjection> conveniencePairList = conveniencePairRepository.convenience_distanceSphere(name, point, region);

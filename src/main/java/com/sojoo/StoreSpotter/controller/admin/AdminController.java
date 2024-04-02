@@ -29,9 +29,9 @@ public class AdminController {
         return new ModelAndView("admin/admin");
     }
 
-    @PostMapping("/DataPair")
-    public void DataPairs() throws Exception {
-        dataPairService.save_industryPairData();
+    @PostMapping("/dataPair")
+    public void DataPairs() {
+        dataPairService.saveIndustryPairData();
     }
 
     @PostMapping("/apiDataSave")

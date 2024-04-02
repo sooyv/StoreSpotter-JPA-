@@ -2,8 +2,6 @@ const sideBar = document.getElementById("side-bar");
 const slideBtn = document.getElementById("slide-btn");
 const sideElems = document.querySelectorAll(".side-elem");
 
-// distExplain.hide();
-
 let industry = ""
 const addbox = document.getElementById('address');
 const originalBorderStyle = addbox.style.border;
@@ -93,17 +91,6 @@ $("#submit").click(function () {
                     var centerCoorString = item.centerCoor.match(/\(([^)]+)\)/)[1];
                     var centerCoorArray = centerCoorString.split(' ');
 
-
-                    // console.log("st_nm"+ stNm);
-                    // console.log("st_x" + parseFloat(stCoorArray[0])) // 기준경도
-                    // console.log("st_y" + parseFloat(stCoorArray[1])) // 기준위도
-                    // console.log("com_nm" + comNm)
-                    // console.log("com_x" + parseFloat(comCoorArray[0])) // 대상경도
-                    // console.log("com_y" + parseFloat(comCoorArray[1])) // 대상위도
-                    // console.log("center_x" + parseFloat(centerCoorArray[0]))  // 중점경도
-                    // console.log("center_y" + parseFloat(centerCoorArray[1]))   // 중점위도
-
-
                     return {
                         st_nm: stNm,
                         st_x: parseFloat(stCoorArray[1]), // 기준경도
@@ -144,7 +131,6 @@ $("#submit").click(function () {
                             clickable: true,
                             stroke: null,
                         });
-                        console.log("서클의 센터" + circle.center)
 
                         // 원 클릭 시 Event
                         naver.maps.Event.addListener(circle, 'click', function (e) {
@@ -157,8 +143,9 @@ $("#submit").click(function () {
                                 ].join(',')
                             }, function (status, response) {
                                 if (status !== naver.maps.Service.Status.OK) {
-                                    // 재접속 시도
-                                    console.log("에러났다")
+                                    alert("naver map이 정상적으로 동작하지 않습니다.");
+                                    window.location.replace("/");
+                                    return;
                                 }
                                 var items = response.v2.results
                                     , address = ''
@@ -219,8 +206,6 @@ $("#submit").click(function () {
                                     nearCircle2.setMap(map)
                                     nearCircle2.setPosition(new naver.maps.LatLng(coordinates[i].com_y, coordinates[i].com_x))
                                     markers.push(nearCircle2);
-
-                                    console.log(coordinates[i].st_nm, coordinates[i].com_nm)
                                 }
 
                                 ////// 찜버튼 기능 ///////
@@ -254,7 +239,7 @@ $("#submit").click(function () {
                                     };
 
                                     window.onclick = function(event) {
-                                        if (event.target == modal) {
+                                        if (event.target === modal) {
                                             modal.style.display = "none";
                                         }
                                     };
@@ -272,7 +257,6 @@ $("#submit").click(function () {
 
                                 function submitLikedName() {
                                     let likedName = document.getElementById("likedName").value;
-                                    console.log("제출된 찜 이름: ", likedName);
                                     StoreLiked(likedName); // AJAX 요청
                                     document.getElementById("inputModal").style.display = "none"; // 모달 닫기
                                 }
@@ -297,13 +281,12 @@ $("#submit").click(function () {
                                                 industryName: industry
                                             }),
                                             success: function (response) {
-                                                console.log("찜 저장 성공");
                                             },
                                             error: function (error) {
                                                 if (error.responseText === "DuplicateLikedName"){
                                                     alert("중복된 이름이 존재합니다")
                                                 }
-                                                if (error.responseText === "UserNotFound"){
+                                                if (error.responseText === "USER-NOT-FOUND"){
                                                     alert("로그인이 필요한 페이지입니다.")
                                                     window.location.replace("/login")
                                                 }
@@ -334,7 +317,6 @@ $("#submit").click(function () {
                                 // button 클릭 이벤트
                                 areacopy1.onclick = () => {
                                     var add = extractTextFromHTML(htmlAddresses[0].replace(/\[지번 주소\]/g, '').trim()).replace('content_copy', '');
-                                    console.log(add)
                                     // 주소를 복사
                                     navigator.clipboard.writeText(add).then(
                                         () => {
@@ -478,48 +460,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // 클릭 이벤트에 토글 함수 연결
     distInfo.addEventListener("click", toggleDistExplain);
 });
-
-// 저장목록 바로가기 이벤트
-// $(document).ready(function() {
-//     // 로컬 스토리지에서 'industry'와 'address' 값을 읽기
-//     var industry = localStorage.getItem('industry');
-//     var address = localStorage.getItem('address');
-//     var dist = localStorage.getItem("dist")
-//
-//     if (dist && address && industry){
-//         // 읽어온 값을 사용하여 필요한 작업 수행
-//         console.log(industry, address, dist);
-//
-//         // main 페이지에서 industry(편의점 or 카페) industry 변수에 따라 클릭
-//         var industryDetails = document.querySelectorAll('#select-industry .select-industry-detail');
-//         // 찾은 div들을 순회하면서
-//         industryDetails.forEach(function(detail) {
-//             // 해당 div의 텍스트가 'industry' 변수의 값과 일치하는지 확인
-//             if (detail.textContent === industry) {
-//                 // 일치한다면 해당 div를 클릭합니다.
-//                 detail.click();
-//             }
-//         });
-//
-//         // 주소 값에 주소 입력
-//         document.getElementById('address').value = address;
-//         // 'address-search' 버튼을 찾아 클릭
-//         document.getElementById('address-search').click();
-//
-//         // dist 선택
-//         document.getElementById('dist-value').value = 50;
-//
-//         // 제출버튼 클릭
-//         document.getElementById('submit').click();
-//
-//         // 사용 후 로컬 스토리지에서 해당 항목 삭제
-//         localStorage.removeItem('industry');
-//         localStorage.removeItem('address');
-//         localStorage.removeItem('dist');
-//     }
-// });
-
-
 
 function clickIndustry(industry) {
     return new Promise((resolve) => {

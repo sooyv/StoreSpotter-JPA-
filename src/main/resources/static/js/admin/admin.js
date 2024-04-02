@@ -6,7 +6,6 @@ $("#indust-reset").click(function() {
             type: "POST",
             url: "/admin/apiDataSave",
             success: function (response) {
-                console.log("서버 응답: " + "success");
             }, error: function (error) {
                 if (error.responseText === "API DATA NOT FOUND"){
                     alert("데이터 초기화를 실패했습니다.")
@@ -22,37 +21,31 @@ $("#datapair-reset").click(function() {
     } else {
         $.ajax({
             type: "POST",
-            url: "/admin/DataPair",
+            url: "/admin/dataPair",
             success: function (response) {
-                console.log("서버 응답: " + "success");
             }, error: function (error) {
-                console.error("에러 발생: " + JSON.stringify(error));
+                if (error.responseText === "DATA-PAIR-CREATE-FAILED"){
+                    alert("페어 데이터 저장에 실패했습니다. ")
+                }
             }
         })
     }
 })
 
-// Wait for the DOM to be ready
 document.addEventListener("DOMContentLoaded", function () {
-// Get the tabs and content elements
     const tabs = document.querySelectorAll(".nav-link");
     const tabContents = document.querySelectorAll(".tab-pane");
 
-    // Add click event listeners to each tab
     tabs.forEach(function (tab, index) {
         tab.addEventListener("click", function (event) {
-            // Prevent the default link behavior
             event.preventDefault();
 
-            // Remove the 'show' class from all tab contents
             tabContents.forEach(function (content) {
                 content.classList.remove("show", "active");
             });
 
-            // Add the 'show' class to the clicked tab content
             tabContents[index].classList.add("show", "active");
 
-            // Remove the 'active' class from all tabs
             tabs.forEach(function (t) {
                 t.classList.remove("active");
             });

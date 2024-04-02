@@ -46,10 +46,8 @@ public class MypageController {
 
         User user = userService.getUserFromCookie(request);
 
-        /* 검색기능 */
         List<LikedDto> likedList;
 
-        // 검색어 유무 확인
         if (keyword == null){
             likedList = likedService.likedEntityToDto(user.getLikedList()); // 사용자의 likedList 가져오기
         }else{
@@ -77,9 +75,8 @@ public class MypageController {
 
         User user = userService.getUserFromCookie(request);
 
-        // 찜 이름 중복 확인 (likeName duplicate valid)
         ResponseEntity<String> isDuplicate = likedService.duplicateLikedName(user, likedDto.getLikedName());
-        if (isDuplicate != null){
+        if (isDuplicate.getStatusCode().equals(HttpStatus.BAD_REQUEST)){
             return isDuplicate;
         } else {
             likedService.storeLiked(user, regionName, industryId, likedDto);
@@ -94,9 +91,8 @@ public class MypageController {
 
         User user = userService.getUserFromCookie(request);
 
-        // 찜 이름 중복 확인 (likeName duplicate valid)
         ResponseEntity<String> isDuplicate = likedService.duplicateLikedName(user, editName);
-        if (isDuplicate != null){
+        if (isDuplicate.getStatusCode().equals(HttpStatus.BAD_REQUEST)){
             return isDuplicate;
         }
         likedService.editLiked(user, likedName, editName);

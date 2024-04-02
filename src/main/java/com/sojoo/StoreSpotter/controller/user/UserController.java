@@ -67,9 +67,9 @@ public class UserController {
 
     // 이메일 찾기
     @PostMapping("/user/account")
-    public List<String> findUserAccount(@RequestParam("username") String username, @RequestParam("phone") String phone) {
+    public List<String> findUserAccount(@RequestParam("userNickname") String userNickname, @RequestParam("phone") String phone) {
 
-        List<String> userEmail = userInfoService.findUserEmail(username, phone);
+        List<String> userEmail = userInfoService.findUserEmail(userNickname, phone);
         return userEmail;
     }
 

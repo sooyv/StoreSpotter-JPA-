@@ -17,13 +17,10 @@ window.addEventListener("load", function () {
         if (window.innerWidth <= 900 && userNicknameMsg) {
             userNicknameMsg.style.display = "none";
         } else if (userNicknameMsg) {
-            userNicknameMsg.style.display = ""; // 기본값으로 설정하여 CSS에 따라 표시됩니다.
+            userNicknameMsg.style.display = "";
         }
     }
 });
-
-
-
 
 // 로그아웃
 $(document).ready(function() {
@@ -33,11 +30,9 @@ $(document).ready(function() {
             type: 'POST',
             url: '/user/auth/logout',
             success: function(response) {
-                console.log('로그아웃이 완료되었습니다.', response);
                 window.location.replace("/");
             },
             error: function(xhr, status, error) {
-                console.error('로그아웃 요청이 실패했습니다.', error);
             }
         });
     });

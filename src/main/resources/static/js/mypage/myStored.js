@@ -1,4 +1,3 @@
-// 찜 목록 수정하기 - 찜 이름 수정, 찜 삭제//
 function handleEditLikedClick(likedName) {
 
     // 모달 표시 로직
@@ -49,7 +48,6 @@ function EditLiked(likedName, editName) {
                 editName: editName
             },
             success: function (response) {
-                console.log("찜 수정 성공");
                 location.reload();
                 },
             error: function (error) {
@@ -119,7 +117,6 @@ $(document).ready(function(e) {
 
 // 찜 바로가기
 function shortCutLiked(industry, address, dist){
-
     // 로컬 스토리지에 'industry'와 'address' 값을 저장
     localStorage.setItem('industry', industry);
     localStorage.setItem('address', address);

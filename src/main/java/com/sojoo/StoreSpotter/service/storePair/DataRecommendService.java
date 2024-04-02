@@ -46,7 +46,6 @@ public class DataRecommendService {
         return result;
     }
 
-    // 지역별 평균거리
     public Double avgDistance(String industryId, String regionFk) {
 
         Double result = null;

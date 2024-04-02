@@ -124,10 +124,10 @@ findPassword.on("mouseleave", function() {
 let findEmailBtn = $("#find-email-btn");
 findEmailBtn.on("click", function() {
 
-    const username = $("#name").val();
+    const userNickname = $("#name").val();
     const userPhone = $("#phone").val();
 
-    if(!username || !userPhone) {
+    if(!userNickname || !userPhone) {
         alert("모든 항목을 입력하세요");
         return;
     }
@@ -135,18 +135,15 @@ findEmailBtn.on("click", function() {
         type: 'POST',
         url: "/user/account",
         data: {
-            username: username,
+            userNickname: userNickname,
             phone : userPhone,
         },
         success: function (response) {
-            console.log(response);
-
             if (response === "") {
                 modalContent.html('');    // modal 초기화
                 let notFoundEmail = $("<p>").text("가입 정보가 없습니다.");
                 modalContent.append(notFoundEmail);
                 emailModal.show();
-                console.log("find failed");
             } else {
                 modalContent.html('');    // modal 초기화
                 for (let i = 0; i < response.length; i++) {
@@ -156,7 +153,6 @@ findEmailBtn.on("click", function() {
 
                 }
                 emailModal.show();
-                console.log("find success");
             }
         }
     });
@@ -202,8 +198,6 @@ $("#pwd-send-mail").on("click", function() {
 $("#reissue-password").on("click", function() {
     const email = $("#email").val();
     const mailCode = $("#mail-code").val();
-    console.log("비밀번호 재발급 클릭이벤트 발생");
-    console.log("비밀번호 재발급 : " + email);
     if (email === "") {
         alert("이메일을 입력하세요");
         email.focus();

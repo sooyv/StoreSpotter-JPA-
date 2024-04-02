@@ -1,7 +1,6 @@
 package com.sojoo.StoreSpotter.jwt.jwt;
 
 import com.sojoo.StoreSpotter.service.redis.RedisService;
-import com.sojoo.StoreSpotter.service.user.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -39,7 +38,7 @@ public class TokenProvider implements InitializingBean {
     private final CustomUserDetailsService customUserDetailsService;
 
     private Key key;
-    private final static int COOKIE_EXPIRE_SECONDS = 3600;      // 쿠키 존재 시간 1시간 설정
+    private final static int COOKIE_EXPIRE_SECONDS = 3600;
 
     @Autowired
     public TokenProvider(
@@ -63,13 +62,11 @@ public class TokenProvider implements InitializingBean {
      * create AccessToken, RefreshToken
      */
     public String createAccessToken(Authentication authentication) {
-        System.out.println("TokenProvider createAccessToken 실행");
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
         Date now = new Date();
 
-        // Access Token
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
@@ -80,7 +77,6 @@ public class TokenProvider implements InitializingBean {
     }
 
     public String createRefreshToken(Authentication authentication) {
-        System.out.println("TokenProvider createRefreshToken 실행");
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -101,7 +97,7 @@ public class TokenProvider implements InitializingBean {
         String username = getUsernameFromToken(accessToken);
         String refreshToken = redisService.getValues(username);
 
-        if (validRefreshToken(refreshToken)) {
+        if (validToken(refreshToken)) {
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
             Authentication authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
             String newAccessToken = createAccessToken(authenticationToken);
@@ -118,35 +114,19 @@ public class TokenProvider implements InitializingBean {
     /**
      * validate AccessToken, RefreshToken
      */
-    public boolean validateToken(String accessToken) {
-        System.out.println("TokenProvider validateToken 실행");
-        try {
-            Jwts.parser().setSigningKey(key).parseClaimsJws(accessToken);
-            return true;
-        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            logger.info("A잘못된 JWT 서명입니다.");
-        } catch (ExpiredJwtException e) {
-            logger.info("A만료된 JWT 토큰입니다.");
-        } catch (UnsupportedJwtException e) {
-            logger.info("A지원되지 않는 JWT 토큰입니다.");
-        } catch (IllegalArgumentException e) {
-            logger.info("AJWT 토큰이 잘못되었습니다.");
-        }
-        return false;
-    }
 
-    public boolean validRefreshToken(String refreshToken) {
+    public boolean validToken(String Token) {
         try {
-            Jwts.parser().setSigningKey(key).parseClaimsJws(refreshToken);
+            Jwts.parser().setSigningKey(key).parseClaimsJws(Token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            logger.info("R잘못된 JWT 서명입니다.");
+            logger.info("잘못된 JWT 서명입니다.");
         } catch (ExpiredJwtException e) {
-            logger.info("R만료된 JWT 토큰입니다.");
+            logger.info("만료된 JWT 토큰입니다.");
         } catch (UnsupportedJwtException e) {
-            logger.info("R지원되지 않는 JWT 토큰입니다.");
+            logger.info("지원되지 않는 JWT 토큰입니다.");
         } catch (IllegalArgumentException e) {
-            logger.info("RJWT 토큰이 잘못되었습니다.");
+            logger.info("JWT 토큰이 잘못되었습니다.");
         }
         return false;
     }
@@ -158,7 +138,7 @@ public class TokenProvider implements InitializingBean {
         if (refreshToken == null){
             return false;
         } else{
-            return validRefreshToken(refreshToken);
+            return validToken(refreshToken);
         }
     }
 
@@ -181,7 +161,6 @@ public class TokenProvider implements InitializingBean {
     }
 
     public Authentication getAuthentication(String token) {
-        System.out.println("TokenProvider getAuthentication ");
         Claims claims = getClaims(token);
 
         Collection<? extends GrantedAuthority> authorities =
@@ -190,7 +169,6 @@ public class TokenProvider implements InitializingBean {
                         .collect(Collectors.toList());
 
         User principal = new User(claims.getSubject(), "", authorities);
-        System.out.println("getAuthentication : " + principal);
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
@@ -202,7 +180,6 @@ public class TokenProvider implements InitializingBean {
         } catch (ExpiredJwtException e) {
             return e.getClaims().getExpiration();
         } catch (Exception e) {
-            // 다른 종류의 예외 처리
             return null;
         }
     }
@@ -214,7 +191,6 @@ public class TokenProvider implements InitializingBean {
         } catch (ExpiredJwtException e) {
             return e.getClaims().getSubject();
         } catch (Exception e) {
-            // 다른 종류의 예외 처리
             return null;
         }
     }

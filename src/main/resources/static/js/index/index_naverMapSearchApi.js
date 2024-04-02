@@ -51,26 +51,12 @@ function searchCoordinateToAddress(latlng) {
 
         infoWindow.open(map, latlng);
 
-        // 선택 주소 input창으로
         const searchCoord = document.getElementById("search-coord");
         searchCoord.onclick = () => {
             $("#address").val(htmlAddresses[0].replace(/1. \[지번 주소\]/g, '').trim());
         }
     });
 }
-
-// *** 수정중 ***
-// address와 indust 값의 존재 여부 파악 Exception 방지
-// function checkAddressAndIndust(address, indust) {
-//     if (!address) {
-//         $('#show-avg-dist').hide();
-//         $('#select-dist').hide();
-//     } else if (indust = "") {
-//         alert("업종을 선택해주세요.");
-//     } else {
-//         addressToServer(address, indust);
-//     }
-// }
 
 
 // 업종 선택 시 즉시 전송
@@ -80,19 +66,13 @@ $('.select-industry-detail').on('click', function() {
     // 클릭한 indust 가져오기
     industry = $(this).text();
 
-    console.log("업종 클릭 이벤트 : " ,"address : " + address, "indust : " + industry);
-
-    // 처음 업종 선택 시에는 address 빈칸,
-    // 주소가 변경되어 address가 선택되지 않았을때도 .hide(); 보여주지 않기
     if (!address) {
         $('#show-avg-dist').hide();
         $('#select-dist').hide();
     } else {
-        console.log("naver : ", address, industry)
         addressToServer(address, industry);
     }
 });
-
 
 // 주소 선택 시 지역 - 업종 평균 거리 나타내기
 function addressToServer(address, industry) {
@@ -108,7 +88,7 @@ function addressToServer(address, industry) {
             },
         success: function(avgDist) {
             const findsido = address.indexOf(" ");
-            const region = (findsido != -1) ? address.substring(0, findsido) : address;
+            const region = (findsido !== -1) ? address.substring(0, findsido) : address;
             let avgDistance = Math.round(avgDist, 0);
 
 
@@ -197,7 +177,6 @@ function searchAddressToCoordinate(address) {
         }
 
         if (response.v2.meta.totalCount === 0) {
-            // return alert('totalCount' + response.v2.meta.totalCount);
             return alert('정확한 주소를 입력해 주세요.')
         }
 
@@ -209,10 +188,8 @@ function searchAddressToCoordinate(address) {
         if (item.roadAddress) {
             htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
             let address = item.roadAddress.replace('[도로명 주소] ', ''); // '[도로명 주소] ' 문자열 제외
-            console.log("업종 클릭 searchAddressToCoordinate의 : " ,"address : " + address, "indust : " + industry)
             addressToServer(address, industry);
         }
-
 
         if (item.jibunAddress) {
             htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
@@ -243,7 +220,6 @@ function initGeocoder() {
 
     $('#address').on('keydown', function(e) {
         var keyCode = e.which;
-        // console.log("naverMapJS : " + keyCode);
 
         // keydown 발생
         $('#show-avg-dist').hide();
@@ -277,7 +253,6 @@ function initGeocoder() {
         }
     });
 
-    // searchAddressToCoordinate('정자동 178-1');
 }
 
 function makeAddress(item) {
@@ -295,22 +270,18 @@ function makeAddress(item) {
 
     if (hasArea(region.area1)) {
         sido = region.area1.name;
-        console.log(sido)
     }
 
     if (hasArea(region.area2)) {
         sigugun = region.area2.name;
-        console.log(sigugun)
     }
 
     if (hasArea(region.area3)) {
         dongmyun = region.area3.name;
-        console.log(dongmyun)
     }
 
     if (hasArea(region.area4)) {
         ri = region.area4.name;
-        console.log(ri)
     }
 
     if (land) {

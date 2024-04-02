@@ -9,6 +9,7 @@ import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
 import com.sojoo.StoreSpotter.repository.user.AuthorityRepository;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
+import com.sojoo.StoreSpotter.service.redis.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -88,11 +89,17 @@ public class UserService {
         }
         Cookie token = tokens.get();
         String accessToken = String.valueOf(token.getValue());
-        String username = tokenProvider.getClaims(accessToken).getSubject();
+
+        String username = tokenProvider.getUsernameFromToken(accessToken);
 
         if (username == null){
             throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
         }
+
+        if (tokenProvider.getRefreshTokenFromAccessToken(accessToken) == null){
+            throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
+        }
+
 
         return getUserFromUsername(username);
     }

@@ -22,10 +22,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException ex) {
+    public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException ex) {
         log.error("handleUserNotFoundException", ex);
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
-        return new ResponseEntity<>("UserNotFound", HttpStatus.UNAUTHORIZED); // 401 상태 코드 반환
+        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
 
     @ExceptionHandler(SmtpSendFailedException.class)
@@ -51,5 +51,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
 
+    @ExceptionHandler(DataPairCreateFailedException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorResponse> handleDataPairCreateFailedException(DataPairCreateFailedException ex) {
+        log.info("handleDataPairCreateFailedException", ex);
+        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
+        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+    }
 
 }

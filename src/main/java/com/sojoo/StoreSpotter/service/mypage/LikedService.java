@@ -31,15 +31,11 @@ public class LikedService {
         this.industryRepository = industryRepository;
     }
 
-    /**
-     토큰에서 user를 못받아오면 로그인이 필요하다는 메세지와 함께 login 페이지로 리다이렉션 하는 로직 추가 필요
-    */
-
-    // 찜목록 저장
+    @Transactional
     public void storeLiked (User user, String regionName, String industryId, LikedDto likedDto){
-
         Region region = regionRepository.findByRegionName(regionName);
         Optional<Industry> industryOptional = industryRepository.findById(industryId);
+
         if (industryOptional.isPresent()) {
             Liked liked = Liked.builder()
                     .user(user)
@@ -53,42 +49,30 @@ public class LikedService {
 
             likedRepository.save(liked);
         }
-        // 여기에 새로운 exception
     }
 
-    // 찜목록 수정
-    // private으로 수정 검토
     @Transactional
     public void editLiked(User user, String likedName, String editName) {
-        // user와 likedName으로 liked 객체 찾기
-        Optional<Liked> likedOptional = likedOptional(user, likedName);
+        Optional<Liked> likedOptional = getLikedOptional(user, likedName);
 
         if (likedOptional.isPresent()){
             Liked liked = likedOptional.get();
-            // 이름 수정
             liked.UpdateLikedName(editName);
-        } else {
-            // Exception 생성 필요
-            System.out.println("Liked 객체가 존재하지 않습니다.");
         }
     }
 
-    // 찜목록 likedName 중복 검증
     public ResponseEntity<String> duplicateLikedName(User user, String likedName){
-        // user와 likedName으로 liked 객체 찾기
-        Optional<Liked> likedOptional = likedOptional(user, likedName);
+        Optional<Liked> likedOptional = getLikedOptional(user, likedName);
 
         if (likedOptional.isPresent()){
             return new ResponseEntity<>("DuplicateLikedName", HttpStatus.BAD_REQUEST);
         }
-        return null;
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
     @Transactional
-    //private 확인 필요
-    // 찜 목록에서 삭제
     public void removeLiked(User user, String likedName){
-        Optional<Liked> likedOptional = likedOptional(user, likedName);
+        Optional<Liked> likedOptional = getLikedOptional(user, likedName);
 
         if (likedOptional.isPresent()){
             Liked liked = likedOptional.get();
@@ -96,21 +80,17 @@ public class LikedService {
         }
     }
 
-
-    // user와 likedName으로 liked 객체 찾기
-    public Optional<Liked> likedOptional(User user, String likedName){
+    public Optional<Liked> getLikedOptional(User user, String likedName){
         List<Liked> likedList = likedRepository.findByUser(user);
         return likedList.stream().filter(liked -> likedName.equals(liked.getLikedName()))
                 .findFirst();
     }
 
-    /* search */
     @Transactional
     public List<Liked> likedSearch(String keyword) {
         return likedRepository.findByLikedNameContaining(keyword);
     }
 
-    // List<Liked> -> List<LikedDto>
     public List<LikedDto> likedEntityToDto(List<Liked> likedList){
         return likedList.stream()
                 .map(LikedDto::new)

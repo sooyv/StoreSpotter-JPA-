@@ -1,4 +1,4 @@
-package com.sojoo.StoreSpotter.service.user;
+package com.sojoo.StoreSpotter.jwt.jwt;
 
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
@@ -12,10 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
@@ -29,7 +26,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String username) {
-        System.out.println("CustomUserDetailsService loadUserByUsername 실행");
         return userRepository.findByUsername(username)
                 .map(user -> createUser(username, user))
                 .orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
