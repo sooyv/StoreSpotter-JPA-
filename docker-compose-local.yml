@@ -3,10 +3,10 @@ services:
   app:
     build:
       context: .
-      dockerfile: ./Dockerfile
-    image: myapp:latest
+      dockerfile: ./dockerfile-local
+    image: myapp:local
     ports:
-      - "80:80"
+      - "8081:8081"
     depends_on:
       - redis
   redis:

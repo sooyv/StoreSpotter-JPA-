@@ -8,9 +8,7 @@ let phoneRegExp = /^\d{11}$/;
 
 // 비밀번호 형식 정규화(최소 8자, 영문 숫자 특수문자)
 $("#password").on("keyup", function(event) {
-    // const pwRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
-
-    if (!pwRegExp.test($("#password").val())) {       // 비밀번호 정규화
+    if (!pwRegExp.test($("#password").val())) {
         $("#passwordHelp").show();
     } else {
         $("#passwordHelp").hide();
@@ -28,7 +26,7 @@ $("#checkPassword").on("keyup", function(event) {
 
 // 전화번호 정규식 검사
 $("#phone").on("keyup", function(event) {
-    if (!phoneRegExp.test($("#phone").val())) {       // 비밀번호 정규화
+    if (!phoneRegExp.test($("#phone").val())) {
         $("#phoneCheckHelp").show();
     } else {
         $("#phoneCheckHelp").hide();
@@ -59,11 +57,11 @@ form.addEventListener("submit", event => {
             return;
         }
 
-        if (!phoneRegExp.test($("#phone").val())) {       // 전화번호 정규화
+        if (!phoneRegExp.test($("#phone").val())) {
             alert("전화번호는 '-'를 제외한 숫자 11자리 입니다. ex) 01012340000");
             return;
         }
-        if (!pwRegExp.test($("#password").val())) {       // 비밀번호 정규화
+        if (!pwRegExp.test($("#password").val())) {
             alert("비밀번호는 영문, 숫자, 특수문자를 포함하여 최소 8자 이상이어야합니다.");
         }
 
