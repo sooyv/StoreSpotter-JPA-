@@ -48,11 +48,12 @@ jobs:
           key: ${{ secrets.AWS_EC2_PRIVATEKEY }} # pem 키
           # 도커 작업
           script: |
-            
             docker pull ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
             docker stop $(docker ps -a -q)
-            docker-compose up -d --build
-#                        docker run -d --log-driver=syslog -p 80:80 ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
+            cd docker-compose.yml
+            docker-compose -f docker-compose.yml pull
+            docker-compose -f docker-compose.yml down # 기존 서비스 종료
+            docker-compose.yml up -d
             docker rm $(docker ps --filter 'status=exited' -a -q)
             docker image prune -a -f
 #           docker-compose 작업
