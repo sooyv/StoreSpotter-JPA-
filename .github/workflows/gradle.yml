@@ -62,5 +62,3 @@ jobs:
             docker ps -q -f 'status=exited' | xargs -r docker rm
             
             docker image prune -a -f
-
-
