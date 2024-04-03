@@ -48,20 +48,19 @@ jobs:
           key: ${{ secrets.AWS_EC2_PRIVATEKEY }} # pem 키
           # 도커 작업
           script: |
-            docker pull ***/***:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
 
-            # 실행 중인 모든 컨테이너를 멈추기
-            docker ps -q | xargs -r docker stop
+            CONTAINERS=$(docker ps -q)
+            if [ -n "$CONTAINERS" ]; then
+            docker stop $CONTAINERS
+            fi
               
-            # docker-compose 명령어 실행 (docker-compose.yml 파일의 위치를 확인하거나 절대 경로를 사용)
-            docker-compose -f ./docker-compose.yml pull
-            docker-compose -f ./docker-compose.yml down
-            docker-compose -f ./docker-compose.yml up -d
+            docker-compose -f docker-compose pull
+            docker-compose -f docker-compose down
+            docker-compose -f docker-compose up -d
             
-            # 종료된 모든 컨테이너를 삭제하기
             docker ps -q -f 'status=exited' | xargs -r docker rm
             
-            # 사용하지 않는 모든 이미지 삭제하기
             docker image prune -a -f
 
 
