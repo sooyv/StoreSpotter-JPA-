@@ -55,9 +55,9 @@ jobs:
             docker stop $CONTAINERS
             fi
               
-            docker-compose pull
-            docker-compose down
-            docker-compose up -d
+            docker-compose -f /Applications/StoreSpotter-JPA-/docker-compose.yml pull
+            docker-compose -f /Applications/StoreSpotter-JPA-/docker-compose.yml down
+            docker-compose -f /Applications/StoreSpotter-JPA-/docker-compose.yml up -d
             
             docker ps -q -f 'status=exited' | xargs -r docker rm
             
