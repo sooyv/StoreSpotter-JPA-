@@ -7,7 +7,7 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${{ secrets.SPRING_DATASOURCE_DRIVER }}
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./dockerfile
     image: sojoo/sojoo:latest
     ports:
       - "80:80"
