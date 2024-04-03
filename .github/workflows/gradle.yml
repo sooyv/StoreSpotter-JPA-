@@ -51,7 +51,7 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
             docker stop $(docker ps -a -q)
             docker-compose -f docker-compose.yml pull
-            docker-compose -f docker-compose.yml down # 기존 서비스 종료
+            docker-compose -f docker-compose.yml down
             docker-compose -f docker-compose.yml up -d
             docker rm $(docker ps --filter 'status=exited' -a -q)
             docker image prune -a -f
