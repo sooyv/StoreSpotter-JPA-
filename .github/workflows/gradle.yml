@@ -48,7 +48,9 @@ jobs:
           key: ${{ secrets.AWS_EC2_PRIVATEKEY }} # pem 키
           # 도커 작업
           script: |
-            ls -al
+            cd compose/
+            touch docker-compose.yml
+            echo "${{ secrets.DOCKER_COMPOSE }}" > ./docker-compose
             docker pull ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
 
             CONTAINERS=$(docker ps -q)
@@ -56,9 +58,9 @@ jobs:
             docker stop $CONTAINERS
             fi
               
-            docker-compose -f ../../docker-compose.yml pull
-            docker-compose -f ../../docker-compose.yml down
-            docker-compose -f ../../docker-compose.yml up -d
+            docker-compose -f compose/docker-compose.yml pull
+            docker-compose -f compose/docker-compose.yml down
+            docker-compose -f compose/docker-compose.yml up -d
             
             docker ps -q -f 'status=exited' | xargs -r docker rm
             
