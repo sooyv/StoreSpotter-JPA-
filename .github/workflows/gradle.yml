@@ -55,9 +55,9 @@ jobs:
             docker stop $CONTAINERS
             fi
               
-            docker-compose -f docker-compose pull
-            docker-compose -f docker-compose down
-            docker-compose -f docker-compose up -d
+            docker-compose pull
+            docker-compose down
+            docker-compose up -d
             
             docker ps -q -f 'status=exited' | xargs -r docker rm
             
