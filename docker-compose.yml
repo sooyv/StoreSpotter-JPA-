@@ -1,10 +1,10 @@
 services:
   app:
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://rds-docker-server-storespotter.c52km662eg07.ap-northeast-2.rds.amazonaws.com:3306/storespotter_jpa
-      SPRING_DATASOURCE_USERNAME: sojoo
-      SPRING_DATASOURCE_PASSWORD: sojoo2024!
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
+      SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
+      SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${{ secrets.SPRING_DATASOURCE_DRIVER }}
     build:
       context: .
       dockerfile: ./Dockerfile
