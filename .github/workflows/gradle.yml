@@ -48,6 +48,7 @@ jobs:
           key: ${{ secrets.AWS_EC2_PRIVATEKEY }} # pem 키
           # 도커 작업
           script: |
+            ls -al
             docker pull ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
 
             CONTAINERS=$(docker ps -q)
