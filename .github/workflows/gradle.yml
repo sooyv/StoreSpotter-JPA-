@@ -41,6 +41,13 @@ jobs:
           docker tag app ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
 
+      - name: make docker-compose.yml
+        run: |
+          cd compose/
+          touch ./docker-compose.yml
+          echo "${{ secrets.DOCKER_COMPOSE }}" > ./docker-compose.yml
+        shell: bash
+
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -49,9 +56,6 @@ jobs:
           key: ${{ secrets.AWS_EC2_PRIVATEKEY }} # pem 키
           # 도커 작업
           script: |
-            cd compose/
-            touch docker-compose.yml
-            echo "${{ secrets.DOCKER_COMPOSE }}" > ./docker-compose.yml
             docker pull ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
 
             CONTAINERS=$(docker ps -q)
