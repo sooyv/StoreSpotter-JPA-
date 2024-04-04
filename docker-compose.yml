@@ -5,23 +5,18 @@ services:
       SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
       SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${{ secrets.SPRING_DATASOURCE_DRIVER }}
-
       SPRING_MAIL_HOST: smtp.naver.com
       SPRING_MAIL_PORT: 465
       SPRING_MAIL_USERNAME: ${{ secrets.SMTP_USERNAME }}
       SPRING_MAIL_PASSWORD: ${ secrets.SMTP_PASSWORD }}
       SPRING_MAIL_PROTOCAL: smtp
-
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
       SPRING_REDIS_PASSWORD: 123
-
       JWT_SECRET: ${ secrets.JWT_SECRET_KEY }}
       JWT_ACCESS_TOKEN_EXPIRDATION: 1800000
       JWT_REFRESH_TOKEN_EXPIEDATION: 2592000000
-
       API_NAVER_SERVICE_KEY: ${ secrets.NAVER_SERVICE_KEY }}
-
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -30,7 +25,6 @@ services:
       - '80:80'
     depends_on:
       - redis
-
   redis:
     image: redis:latest
     command: redis-server --port 6379
