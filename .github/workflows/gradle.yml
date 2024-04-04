@@ -43,10 +43,11 @@ jobs:
 
       - name: make docker-compose.yml
         run: |
+          ls -l
           cd ./
           touch ./docker-compose.yml
           echo "${{ secrets.DOCKER_COMPOSE }}" > ./docker-compose.yml
-        shell: bash
+#        shell: bash
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
