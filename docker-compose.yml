@@ -28,4 +28,3 @@ services:
       - "mode=standalone"
     ports:
       - "6379:6379"
-
