@@ -41,6 +41,9 @@ jobs:
           docker tag app ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
 
+      - name: make .env
+
+
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
