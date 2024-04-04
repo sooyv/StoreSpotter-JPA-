@@ -6,9 +6,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${{ secrets.SPRING_DATASOURCE_DRIVER }}
 
-      SPRING_PROFILES_ACTIVE: prod
-      SPRING_CONFIG_LOCATION: /home/ubuntu
-
     build:
       context: .
       dockerfile: ./Dockerfile
