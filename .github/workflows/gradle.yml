@@ -50,6 +50,24 @@ jobs:
           # 도커 작업
           script: |
             cd compose/
+            
+            echo "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" > .env
+            echo "SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}" >> .env
+            echo "SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}" >> .env
+            echo "SPRING_DATASOURCE_DRIVER_CLASS_NAME=${{ secrets.SPRING_DATASOURCE_DRIVER }}" >> .env
+            echo "SPRING_MAIL_HOST=smtp.naver.com" >> .env
+            echo "SPRING_MAIL_PORT=465" >> .env
+            echo "SPRING_MAIL_USERNAME=${{ secrets.SMTP_USERNAME }}" >> .env
+            echo "SPRING_MAIL_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> .env
+            echo "SPRING_MAIL_PROTOCAL=smtp" >> .env
+            echo "SPRING_REDIS_HOST=redis" >> .env
+            echo "SPRING_REDIS_PORT=6379" >> .env
+            echo "SPRING_REDIS_PASSWORD=123" >> .env
+            echo "JWT_SECRET=${{ secrets.JWT_SECRET_KEY }}" >> .env
+            echo "JWT_ACCESS_TOKEN_EXPIRDATION=1800000" >> .env
+            echo "JWT_REFRESH_TOKEN_EXPIEDATION=2592000000" >> .env
+            echo "API_NAVER_SERVICE_KEY=${{ secrets.NAVER_SERVICE_KEY }}" >> .env
+            
             touch docker-compose.yml
             echo ${{ secrets.DOCKER_COMPOSE }} | base64 -d > docker-compose.yml
             docker pull ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
