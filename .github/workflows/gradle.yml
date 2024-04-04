@@ -51,7 +51,7 @@ jobs:
           script: |
             cd compose/
             touch docker-compose.yml
-            echo "${{ secrets.DOCKER_COMPOSE }}" > ./docker-compose.yml
+            echo ${{ secrets.DOCKER_COMPOSE }} | base64 -d > docker-compose.yml
             docker pull ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
 
             CONTAINERS=$(docker ps -q)
