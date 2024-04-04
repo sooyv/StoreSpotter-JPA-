@@ -39,4 +39,3 @@ out/
 application.yml
 application-prod.yml
 dockerfile-local
-docker-compose.yml
