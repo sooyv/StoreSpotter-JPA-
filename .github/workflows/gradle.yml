@@ -41,12 +41,12 @@ jobs:
           docker tag app ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
 
-      - name: make docker-compose.yml
-        run: |
-          ls -l
-          cd ./
-          touch ./docker-compose.yml
-          echo "${{ secrets.DOCKER_COMPOSE }}" > ./docker-compose.yml
+#      - name: make docker-compose.yml
+#        run: |
+#          ls -l
+#          cd ./
+#          touch ./docker-compose.yml
+#          echo "${{ secrets.DOCKER_COMPOSE }}" > ./docker-compose.yml
 #        shell: bash
 
       - name: Deploy to EC2
