@@ -43,7 +43,7 @@ jobs:
 
       - name: make docker-compose.yml
         run: |
-          cd compose/
+          cd ./compose
           touch ./docker-compose.yml
           echo "${{ secrets.DOCKER_COMPOSE }}" > ./docker-compose.yml
         shell: bash
