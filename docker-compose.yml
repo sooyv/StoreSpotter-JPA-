@@ -14,8 +14,6 @@ services:
       - "80:80"
     depends_on:
       - redis
-    volumes:
-      ./application-prod.yml:/app/application-prod.yml
   redis:
     image: redis:latest
     command: redis-server --port 6379
