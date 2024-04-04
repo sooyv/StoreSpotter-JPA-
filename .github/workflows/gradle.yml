@@ -69,7 +69,7 @@ jobs:
             echo "API_NAVER_SERVICE_KEY=${{ secrets.NAVER_SERVICE_KEY }}" >> .env
             
             touch docker-compose.yml
-            echo ${{ secrets.DOCKER_COMPOSE }} | base64 -d > docker-compose.yml
+            echo "${{ secrets.DOCKER_COMPOSE }}" > docker-compose.yml
             docker pull ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
 
             CONTAINERS=$(docker ps -q)
