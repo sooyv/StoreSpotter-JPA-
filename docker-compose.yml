@@ -6,6 +6,9 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${{ secrets.SPRING_DATASOURCE_DRIVER }}
 
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_CONFIG_LOCATION: /home/ubuntu
+
     build:
       context: .
       dockerfile: ./dockerfile
@@ -14,6 +17,9 @@ services:
       - "80:80"
     depends_on:
       - redis
+    volumes:
+      - ./application-prod.yml:/home/ubuntu/compose/application-prod.yml
+
   redis:
     image: redis:latest
     command: redis-server --port 6379
