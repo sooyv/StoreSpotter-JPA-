@@ -43,7 +43,7 @@ public class DataPairService {
 
 //    @Transactional
     public void saveIndustryPairData() {
-        try{
+        try {
             long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
             conveniencePairRepository.deleteAll();
@@ -74,7 +74,7 @@ public class DataPairService {
     }
 
 
-    public <T extends StoreInfo> void selectDataPair(List<T> storeDataList, String industId) {
+    private <T extends StoreInfo> void selectDataPair(List<T> storeDataList, String industId) {
         for (StoreInfo storeData : storeDataList) {
             String name = storeData.getBizesNm();
             Point point = storeData.getCoordinates();
@@ -84,7 +84,7 @@ public class DataPairService {
     }
 
 
-    public void distanceSphere(String name, Point point, Integer region, String industId) {
+    private void distanceSphere(String name, Point point, Integer region, String industId) {
         switch (industId){
             case "G20405":
                 List<StoreInfoProjection> conveniencePairList = conveniencePairRepository.convenience_distanceSphere(name, point, region);

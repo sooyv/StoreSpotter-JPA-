@@ -80,7 +80,7 @@ public class LikedService {
         }
     }
 
-    public Optional<Liked> getLikedOptional(User user, String likedName){
+    private Optional<Liked> getLikedOptional(User user, String likedName){
         List<Liked> likedList = likedRepository.findByUser(user);
         return likedList.stream().filter(liked -> likedName.equals(liked.getLikedName()))
                 .findFirst();

@@ -61,7 +61,7 @@ public class DataRecommendService {
                     break;
             }
         }
-        catch (Exception e){
+        catch (Exception e) {
             throw new DataRecommendNotFoundException(ErrorCode.DATA_RECOMMEND_NOT_FOUND);
         }
         return result;

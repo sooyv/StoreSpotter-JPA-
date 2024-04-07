@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
 import com.sojoo.StoreSpotter.entity.mypage.Liked;
 import lombok.*;
-import reactor.util.annotation.Nullable;
 
 @NoArgsConstructor
 @Getter

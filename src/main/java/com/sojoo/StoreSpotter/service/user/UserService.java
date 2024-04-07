@@ -9,7 +9,6 @@ import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
 import com.sojoo.StoreSpotter.repository.user.AuthorityRepository;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
-import com.sojoo.StoreSpotter.service.redis.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,15 +38,6 @@ public class UserService {
         this.userValidateService = userValidateService;
     }
 
-    public User getUserFromUsername(String username) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isPresent()) {
-            return userOptional.get();
-        } else {
-            throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
-        }
-    }
-
     @Transactional
     public void signup(UserDto userDto) {
         if (userValidateService.checkDuplicateEmail(userDto.getUsername()).getStatusCode().equals(HttpStatus.BAD_REQUEST)){
@@ -70,7 +60,6 @@ public class UserService {
 
         userRepository.save(user);
     }
-
 
     public User getUserFromCookie(HttpServletRequest request) {
         String name = "access_token";
@@ -100,9 +89,15 @@ public class UserService {
             throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
         }
 
-
         return getUserFromUsername(username);
     }
 
-
+    public User getUserFromUsername(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        } else {
+            throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
+        }
+    }
 }

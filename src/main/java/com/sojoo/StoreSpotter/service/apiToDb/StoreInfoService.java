@@ -2,7 +2,6 @@ package com.sojoo.StoreSpotter.service.apiToDb;
 
 import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.common.exception.ApiDataNotFoundException;
-import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
 import com.sojoo.StoreSpotter.repository.apiToDb.*;
 import com.sojoo.StoreSpotter.entity.apiToDb.*;
 import org.jdom2.Document;
@@ -12,7 +11,6 @@ import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -43,7 +41,7 @@ public class StoreInfoService {
     @Transactional
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
     public void apiToDb() throws ApiDataNotFoundException {
-        long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
+        long beforeTime = System.currentTimeMillis();   // 코드 실행 전에 시간 받아오기
 
         try {
             convenienceStoreRepository.deleteAll();
@@ -58,14 +56,14 @@ public class StoreInfoService {
         }
 
         long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
-        long secDiffTime = (afterTime - beforeTime) / 1000; //두 시간에 차 계산
+        long secDiffTime = (afterTime - beforeTime) / 1000; // 두 시간에 차 계산
         System.out.println("소요시간 : " + secDiffTime/60 +"분 " + secDiffTime%60+"초");
     }
 
 
 
     // 공공데이터 api 연결 및 Document 전달
-    public void connectToApi(Industry industry) throws Exception {
+    private void connectToApi(Industry industry) throws Exception {
 
         try {
             String industId = industry.getIndustId();
@@ -101,7 +99,7 @@ public class StoreInfoService {
 
                     Element totalCount;
 
-                    if (body == null & totalPageCount == 1){
+                    if (body == null & totalPageCount == 1) {
                         throw new Exception();
                     }
                     if (body == null){
@@ -123,7 +121,7 @@ public class StoreInfoService {
     }
 
     // api 데이터 저장 로직
-    public void publicApiDataSave(Document document, String industId, Integer regionId) throws DuplicateKeyException {
+    private void publicApiDataSave(Document document, String industId, Integer regionId) throws DuplicateKeyException {
             Element root = document.getRootElement();
             Element body = root.getChild("body");
             Element items = body.getChild("items");
