@@ -2,6 +2,7 @@ package com.sojoo.StoreSpotter.service.apiToDb;
 
 import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.common.exception.ApiDataNotFoundException;
+import com.sojoo.StoreSpotter.config.timeTrace.TimeTrace;
 import com.sojoo.StoreSpotter.repository.apiToDb.*;
 import com.sojoo.StoreSpotter.entity.apiToDb.*;
 import org.jdom2.Document;
@@ -39,6 +40,7 @@ public class StoreInfoService {
     }
 
     @Transactional
+    @TimeTrace
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
     public void apiToDb() throws ApiDataNotFoundException {
         long beforeTime = System.currentTimeMillis();   // 코드 실행 전에 시간 받아오기

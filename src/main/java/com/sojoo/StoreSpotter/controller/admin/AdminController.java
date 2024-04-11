@@ -1,6 +1,7 @@
 package com.sojoo.StoreSpotter.controller.admin;
 
 import com.sojoo.StoreSpotter.common.exception.ApiDataNotFoundException;
+import com.sojoo.StoreSpotter.config.timeTrace.TimeTrace;
 import com.sojoo.StoreSpotter.service.apiToDb.StoreInfoService;
 import com.sojoo.StoreSpotter.service.storePair.DataPairService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +36,12 @@ public class AdminController {
     }
 
     @PostMapping("/apiDataSave")
+    @TimeTrace
     public ResponseEntity<String> Industries(){
-        try{
+        try {
             storeInfoService.apiToDb();
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch(ApiDataNotFoundException e){
+        } catch(ApiDataNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
