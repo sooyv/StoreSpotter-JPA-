@@ -78,7 +78,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                 // main, login 페이지, login 프로세스, 회원가입 페이지, 회원가입 프로세스, 이메일 중복체크 ajax, JWT token 발급, 평균 거리 검색 ajax
                 .antMatchers("/", "/login", "/user/auth/logout", "/signup", "/user/auth/login", "/user/auth/signup", "/signup/checkid",
                         "/user/find-account", "/user/account", "/user/password/mail-send", "/user/password/reissue","/search/avg-dist", "/search/recommend", "/favicon.ico",
-                "/signup/mail-code", "/user/password/**", "/user/account", "/mypage/liked/add").permitAll()
+                "/signup/mail-code", "/user/password/**", "/user/account", "/mypage/liked/add", "/admin/**").permitAll()
 
                 .antMatchers("/user/**", "/admin/**", "/mypage").hasRole("USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")

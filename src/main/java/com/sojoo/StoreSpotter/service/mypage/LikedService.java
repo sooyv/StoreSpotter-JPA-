@@ -1,5 +1,6 @@
 package com.sojoo.StoreSpotter.service.mypage;
 
+import com.sojoo.StoreSpotter.config.timeTrace.TimeTrace;
 import com.sojoo.StoreSpotter.dto.mypage.LikedDto;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.entity.apiToDb.Industry;
@@ -32,6 +33,7 @@ public class LikedService {
     }
 
     @Transactional
+    @TimeTrace
     public void storeLiked (User user, String regionName, String industryId, LikedDto likedDto){
         Region region = regionRepository.findByRegionName(regionName);
         Optional<Industry> industryOptional = industryRepository.findById(industryId);
@@ -52,6 +54,7 @@ public class LikedService {
     }
 
     @Transactional
+    @TimeTrace
     public void editLiked(User user, String likedName, String editName) {
         Optional<Liked> likedOptional = getLikedOptional(user, likedName);
 
@@ -71,6 +74,7 @@ public class LikedService {
     }
 
     @Transactional
+    @TimeTrace
     public void removeLiked(User user, String likedName){
         Optional<Liked> likedOptional = getLikedOptional(user, likedName);
 
@@ -80,7 +84,7 @@ public class LikedService {
         }
     }
 
-    public Optional<Liked> getLikedOptional(User user, String likedName){
+    private Optional<Liked> getLikedOptional(User user, String likedName){
         List<Liked> likedList = likedRepository.findByUser(user);
         return likedList.stream().filter(liked -> likedName.equals(liked.getLikedName()))
                 .findFirst();
