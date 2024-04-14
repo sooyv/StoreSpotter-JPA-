@@ -42,7 +42,7 @@ public class StoreInfoService {
         this.apiServiceKey = apiServiceKey;
     }
 
-    @Transactional
+//    @Transactional
     @TimeTrace
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
     public void convApiToDb() throws ApiDataNotFoundException {
@@ -121,6 +121,7 @@ public class StoreInfoService {
                 int totalPageCount = 1;
 
                 for (int j = 1; j <= totalPageCount; j++) {
+//                for (int j = 1; j <= 2; j++) {
 
                     String sb = "https://apis.data.go.kr/B553077/api/open/sdsc2/storeListInDong?" +
                             "ServiceKey=" + apiServiceKey +
@@ -156,9 +157,9 @@ public class StoreInfoService {
                     int totalCountValue = Integer.parseInt(totalCount.getText());
 
                     totalPageCount = (totalCountValue / 1000) + 1;
-
                     publicApiDataSave(document, industId, regionId);
                 }
+//                break;
             }
 
         } catch (Exception e) {

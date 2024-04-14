@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DataPairService {
@@ -43,8 +44,8 @@ public class DataPairService {
         this.cafePairRepository = cafePairRepository;
     }
 
-    @Transactional
     @TimeTrace
+    @Transactional
     public void saveIndustryPairData() {
         try{
             long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
@@ -130,7 +131,6 @@ public class DataPairService {
         }
     }
 
-
     private void distanceSphere(String name, Point point, Integer region, String industId) {
         switch (industId){
             case "G20405":
@@ -180,6 +180,48 @@ public class DataPairService {
         }
 
     }
+
+//    private void distanceSphere(String name, Point point, Integer region, String industId) {
+//        switch (industId){
+//            case "G20405":
+//                List<StoreInfoProjection> conveniencePairList = conveniencePairRepository.convenience_distanceSphere(name, point, region);
+//                List<ConveniencePair> conveniencePairs = conveniencePairList.stream()
+//                        .map(convenienceProjection -> {
+//                            Point stCoor = StoreInfo.createPointFromWkt(convenienceProjection.getStCoor());
+//                            Point comCoor = StoreInfo.createPointFromWkt(convenienceProjection.getComCoor());
+//                            return ConveniencePair.builder()
+//                                    .stNm(convenienceProjection.getStNm())
+//                                    .stCoor(stCoor)
+//                                    .comNm(convenienceProjection.getComNm())
+//                                    .comCoor(comCoor)
+//                                    .dist(convenienceProjection.getDist())
+//                                    .regionFk(convenienceProjection.getRegionFk())
+//                                    .build();
+//                        })
+//                        .collect(Collectors.toList());
+//
+//                conveniencePairRepository.saveAll(conveniencePairs);
+//
+//            case "I21201":
+//                List<StoreInfoProjection> cafePairList = cafePairRepository.cafe_distanceSphere(name, point, region);
+//                List<CafePair> cafePairs = cafePairList.stream()
+//                        .map(cafeProjection -> {
+//                            Point stCoor = StoreInfo.createPointFromWkt(cafeProjection.getStCoor());
+//                            Point comCoor = StoreInfo.createPointFromWkt(cafeProjection.getComCoor());
+//                            return CafePair.builder()
+//                                    .stNm(cafeProjection.getStNm())
+//                                    .stCoor(stCoor)
+//                                    .comNm(cafeProjection.getComNm())
+//                                    .comCoor(comCoor)
+//                                    .dist(cafeProjection.getDist())
+//                                    .regionFk(cafeProjection.getRegionFk())
+//                                    .build();
+//                        })
+//                        .collect(Collectors.toList());
+//
+//                cafePairRepository.saveAll(cafePairs);
+//        }
+//    }
 
 }
 
