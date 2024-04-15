@@ -30,4 +30,13 @@ public class CookieUtil {
         response.addCookie(cookie);
         return cookie;
     }
+
+    public static void deleteCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("access_token", null);
+        cookie.setValue("");
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+    }
+
 }

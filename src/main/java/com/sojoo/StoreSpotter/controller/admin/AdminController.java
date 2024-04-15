@@ -31,6 +31,7 @@ public class AdminController {
     }
 
     @PostMapping("/dataPair")
+    @TimeTrace
     public void DataPairs() {
         dataPairService.saveIndustryPairData();
     }

@@ -104,7 +104,7 @@ public class StoreInfoService {
                     if (body == null & totalPageCount == 1) {
                         throw new Exception();
                     }
-                    if (body == null){
+                    if (body == null) {
                         continue;
                     }
 
@@ -136,7 +136,7 @@ public class StoreInfoService {
                 Double lon = Double.valueOf(item.getChildText("lon"));
                 Double lat = Double.valueOf(item.getChildText("lat"));
                 try {
-                    switch (industId){
+                    switch (industId) {
                         case "G20405":
                                 Point convPoint = StoreInfo.setCoordinates(lon, lat);
                                 ConvenienceStore convenienceStore = ConvenienceStore.builder()
@@ -161,7 +161,7 @@ public class StoreInfoService {
                             cafeRepository.save(cafe);
                             break;
                     }
-                } catch (DuplicateKeyException e){
+                } catch (DuplicateKeyException e) {
                     continue;
                 }
         }

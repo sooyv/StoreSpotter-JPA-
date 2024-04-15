@@ -35,7 +35,7 @@ public class User {
     @Column(name = "activated")
     private boolean activated;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "authority_id")
     private Authority authority;
 

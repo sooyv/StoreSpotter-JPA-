@@ -1,6 +1,7 @@
 package com.sojoo.StoreSpotter.controller.user;
 
 
+import com.sojoo.StoreSpotter.config.timeTrace.TimeTrace;
 import com.sojoo.StoreSpotter.dto.user.LoginDto;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.jwt.dto.TokenDto;
@@ -64,6 +65,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @TimeTrace
     public ResponseEntity<TokenDto> loginProcess(@Valid @RequestBody LoginDto loginDto, HttpServletResponse response) throws Exception {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
@@ -98,10 +100,10 @@ public class AuthController {
 
         String checkMailCodeResult = mailService.checkMailCode(userDto.getUsername(), userDto.getMailCode()).getBody();
 
-        if ("notEqualMailCode".equals(checkMailCodeResult)){
+        if ("notEqualMailCode".equals(checkMailCodeResult)) {
             return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
         }
-        if ("expirationMailCode".equals(checkMailCodeResult)){
+        if ("expirationMailCode".equals(checkMailCodeResult)) {
             return  new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
         }
 

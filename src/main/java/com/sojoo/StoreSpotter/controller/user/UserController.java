@@ -1,6 +1,7 @@
 package com.sojoo.StoreSpotter.controller.user;
 
 import com.sojoo.StoreSpotter.common.exception.SmtpSendFailedException;
+import com.sojoo.StoreSpotter.config.timeTrace.TimeTrace;
 import com.sojoo.StoreSpotter.service.mail.MailService;
 import com.sojoo.StoreSpotter.service.user.UserInfoService;
 import com.sojoo.StoreSpotter.service.user.UserValidateService;
@@ -28,6 +29,7 @@ public class UserController {
 
     // 로그인 페이지
     @GetMapping("/login")
+    @TimeTrace
     public ModelAndView login() {
         return new ModelAndView("loginSignUp/login");
     }
@@ -79,13 +81,11 @@ public class UserController {
         try {
             String chkSendCode = mailService.sendPwdCertificateMail(email).getBody();
             if ("UserNotFound".equals(chkSendCode)){
-                System.out.println("확인용3");
                 return new ResponseEntity<>("UserNotFound", HttpStatus.BAD_REQUEST);
             }
             return new ResponseEntity<>(HttpStatus.OK);
 
         } catch (Exception e) {
-            System.out.println("확인용2");
             return new ResponseEntity<>("FailedUpdatePassword", HttpStatus.BAD_REQUEST);
         }
     }

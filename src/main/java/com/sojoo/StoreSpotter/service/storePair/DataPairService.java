@@ -2,6 +2,7 @@ package com.sojoo.StoreSpotter.service.storePair;
 
 import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.common.exception.DataPairCreateFailedException;
+import com.sojoo.StoreSpotter.config.timeTrace.TimeTrace;
 import com.sojoo.StoreSpotter.repository.apiToDb.CafeRepository;
 import com.sojoo.StoreSpotter.repository.apiToDb.ConvenienceStoreRepository;
 import com.sojoo.StoreSpotter.repository.apiToDb.IndustryRepository;
@@ -41,7 +42,7 @@ public class DataPairService {
         this.cafePairRepository = cafePairRepository;
     }
 
-//    @Transactional
+    @TimeTrace
     public void saveIndustryPairData() {
         try {
             long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
@@ -50,15 +51,17 @@ public class DataPairService {
             cafePairRepository.deleteAll();
 
             List<Industry> industryList = industryRepository.findAll();
-            for (Industry industry : industryList){
+            for (Industry industry : industryList) {
                 String industId = industry.getIndustId();
-                switch (industId){
+                switch (industId) {
                     case "G20405":
                         List<ConvenienceStore> convenienceStoreList = convenienceStoreRepository.findAll();
                         selectDataPair(convenienceStoreList, industId);
+                        break;
                     case "I21201":
                         List<Cafe> cafeList = cafeRepository.findAll();
                         selectDataPair(cafeList, industId);
+                        break;
                 }
 
                 conveniencePairRepository.convenience_deleteDuplicatePairs();
@@ -68,7 +71,7 @@ public class DataPairService {
                 long secDiffTime = (afterTime - beforeTime) / 1000; //두 시간에 차 계산
                 System.out.println(industry.getIndustName() + "Pair 생성 소요시간 : " + secDiffTime/60 +"분 " + secDiffTime%60+"초");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new DataPairCreateFailedException(ErrorCode.DATA_PAIR_CREATE_FAILED);
         }
     }
@@ -83,12 +86,13 @@ public class DataPairService {
         }
     }
 
-
+    @TimeTrace
     private void distanceSphere(String name, Point point, Integer region, String industId) {
-        switch (industId){
+        switch (industId) {
             case "G20405":
+                System.out.println("distanceSphere industId 확인 : " + industId);
                 List<StoreInfoProjection> conveniencePairList = conveniencePairRepository.convenience_distanceSphere(name, point, region);
-                for (StoreInfoProjection convenienceProjection : conveniencePairList){
+                for (StoreInfoProjection convenienceProjection : conveniencePairList) {
 
                     Point stCoor = StoreInfo.createPointFromWkt(convenienceProjection.getStCoor());
                     Point comCoor = StoreInfo.createPointFromWkt(convenienceProjection.getComCoor());
@@ -108,7 +112,9 @@ public class DataPairService {
 
                     conveniencePairRepository.save(conveniencePair);
                 }
+                break;
             case "I21201":
+                System.out.println("distanceSphere industId 확인 : " + industId);
                 List<StoreInfoProjection> cafePairList = cafePairRepository.cafe_distanceSphere(name, point, region);
                 for (StoreInfoProjection cafeProjection : cafePairList) {
 
@@ -130,8 +136,8 @@ public class DataPairService {
 
                     cafePairRepository.save(cafePair);
                 }
+                break;
         }
-
     }
 
 }

@@ -10,6 +10,7 @@ import com.sojoo.StoreSpotter.service.apiToDb.RegionService;
 import com.sojoo.StoreSpotter.service.mypage.LikedService;
 import com.sojoo.StoreSpotter.service.user.UserInfoService;
 import com.sojoo.StoreSpotter.service.user.UserService;
+import com.sojoo.StoreSpotter.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -48,9 +50,9 @@ public class MypageController {
 
         List<LikedDto> likedList;
 
-        if (keyword == null){
+        if (keyword == null) {
             likedList = likedService.likedEntityToDto(user.getLikedList()); // 사용자의 likedList 가져오기
-        }else{
+        } else {
             List<Liked> likedSearch = likedService.likedSearch(keyword);
             likedList = likedService.likedEntityToDto(likedSearch);
         }
@@ -149,9 +151,9 @@ public class MypageController {
 
     // 계정 탈퇴
     @PostMapping("/info/modify/withdraw")
-    public ResponseEntity<String> userWithdraw(HttpServletRequest request) {
+    public ResponseEntity<String> userWithdraw(HttpServletRequest request, HttpServletResponse response) {
+        CookieUtil.deleteCookie(response);
         User user = userService.getUserFromCookie(request);
-
         return userInfoService.userWithdraw(user);
     }
 

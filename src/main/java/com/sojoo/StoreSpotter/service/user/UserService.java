@@ -3,6 +3,7 @@ package com.sojoo.StoreSpotter.service.user;
 import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.common.exception.EmailDuplicateException;
 import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
+import com.sojoo.StoreSpotter.config.timeTrace.TimeTrace;
 import com.sojoo.StoreSpotter.entity.user.Authority;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
@@ -39,6 +40,7 @@ public class UserService {
     }
 
     @Transactional
+    @TimeTrace
     public void signup(UserDto userDto) {
         if (userValidateService.checkDuplicateEmail(userDto.getUsername()).getStatusCode().equals(HttpStatus.BAD_REQUEST)){
             throw new EmailDuplicateException(ErrorCode.EMAIL_DUPLICATION);
