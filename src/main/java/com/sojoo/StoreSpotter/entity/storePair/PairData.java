@@ -18,9 +18,10 @@ import javax.persistence.*;
 @SuperBuilder
 public abstract class PairData {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pair_id", nullable = false)
-    private Long pairId;
+    private String pairId;
 
     @Column(name = "st_nm", nullable = false)
     private String stNm;
