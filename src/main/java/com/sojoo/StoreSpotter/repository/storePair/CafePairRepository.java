@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface CafePairRepository extends JpaRepository<CafePair, Integer> {
+public interface CafePairRepository extends JpaRepository<CafePair, Long> {
     @Query(value = "        SELECT :st_nm as stNm, " +
             "                       ST_AsText(:st_coor) as stCoor, " +
             "                       c.bizes_nm as comNm, " +
@@ -26,7 +26,7 @@ public interface CafePairRepository extends JpaRepository<CafePair, Integer> {
             "                AND ST_DISTANCE_SPHERE(:st_coor, c.coordinates) > 10" +
             "                ORDER BY dist" +
             "                LIMIT 1", nativeQuery=true)
-    List<StoreInfoProjection> cafe_distanceSphere(@Param("st_nm") String st_nm, @Param("st_coor") Point st_coor, @Param("region_fk") Integer region_fk);
+    StoreInfoProjection cafe_distanceSphere(@Param("st_nm") String st_nm, @Param("st_coor") Point st_coor, @Param("region_fk") Integer region_fk);
 
 
     @Modifying
