@@ -1,6 +1,6 @@
 package com.sojoo.StoreSpotter.config.timeTrace;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -8,10 +8,12 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
-@Slf4j
+@Log4j2
 @Component
 @Aspect
 public class TimeTraceAspect {
+
+//    @Pointcut("execution(* com.example.demo.repository..*(..))")
     @Pointcut("@annotation(com.sojoo.StoreSpotter.config.timeTrace.TimeTrace)")
     private void timeTracePointcut() {
     }

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ConveniencePairRepository extends JpaRepository<ConveniencePair, Long> {
+public interface ConveniencePairRepository extends JpaRepository<ConveniencePair, String> {
 
     @Query(value = "        SELECT CONCAT(c.bizes_id, :st_nm) as pairId, " +
             "                       :st_nm as stNm, " +
@@ -29,7 +29,7 @@ public interface ConveniencePairRepository extends JpaRepository<ConveniencePair
             "                AND ST_DISTANCE_SPHERE(:st_coor, c.coordinates) > 10" +
             "                ORDER BY dist" +
             "                LIMIT 1", nativeQuery=true)
-    StoreInfoProjection convenience_distanceSphere(@Param("st_nm") String st_nm, @Param("st_coor") Point st_coor, @Param("region_fk") Integer region_fk);
+    Optional<StoreInfoProjection> convenience_distanceSphere(@Param("st_nm") String st_nm, @Param("st_coor") Point st_coor, @Param("region_fk") Integer region_fk);
 
 
     @Modifying

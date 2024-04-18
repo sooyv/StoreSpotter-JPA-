@@ -2,6 +2,7 @@ package com.sojoo.StoreSpotter.service.apiToDb;
 
 import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.common.exception.ApiDataNotFoundException;
+import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
 import com.sojoo.StoreSpotter.config.timeTrace.TimeTrace;
 import com.sojoo.StoreSpotter.repository.apiToDb.*;
 import com.sojoo.StoreSpotter.entity.apiToDb.*;
@@ -12,12 +13,14 @@ import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StoreInfoService {
@@ -39,11 +42,51 @@ public class StoreInfoService {
         this.apiServiceKey = apiServiceKey;
     }
 
+//    @Transactional
+    @TimeTrace
+    // 업종 저장 코드 - 업종별로 전지역 데이터 저장
+    public void convApiToDb() throws ApiDataNotFoundException {
+        long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
+
+        try {
+            convenienceStoreRepository.deleteAll();
+
+            Industry industry = industryRepository.findByIndustName("편의점");
+            connectToApi(industry);
+        } catch (Exception e) {
+            throw new ApiDataNotFoundException(ErrorCode.API_DATA_NOT_FOUND);
+        }
+
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = (afterTime - beforeTime) / 1000; //두 시간에 차 계산
+        System.out.println("소요시간 : " + secDiffTime/60 +"분 " + secDiffTime%60+"초");
+    }
+
+    @Transactional
+    @TimeTrace
+    // 업종 저장 코드 - 업종별로 전지역 데이터 저장
+    public void cafeApiToDb() throws ApiDataNotFoundException {
+        long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
+
+        try {
+            cafeRepository.deleteAll();
+
+            Industry industry = industryRepository.findByIndustName("카페");
+            connectToApi(industry);
+        } catch (Exception e) {
+            throw new ApiDataNotFoundException(ErrorCode.API_DATA_NOT_FOUND);
+        }
+
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = (afterTime - beforeTime) / 1000; //두 시간에 차 계산
+        System.out.println("소요시간 : " + secDiffTime/60 +"분 " + secDiffTime%60+"초");
+    }
+
     @Transactional
     @TimeTrace
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
     public void apiToDb() throws ApiDataNotFoundException {
-        long beforeTime = System.currentTimeMillis();   // 코드 실행 전에 시간 받아오기
+        long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
         try {
             convenienceStoreRepository.deleteAll();
@@ -58,13 +101,14 @@ public class StoreInfoService {
         }
 
         long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
-        long secDiffTime = (afterTime - beforeTime) / 1000; // 두 시간에 차 계산
+        long secDiffTime = (afterTime - beforeTime) / 1000; //두 시간에 차 계산
         System.out.println("소요시간 : " + secDiffTime/60 +"분 " + secDiffTime%60+"초");
     }
 
 
 
     // 공공데이터 api 연결 및 Document 전달
+    @TimeTrace
     private void connectToApi(Industry industry) throws Exception {
 
         try {
@@ -77,6 +121,7 @@ public class StoreInfoService {
                 int totalPageCount = 1;
 
                 for (int j = 1; j <= totalPageCount; j++) {
+//                for (int j = 1; j <= 2; j++) {
 
                     String sb = "https://apis.data.go.kr/B553077/api/open/sdsc2/storeListInDong?" +
                             "ServiceKey=" + apiServiceKey +
@@ -101,10 +146,10 @@ public class StoreInfoService {
 
                     Element totalCount;
 
-                    if (body == null & totalPageCount == 1) {
+                    if (body == null & totalPageCount == 1){
                         throw new Exception();
                     }
-                    if (body == null) {
+                    if (body == null){
                         continue;
                     }
 
@@ -112,9 +157,9 @@ public class StoreInfoService {
                     int totalCountValue = Integer.parseInt(totalCount.getText());
 
                     totalPageCount = (totalCountValue / 1000) + 1;
-
                     publicApiDataSave(document, industId, regionId);
                 }
+//                break;
             }
 
         } catch (Exception e) {
@@ -123,6 +168,7 @@ public class StoreInfoService {
     }
 
     // api 데이터 저장 로직
+    @TimeTrace
     private void publicApiDataSave(Document document, String industId, Integer regionId) throws DuplicateKeyException {
             Element root = document.getRootElement();
             Element body = root.getChild("body");
@@ -136,7 +182,7 @@ public class StoreInfoService {
                 Double lon = Double.valueOf(item.getChildText("lon"));
                 Double lat = Double.valueOf(item.getChildText("lat"));
                 try {
-                    switch (industId) {
+                    switch (industId){
                         case "G20405":
                                 Point convPoint = StoreInfo.setCoordinates(lon, lat);
                                 ConvenienceStore convenienceStore = ConvenienceStore.builder()
@@ -161,7 +207,7 @@ public class StoreInfoService {
                             cafeRepository.save(cafe);
                             break;
                     }
-                } catch (DuplicateKeyException e) {
+                } catch (DuplicateKeyException e){
                     continue;
                 }
         }

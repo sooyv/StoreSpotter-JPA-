@@ -8,5 +8,5 @@ public interface DataRecommandProjection {
     String getComCoor();
     Double getDist();
     String getCenterCoor();
-    Long getPairId();
+    String getPairId();
 }

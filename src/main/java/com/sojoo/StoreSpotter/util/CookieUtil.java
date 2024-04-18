@@ -1,5 +1,6 @@
 package com.sojoo.StoreSpotter.util;
 
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,24 +20,20 @@ public class CookieUtil {
         return null;
     }
 
-    // 요청 값(이름, 값, 만료기간)을 바탕으로 Http 응답에 쿠키 추가
-    public static Cookie addCookie(HttpServletResponse response, String name, String value, int maxAge) {
-        Cookie cookie = new Cookie(name, value);
-        // 쿠키 속성 설정 추가
+    public static void addCookie(HttpServletResponse response, String accessToken, String value, int maxAge) {
+        Cookie cookie = new Cookie(accessToken, value);
+
         cookie.setHttpOnly(true);
         cookie.setSecure(false);
         cookie.setPath("/");
         cookie.setMaxAge(maxAge);
         response.addCookie(cookie);
-        return cookie;
     }
 
-    public static void deleteCookie(HttpServletResponse response) {
-        Cookie cookie = new Cookie("access_token", null);
-        cookie.setValue("");
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
+    public static void delCookie(HttpServletResponse response) {
+        Cookie myCookie = new Cookie("access_token", null);
+        myCookie.setMaxAge(0); // 쿠키의 expiration 타임을 0으로 하여 없앤다.
+        myCookie.setPath("/"); // 모든 경로에서 삭제 됬음을 알린다.
+        response.addCookie(myCookie);
     }
-
 }

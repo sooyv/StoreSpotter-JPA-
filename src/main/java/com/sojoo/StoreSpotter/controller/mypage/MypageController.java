@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -50,9 +51,9 @@ public class MypageController {
 
         List<LikedDto> likedList;
 
-        if (keyword == null) {
+        if (keyword == null){
             likedList = likedService.likedEntityToDto(user.getLikedList()); // 사용자의 likedList 가져오기
-        } else {
+        }else{
             List<Liked> likedSearch = likedService.likedSearch(keyword);
             likedList = likedService.likedEntityToDto(likedSearch);
         }
@@ -152,8 +153,9 @@ public class MypageController {
     // 계정 탈퇴
     @PostMapping("/info/modify/withdraw")
     public ResponseEntity<String> userWithdraw(HttpServletRequest request, HttpServletResponse response) {
-        CookieUtil.deleteCookie(response);
         User user = userService.getUserFromCookie(request);
+
+        CookieUtil.delCookie(response);
         return userInfoService.userWithdraw(user);
     }
 

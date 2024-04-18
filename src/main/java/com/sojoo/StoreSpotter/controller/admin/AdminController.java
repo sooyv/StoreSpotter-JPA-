@@ -1,7 +1,6 @@
 package com.sojoo.StoreSpotter.controller.admin;
 
 import com.sojoo.StoreSpotter.common.exception.ApiDataNotFoundException;
-import com.sojoo.StoreSpotter.config.timeTrace.TimeTrace;
 import com.sojoo.StoreSpotter.service.apiToDb.StoreInfoService;
 import com.sojoo.StoreSpotter.service.storePair.DataPairService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,18 +30,46 @@ public class AdminController {
     }
 
     @PostMapping("/dataPair")
-    @TimeTrace
-    public void DataPairs() {
+    public void dataPairs() {
         dataPairService.saveIndustryPairData();
     }
 
+    @PostMapping("/conv-dataPair")
+    public void convDataPairs() {
+        dataPairService.saveConvIndustryPairData();
+    }
+
+    @PostMapping("/cafe-dataPair")
+    public void cafeDataPairs() {
+        dataPairService.saveCafeIndustryPairData();
+    }
+
     @PostMapping("/apiDataSave")
-    @TimeTrace
-    public ResponseEntity<String> Industries(){
-        try {
+    public ResponseEntity<String> industries(){
+        try{
             storeInfoService.apiToDb();
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch(ApiDataNotFoundException e) {
+        } catch(ApiDataNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/conv-api")
+    public ResponseEntity<String> convApiSave(){
+        try{
+            storeInfoService.convApiToDb();
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch(ApiDataNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/cafe-api")
+    public ResponseEntity<String> cafeApiSave(){
+        try{
+            storeInfoService.cafeApiToDb();
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch(ApiDataNotFoundException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

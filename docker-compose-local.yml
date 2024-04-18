@@ -19,7 +19,6 @@ services:
       - "mode=standalone"
     ports:
       - "6379:6379"
-#      -
 #  controller:
 #    image: ngrinder/controller:3.5.9
 #    platform: linux/amd64
