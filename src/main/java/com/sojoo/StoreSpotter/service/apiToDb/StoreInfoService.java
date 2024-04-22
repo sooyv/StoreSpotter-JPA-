@@ -42,7 +42,7 @@ public class StoreInfoService {
         this.apiServiceKey = apiServiceKey;
     }
 
-//    @Transactional
+    @Transactional
     @TimeTrace
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
     public void convApiToDb() throws ApiDataNotFoundException {
