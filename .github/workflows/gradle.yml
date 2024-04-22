@@ -70,6 +70,9 @@ jobs:
             touch docker-compose.yml
             echo "${{ secrets.DOCKER_COMPOSE }}" > docker-compose.yml
             docker pull ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
+            
+            touch conf/nginx.conf
+            echo "${{ secrets.NGINX_CONF }}" > conf/nginx.conf
 
             CONTAINERS=$(docker ps -q)
             if [ -n "$CONTAINERS" ]; then
