@@ -37,7 +37,10 @@ services:
       - certbot
 
   certbot:
+    container_name: certbot
     image: certbot/certbot
+    restart: unless-stopped
+    depends_on: nginx
     volumes:
       - /home/ubuntu/compose/certbot/conf:/etc/letsencrypt
       - /home/ubuntu/compose/certbot/www:/var/www/certbot
