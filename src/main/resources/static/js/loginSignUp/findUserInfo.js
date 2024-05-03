@@ -28,6 +28,7 @@ findPassword.css({
 findEmail.on("click", function() {
     findEmailForm.show();
     findPasswordForm.hide();
+    emailModal.hide();
     findEmail.addClass("clicked");
     findPassword.removeClass("clicked");
 
@@ -75,6 +76,7 @@ findEmail.on("mouseleave", function() {
 // 비밀번호 찾기 클릭
 findPassword.on("click", function() {
     findPasswordForm.show();
+    emailModal.hide();
     findEmailForm.hide();
     findPassword.addClass("clicked");
     findEmail.removeClass("clicked");
@@ -139,10 +141,12 @@ findEmailBtn.on("click", function() {
             phone : userPhone,
         },
         success: function (response) {
-            if (response === "") {
+            console.log("response 확인; " + response);
+            if (response == "") {
                 modalContent.html('');    // modal 초기화
-                let notFoundEmail = $("<p>").text("가입 정보가 없습니다.");
+                let notFoundEmail = $("<p>").text("해당 회원 정보의 가입 정보가 없습니다.");
                 modalContent.append(notFoundEmail);
+                findEmailForm.hide();
                 emailModal.show();
             } else {
                 modalContent.html('');    // modal 초기화
@@ -150,8 +154,8 @@ findEmailBtn.on("click", function() {
                     const userEmail = response[i];
                     const userEmails = $("<p>").text(userEmail);
                     modalContent.append(userEmails);
-
                 }
+                findEmailForm.hide();
                 emailModal.show();
             }
         }
@@ -162,6 +166,7 @@ findEmailBtn.on("click", function() {
 let modalClose = $("#modal-close");
 modalClose.on("click", function() {
     emailModal.hide();
+    findEmailForm.show();
 });
 
 

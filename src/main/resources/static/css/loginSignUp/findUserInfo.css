@@ -15,7 +15,7 @@ html, body {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: 90%;
+    /*height: 90%;*/
 }
 
 h1 {
@@ -76,25 +76,33 @@ input {
 
 /*----------------- 이메일 찾기 Modal -----------------*/
 .email-modal {
-    position: fixed;
-    top: 30%;
-    left: 50%;
+    /*position: fixed;*/
+    /*top: 30%;*/
+    /*left: 50%;*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    /*border-radius: 3px;*/
+    /*border: solid 1px #cdcdcd;*/
+    /*background-color: #ffffff;*/
+    /*max-width: 400px;*/
+    /*width: 40%;*/
+    /*transform: translate(-50%, -50%);*/
+    /*box-shadow: 4px 5px 5px 0px rgba(34,36,38,0.15)*/
+    margin: 0em 2em 2em 2em;
+    width: 70%;
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 3px;
-    border: solid 1px #cdcdcd;
-    background-color: #ffffff;
-    max-width: 400px;
-    width: 40%;
-    transform: translate(-50%, -50%);
 }
 
 #modal-title {
-    border-bottom: solid 1px #cdcdcd;
+    border-bottom: solid 2px #cdcdcd;
     width: 100%;
-    padding: 10px;
+    padding: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -105,6 +113,7 @@ input {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 1em;
 }
 
 #modal-content p {
@@ -116,8 +125,8 @@ input {
     width: 100%;
     border-top: solid 1px #cdcdcd;
     display: flex;
-    flex-direction: row;
-    justify-content: end;
+    /*flex-direction: row;*/
+    justify-content: center;
 }
 
 .modal-btn {
@@ -126,10 +135,16 @@ input {
     border-radius: 3px;
     border: none;
     color: #fff;
-    margin: 7px 10px;
-    padding: 6px 10px;
+    margin: 20px 20px 10px 20px;
+    padding: 10px 50px;
     text-decoration: none;
     cursor: pointer;
+}
+
+#modal-login-btn {
+    width: 100%;
+    text-decoration: none;
+    color: #fff;
 }
 
 .modal-btn:hover {
@@ -155,6 +170,10 @@ input {
 #find-email-btn:hover {
     background: #6bb4d0;
     transition: 0.2s ease;
+}
+
+.transparent-background {
+    background-color: rgba(0, 0, 0, 0.3) !important; /* 중요성 강조 */
 }
 
 /*----------------- 비밀번호 찾기 -----------------*/
