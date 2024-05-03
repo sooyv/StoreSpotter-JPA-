@@ -17,7 +17,6 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <body>
 <div th:replace="header :: header"></div>
-<div id="modal-background">
   <div class="container">
   <h1>find account & password</h1>
   <div class="select-findInfo">
@@ -25,12 +24,12 @@
     <div class="findInfo-details" id="find-password">Password</div>
   </div>
 <!--  아이디 찾기 reload  -->
-  <div class="email-modal">
-    <div id="modal-title">회원님의 정보와 일치하는 아이디 목록입니다.</div>
-      <div id="modal-content"></div>
-      <div id="modal-footer">
-        <button class="modal-btn"><a href="/login" id="modal-login-btn">로그인하기</a></button>
-        <button class="modal-btn" id="modal-close">닫기</button>
+  <div class="find-email-reload">
+    <div id="find-email-title">회원님의 정보와 일치하는 아이디 목록입니다.</div>
+      <div id="find-email-content"></div>
+      <div id="find-email-footer">
+        <button class="find-email-reload-btn"><a href="/login" id="findEmail-login-btn">로그인하기</a></button>
+        <button class="find-email-reload-btn" id="find-email-close">닫기</button>
       </div>
   </div>
   <form id="find-email-form" th:action="@{/user/account}" method="post">
@@ -51,7 +50,6 @@
 
   <div th:replace="loginSignUp/socialLogin :: socialLogin"></div>
 
-</div>
 </div>
 
 <script src="/js/header.js"></script>

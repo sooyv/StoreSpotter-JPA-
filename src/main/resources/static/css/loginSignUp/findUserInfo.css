@@ -74,22 +74,8 @@ input {
     align-items: center;
 }
 
-/*----------------- 이메일 찾기 Modal -----------------*/
-.email-modal {
-    /*position: fixed;*/
-    /*top: 30%;*/
-    /*left: 50%;*/
-    /*display: flex;*/
-    /*flex-direction: column;*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
-    /*border-radius: 3px;*/
-    /*border: solid 1px #cdcdcd;*/
-    /*background-color: #ffffff;*/
-    /*max-width: 400px;*/
-    /*width: 40%;*/
-    /*transform: translate(-50%, -50%);*/
-    /*box-shadow: 4px 5px 5px 0px rgba(34,36,38,0.15)*/
+/*----------------- 이메일 찾기 reload -----------------*/
+.find-email-reload {
     margin: 0em 2em 2em 2em;
     width: 70%;
     max-width: 500px;
@@ -99,7 +85,7 @@ input {
     align-items: center;
 }
 
-#modal-title {
+#find-email-title {
     border-bottom: solid 2px #cdcdcd;
     width: 100%;
     padding: 15px;
@@ -108,7 +94,7 @@ input {
     align-items: center;
 }
 
-#modal-content {
+#find-email-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -116,12 +102,12 @@ input {
     padding: 1em;
 }
 
-#modal-content p {
+#find-email-content p {
     margin: 10px 0 10px 0;
 
 }
 
-#modal-footer {
+#find-email-footer {
     width: 100%;
     border-top: solid 1px #cdcdcd;
     display: flex;
@@ -129,7 +115,7 @@ input {
     justify-content: center;
 }
 
-.modal-btn {
+.find-email-reload-btn {
     font-family: 'IBM Plex Sans KR', sans-serif;
     background: #23567d;
     border-radius: 3px;
@@ -141,13 +127,13 @@ input {
     cursor: pointer;
 }
 
-#modal-login-btn {
+#findEmail-login-btn {
     width: 100%;
     text-decoration: none;
     color: #fff;
 }
 
-.modal-btn:hover {
+.find-email-reload-btn:hover {
     background: #6bb4d0;
     transition: 0.2s ease;
 }
