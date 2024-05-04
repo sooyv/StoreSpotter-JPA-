@@ -78,9 +78,15 @@ jobs:
             if [ -n "$CONTAINERS" ]; then
             docker stop $CONTAINERS
             fi
-              
-            docker-compose -f docker-compose.yml pull
+            
             docker-compose -f docker-compose.yml down
+            
+            IMAGES=$(docker images -q)
+            if [ -n "$IMAGES" ]; then
+            docker rmi -f $IMAGES
+            fi
+  
+            docker-compose -f docker-compose.yml pull
             docker-compose -f docker-compose.yml up -d
             
             docker ps -q -f 'status=exited' | xargs -r docker rm
