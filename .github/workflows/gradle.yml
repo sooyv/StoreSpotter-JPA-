@@ -79,6 +79,7 @@ jobs:
             docker stop $CONTAINERS
             fi
             
+            docker ps -q -f 'status=exited' | xargs -r docker rm
             docker-compose -f docker-compose.yml down
             
             IMAGES=$(docker images -q)
