@@ -9,7 +9,7 @@ INSERT INTO `storespotter(jpa)`.`Region` (`region_id`, `region_name`) VALUES ('3
 INSERT INTO `storespotter(jpa)`.`Region` (`region_id`, `region_name`) VALUES ('41', '경기도');
 INSERT INTO `storespotter(jpa)`.`Region` (`region_id`, `region_name`) VALUES ('43', '충청북도');
 INSERT INTO `storespotter(jpa)`.`Region` (`region_id`, `region_name`) VALUES ('44', '충청남도');
-INSERT INTO `storespotter(jpa)`.`Region` (`region_id`, `region_name`) VALUES ('45', '전라북도');
+# INSERT INTO `storespotter(jpa)`.`Region` (`region_id`, `region_name`) VALUES ('45', '전라북도');
 INSERT INTO `storespotter(jpa)`.`Region` (`region_id`, `region_name`) VALUES ('46', '전라남도');
 INSERT INTO `storespotter(jpa)`.`Region` (`region_id`, `region_name`) VALUES ('47', '경상북도');
 INSERT INTO `storespotter(jpa)`.`Region` (`region_id`, `region_name`) VALUES ('48', '경상남도');

@@ -42,7 +42,6 @@ public class StoreInfoService {
         this.apiServiceKey = apiServiceKey;
     }
 
-    @Transactional
     @TimeTrace
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
     public void convApiToDb() throws ApiDataNotFoundException {
@@ -62,7 +61,6 @@ public class StoreInfoService {
         System.out.println("소요시간 : " + secDiffTime/60 +"분 " + secDiffTime%60+"초");
     }
 
-    @Transactional
     @TimeTrace
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
     public void cafeApiToDb() throws ApiDataNotFoundException {
@@ -83,7 +81,6 @@ public class StoreInfoService {
     }
 
     @Transactional
-    @TimeTrace
     // 업종 저장 코드 - 업종별로 전지역 데이터 저장
     public void apiToDb() throws ApiDataNotFoundException {
         long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
@@ -108,7 +105,6 @@ public class StoreInfoService {
 
 
     // 공공데이터 api 연결 및 Document 전달
-    @TimeTrace
     private void connectToApi(Industry industry) throws Exception {
 
         try {
@@ -121,7 +117,6 @@ public class StoreInfoService {
                 int totalPageCount = 1;
 
                 for (int j = 1; j <= totalPageCount; j++) {
-//                for (int j = 1; j <= 2; j++) {
 
                     String sb = "https://apis.data.go.kr/B553077/api/open/sdsc2/storeListInDong?" +
                             "ServiceKey=" + apiServiceKey +
@@ -159,7 +154,6 @@ public class StoreInfoService {
                     totalPageCount = (totalCountValue / 1000) + 1;
                     publicApiDataSave(document, industId, regionId);
                 }
-//                break;
             }
 
         } catch (Exception e) {
@@ -168,7 +162,6 @@ public class StoreInfoService {
     }
 
     // api 데이터 저장 로직
-    @TimeTrace
     private void publicApiDataSave(Document document, String industId, Integer regionId) throws DuplicateKeyException {
             Element root = document.getRootElement();
             Element body = root.getChild("body");
@@ -184,15 +177,15 @@ public class StoreInfoService {
                 try {
                     switch (industId){
                         case "G20405":
-                                Point convPoint = StoreInfo.setCoordinates(lon, lat);
-                                ConvenienceStore convenienceStore = ConvenienceStore.builder()
-                                        .bizesId(bizesId)
-                                        .bizesNm(bizesNm)
-                                        .rdnmAdr(rdnmAdr)
-                                        .coordinates(convPoint)
-                                        .regionFk(regionId)
-                                        .build();
-                                convenienceStoreRepository.save(convenienceStore);
+                            Point convPoint = StoreInfo.setCoordinates(lon, lat);
+                            ConvenienceStore convenienceStore = ConvenienceStore.builder()
+                                    .bizesId(bizesId)
+                                    .bizesNm(bizesNm)
+                                    .rdnmAdr(rdnmAdr)
+                                    .coordinates(convPoint)
+                                    .regionFk(regionId)
+                                    .build();
+                            convenienceStoreRepository.save(convenienceStore);
                             break;
 
                         case "I21201":
