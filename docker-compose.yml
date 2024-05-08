@@ -54,7 +54,7 @@ services:
     platform: linux/amd64
     restart: always
     ports:
-      - "9000:81"
+      - "9000:80"
       - "16001:16001"
       - "12000-12009:12000-12009"
     volumes:
