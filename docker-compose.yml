@@ -44,3 +44,38 @@ services:
     volumes:
       - /home/ubuntu/compose/certbot/conf:/etc/letsencrypt
       - /home/ubuntu/compose/certbot/www:/var/www/certbot
+
+  controller:
+    image: ngrinder/controller:3.5.9
+    environment:
+      - TZ=Asia/Seoul
+    sysctls:
+      - net.core.somaxconn=65000
+    platform: linux/amd64
+    restart: always
+    ports:
+      - "9000:81"
+      - "16001:16001"
+      - "12000-12009:12000-12009"
+    volumes:
+      - /tmp/ngrinder-controller:/opt/ngrinder-controller
+  agent:
+    image: ngrinder/agent:3.5.9
+    platform: linux/amd64
+    restart: always
+    links:
+      - controller
+    environment:
+      - TZ=Asia/Seoul
+    sysctls:
+      - net.core.somaxconn=65000
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nproc:
+        soft: 1024000
+        hard: 1024000
+      nofile:
+        soft: 1024000
+        hard: 1024000
