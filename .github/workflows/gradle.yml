@@ -43,7 +43,7 @@ jobs:
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.AWS_EC2_HOST }} # EC2 인스턴스 퍼블릭 DNS
+          host: ${{ secrets.AWS_EC2_HOST }}
           username: ubuntu  # EC2 user
           key: ${{ secrets.AWS_EC2_PRIVATEKEY }} # pem 키
           # 도커 작업
@@ -70,16 +70,20 @@ jobs:
             touch docker-compose.yml
             echo "${{ secrets.DOCKER_COMPOSE }}" > docker-compose.yml
             docker pull ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
+            
+            touch conf/nginx.conf
+            echo "${{ secrets.NGINX_CONF }}" > conf/nginx.conf
 
             CONTAINERS=$(docker ps -q)
             if [ -n "$CONTAINERS" ]; then
             docker stop $CONTAINERS
             fi
-              
-            docker-compose -f docker-compose.yml pull
-            docker-compose -f docker-compose.yml down
-            docker-compose -f docker-compose.yml up -d
             
             docker ps -q -f 'status=exited' | xargs -r docker rm
             
+            docker rmi $(docker images -q)
+  
+            docker-compose -f docker-compose.yml pull
+            docker-compose -f docker-compose.yml up -d
+                        
             docker image prune -a -f

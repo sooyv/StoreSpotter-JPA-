@@ -1,15 +1,16 @@
 services:
   app:
+    container_name: springboot_app
     build:
       context: .
       dockerfile: ./Dockerfile
     image: sojoo/sojoo:latest
     ports:
-      - '80:80'
+      - '8080:8080'
     depends_on:
       - redis
     env_file:
-      - ./env
+      - ./.env
 
   redis:
     image: redis:latest
@@ -25,18 +26,21 @@ services:
   nginx:
     image: nginx:latest
     container_name: nginx
+    restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     volumes:
-      - ./compose/nginx:/etc/nginx/conf.d
-      - ./compose/certbot/conf:/etc/letsencrypt
-      - ./compose/certbot/www:/var/www/certbot
+      - /home/ubuntu/compose/conf:/etc/nginx/conf.d
+      - /home/ubuntu/compose/certbot/conf:/etc/letsencrypt
+      - /home/ubuntu/compose/certbot/www:/var/www/certbot
     depends_on:
       - certbot
 
   certbot:
+    container_name: certbot
     image: certbot/certbot
+    restart: unless-stopped
     volumes:
-      - ./compose/certbot/conf:/etc/letsencrypt
-      - ./compose/certbot/www:/var/www/certbot
+      - /home/ubuntu/compose/certbot/conf:/etc/letsencrypt
+      - /home/ubuntu/compose/certbot/www:/var/www/certbot
