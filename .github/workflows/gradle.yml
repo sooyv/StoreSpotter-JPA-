@@ -86,11 +86,7 @@ jobs:
             docker-compose -f docker-compose.yml pull
             docker-compose -f docker-compose.yml up -d
                         
-            docker image prune -a -f
-            
-            - name: Deploy to EC2
-            
-            
+            docker image prune -a -f            
 
       - name: Deploy to EC2-server2
         uses: appleboy/ssh-action@master
