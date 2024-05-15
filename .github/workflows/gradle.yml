@@ -59,7 +59,7 @@ jobs:
             echo "SPRING_MAIL_USERNAME=${{ secrets.SMTP_USERNAME }}" >> .env
             echo "SPRING_MAIL_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> .env
             echo "SPRING_MAIL_PROTOCAL=smtp" >> .env
-            echo "SPRING_REDIS_HOST=redis" >> .env
+            echo "SPRING_REDIS_HOST={{ secrets.REDIS_HOST }}" >> .env
             echo "SPRING_REDIS_PORT=6379" >> .env
             echo "SPRING_REDIS_PASSWORD=123" >> .env
             echo "JWT_SECRET=${{ secrets.JWT_SECRET_KEY }}" >> .env
