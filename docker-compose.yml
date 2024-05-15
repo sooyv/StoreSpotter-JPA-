@@ -7,21 +7,8 @@ services:
     image: sojoo/sojoo:latest
     ports:
       - '8080:8080'
-    depends_on:
-      - redis
     env_file:
       - ./.env
-
-  redis:
-    image: redis:latest
-    command: redis-server --port 6379
-    container_name: redis
-    hostname: redis
-    labels:
-      - 'name=redis'
-      - 'mode=standalone'
-    ports:
-      - '6379:6379'
 
   nginx:
     image: nginx:latest
