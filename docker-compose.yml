@@ -1,27 +1,14 @@
 services:
   app:
-    container_name: springboot_app
+    container_name: app
     build:
       context: .
       dockerfile: ./Dockerfile
     image: sojoo/sojoo:latest
     ports:
       - '8080:8080'
-    depends_on:
-      - redis
     env_file:
       - ./.env
-
-  redis:
-    image: redis:latest
-    command: redis-server --port 6379
-    container_name: redis
-    hostname: redis
-    labels:
-      - 'name=redis'
-      - 'mode=standalone'
-    ports:
-      - '6379:6379'
 
   nginx:
     image: nginx:latest
@@ -44,3 +31,38 @@ services:
     volumes:
       - /home/ubuntu/compose/certbot/conf:/etc/letsencrypt
       - /home/ubuntu/compose/certbot/www:/var/www/certbot
+
+  controller:
+    image: ngrinder/controller:3.5.9
+    environment:
+      - TZ=Asia/Seoul
+    sysctls:
+      - net.core.somaxconn=65000
+    platform: linux/amd64
+    restart: always
+    ports:
+      - "9000:80"
+      - "16001:16001"
+      - "12000-12009:12000-12009"
+    volumes:
+      - /tmp/ngrinder-controller:/opt/ngrinder-controller
+  agent:
+    image: ngrinder/agent:3.5.9
+    platform: linux/amd64
+    restart: always
+    links:
+      - controller
+    environment:
+      - TZ=Asia/Seoul
+    sysctls:
+      - net.core.somaxconn=65000
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nproc:
+        soft: 1024000
+        hard: 1024000
+      nofile:
+        soft: 1024000
+        hard: 1024000

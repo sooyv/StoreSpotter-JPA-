@@ -43,7 +43,8 @@ public class StoreInfoService {
     }
 
     @TimeTrace
-    // 업종 저장 코드 - 업종별로 전지역 데이터 저장
+    @Transactional
+    // 업종 저장 코드 - 편의점 전지역 데이터 저장
     public void convApiToDb() throws ApiDataNotFoundException {
         long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
@@ -62,7 +63,8 @@ public class StoreInfoService {
     }
 
     @TimeTrace
-    // 업종 저장 코드 - 업종별로 전지역 데이터 저장
+    @Transactional
+    // 업종 저장 코드 - 카페 전지역 데이터 저장
     public void cafeApiToDb() throws ApiDataNotFoundException {
         long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
@@ -81,7 +83,7 @@ public class StoreInfoService {
     }
 
     @Transactional
-    // 업종 저장 코드 - 업종별로 전지역 데이터 저장
+    // 업종 저장 코드 - 전체 전지역 데이터 저장
     public void apiToDb() throws ApiDataNotFoundException {
         long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
