@@ -80,7 +80,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         "/user/find-account", "/user/account", "/user/password/mail-send", "/user/password/reissue","/search/avg-dist", "/search/recommend", "/favicon.ico",
                 "/signup/mail-code", "/user/password/**", "/user/account", "/mypage/liked/add", "/admin/**").permitAll()
 
-                .antMatchers("/user/**", "/admin/**", "/mypage").hasRole("USER")
+                .antMatchers("/user/**", "/mypage").hasRole("USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()   // 그 외 인증 없이 차단 - 일시 수정);
                 .and()
