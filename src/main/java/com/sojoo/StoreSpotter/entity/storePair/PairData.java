@@ -1,14 +1,11 @@
 package com.sojoo.StoreSpotter.entity.storePair;
 
-import com.sojoo.StoreSpotter.entity.apiToDb.Region;
-import com.sojoo.StoreSpotter.entity.apiToDb.StoreInfo;
+
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.locationtech.jts.geom.Point;
-import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 
@@ -19,7 +16,6 @@ import javax.persistence.*;
 public abstract class PairData {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pair_id", nullable = false)
     private String pairId;
 
