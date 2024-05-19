@@ -103,7 +103,7 @@ public class AuthController {
             return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
         }
         if ("expirationMailCode".equals(checkMailCodeResult)){
-            return  new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
         }
 
         userService.signup(userDto);

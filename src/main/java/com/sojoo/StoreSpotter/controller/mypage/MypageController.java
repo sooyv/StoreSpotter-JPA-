@@ -1,5 +1,6 @@
 package com.sojoo.StoreSpotter.controller.mypage;
 
+import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
 import com.sojoo.StoreSpotter.dto.mypage.LikedDto;
 import com.sojoo.StoreSpotter.dto.mypage.LikedRequestDto;
 import com.sojoo.StoreSpotter.dto.user.UserPwdDto;
@@ -50,9 +51,9 @@ public class MypageController {
         List<LikedDto> likedList;
 
         // 검색어 유무 확인
-        if (keyword == null){
+        if (keyword == null) {
             likedList = likedService.likedEntityToDto(user.getLikedList()); // 사용자의 likedList 가져오기
-        }else{
+        } else {
             List<Liked> likedSearch = likedService.likedSearch(keyword);
             likedList = likedService.likedEntityToDto(likedSearch);
         }

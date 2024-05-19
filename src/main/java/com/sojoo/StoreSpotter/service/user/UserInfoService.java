@@ -45,8 +45,8 @@ public class UserInfoService {
 
 
     // --------------- 이메일 찾기 -------------
-    public List<String> findUserEmail(String userNickname, String userPhone) {
-        List<User> users = userRepository.findByNicknameAndPhone(userNickname, userPhone);
+    public List<String> findUserEmail(String username, String userPhone) {
+        List<User> users = userRepository.findByNicknameAndPhone(username, userPhone);
         List<String> usernameList = users.stream().map(User::getUsername).collect(Collectors.toList());
 
         return usernameList;

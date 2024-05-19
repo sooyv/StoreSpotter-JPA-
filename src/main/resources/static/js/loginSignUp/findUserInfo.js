@@ -3,11 +3,11 @@ let findPassword = $("#find-password");
 let findEmailForm = $("#find-email-form");
 let findPasswordForm = $("#find-password-form");
 
-let emailModal = $(".email-modal");
-let modalContent = $("#modal-content");
+let findEmailReload = $(".find-email-reload");
+let findEmailContent = $("#find-email-content");
 
-// 첫화면 modal 화면 표시 안함
-emailModal.hide();
+// 첫 화면 이메일 찾기 완료 화면 표시 안함
+findEmailReload.hide();
 
 // 첫화면 password 찾기 hide(); 이메일 찾기를 보여주기
 findPasswordForm.hide();
@@ -28,8 +28,10 @@ findPassword.css({
 findEmail.on("click", function() {
     findEmailForm.show();
     findPasswordForm.hide();
+    findEmailReload.hide();
     findEmail.addClass("clicked");
     findPassword.removeClass("clicked");
+
 
     $(this).css({
         background: "#23567d",
@@ -74,9 +76,11 @@ findEmail.on("mouseleave", function() {
 // 비밀번호 찾기 클릭
 findPassword.on("click", function() {
     findPasswordForm.show();
+    findEmailReload.hide();
     findEmailForm.hide();
     findPassword.addClass("clicked");
     findEmail.removeClass("clicked");
+
 
     $(this).css({
         background: "#23567d",
@@ -137,29 +141,31 @@ findEmailBtn.on("click", function() {
             phone : userPhone,
         },
         success: function (response) {
-            if (response === "") {
-                modalContent.html('');    // modal 초기화
-                let notFoundEmail = $("<p>").text("가입 정보가 없습니다.");
-                modalContent.append(notFoundEmail);
-                emailModal.show();
+            if (response == "") {
+                findEmailContent.html('');    // 이메일 찾기 완료 초기화
+                let notFoundEmail = $("<p>").text("해당 회원 정보의 가입 정보가 없습니다.").css("color", "#fc1919");;
+                findEmailContent.append(notFoundEmail);
+                findEmailForm.hide();
+                findEmailReload.show();
             } else {
-                modalContent.html('');    // modal 초기화
+                findEmailContent.html('');    // 이메일 찾기 완료 초기화
                 for (let i = 0; i < response.length; i++) {
                     const userEmail = response[i];
                     const userEmails = $("<p>").text(userEmail);
-                    modalContent.append(userEmails);
-
+                    findEmailContent.append(userEmails);
                 }
-                emailModal.show();
+                findEmailForm.hide();
+                findEmailReload.show();
             }
         }
     });
 });
 
-// 모달 close
-let modalClose = $("#modal-close");
-modalClose.on("click", function() {
-    emailModal.hide();
+// 찾은 이메일 - close
+let findEmailClose = $("#find-email-close");
+findEmailClose.on("click", function() {
+    findEmailReload.hide();
+    findEmailForm.show();
 });
 
 
@@ -196,7 +202,6 @@ $("#pwd-send-mail").on("click", function() {
 $("#reissue-password").on("click", function() {
     const email = $("#email").val();
     const mailCode = $("#mail-code").val();
-
     if (email === "") {
         alert("이메일을 입력하세요");
         email.focus();
