@@ -30,20 +30,6 @@ public interface ConveniencePairRepository extends JpaRepository<ConveniencePair
             "                ORDER BY dist" +
             "                LIMIT 1", nativeQuery=true)
     Optional<StoreInfoProjection> convenience_distanceSphere(@Param("st_nm") String st_nm, @Param("st_coor") Point st_coor, @Param("region_fk") Integer region_fk);
-//    @Query(value = "        SELECT :st_nm as stNm, " +
-//            "                       ST_AsText(:st_coor) as stCoor, " +
-//            "                       c.bizes_nm as comNm, " +
-//            "                       ST_AsText(c.coordinates) as comCoor," +
-//            "                       ST_DISTANCE_SPHERE(:st_coor, c.coordinates) as dist," +
-//            "                       :region_fk as regionFk" +
-//            "                FROM convenience_store c" +
-//            "                WHERE c.region_fk = :region_fk" +
-//            "                AND ST_Within(c.coordinates, ST_Buffer(:st_coor, 500))" +
-//            "                AND ST_DISTANCE_SPHERE(:st_coor, c.coordinates) > 10" +
-//            "                ORDER BY dist" +
-//            "                LIMIT 1", nativeQuery=true)
-//    Optional<StoreInfoProjection> convenience_distanceSphere(@Param("st_nm") String st_nm, @Param("st_coor") Point st_coor, @Param("region_fk") Integer region_fk);
-
 
     @Modifying
     @Transactional
@@ -64,7 +50,7 @@ public interface ConveniencePairRepository extends JpaRepository<ConveniencePair
             "                c.pair_id AS pairId" +
             "                FROM convenience_pair c" +
             "                WHERE c.region_fk = :region_fk " +
-            "                AND c.dist > :dist", nativeQuery = true)
+            "                AND c.dist > :dist*2", nativeQuery = true)
     List<DataRecommandProjection> selectByDist(@Param("region_fk") String region_fk, @Param("dist") String dist);
 
     @Query("SELECT AVG(c.dist) AS dist" +
