@@ -23,4 +23,5 @@ public class UserValidateService {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
+
 }

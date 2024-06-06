@@ -13,6 +13,7 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
@@ -37,7 +38,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
             setResponse(response, errorCode);
         }
     }
-
 
     private void setResponse(HttpServletResponse response, JwtErrorCode errorCode) throws IOException {
         response.sendRedirect("/");

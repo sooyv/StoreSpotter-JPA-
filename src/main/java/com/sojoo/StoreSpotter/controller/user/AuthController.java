@@ -77,7 +77,7 @@ public class AuthController {
             String refreshToken = tokenProvider.createRefreshToken(authentication);
 
             addCookie(response, "access_token", accessToken, COOKIE_EXPIRE_SECONDS);
-            redisService.setValues(username, refreshToken, 30, TimeUnit.DAYS);
+            redisService.setValues(username, refreshToken, 30 , TimeUnit.DAYS);
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
@@ -90,7 +90,6 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody UserDto userDto) {
 
-        // 이메일 중복 검사
         String username = userDto.getUsername();
         ResponseEntity<String> checkDuplicateEmail = userValidateService.checkDuplicateEmail(username);
         if (userValidateService.checkDuplicateEmail(userDto.getUsername()).getStatusCode().equals(HttpStatus.BAD_REQUEST)) {
@@ -103,7 +102,7 @@ public class AuthController {
             return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
         }
         if ("expirationMailCode".equals(checkMailCodeResult)){
-            return new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
+            return  new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
         }
 
         userService.signup(userDto);

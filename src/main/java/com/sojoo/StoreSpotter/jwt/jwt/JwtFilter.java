@@ -41,7 +41,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String newAccessToken = jwt;
         String refreshToken = null;
 
-        if (jwt != null) {
+        if (jwt != null){
             refreshToken = tokenProvider.getRefreshTokenFromAccessToken(newAccessToken);
             if (tokenProvider.getExpiredFromToken(jwt).before(now)){
                 newAccessToken = tokenProvider.reissueAccessToken(jwt, response);
@@ -49,13 +49,13 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         // refreshToken 만료 시 redis 에서 삭제
-        if (refreshToken != null && tokenProvider.getExpiredFromToken(refreshToken).before(now)) {
+        if (refreshToken != null && tokenProvider.getExpiredFromToken(refreshToken).before(now)){
             tokenProvider.delRedisFromAccessToken(newAccessToken);
         }
 
         if(newAccessToken != null) {
             // RefreshToken & AccessToken 유효성 검사 모두 통과
-            if (tokenProvider.validRefreshTokenFromAccessToken(newAccessToken) && tokenProvider.validRefreshTokenFromAccessToken(newAccessToken)) {
+            if (tokenProvider.validRefreshTokenFromAccessToken(newAccessToken) && tokenProvider.validRefreshTokenFromAccessToken(newAccessToken)){
 
                 Authentication authentication = tokenProvider.getAuthentication(newAccessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -63,9 +63,9 @@ public class JwtFilter extends OncePerRequestFilter {
                 try {
                     // refreshToken은 만료되었지만 accessToken이 만료되지 않았을 때 exception
                     tokenProvider.getClaims(newAccessToken);
-                    if (refreshToken != null) {
+                    if (refreshToken != null){
                         tokenProvider.getClaims(refreshToken);
-                    } else {
+                    } else{
                         refreshToken.toUpperCase();
                     }
                 } catch (ExpiredJwtException e) {
@@ -79,11 +79,13 @@ public class JwtFilter extends OncePerRequestFilter {
         } else {
             try {
                 newAccessToken.toUpperCase();
-            } catch (NullPointerException e) {
+            } catch (NullPointerException e){
                 request.setAttribute("exception", JwtErrorCode.ACCESS_DENIED.getCode());
             }
         }
 
         filterChain.doFilter(request, response);
     }
+
+
 }

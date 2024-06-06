@@ -117,7 +117,6 @@ $(document).ready(function(e) {
 
 // 찜 바로가기
 function shortCutLiked(industry, address, dist){
-
     // 로컬 스토리지에 'industry'와 'address' 값을 저장
     localStorage.setItem('industry', industry);
     localStorage.setItem('address', address);

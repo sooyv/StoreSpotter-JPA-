@@ -6,7 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,6 +25,7 @@ jobs:
           cd ./src/main/resources
           touch ./application-prod.yml
           echo "${{ secrets.APPLICATION_PROD }}" > ./application-prod.yml
+        shell: bash
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -43,15 +43,47 @@ jobs:
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.AWS_EC2_HOST }} # EC2 인스턴스 퍼블릭 DNS
+          host: ${{ secrets.AWS_EC2_HOST }}
           username: ubuntu  # EC2 user
           key: ${{ secrets.AWS_EC2_PRIVATEKEY }} # pem 키
           # 도커 작업
           script: |
+            cd compose/
+            
+            echo "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" > .env
+            echo "SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}" >> .env
+            echo "SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}" >> .env
+            echo "SPRING_DATASOURCE_DRIVER_CLASS_NAME=${{ secrets.SPRING_DATASOURCE_DRIVER }}" >> .env
+            echo "SPRING_MAIL_HOST=smtp.naver.com" >> .env
+            echo "SPRING_MAIL_PORT=465" >> .env
+            echo "SPRING_MAIL_USERNAME=${{ secrets.SMTP_USERNAME }}" >> .env
+            echo "SPRING_MAIL_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> .env
+            echo "SPRING_MAIL_PROTOCAL=smtp" >> .env
+            echo "SPRING_REDIS_HOST=redis" >> .env
+            echo "SPRING_REDIS_PORT=6379" >> .env
+            echo "SPRING_REDIS_PASSWORD=123" >> .env
+            echo "JWT_SECRET=${{ secrets.JWT_SECRET_KEY }}" >> .env
+            echo "JWT_ACCESS_TOKEN_EXPIRDATION=1800000" >> .env
+            echo "JWT_REFRESH_TOKEN_EXPIEDATION=2592000000" >> .env
+            echo "API_API_SERVICE_KEY=${{ secrets.API_SERVICE_KEY }}" >> .env
+            
+            touch docker-compose.yml
+            echo "${{ secrets.DOCKER_COMPOSE }}" > docker-compose.yml
             docker pull ${{ secrets.DOCKER_USERNAME }}/sojoo:latest
-            docker stop $(docker ps -a -q)
+            
+            touch conf/nginx.conf
+            echo "${{ secrets.NGINX_CONF }}" > conf/nginx.conf
+
+            CONTAINERS=$(docker ps -q)
+            if [ -n "$CONTAINERS" ]; then
+            docker stop $CONTAINERS
+            fi
+            
+            docker ps -q -f 'status=exited' | xargs -r docker rm
+            
+            docker rmi $(docker images -q)
+  
             docker-compose -f docker-compose.yml pull
-            docker-compose -f docker-compose.yml down 
             docker-compose -f docker-compose.yml up -d
-            docker rm $(docker ps --filter 'status=exited' -a -q)
+                        
             docker image prune -a -f

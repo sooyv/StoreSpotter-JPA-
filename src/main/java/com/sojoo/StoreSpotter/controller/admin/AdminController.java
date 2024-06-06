@@ -30,14 +30,44 @@ public class AdminController {
     }
 
     @PostMapping("/dataPair")
-    public void DataPairs() throws Exception {
+    public void dataPairs() {
         dataPairService.saveIndustryPairData();
     }
 
+    @PostMapping("/conv-dataPair")
+    public void convDataPairs() {
+        dataPairService.saveConvIndustryPairData();
+    }
+
+    @PostMapping("/cafe-dataPair")
+    public void cafeDataPairs() {
+        dataPairService.saveCafeIndustryPairData();
+    }
+
     @PostMapping("/apiDataSave")
-    public ResponseEntity<String> Industries() {
+    public ResponseEntity<String> industries(){
         try{
             storeInfoService.apiToDb();
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch(ApiDataNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/conv-api")
+    public ResponseEntity<String> convApiSave(){
+        try{
+            storeInfoService.convApiToDb();
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch(ApiDataNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/cafe-api")
+    public ResponseEntity<String> cafeApiSave(){
+        try{
+            storeInfoService.cafeApiToDb();
             return new ResponseEntity<>(HttpStatus.OK);
         } catch(ApiDataNotFoundException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

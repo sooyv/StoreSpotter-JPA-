@@ -4,6 +4,7 @@ import com.sojoo.StoreSpotter.dto.user.UserPwdDto;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.service.redis.RedisService;
+import com.sojoo.StoreSpotter.util.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,8 +46,8 @@ public class UserInfoService {
 
 
     // --------------- 이메일 찾기 -------------
-    public List<String> findUserEmail(String username, String userPhone) {
-        List<User> users = userRepository.findByNicknameAndPhone(username, userPhone);
+    public List<String> findUserEmail(String userNickname, String userPhone) {
+        List<User> users = userRepository.findByNicknameAndPhone(userNickname, userPhone);
         List<String> usernameList = users.stream().map(User::getUsername).collect(Collectors.toList());
 
         return usernameList;
@@ -64,8 +65,8 @@ public class UserInfoService {
 
     // --------------- Phone 변경 -------------
     @Transactional
-    public ResponseEntity<String> modifyPhone(User user, String phone) {
-        if (phoneRegExp(phone)) {
+    public ResponseEntity<String> modifyPhone(User user, String phone){
+        if(phoneRegExp(phone)){
             user.updatePhone(phone);
             return new ResponseEntity<>("success", HttpStatus.OK);
         } else {
@@ -75,8 +76,8 @@ public class UserInfoService {
 
     // --------------- 비밀번호 변경 -------------
     @Transactional
-    public ResponseEntity<String> modifyPassword(User user, UserPwdDto userPwdDto) {
-        if (checkCurrentPassword(user, userPwdDto.getCurrentPwd())) {
+    public ResponseEntity<String> modifyPassword(User user, UserPwdDto userPwdDto){
+        if (checkCurrentPassword(user, userPwdDto.getCurrentPwd())){
             user.updatePassword(bCryptPasswordEncoder.encode(userPwdDto.getChangePwd()));
             return new ResponseEntity<>("success", HttpStatus.OK);
         }
@@ -89,7 +90,7 @@ public class UserInfoService {
         return new ResponseEntity<>("incorrect password", HttpStatus.BAD_REQUEST);
     }
 
-    private boolean checkCurrentPassword(User user, String currentPassword) {
+    private boolean checkCurrentPassword(User user, String currentPassword){
         return bCryptPasswordEncoder.matches(currentPassword, user.getPassword());
     }
 
@@ -107,13 +108,12 @@ public class UserInfoService {
         return phone.matches(phoneRegExp);
     }
 
-
     @Transactional
     public ResponseEntity<String> userWithdraw(User user) {
         String username = user.getUsername();
 
         Optional<User> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isPresent()) {
+        if (userOptional.isPresent()){
             userRepository.delete(user);
             redisService.delValues(username);
             return new ResponseEntity<>("success", HttpStatus.OK);

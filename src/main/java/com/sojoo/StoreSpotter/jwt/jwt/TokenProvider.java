@@ -67,7 +67,6 @@ public class TokenProvider implements InitializingBean {
                 .collect(Collectors.joining(","));
         Date now = new Date();
 
-        // Access Token
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
@@ -93,8 +92,8 @@ public class TokenProvider implements InitializingBean {
         return refreshToken;
     }
 
-    // AccessToken이 만료되었을 때 newAccessToken 발급 및 Cookie 및 Redis 에 반영
-    public String reissueAccessToken(String accessToken, HttpServletResponse response) {
+    // AccessToken 이 만료되었을 때 newAccessToken 발급 및 Cookie 및 Redis 에 반영
+    public String reissueAccessToken(String accessToken, HttpServletResponse response){
         String username = getUsernameFromToken(accessToken);
         String refreshToken = redisService.getValues(username);
 
@@ -116,9 +115,9 @@ public class TokenProvider implements InitializingBean {
      * validate AccessToken, RefreshToken
      */
 
-    public boolean validToken(String token) {
+    public boolean validToken(String Token) {
         try {
-            Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(key).parseClaimsJws(Token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             logger.info("잘못된 JWT 서명입니다.");
@@ -181,7 +180,6 @@ public class TokenProvider implements InitializingBean {
         } catch (ExpiredJwtException e) {
             return e.getClaims().getExpiration();
         } catch (Exception e) {
-            // 다른 종류의 예외 처리
             return null;
         }
     }
@@ -193,7 +191,6 @@ public class TokenProvider implements InitializingBean {
         } catch (ExpiredJwtException e) {
             return e.getClaims().getSubject();
         } catch (Exception e) {
-            // 다른 종류의 예외 처리
             return null;
         }
     }

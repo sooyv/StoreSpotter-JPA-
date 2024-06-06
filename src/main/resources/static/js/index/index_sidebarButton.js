@@ -143,9 +143,9 @@ $("#submit").click(function () {
                                 ].join(',')
                             }, function (status, response) {
                                 if (status !== naver.maps.Service.Status.OK) {
-                                    // 재접속 시도
-                                    alert("네이버 map이 정상적으로 동작하지 않습니다.");
+                                    alert("naver map이 정상적으로 동작하지 않습니다.");
                                     window.location.replace("/");
+                                    return;
                                 }
                                 var items = response.v2.results
                                     , address = ''
@@ -286,7 +286,7 @@ $("#submit").click(function () {
                                                 if (error.responseText === "DuplicateLikedName"){
                                                     alert("중복된 이름이 존재합니다")
                                                 }
-                                                if (error.responseText === "UserNotFound"){
+                                                if (error.responseText === "USER-NOT-FOUND"){
                                                     alert("로그인이 필요한 페이지입니다.")
                                                     window.location.replace("/login")
                                                 }
@@ -460,7 +460,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // 클릭 이벤트에 토글 함수 연결
     distInfo.addEventListener("click", toggleDistExplain);
 });
-
 
 function clickIndustry(industry) {
     return new Promise((resolve) => {

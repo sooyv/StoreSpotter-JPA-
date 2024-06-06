@@ -22,7 +22,6 @@ window.addEventListener("load", function () {
     }
 });
 
-
 // 로그아웃
 $(document).ready(function() {
     $('#logout').click(function(event) {
@@ -31,7 +30,6 @@ $(document).ready(function() {
             type: 'POST',
             url: '/user/auth/logout',
             success: function(response) {
-                console.log('로그아웃이 완료되었습니다.', response);
                 window.location.replace("/");
             },
             error: function(xhr, status, error) {

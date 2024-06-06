@@ -1,15 +1,17 @@
-version: "3"
 services:
   app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     image: sojoo/sojoo:latest
-#    build:
-#      context: .
-#      dockerfile: ./Dockerfile
-#    image: myapp:latest
     ports:
-      - "80:80"
+      - '8080:8080'
+    env_file:
+      - ./.env
     depends_on:
       - redis
+
   redis:
     image: redis:latest
     command: redis-server --port 6379
@@ -20,3 +22,60 @@ services:
       - "mode=standalone"
     ports:
       - "6379:6379"
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - /home/ubuntu/compose/conf:/etc/nginx/conf.d
+      - /home/ubuntu/compose/certbot/conf:/etc/letsencrypt
+      - /home/ubuntu/compose/certbot/www:/var/www/certbot
+    depends_on:
+      - certbot
+
+  certbot:
+    container_name: certbot
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - /home/ubuntu/compose/certbot/conf:/etc/letsencrypt
+      - /home/ubuntu/compose/certbot/www:/var/www/certbot
+
+  controller:
+    image: ngrinder/controller:3.5.9
+    environment:
+      - TZ=Asia/Seoul
+    sysctls:
+      - net.core.somaxconn=65000
+    platform: linux/amd64
+    restart: always
+    ports:
+      - "9000:80"
+      - "16001:16001"
+      - "12000-12009:12000-12009"
+    volumes:
+      - /tmp/ngrinder-controller:/opt/ngrinder-controller
+  agent:
+    image: ngrinder/agent:3.5.9
+    platform: linux/amd64
+    restart: always
+    links:
+      - controller
+    environment:
+      - TZ=Asia/Seoul
+    sysctls:
+      - net.core.somaxconn=65000
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nproc:
+        soft: 1024000
+        hard: 1024000
+      nofile:
+        soft: 1024000
+        hard: 1024000

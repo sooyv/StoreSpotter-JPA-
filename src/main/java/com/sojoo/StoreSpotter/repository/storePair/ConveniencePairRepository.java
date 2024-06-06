@@ -11,11 +11,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface ConveniencePairRepository extends JpaRepository<ConveniencePair, Long> {
+public interface ConveniencePairRepository extends JpaRepository<ConveniencePair, String> {
 
-    @Query(value = "        SELECT :st_nm as stNm, " +
+    @Query(value = "        SELECT CONCAT(c.bizes_id, :st_nm) as pairId, " +
+            "                       :st_nm as stNm, " +
             "                       ST_AsText(:st_coor) as stCoor, " +
             "                       c.bizes_nm as comNm, " +
             "                       ST_AsText(c.coordinates) as comCoor," +
@@ -27,8 +29,7 @@ public interface ConveniencePairRepository extends JpaRepository<ConveniencePair
             "                AND ST_DISTANCE_SPHERE(:st_coor, c.coordinates) > 10" +
             "                ORDER BY dist" +
             "                LIMIT 1", nativeQuery=true)
-    List<StoreInfoProjection> convenience_distanceSphere(@Param("st_nm") String st_nm, @Param("st_coor") Point st_coor, @Param("region_fk") Integer region_fk);
-
+    Optional<StoreInfoProjection> convenience_distanceSphere(@Param("st_nm") String st_nm, @Param("st_coor") Point st_coor, @Param("region_fk") Integer region_fk);
 
     @Modifying
     @Transactional
@@ -49,7 +50,7 @@ public interface ConveniencePairRepository extends JpaRepository<ConveniencePair
             "                c.pair_id AS pairId" +
             "                FROM convenience_pair c" +
             "                WHERE c.region_fk = :region_fk " +
-            "                AND c.dist > :dist", nativeQuery = true)
+            "                AND c.dist > :dist*2", nativeQuery = true)
     List<DataRecommandProjection> selectByDist(@Param("region_fk") String region_fk, @Param("dist") String dist);
 
     @Query("SELECT AVG(c.dist) AS dist" +

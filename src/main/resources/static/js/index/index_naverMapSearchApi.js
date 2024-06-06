@@ -61,7 +61,9 @@ function searchCoordinateToAddress(latlng) {
 
 // 업종 선택 시 즉시 전송
 $('.select-industry-detail').on('click', function() {
+    // 주소 가져오기
     let address = $('#address').val();
+    // 클릭한 indust 가져오기
     industry = $(this).text();
 
     if (!address) {
@@ -71,7 +73,6 @@ $('.select-industry-detail').on('click', function() {
         addressToServer(address, industry);
     }
 });
-
 
 // 주소 선택 시 지역 - 업종 평균 거리 나타내기
 function addressToServer(address, industry) {
@@ -190,7 +191,6 @@ function searchAddressToCoordinate(address) {
             addressToServer(address, industry);
         }
 
-
         if (item.jibunAddress) {
             htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
         }
@@ -225,7 +225,7 @@ function initGeocoder() {
         $('#show-avg-dist').hide();
         $('#select-dist').hide();
 
-        if (keyCode === 13) {   // Enter Key
+        if (keyCode === 13) { // Enter Key
 
             let industry = $('#select-industry .select-industry-detail.selected').text();
             let address = $('#address').val();
@@ -244,14 +244,15 @@ function initGeocoder() {
     $('#address-search').on('click', function(e) {
         e.preventDefault();
         if (!industry) {
-            alert("업종을 선택해 주세요.");
+            alert("업종을 선택해 주세요.")
         } else if (!address) {
-            alert("주소선택을 완료해주세요.");
+            alert("주소선택을 완료해주세요.")
         } else {
             var map = new naver.maps.Map('map');
             searchAddressToCoordinate($('#address').val());
         }
     });
+
 }
 
 function makeAddress(item) {

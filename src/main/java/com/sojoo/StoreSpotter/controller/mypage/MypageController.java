@@ -1,6 +1,5 @@
 package com.sojoo.StoreSpotter.controller.mypage;
 
-import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
 import com.sojoo.StoreSpotter.dto.mypage.LikedDto;
 import com.sojoo.StoreSpotter.dto.mypage.LikedRequestDto;
 import com.sojoo.StoreSpotter.dto.user.UserPwdDto;
@@ -11,6 +10,7 @@ import com.sojoo.StoreSpotter.service.apiToDb.RegionService;
 import com.sojoo.StoreSpotter.service.mypage.LikedService;
 import com.sojoo.StoreSpotter.service.user.UserInfoService;
 import com.sojoo.StoreSpotter.service.user.UserService;
+import com.sojoo.StoreSpotter.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -47,13 +49,11 @@ public class MypageController {
 
         User user = userService.getUserFromCookie(request);
 
-        /* 검색기능 */
         List<LikedDto> likedList;
 
-        // 검색어 유무 확인
-        if (keyword == null) {
+        if (keyword == null){
             likedList = likedService.likedEntityToDto(user.getLikedList()); // 사용자의 likedList 가져오기
-        } else {
+        }else{
             List<Liked> likedSearch = likedService.likedSearch(keyword);
             likedList = likedService.likedEntityToDto(likedSearch);
         }
@@ -78,7 +78,6 @@ public class MypageController {
 
         User user = userService.getUserFromCookie(request);
 
-        // 찜 이름 중복 확인 (likeName duplicate valid)
         ResponseEntity<String> isDuplicate = likedService.duplicateLikedName(user, likedDto.getLikedName());
         if (isDuplicate.getStatusCode().equals(HttpStatus.BAD_REQUEST)){
             return isDuplicate;
@@ -95,7 +94,6 @@ public class MypageController {
 
         User user = userService.getUserFromCookie(request);
 
-        // 찜 이름 중복 확인 (likeName duplicate valid)
         ResponseEntity<String> isDuplicate = likedService.duplicateLikedName(user, editName);
         if (isDuplicate.getStatusCode().equals(HttpStatus.BAD_REQUEST)){
             return isDuplicate;
@@ -154,9 +152,10 @@ public class MypageController {
 
     // 계정 탈퇴
     @PostMapping("/info/modify/withdraw")
-    public ResponseEntity<String> userWithdraw(HttpServletRequest request) {
+    public ResponseEntity<String> userWithdraw(HttpServletRequest request, HttpServletResponse response) {
         User user = userService.getUserFromCookie(request);
 
+        CookieUtil.delCookie(response);
         return userInfoService.userWithdraw(user);
     }
 

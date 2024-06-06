@@ -2,6 +2,8 @@ package com.sojoo.StoreSpotter.service.apiToDb;
 
 import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.common.exception.ApiDataNotFoundException;
+import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
+import com.sojoo.StoreSpotter.config.timeTrace.TimeTrace;
 import com.sojoo.StoreSpotter.repository.apiToDb.*;
 import com.sojoo.StoreSpotter.entity.apiToDb.*;
 import org.jdom2.Document;
@@ -18,6 +20,7 @@ import javax.transaction.Transactional;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StoreInfoService {
@@ -39,8 +42,48 @@ public class StoreInfoService {
         this.apiServiceKey = apiServiceKey;
     }
 
+    @TimeTrace
     @Transactional
-    // 업종 저장 코드 - 업종별로 전지역 데이터 저장
+    // 업종 저장 코드 - 편의점 전지역 데이터 저장
+    public void convApiToDb() throws ApiDataNotFoundException {
+        long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
+
+        try {
+            convenienceStoreRepository.deleteAll();
+
+            Industry industry = industryRepository.findByIndustName("편의점");
+            connectToApi(industry);
+        } catch (Exception e) {
+            throw new ApiDataNotFoundException(ErrorCode.API_DATA_NOT_FOUND);
+        }
+
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = (afterTime - beforeTime) / 1000; //두 시간에 차 계산
+        System.out.println("소요시간 : " + secDiffTime/60 +"분 " + secDiffTime%60+"초");
+    }
+
+    @TimeTrace
+    @Transactional
+    // 업종 저장 코드 - 카페 전지역 데이터 저장
+    public void cafeApiToDb() throws ApiDataNotFoundException {
+        long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
+
+        try {
+            cafeRepository.deleteAll();
+
+            Industry industry = industryRepository.findByIndustName("카페");
+            connectToApi(industry);
+        } catch (Exception e) {
+            throw new ApiDataNotFoundException(ErrorCode.API_DATA_NOT_FOUND);
+        }
+
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = (afterTime - beforeTime) / 1000; //두 시간에 차 계산
+        System.out.println("소요시간 : " + secDiffTime/60 +"분 " + secDiffTime%60+"초");
+    }
+
+    @Transactional
+    // 업종 저장 코드 - 전체 전지역 데이터 저장
     public void apiToDb() throws ApiDataNotFoundException {
         long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
@@ -64,7 +107,7 @@ public class StoreInfoService {
 
 
     // 공공데이터 api 연결 및 Document 전달
-    public void connectToApi(Industry industry) throws Exception {
+    private void connectToApi(Industry industry) throws Exception {
 
         try {
             String industId = industry.getIndustId();
@@ -111,7 +154,6 @@ public class StoreInfoService {
                     int totalCountValue = Integer.parseInt(totalCount.getText());
 
                     totalPageCount = (totalCountValue / 1000) + 1;
-
                     publicApiDataSave(document, industId, regionId);
                 }
             }
@@ -122,7 +164,7 @@ public class StoreInfoService {
     }
 
     // api 데이터 저장 로직
-    public void publicApiDataSave(Document document, String industId, Integer regionId) throws DuplicateKeyException {
+    private void publicApiDataSave(Document document, String industId, Integer regionId) throws DuplicateKeyException {
             Element root = document.getRootElement();
             Element body = root.getChild("body");
             Element items = body.getChild("items");
@@ -137,15 +179,15 @@ public class StoreInfoService {
                 try {
                     switch (industId){
                         case "G20405":
-                                Point convPoint = StoreInfo.setCoordinates(lon, lat);
-                                ConvenienceStore convenienceStore = ConvenienceStore.builder()
-                                        .bizesId(bizesId)
-                                        .bizesNm(bizesNm)
-                                        .rdnmAdr(rdnmAdr)
-                                        .coordinates(convPoint)
-                                        .regionFk(regionId)
-                                        .build();
-                                convenienceStoreRepository.save(convenienceStore);
+                            Point convPoint = StoreInfo.setCoordinates(lon, lat);
+                            ConvenienceStore convenienceStore = ConvenienceStore.builder()
+                                    .bizesId(bizesId)
+                                    .bizesNm(bizesNm)
+                                    .rdnmAdr(rdnmAdr)
+                                    .coordinates(convPoint)
+                                    .regionFk(regionId)
+                                    .build();
+                            convenienceStoreRepository.save(convenienceStore);
                             break;
 
                         case "I21201":

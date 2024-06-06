@@ -11,4 +11,6 @@ import java.util.List;
 
 public interface ConvenienceStoreRepository extends JpaRepository<ConvenienceStore, String> {
 
+    List<ConvenienceStore> findAllByRegionFk(Integer regionFk);
+
 }

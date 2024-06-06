@@ -18,45 +18,44 @@ $(document).ready(function (){
 
 // ---------- 이름 수정 ----------
 function updateNickname() {
-        const nickname = document.getElementById('change_name').value;
-        $.ajax({
-            type: 'POST',
-            url: "/mypage/info/modify/nickname",
-            data: {
-                nickname: nickname
-            },
-            success: function (response) {
-                location.reload();
-            }, error: function (error) {
-                alert("이름 수정 실패");
-            }
-        });
-}
-
-
-// ---------- 번호 수정 ----------
-function updatePhone() {
-const phoneRegExp = /^d{11}/;
-
-if (!phoneRegExp){
-    alert("전화번호는 '-'를 제외한 숫자 11자리 입니다. ex) 01012340000");
-    return null;
-}
-var phone = document.getElementById('change_phone').value;
+    const nickname = document.getElementById('change_name').value;
     $.ajax({
         type: 'POST',
-        url: "/mypage/info/modify/phone",
+        url: "/mypage/info/modify/nickname",
         data: {
-            phone: phone
+            nickname: nickname
         },
         success: function (response) {
             location.reload();
-        }, error: function (error){
-            if(error.responseText === "phoneRegExp"){
-                alert("전화번호는 '-'를 제외한 숫자 11자리 입니다. ex) 01012340000");
-            }
+        }, error: function (error) {
+            alert("이름 수정 실패")
         }
     });
+}
+
+// ---------- 번호 수정 ----------
+function updatePhone() {
+    const phoneRegExp = /^d{11}/;
+
+    if (!phoneRegExp){
+        alert("전화번호는 '-'를 제외한 숫자 11자리 입니다. ex) 01012340000");
+        return null;
+    }
+    var phone = document.getElementById('change_phone').value;
+        $.ajax({
+            type: 'POST',
+            url: "/mypage/info/modify/phone",
+            data: {
+                phone: phone
+            },
+            success: function (response) {
+                location.reload();
+            }, error: function (error){
+                if(error.responseText === "phoneRegExp"){
+                    alert("전화번호는 '-'를 제외한 숫자 11자리 입니다. ex) 01012340000");
+                }
+            }
+        });
 }
 
 
@@ -101,6 +100,7 @@ function updatePwd() {
             if (error.responseText === "passwordRegExp") {
                 alert("최소 8자, 영문, 숫자, 특수문자를 사용하여 비밀번호를 생성하세요.")
             }
+
         }
     });
 }
@@ -108,15 +108,17 @@ function updatePwd() {
 
 // ---------- 계정 탈퇴 ----------
 function withdrawAccount() {
+
     $.ajax({
         type: 'POST',
         url: "/mypage/info/modify/withdraw",
+
         success: function (response) {
             alert("탈퇴 되었습니다.");
             window.location.replace("/");
         }, error: function (error) {
             if (error.responseText === "withdrawFailed") {
-                alert("회원 탈퇴를 실패하였습니다.");
+                alert("회원 탈퇴가 실패하였습니다.");
             }
         }
     });

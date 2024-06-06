@@ -1,15 +1,10 @@
 package com.sojoo.StoreSpotter.util;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-@Slf4j
-@Component
 public class CookieUtil {
 
     public static Cookie getCookie(HttpServletRequest request, String name) {
@@ -25,9 +20,9 @@ public class CookieUtil {
         return null;
     }
 
-
     public static void addCookie(HttpServletResponse response, String accessToken, String value, int maxAge) {
         Cookie cookie = new Cookie(accessToken, value);
+
         cookie.setHttpOnly(true);
         cookie.setSecure(false);
         cookie.setPath("/");
@@ -35,4 +30,10 @@ public class CookieUtil {
         response.addCookie(cookie);
     }
 
+    public static void delCookie(HttpServletResponse response) {
+        Cookie myCookie = new Cookie("access_token", null);
+        myCookie.setMaxAge(0);
+        myCookie.setPath("/");
+        response.addCookie(myCookie);
+    }
 }

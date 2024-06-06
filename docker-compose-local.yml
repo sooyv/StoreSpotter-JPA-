@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 services:
   app:
     build:
@@ -19,3 +19,19 @@ services:
       - "mode=standalone"
     ports:
       - "6379:6379"
+#  controller:
+#    image: ngrinder/controller:3.5.9
+#    platform: linux/amd64
+#    restart: always
+#    ports:
+#      - "9000:80"
+#      - "16001:16001"
+#      - "12000-12009:12000-12009"
+#    volumes:
+#      - /Applications/ngrinder-controller-3.5.9:/opt/ngrinder-controller
+#  agent:
+#    image: ngrinder/agent:3.5.9
+#    platform: linux/amd64
+#    restart: always
+#    links:
+#      - controller
