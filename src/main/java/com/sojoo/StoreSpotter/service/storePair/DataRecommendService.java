@@ -28,7 +28,7 @@ public class DataRecommendService {
 
     public List<DataRecommandProjection> selectPairByDist(String industryId, String regionFk, String dist) {
         List<DataRecommandProjection> result = null;
-        try{
+        try {
             switch (industryId) {
                 case "G20405":
                     result = conveniencePairRepository.selectByDist(regionFk, dist);
@@ -39,7 +39,7 @@ public class DataRecommendService {
                     break;
             }
         }
-        catch (Exception e){
+        catch (Exception e) {
             throw new DataRecommendNotFoundException(ErrorCode.DATA_RECOMMEND_NOT_FOUND);
         }
 

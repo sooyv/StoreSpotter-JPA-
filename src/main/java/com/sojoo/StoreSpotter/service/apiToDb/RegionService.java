@@ -22,6 +22,8 @@ public class RegionService {
     // 주소 시도만 자르기
     public String getCityFromAddress(String address) {
         int cityIndex = address.indexOf(" ");
-        return (cityIndex != -1) ? address.substring(0, cityIndex) : address;
+        String city = (cityIndex != -1) ? address.substring(0, cityIndex) : address;
+        System.out.println("getCityFromAddress 시티 확인 : " +city);
+        return city;
     }
 }

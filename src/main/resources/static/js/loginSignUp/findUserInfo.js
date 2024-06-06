@@ -241,5 +241,3 @@ $("#reissue-password").on("click", function() {
         }
     });
 });
-
-
