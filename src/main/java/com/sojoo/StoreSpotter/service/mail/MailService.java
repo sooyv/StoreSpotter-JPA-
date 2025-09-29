@@ -1,13 +1,14 @@
 package com.sojoo.StoreSpotter.service.mail;
 
 import com.sojoo.StoreSpotter.common.error.ErrorCode;
+import com.sojoo.StoreSpotter.common.exception.CommonException;
 import com.sojoo.StoreSpotter.common.exception.SmtpSendFailedException;
 import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
 import com.sojoo.StoreSpotter.entity.user.User;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import com.sojoo.StoreSpotter.service.redis.RedisService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -22,18 +23,19 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class MailService {
     private final JavaMailSender javaMailSender;
     private final RedisService redisService;
     private final UserRepository userRepository;
 
-    @Autowired
-    public MailService(JavaMailSender javaMailSender, RedisService redisService, UserRepository userRepository) {
-        this.javaMailSender = javaMailSender;
-        this.redisService = redisService;
-        this.userRepository = userRepository;
-    }
+//    @Autowired
+//    public MailService(JavaMailSender javaMailSender, RedisService redisService, UserRepository userRepository) {
+//        this.javaMailSender = javaMailSender;
+//        this.redisService = redisService;
+//        this.userRepository = userRepository;
+//    }
 
 
     // --------------------- 회원가입 메일 인증코드 ---------------------
@@ -42,6 +44,8 @@ public class MailService {
             String randomCode = createRandomCode();
             MimeMessage mailMsg = createMailMessage(email, randomCode);
             javaMailSender.send(mailMsg);
+            System.out.println("randomCode" + randomCode);
+            System.out.println("mailMsg" + mailMsg);
 
             redisService.setValues(email, randomCode, 3, TimeUnit.MINUTES);
 
@@ -153,17 +157,17 @@ public class MailService {
     }
 
     // 메일 인증 코드 검사
-    public ResponseEntity<String> checkMailCode(String email, String mailCode) {
+    public void checkMailCode(String email, String mailCode) {
 
         String storedMailCode = redisService.getValues(email);
 
         if (storedMailCode != null && !storedMailCode.equals(mailCode)) {
-            return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
+            throw new CommonException(ErrorCode.MAIL_CODE_NOT_EQUAL_400);
         }
         if (storedMailCode == null) {
-            return new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
+            throw new CommonException(ErrorCode.MAIL_CODE_EXPIRED_400);
         }
-        return new ResponseEntity<>("success", HttpStatus.OK);
+        new ResponseEntity<>("success", HttpStatus.OK);
     }
 }
 

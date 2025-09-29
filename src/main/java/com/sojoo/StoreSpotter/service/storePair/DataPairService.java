@@ -47,16 +47,16 @@ public class DataPairService {
     @TimeTrace
     @Transactional
     public void saveIndustryPairData() {
-        try{
+        try {
             long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
 
             conveniencePairRepository.deleteAll();
             cafePairRepository.deleteAll();
 
             List<Industry> industryList = industryRepository.findAll();
-            for (Industry industry : industryList){
+            for (Industry industry : industryList) {
                 String industId = industry.getIndustId();
-                switch (industId){
+                switch (industId) {
                     case "G20405":
                         List<ConvenienceStore> convenienceStoreList = convenienceStoreRepository.findAll();
                         selectDataPair(convenienceStoreList, industId);
@@ -72,7 +72,7 @@ public class DataPairService {
                 long secDiffTime = (afterTime - beforeTime) / 1000; //두 시간에 차 계산
                 System.out.println(industry.getIndustName() + "Pair 생성 소요시간 : " + secDiffTime/60 +"분 " + secDiffTime%60+"초");
             }
-        }catch (Exception e){
+        } catch (Exception e){
             throw new DataPairCreateFailedException(ErrorCode.DATA_PAIR_CREATE_FAILED);
         }
     }
@@ -156,7 +156,7 @@ public class DataPairService {
         List<ConveniencePair> conveniencePairs = new ArrayList<>();
         List<CafePair> cafePairs = new ArrayList<>();
 
-        switch (industId){
+        switch (industId) {
             case "G20405":
                 for (StoreInfo storeData : storeDataList) {
                     String name = storeData.getBizesNm();

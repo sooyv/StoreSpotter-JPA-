@@ -78,22 +78,22 @@ form.addEventListener("submit", event => {
             success: function (response) {
                 window.location.replace("/login");
             },
-            error: function (error) {
-                if (error.responseText === "duplicateEmail") {
-                    alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.");
-                    email.focus();
+            error: function(xhr) {
+                console.log(xhr.responseText)
+                const obj = JSON.parse(xhr.responseText);
+                const code = obj.code;
+                const message = obj.message
+                switch(code) {
+                    case "USER-DUPLICATE-400":
+                        alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.");
+                        email.focus();
+                    case "MAIL-CODE-NOT-EQUAL-400":
+                        alert("메일 코드가 일치하지 않습니다.");
+                        mailCode.focus();
+                    case "MAIL-CODE-EXPIRED-400":
+                        alert("메일 인증을 재시도 해주세요. 만료된 메일 코드입니다.");
+                        mailCode.focus();
                 }
-
-                if (error.responseText === "expirationMailCode") {
-                    alert("메일 인증을 재시도 해주세요. 만료된 메일 코드입니다.");
-                    mailCode.focus();
-                }
-
-                if (error.responseText === "notEqualMailCode") {
-                    alert("메일 코드가 일치하지 않습니다.");
-                    mailCode.focus();
-                }
-
                 $("#signUpBtn").addClass('shake');
                 setTimeout(function() {
                     $("#signUpBtn").removeClass('shake'); // 0.8초 후 shake 클래스 제거
@@ -119,19 +119,26 @@ $("#send-mail").on("click", function() {
             email : email
         },
         success: function(response) {
+            console.log()
             alert("이메일로 인증번호가 발송되었습니다.");
         },
-        error: function(error) {
-            // 메일 중복검사
-            if (error.responseText === "duplicateEmail") {
+        error: function(xhr) {
+            const obj = JSON.parse(xhr.responseText);
+            const code = obj.code;
+            const message = obj.message
+            switch (code) {
+              case "USER-DUPLICATE-400":
                 alert("이미 존재하는 회원입니다. 다른 이메일을 사용해주세요.");
                 email.focus();
-            }
-            if (error.responseText === "SMTP SEND FAILED"); {
-                alert("인증번호 전송을 실패하였습니다.");
+                break;
+              case "SMTP-SEND-FAILED-421":
+                alert("인증번호 전송을 실패하였습니다. 잠시 후 다시 시도해주세요.");
+                break;
+              default:
+                alert("요청 처리 중 오류가 발생했습니다.");
             }
         }
-    });
+    })
 });
 
 

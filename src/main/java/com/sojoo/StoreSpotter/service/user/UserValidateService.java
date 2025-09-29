@@ -1,5 +1,7 @@
 package com.sojoo.StoreSpotter.service.user;
 
+import com.sojoo.StoreSpotter.common.error.ErrorResponse;
+import com.sojoo.StoreSpotter.common.exception.EmailDuplicateException;
 import com.sojoo.StoreSpotter.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,11 +18,10 @@ public class UserValidateService {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<String> checkDuplicateEmail(String username) {
+    public void checkDuplicateEmail(String username) {
         if (userRepository.findByUsername(username).isPresent()) {
-            return new ResponseEntity<>("duplicateEmail", HttpStatus.BAD_REQUEST);
-        } else {
-            return new ResponseEntity<>(HttpStatus.OK);
+//            return new ResponseEntity<>("duplicateEmail", HttpStatus.BAD_REQUEST);
+            throw new EmailDuplicateException();
         }
     }
 

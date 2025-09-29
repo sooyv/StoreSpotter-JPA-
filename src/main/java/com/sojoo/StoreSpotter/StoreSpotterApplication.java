@@ -11,6 +11,4 @@ public class StoreSpotterApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(StoreSpotterApplication.class, args);
 	}
-
-
 }

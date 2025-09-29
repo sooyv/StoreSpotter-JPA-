@@ -6,6 +6,7 @@ import com.sojoo.StoreSpotter.common.exception.UserNotFoundException;
 import com.sojoo.StoreSpotter.config.timeTrace.TimeTrace;
 import com.sojoo.StoreSpotter.repository.apiToDb.*;
 import com.sojoo.StoreSpotter.entity.apiToDb.*;
+import lombok.RequiredArgsConstructor;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
@@ -143,10 +144,10 @@ public class StoreInfoService {
 
                     Element totalCount;
 
-                    if (body == null & totalPageCount == 1){
+                    if (body == null & totalPageCount == 1) {
                         throw new Exception();
                     }
-                    if (body == null){
+                    if (body == null) {
                         continue;
                     }
 
@@ -177,7 +178,7 @@ public class StoreInfoService {
                 Double lon = Double.valueOf(item.getChildText("lon"));
                 Double lat = Double.valueOf(item.getChildText("lat"));
                 try {
-                    switch (industId){
+                    switch (industId) {
                         case "G20405":
                             Point convPoint = StoreInfo.setCoordinates(lon, lat);
                             ConvenienceStore convenienceStore = ConvenienceStore.builder()

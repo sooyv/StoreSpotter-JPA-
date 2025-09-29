@@ -67,6 +67,7 @@ public class AuthController {
     @PostMapping("/login")
     @TimeTrace
     public ResponseEntity<TokenDto> loginProcess(@Valid @RequestBody LoginDto loginDto, HttpServletResponse response) throws Exception {
+        System.out.println("로그인 DTO : " + loginDto.getUsername());
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 
@@ -93,19 +94,21 @@ public class AuthController {
     public ResponseEntity<String> signup(@RequestBody UserDto userDto) {
 
         String username = userDto.getUsername();
-        ResponseEntity<String> checkDuplicateEmail = userValidateService.checkDuplicateEmail(username);
-        if (userValidateService.checkDuplicateEmail(userDto.getUsername()).getStatusCode().equals(HttpStatus.BAD_REQUEST)) {
-            return checkDuplicateEmail;
-        }
+//        ResponseEntity<String> checkDuplicateEmail = userValidateService.checkDuplicateEmail(username);
+//        if (userValidateService.checkDuplicateEmail(userDto.getUsername()).getStatusCode().equals(HttpStatus.BAD_REQUEST)) {
+//            return checkDuplicateEmail;
+//        }
+        // 400
+        userValidateService.checkDuplicateEmail(username);
+        mailService.checkMailCode(userDto.getUsername(), userDto.getMailCode());
 
-        String checkMailCodeResult = mailService.checkMailCode(userDto.getUsername(), userDto.getMailCode()).getBody();
-
-        if ("notEqualMailCode".equals(checkMailCodeResult)) {
-            return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
-        }
-        if ("expirationMailCode".equals(checkMailCodeResult)) {
-            return  new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
-        }
+//        String checkMailCodeResult = mailService.checkMailCode(userDto.getUsername(), userDto.getMailCode()).getBody();
+//        if ("notEqualMailCode".equals(checkMailCodeResult)) {
+//            return new ResponseEntity<>("notEqualMailCode", HttpStatus.BAD_REQUEST);
+//        }
+//        if ("expirationMailCode".equals(checkMailCodeResult)) {
+//            return new ResponseEntity<>("expirationMailCode", HttpStatus.BAD_REQUEST);
+//        }
 
         userService.signup(userDto);
 

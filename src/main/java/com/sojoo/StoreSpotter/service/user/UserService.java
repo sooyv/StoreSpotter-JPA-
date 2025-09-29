@@ -42,9 +42,12 @@ public class UserService {
     @Transactional
     @TimeTrace
     public void signup(UserDto userDto) {
-        if (userValidateService.checkDuplicateEmail(userDto.getUsername()).getStatusCode().equals(HttpStatus.BAD_REQUEST)){
-            throw new EmailDuplicateException(ErrorCode.EMAIL_DUPLICATION);
-        }
+//        if (userValidateService.checkDuplicateEmail(userDto.getUsername()).getStatusCode().equals(HttpStatus.BAD_REQUEST)){
+//            throw new EmailDuplicateException(ErrorCode.EMAIL_DUPLICATION);
+//        }
+        // 400
+        userValidateService.checkDuplicateEmail(userDto.getUsername());
+
         Optional<Authority> authorityOptional = authorityRepository.findByAuthorityName("ROLE_USER");
         Authority authority;
         authority = authorityOptional.orElseGet(() -> Authority.builder()

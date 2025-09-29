@@ -4,11 +4,10 @@ form.addEventListener("submit", event => {
 
     $(document).ready(function () {
 
-        // 폼 데이터를 추출합니다.
         const username = $('#email').val()
         const password = $('#password').val()
 
-        const loginDto = {"username": username, "password": password};
+        const loginDto = { "username": username, "password": password };
 
         $.ajax({
             type: 'POST',
