@@ -22,6 +22,7 @@ import com.sojoo.StoreSpotter.api.SuccessApiResponse;
 import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.common.error.ErrorResponse;
 import com.sojoo.StoreSpotter.common.error.ExplainError;
+import com.sojoo.StoreSpotter.jwt.exception.JwtErrorCode;
 
 import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
@@ -106,27 +107,71 @@ public class SwaggerConfig {
 			}
 
 			ErrorCode[] codes = null;
+			JwtErrorCode[] jwtCodes = null;
 			if (methodApiResult != null || classApiResult != null) {
 				ApiResult a = methodApiResult != null ? methodApiResult : classApiResult;
 				if (a.errors() != null && a.errors().length > 0) {
 					codes = a.errors();
 				}
+				if (a.jwtErrors() != null && a.jwtErrors().length > 0) {
+					jwtCodes = a.jwtErrors();
+				}
 			}
 			if (codes == null) {
 				if (methodErrorAnno == null && classErrorAnno == null) {
-					return operation;
+					// annotations 둘 다 없으면 codes는 그대로 null 유지 (jwtOnly 케이스 허용)
+					if (jwtCodes == null || jwtCodes.length == 0) {
+						return operation;
+					}
+				} else {
+					codes = methodErrorAnno != null ? methodErrorAnno.value() : classErrorAnno.value();
 				}
-				codes = methodErrorAnno != null ? methodErrorAnno.value() : classErrorAnno.value();
 			}
 
 			// group by status to aggregate multiple examples per HTTP status
 			Map<Integer, ApiResponse> statusToResponse = new LinkedHashMap<>();
 
-			for (ErrorCode code : codes) {
-				int status = code.getStatus();
-				ApiResponse apiResp = statusToResponse.computeIfAbsent(status, s -> {
+			if (codes != null) {
+				for (ErrorCode code : codes) {
+					int status = code.getStatus();
+					ApiResponse apiResp = statusToResponse.computeIfAbsent(status, s -> {
+						ApiResponse r = new ApiResponse();
+						r.setDescription("에러 응답");
+						Content content = new Content();
+						MediaType mediaType = new MediaType();
+						mediaType.setSchema(new Schema<ErrorResponse>().$ref("#/components/schemas/ErrorResponse"));
+						content.addMediaType("application/json", mediaType);
+						r.setContent(content);
+						return r;
+					});
+
+					// Defensive: ensure content and mediaType exist
+					if (apiResp.getContent() == null) {
+						apiResp.setContent(new Content());
+					}
+					if (apiResp.getContent().get("application/json") == null) {
+						MediaType def = new MediaType();
+						def.setSchema(new Schema<ErrorResponse>().$ref("#/components/schemas/ErrorResponse"));
+						apiResp.getContent().addMediaType("application/json", def);
+					}
+					MediaType mt = apiResp.getContent().get("application/json");
+					if (mt.getExamples() == null) {
+						mt.setExamples(new LinkedHashMap<>());
+					}
+					String exampleName = code.name();
+					mt.getExamples().put(exampleName, new io.swagger.v3.oas.models.examples.Example()
+							.summary(code.getErrorCode())
+							.description(getExplain(code))
+							.value(buildExampleJson(code)));
+				}
+			}
+
+			// JWT 오류는 401로 문서화
+			if (jwtCodes != null && jwtCodes.length > 0) {
+				int jwtStatus = 401;
+				ApiResponse apiResp = statusToResponse.computeIfAbsent(jwtStatus, s -> {
 					ApiResponse r = new ApiResponse();
-					r.setDescription("에러 응답");
+					r.setDescription("JWT 인증 오류 응답");
 					Content content = new Content();
 					MediaType mediaType = new MediaType();
 					mediaType.setSchema(new Schema<ErrorResponse>().$ref("#/components/schemas/ErrorResponse"));
@@ -135,15 +180,26 @@ public class SwaggerConfig {
 					return r;
 				});
 
+				// Defensive: ensure content and mediaType exist
+				if (apiResp.getContent() == null) {
+					apiResp.setContent(new Content());
+				}
+				if (apiResp.getContent().get("application/json") == null) {
+					MediaType def = new MediaType();
+					def.setSchema(new Schema<ErrorResponse>().$ref("#/components/schemas/ErrorResponse"));
+					apiResp.getContent().addMediaType("application/json", def);
+				}
 				MediaType mt = apiResp.getContent().get("application/json");
 				if (mt.getExamples() == null) {
 					mt.setExamples(new LinkedHashMap<>());
 				}
-				String exampleName = code.name();
-				mt.getExamples().put(exampleName, new io.swagger.v3.oas.models.examples.Example()
-						.summary(code.getErrorCode())
-						.description(getExplain(code))
-						.value(buildExampleJson(code)));
+				for (JwtErrorCode jwtCode : jwtCodes) {
+					String exampleName = jwtCode.name();
+					mt.getExamples().put(exampleName, new io.swagger.v3.oas.models.examples.Example()
+							.summary(jwtCode.getCode())
+							.description(jwtCode.getMessage())
+							.value(buildJwtExampleJson(jwtCode)));
+				}
 			}
 
 			ApiResponses targetResponses = operation.getResponses();
@@ -164,6 +220,14 @@ public class SwaggerConfig {
 				"\n  \"status\": " + errorCode.getStatus() + "," +
 				"\n  \"code\": \"" + errorCode.getErrorCode() + "\"," +
 				"\n  \"message\": \"" + escape(errorCode.getMessage()) + "\"\n" +
+				"}";
+	}
+
+	private static String buildJwtExampleJson(JwtErrorCode jwtErrorCode) {
+		return "{" +
+				"\n  \"status\": " + 401 + "," +
+				"\n  \"code\": \"" + jwtErrorCode.getCode() + "\"," +
+				"\n  \"message\": \"" + escape(jwtErrorCode.getMessage()) + "\"\n" +
 				"}";
 	}
 

@@ -91,7 +91,7 @@ public class UserController {
     @Operation(summary = MgrSwaggerDoc.User.Api.findUserAccount.Summary, description = MgrSwaggerDoc.User.Api.findUserAccount.Desc)
     @PostMapping("/user/account")
     @ApiResult(
-            errors = { ErrorCode.USER_NOT_FOUND})
+            errors = { ErrorCode.USER_NOT_FOUND })
     public List<String> findUserAccount(@RequestParam("userNickname") String userNickname, @RequestParam("phone") String phone) {
         List<String> userEmail = userInfoService.findUserEmail(userNickname, phone);
         return userEmail;

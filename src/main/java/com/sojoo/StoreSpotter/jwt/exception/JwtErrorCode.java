@@ -13,7 +13,6 @@ public enum JwtErrorCode {
     ACCESS_DENIED("103_ACCESS_DENIED", "접근 권한이 없는 사용자 요청입니다.");
 
 
-
     private final String code;
     private final String message;
 

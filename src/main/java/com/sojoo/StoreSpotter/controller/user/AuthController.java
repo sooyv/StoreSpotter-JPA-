@@ -1,15 +1,20 @@
 package com.sojoo.StoreSpotter.controller.user;
 
 
+import com.sojoo.StoreSpotter.api.ApiResult;
+import com.sojoo.StoreSpotter.api.MgrSwaggerDoc;
+import com.sojoo.StoreSpotter.common.error.ErrorCode;
 import com.sojoo.StoreSpotter.config.timeTrace.TimeTrace;
 import com.sojoo.StoreSpotter.dto.user.LoginDto;
 import com.sojoo.StoreSpotter.dto.user.UserDto;
 import com.sojoo.StoreSpotter.jwt.dto.TokenDto;
+import com.sojoo.StoreSpotter.jwt.exception.JwtErrorCode;
 import com.sojoo.StoreSpotter.jwt.jwt.TokenProvider;
 import com.sojoo.StoreSpotter.service.mail.MailService;
 import com.sojoo.StoreSpotter.service.redis.RedisService;
 import com.sojoo.StoreSpotter.service.user.UserService;
 import com.sojoo.StoreSpotter.service.user.UserValidateService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,8 +57,12 @@ public class AuthController {
         this.mailService = mailService;
     }
 
-    @Transactional
+    @Operation(summary = MgrSwaggerDoc.Auth.Api.logout.Summary, description = MgrSwaggerDoc.Auth.Api.logout.Desc)
     @PostMapping("/logout")
+    @ApiResult(
+            jwtErrors = { JwtErrorCode.EXPIRED_TOKEN }
+    )
+    @Transactional
     public ResponseEntity<String> logout(HttpServletRequest request) {
         Cookie cookie = getCookie(request, "access_token");
 
@@ -64,7 +73,10 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+
+    @Operation(summary = MgrSwaggerDoc.Auth.Api.login.Summary, description = MgrSwaggerDoc.Auth.Api.login.Desc)
     @PostMapping("/login")
+    @ApiResult( jwtErrors = { JwtErrorCode.EXPIRED_TOKEN })
     @TimeTrace
     public ResponseEntity<TokenDto> loginProcess(@Valid @RequestBody LoginDto loginDto, HttpServletResponse response) throws Exception {
         System.out.println("로그인 DTO : " + loginDto.getUsername());
@@ -83,14 +95,19 @@ public class AuthController {
             redisService.setValues(username, refreshToken, 30 , TimeUnit.DAYS);
 
             return new ResponseEntity<>(HttpStatus.OK);
+
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
+
     // 회원가입
+    @Operation(summary = MgrSwaggerDoc.Auth.Api.signup.Summary, description = MgrSwaggerDoc.Auth.Api.signup.Desc)
     @PostMapping("/signup")
+    @ApiResult(
+            errors = { ErrorCode.EMAIL_DUPLICATION, ErrorCode.MAIL_CODE_EXPIRED_400, ErrorCode.MAIL_CODE_NOT_EQUAL_400 })
     public ResponseEntity<String> signup(@RequestBody UserDto userDto) {
 
         String username = userDto.getUsername();

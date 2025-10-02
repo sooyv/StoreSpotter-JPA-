@@ -120,10 +120,32 @@ public class MgrSwaggerDoc {
         }
     }
 
+    public static final class Auth {
+
+        public static class Api {
+
+            public static class login {
+                public static final String Summary = "로그인 진행";
+                public static final String Desc = "로그인 진행 및 토큰 발급";
+            }
+
+            public static class logout {
+                public static final String Summary = "로그아웃 진행";
+                public static final String Desc = "로그아웃 및 토큰을 삭제합니다.";
+            }
+
+            public static class signup {
+                public static final String Summary = "회원가입 진행";
+                public static final String Desc = "회원가입 진행 및 회원 정보를 디비에 저장합니다.";
+            }
+        }
+    }
 
 
 
-    public static class Response {
+
+
+        public static class Response {
         public static final String status = "응답 코드";
         public static final String errorCode = "응답 메시지";
         public static final String msg = "응답 상세 메시지";

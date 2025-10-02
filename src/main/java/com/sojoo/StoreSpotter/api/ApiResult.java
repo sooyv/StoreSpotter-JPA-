@@ -1,6 +1,7 @@
 package com.sojoo.StoreSpotter.api;
 
 import com.sojoo.StoreSpotter.common.error.ErrorCode;
+import com.sojoo.StoreSpotter.jwt.exception.JwtErrorCode;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -19,4 +20,5 @@ public @interface ApiResult {
 
 	// errors
 	ErrorCode[] errors() default {};
+	JwtErrorCode[] jwtErrors() default {};
 }

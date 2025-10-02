@@ -90,8 +90,10 @@ public class MypageController {
         User user = userService.getUserFromCookie(request);
 
         ResponseEntity<String> isDuplicate = likedService.duplicateLikedName(user, likedDto.getLikedName());
+
         if (isDuplicate.getStatusCode().equals(HttpStatus.BAD_REQUEST)) {
             return isDuplicate;
+
         } else {
             likedService.storeLiked(user, regionName, industryId, likedDto);
             return new ResponseEntity<>("Successfully StoreLiked", HttpStatus.OK);
